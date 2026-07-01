@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.triforge</groupId>
+        <artifactId>triforge-gaming</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>triforge-server</artifactId>
+    <packaging>jar</packaging>
+
+    <name>triforge-server</name>
+    <description>Runnable fat JAR: bundles server runtime, game plugins, and static frontend</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <shared.ui.dir>${project.basedir}/../../frontend/shared-ui</shared.ui.dir>
+        <launcher.web.dir>${project.basedir}/../../frontend/launcher-web</launcher.web.dir>
+        <tankarena.frontend.dir>${project.basedir}/../../games/tankarena/frontend</tankarena.frontend.dir>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
+            <artifactId>server-runtime</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
+            <artifactId>tankarena-game</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
+            <artifactId>demo-game</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>install-node-and-npm</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${shared.ui.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <npmVersion>${npm.version}</npmVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>shared-ui-npm-ci</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${shared.ui.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>shared-ui-proto</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${shared.ui.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>run proto</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tankarena-npm-ci</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${tankarena.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tankarena-npm-build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${tankarena.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>launcher-npm-ci</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${launcher.web.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>launcher-npm-build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${launcher.web.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-launcher-assets</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${launcher.web.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-tankarena-assets</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/tankarena</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${tankarena.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>module-info.class</exclude>
+                                        <exclude>META-INF/versions/*/module-info.class</exclude>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                        <exclude>META-INF/LICENSE</exclude>
+                                        <exclude>META-INF/LICENSE.txt</exclude>
+                                        <exclude>META-INF/NOTICE</exclude>
+                                        <exclude>META-INF/NOTICE.txt</exclude>
+                                        <exclude>META-INF/io.netty.versions.properties</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.triforge.launcher.TriforgeServer</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>

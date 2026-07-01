@@ -1,0 +1,289 @@
+syntax = "proto3";
+
+package com.triforge.protocol.proto;
+
+option java_multiple_files = true;
+option java_package = "com.triforge.protocol.proto";
+option java_outer_classname = "EnvelopeProto";
+
+message MessageEnvelope {
+  string roomId = 1;
+  uint64 tick = 2;
+
+  uint64 msgId = 3;
+  uint64 clientSeq = 4;
+  uint64 serverSeq = 5;
+
+  string schemaVersion = 6;
+
+  bytes payload = 7;
+}
+
+message GameMessage {
+  oneof content {
+    JoinRequest joinRequest = 1;
+    JoinResponse joinResponse = 2;
+    FullSnapshot fullSnapshot = 3;
+    DeltaSnapshot deltaSnapshot = 4;
+    InputCommand inputCommand = 5;
+    GameEvent gameEvent = 6;
+    LobbyCommand lobbyCommand = 7;
+    RoomLobbySnapshot roomLobbySnapshot = 8;
+    MatchPhaseUpdate matchPhaseUpdate = 9;
+    MatchResult matchResult = 10;
+    MapSnapshot mapSnapshot = 11;
+  }
+}
+
+message JoinRequest {
+  string playerName = 1;
+}
+
+message JoinResponse {
+  uint64 playerId = 1;
+  uint64 entityId = 2;
+  FullSnapshot initialSnapshot = 3;
+  MapSnapshot map = 4;
+  RoomLobbySnapshot lobby = 5;
+}
+
+enum Direction {
+  UP = 0;
+  DOWN = 1;
+  LEFT = 2;
+  RIGHT = 3;
+}
+
+enum TileType {
+  EMPTY = 0;
+  BRICK = 1;
+  STEEL = 2;
+  WATER = 3;
+  TREE = 4;
+  WALL = 5;
+  COVER = 6;
+  HQ = 7;
+}
+
+enum FogCellState {
+  UNKNOWN = 0;
+  SEEN = 1;
+  VISIBLE = 2;
+}
+
+message FogSnapshot {
+  uint32 width = 1;
+  uint32 height = 2;
+  bytes cells = 3;
+}
+
+enum GameEventType {
+  PLAYER_HIT = 0;
+  PLAYER_DEATH = 1;
+  PLAYER_RESPAWN = 2;
+  MATCH_COUNTDOWN = 3;
+  MATCH_STARTED = 4;
+  MATCH_ENDED = 5;
+  LOBBY_UPDATED = 6;
+  HQ_DAMAGED = 7;
+  HQ_DESTROYED = 8;
+}
+
+enum MatchPhase {
+  LOBBY = 0;
+  COUNTDOWN = 1;
+  PLAYING = 2;
+  ENDED = 3;
+}
+
+// Proto-level names are prefixed to stay unique across the file's enum namespace;
+// the Java domain (Task 11) maps these to NONE / RED / BLUE.
+enum Team {
+  TEAM_NONE = 0;
+  TEAM_RED = 1;
+  TEAM_BLUE = 2;
+}
+
+enum SpawnRegion {
+  REGION_UNSPECIFIED = 0;
+  TOP_LEFT = 1;
+  TOP_RIGHT = 2;
+  BOTTOM_LEFT = 3;
+  BOTTOM_RIGHT = 4;
+}
+
+message MapSnapshot {
+  uint32 width = 1;
+  uint32 height = 2;
+  uint32 tileSize = 3;
+  repeated TileType tiles = 4;
+  repeated HeadquartersProto headquarters = 5;
+}
+
+message HeadquartersProto {
+  Team team = 1;
+  uint32 x = 2;
+  uint32 y = 3;
+  uint32 width = 4;
+  uint32 height = 5;
+  uint32 maxHp = 6;
+}
+
+message TileChange {
+  uint32 x = 1;
+  uint32 y = 2;
+  TileType tile = 3;
+}
+
+message GameEvent {
+  GameEventType type = 1;
+  uint64 playerId = 2;
+  uint64 entityId = 3;
+  uint64 tick = 4;
+  int32 livesRemaining = 5;
+  Team team = 6;
+  uint64 killerPlayerId = 7;
+  repeated uint64 assistPlayerIds = 8;
+}
+
+message PlayerComponentProto {
+  uint64 playerId = 1;
+  string name = 2;
+  int32 score = 3;
+  int32 lives = 4;
+  Team team = 5;
+}
+
+message PositionComponentProto {
+  float x = 1;
+  float y = 2;
+}
+
+message DirectionComponentProto {
+  Direction direction = 1;
+}
+
+message TankComponentProto {
+  float speed = 1;
+  uint64 shootCooldownTicks = 2;
+  uint64 cooldownRemainingTicks = 3;
+}
+
+message BulletComponentProto {
+  uint64 ownerEntityId = 1;
+  float speed = 2;
+  float dx = 3;
+  float dy = 4;
+}
+
+message EntityProto {
+  uint64 entityId = 1;
+  PlayerComponentProto player = 2;
+  PositionComponentProto position = 3;
+  DirectionComponentProto direction = 4;
+  TankComponentProto tank = 5;
+  BulletComponentProto bullet = 6;
+}
+
+message FullSnapshot {
+  uint64 tick = 1;
+  repeated EntityProto entities = 2;
+  FogSnapshot fog = 3;
+}
+
+message DeltaSnapshot {
+  uint64 tick = 1;
+  repeated EntityProto updatedEntities = 2;
+  repeated uint64 removedEntityIds = 3;
+  repeated TileChange tileChanges = 4;
+  FogSnapshot fog = 5;
+}
+
+message InputCommand {
+  bool moveUp = 1;
+  bool moveDown = 2;
+  bool moveLeft = 3;
+  bool moveRight = 4;
+  bool shoot = 5;
+}
+
+// ── Lobby & match flow ─────────────────────────────────────────────
+
+message LobbyPlayer {
+  uint64 playerId = 1;
+  string displayName = 2;
+  Team team = 3;
+  SpawnRegion spawnRegion = 4;
+  bool ready = 5;
+  bool isHost = 6;
+  bool isTeamCaptain = 7;
+}
+
+message TeamSetup {
+  Team team = 1;
+  uint64 captainPlayerId = 2;
+  SpawnRegion spawnRegion = 3;
+  SpawnRegion hqRegion = 4;
+}
+
+message RoomLobbySnapshot {
+  string roomId = 1;
+  string roomName = 2;
+  MatchPhase phase = 3;
+  repeated LobbyPlayer players = 4;
+  uint32 minPlayers = 5;
+  bool canStart = 6;
+  repeated TeamSetup teamSetups = 7;
+}
+
+// Client → server lobby actions. All are no-ops outside the LOBBY phase.
+message SetNameAction { string displayName = 1; }
+message SetTeamAction { Team team = 1; }
+message SetSpawnAction { SpawnRegion region = 1; }
+message SetTeamSetupAction {
+  SpawnRegion spawnRegion = 1;
+  SpawnRegion hqRegion = 2;
+}
+message SetReadyAction { bool ready = 1; }
+message StartMatchAction {}
+
+message LobbyCommand {
+  oneof action {
+    SetNameAction setName = 1;
+    SetTeamAction setTeam = 2;
+    SetSpawnAction setSpawn = 3;
+    SetReadyAction setReady = 4;
+    StartMatchAction startMatch = 5;
+    SetTeamSetupAction setTeamSetup = 6;
+  }
+}
+
+message MatchPhaseUpdate {
+  MatchPhase phase = 1;
+  uint32 countdownSeconds = 2;
+  uint64 matchRemainingMs = 3;
+  uint64 serverTick = 4;
+  uint32 redHqHp = 5;
+  uint32 blueHqHp = 6;
+}
+
+message PlayerMatchStats {
+  uint64 playerId = 1;
+  string displayName = 2;
+  Team team = 3;
+  uint32 kills = 4;
+  uint32 deaths = 5;
+  uint32 assists = 6;
+  uint32 damageDealt = 7;
+  uint32 damageTaken = 8;
+  uint32 shotsFired = 9;
+  uint32 shotsHit = 10;
+}
+
+message MatchResult {
+  Team winningTeam = 1;
+  uint32 redScore = 2;
+  uint32 blueScore = 3;
+  repeated PlayerMatchStats stats = 4;
+  uint64 matchDurationMs = 5;
+}

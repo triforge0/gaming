@@ -1,0 +1,16 @@
+{
+  "name": "@triforge/launcher-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Triforge multi-game web launcher",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12"
+  }
+}
