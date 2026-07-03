@@ -51,9 +51,12 @@ final class MatchEndTest {
         drive(room, MatchPhase.ENDED, room::tickScoreboardPhase);
         assertEquals(MatchPhase.LOBBY, room.matchPhase());
         assertFalse(TankArenaRoomSupport.match(room).player(1L).ready(), "ready reset on return to lobby");
-        assertEquals(Team.RED, TankArenaRoomSupport.match(room).player(1L).team(), "team selection preserved");
+        assertEquals(Team.NONE, TankArenaRoomSupport.match(room).player(1L).team(), "team reset on return to lobby");
+        assertEquals(Team.NONE, TankArenaRoomSupport.match(room).player(2L).team(), "team reset on return to lobby");
 
-        // A second match can start straight away.
+        configure(room, 1L, Team.RED, SpawnRegion.TOP_LEFT);
+        configure(room, 2L, Team.BLUE, SpawnRegion.BOTTOM_RIGHT);
+        // A second match can start straight away after re-configuring teams.
         room.handleLobbyCommand(1L, ready());
         room.handleLobbyCommand(2L, ready());
         assertEquals(MatchPhase.COUNTDOWN, room.matchPhase(), "rematch starts from lobby");

@@ -2,10 +2,10 @@ package com.triforge.server.application.room;
 
 import com.triforge.games.tankarena.match.LobbyPlayer;
 import com.triforge.engine.match.MatchConfig;
+import com.triforge.games.tankarena.match.LobbyRejectReason;
 import com.triforge.games.tankarena.match.SpawnRegion;
 import com.triforge.games.tankarena.match.TankArenaMatchController;
 import com.triforge.games.tankarena.match.Team;
-import com.triforge.games.tankarena.match.TeamSetup;
 import com.triforge.protocol.proto.LobbyCommand;
 import com.triforge.protocol.proto.SetReadyAction;
 import com.triforge.protocol.proto.SetTeamAction;
@@ -29,23 +29,27 @@ final class LobbyCommandTest {
     @Test
     void setDisplayNameAppliesAndTrims() {
         TankArenaMatchController controller = controllerWith(1L);
-        assertTrue(controller.setDisplayName(1L, "  Thắng  "));
+        assertTrue(controller.setDisplayName(1L, "  Thắng  ").applied());
         assertEquals("Thắng", controller.player(1L).displayName());
     }
 
     @Test
     void setDisplayNameRejectsBlank() {
         TankArenaMatchController controller = controllerWith(1L);
-        assertFalse(controller.setDisplayName(1L, "   "));
+        var outcome = controller.setDisplayName(1L, "   ");
+        assertFalse(outcome.applied());
+        assertEquals(LobbyRejectReason.INVALID_NAME, outcome.reason());
         assertEquals("P1", controller.player(1L).displayName());
     }
 
     @Test
     void setTeamRejectsImbalancedSwitch() {
         TankArenaMatchController controller = controllerWith(1L, 2L);
-        assertTrue(controller.setTeam(1L, Team.RED));
-        assertFalse(controller.setTeam(2L, Team.RED), "second RED would make it 2v0");
-        assertTrue(controller.setTeam(2L, Team.BLUE));
+        assertTrue(controller.setTeam(1L, Team.RED).applied());
+        var rejected = controller.setTeam(2L, Team.RED);
+        assertFalse(rejected.applied(), "second RED would make it 2v0");
+        assertEquals(LobbyRejectReason.TEAM_BALANCE, rejected.reason());
+        assertTrue(controller.setTeam(2L, Team.BLUE).applied());
         assertEquals(Team.RED, controller.player(1L).team());
         assertEquals(Team.BLUE, controller.player(2L).team());
     }
@@ -54,10 +58,10 @@ final class LobbyCommandTest {
     void changingTeamClearsReady() {
         TankArenaMatchController controller = controllerWith(1L);
         LobbyTestSupport.configureTeam(controller, 1L, Team.RED, SpawnRegion.TOP_LEFT);
-        assertTrue(controller.setReady(1L, true));
+        assertTrue(controller.setReady(1L, true).applied());
         assertTrue(controller.player(1L).ready());
 
-        assertTrue(controller.setTeam(1L, Team.BLUE));
+        assertTrue(controller.setTeam(1L, Team.BLUE).applied());
         assertFalse(controller.player(1L).ready(), "switching team must clear ready");
     }
 
@@ -65,40 +69,44 @@ final class LobbyCommandTest {
     void setTeamSetupRejectsWrongSideAndClearsReady() {
         TankArenaMatchController controller = controllerWith(1L);
         controller.setTeam(1L, Team.RED);
-        assertFalse(controller.setTeamSetup(1L, SpawnRegion.TOP_RIGHT, SpawnRegion.BOTTOM_RIGHT));
+        assertFalse(controller.setTeamSetup(1L, SpawnRegion.TOP_RIGHT, SpawnRegion.BOTTOM_RIGHT).applied());
 
-        assertTrue(controller.setTeamSetup(1L, SpawnRegion.TOP_LEFT, SpawnRegion.BOTTOM_LEFT));
+        assertTrue(controller.setTeamSetup(1L, SpawnRegion.TOP_LEFT, SpawnRegion.BOTTOM_LEFT).applied());
         controller.setReady(1L, true);
-        assertTrue(controller.setTeamSetup(1L, SpawnRegion.BOTTOM_LEFT, SpawnRegion.TOP_LEFT));
+        assertTrue(controller.setTeamSetup(1L, SpawnRegion.BOTTOM_LEFT, SpawnRegion.TOP_LEFT).applied());
         assertFalse(controller.player(1L).ready(), "changing team setup must clear ready");
     }
 
     @Test
     void readyRequiresTeamAndCaptainSetup() {
         TankArenaMatchController controller = controllerWith(1L);
-        assertFalse(controller.setReady(1L, true), "no team");
+        var noTeam = controller.setReady(1L, true);
+        assertFalse(noTeam.applied(), "no team");
+        assertEquals(LobbyRejectReason.TEAM_SETUP_INCOMPLETE, noTeam.reason());
 
         controller.setTeam(1L, Team.RED);
-        assertFalse(controller.setReady(1L, true), "team but no captain setup");
+        var noSetup = controller.setReady(1L, true);
+        assertFalse(noSetup.applied(), "team but no captain setup");
+        assertEquals(LobbyRejectReason.TEAM_SETUP_INCOMPLETE, noSetup.reason());
 
         controller.setTeamSetup(1L, SpawnRegion.TOP_LEFT, SpawnRegion.BOTTOM_LEFT);
-        assertTrue(controller.setReady(1L, true));
-        assertTrue(controller.setReady(1L, false), "un-ready always allowed");
+        assertTrue(controller.setReady(1L, true).applied());
+        assertTrue(controller.setReady(1L, false).applied(), "un-ready always allowed");
     }
 
     @Test
     void editsRejectedOutsideLobbyPhase() {
         TankArenaMatchController controller = controllerWith(1L);
         controller.startCountdown();
-        assertFalse(controller.setTeam(1L, Team.RED));
-        assertFalse(controller.setDisplayName(1L, "Late"));
-        assertFalse(controller.setReady(1L, true));
+        assertEquals(LobbyRejectReason.NOT_IN_LOBBY_PHASE, controller.setTeam(1L, Team.RED).reason());
+        assertEquals(LobbyRejectReason.NOT_IN_LOBBY_PHASE, controller.setDisplayName(1L, "Late").reason());
+        assertEquals(LobbyRejectReason.NOT_IN_LOBBY_PHASE, controller.setReady(1L, true).reason());
     }
 
     @Test
     void unknownPlayerRejected() {
         TankArenaMatchController controller = controllerWith(1L);
-        assertFalse(controller.setTeam(99L, Team.RED));
+        assertEquals(LobbyRejectReason.PLAYER_NOT_FOUND, controller.setTeam(99L, Team.RED).reason());
     }
 
     @Test

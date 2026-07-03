@@ -12,6 +12,12 @@ const GAMES: GameEntry[] = [
     description: 'LAN Battle City — 4–16 players, authoritative host.',
     path: '/games/tankarena/',
   },
+  {
+    id: 'treasurequest',
+    title: 'Treasure Quest',
+    description: 'Educational expedition — quiz checkpoints, branching paths, shared treasure.',
+    path: '/games/treasurequest/',
+  },
 ];
 
 function renderGames(): void {

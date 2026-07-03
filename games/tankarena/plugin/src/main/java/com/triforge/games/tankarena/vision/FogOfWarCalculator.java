@@ -23,6 +23,9 @@ public final class FogOfWarCalculator {
     private static final int[] MULT_YX = {0, 1, 1, 0, 0, -1, -1, 0};
     private static final int[] MULT_YY = {1, 0, 0, 1, -1, 0, 0, -1};
 
+    /** Observer eye height above its ground contact; a hill taller than this blocks sight. */
+    private static final float EYE_HEIGHT = 14f;
+
     private final GameMap map;
     private final MapConfig config;
     private final RoomVisionState visionState;
@@ -56,11 +59,15 @@ public final class FogOfWarCalculator {
         int centerTileY = map.worldToTileY(worldY);
         int radiusTiles = vision.radiusTiles();
 
+        // Sightline height: the observer's terrain elevation plus eye height. Terrain
+        // columns taller than this occlude cells behind them (3D line of sight).
+        float eyeHeight = map.heightAt(worldX, worldY) + EYE_HEIGHT;
+
         // The observer's own tile is always visible (even if it is a cover tile).
         visibility.setVisible(centerTileX, centerTileY);
 
         for (int octant = 0; octant < 8; octant++) {
-            castLight(visibility, centerTileX, centerTileY, radiusTiles, 1, 1.0, 0.0, octant);
+            castLight(visibility, centerTileX, centerTileY, radiusTiles, 1, 1.0, 0.0, octant, eyeHeight);
         }
     }
 
@@ -72,7 +79,8 @@ public final class FogOfWarCalculator {
             int row,
             double startSlope,
             double endSlope,
-            int octant
+            int octant,
+            float eyeHeight
     ) {
         if (startSlope < endSlope) {
             return;
@@ -100,7 +108,8 @@ public final class FogOfWarCalculator {
                     visibility.setVisible(currentX, currentY);
                 }
 
-                boolean opaque = map.tileAt(currentX, currentY).blocksVision();
+                boolean opaque = map.tileAt(currentX, currentY).blocksVision()
+                        || map.cellHeight(currentX, currentY) > eyeHeight;
                 if (blocked) {
                     if (opaque) {
                         nextStartSlope = rightSlope;
@@ -112,7 +121,8 @@ public final class FogOfWarCalculator {
                     // Opaque cell within range: recurse for the still-lit sector beside it,
                     // then keep scanning this row behind the new shadow.
                     blocked = true;
-                    castLight(visibility, centerX, centerY, radius, distance + 1, startSlope, leftSlope, octant);
+                    castLight(visibility, centerX, centerY, radius, distance + 1, startSlope, leftSlope,
+                            octant, eyeHeight);
                     nextStartSlope = rightSlope;
                 }
             }

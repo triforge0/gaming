@@ -69,6 +69,14 @@ final class DemoRoomHost implements RoomHost {
             }
 
             @Override
+            public void sendTo(long playerId, com.triforge.protocol.proto.GameMessage message) {
+            }
+
+            @Override
+            public void broadcast(com.triforge.protocol.proto.GameMessage message) {
+            }
+
+            @Override
             public JoinResponse.Builder joinResponseBuilder(long playerId, Game game, RoomLobbySnapshot lobby) {
                 return JoinResponse.newBuilder().setPlayerId(playerId).setLobby(lobby);
             }

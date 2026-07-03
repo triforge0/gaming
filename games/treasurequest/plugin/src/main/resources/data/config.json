@@ -1,0 +1,11 @@
+{
+  "encounterRadiusTiles": 2.0,
+  "stealPct": 0.20,
+  "pvpCooldownSecs": 300,
+  "stealImmunitySecs": 1800,
+  "shieldSecs": 600,
+  "duelQuestionCount": 5,
+  "duelTimeLimitSecs": 30,
+  "treasureLockSecs": 30,
+  "powerKnowledgeWeight": 0.55
+}

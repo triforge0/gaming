@@ -3,6 +3,7 @@ package com.triforge.server.application.room;
 import com.triforge.engine.game.Game;
 import com.triforge.engine.game.GamePlugin;
 import com.triforge.engine.game.GamePlugins;
+import com.triforge.games.treasurequest.TreasureQuestGame;
 import com.triforge.engine.ecs.ComponentManager;
 import com.triforge.engine.ecs.EntityManager;
 import com.triforge.engine.loop.GameLoop;
@@ -245,6 +246,10 @@ public final class GameRoom implements AutoCloseable, RoomHost {
             return;
         }
         logger.info("Starting room '{}' simulation loop thread (plugin={})", roomId, plugin.id());
+        if (!gameLoop.start()) {
+            running.set(false);
+            throw new IllegalStateException("Game loop already running for room '" + roomId + "'");
+        }
         roomExecutor.start(gameLoop);
     }
 
@@ -291,6 +296,12 @@ public final class GameRoom implements AutoCloseable, RoomHost {
 
     public void queueInputCommand(long playerId, InputCommand input) {
         game.queueInputCommand(playerId, input);
+    }
+
+    public void queueTreasureQuestMessage(long playerId, com.triforge.protocol.proto.TreasureQuestMessage message) {
+        if (game instanceof TreasureQuestGame treasureQuest) {
+            treasureQuest.handleTreasureQuestMessage(playerId, message);
+        }
     }
 
     private void onTick(long tick) {

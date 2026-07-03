@@ -70,6 +70,15 @@ public final class CommandDispatcher extends SimpleChannelInboundHandler<Message
                 room.enqueueCommand(() -> room.handleLobbyCommand(lobbyPlayerId, lobbyCommand));
                 break;
 
+            case TQ:
+                Long tqPlayerId = ctx.channel().attr(GameRoom.PLAYER_ID_KEY).get();
+                if (tqPlayerId == null) {
+                    logger.warn("Received TreasureQuest message from channel without playerId in room '{}'", roomId);
+                    return;
+                }
+                room.enqueueCommand(() -> room.queueTreasureQuestMessage(tqPlayerId, gameMsg.getTq()));
+                break;
+
             default:
                 logger.warn("Received unhandled game message content case: {}", gameMsg.getContentCase());
                 break;

@@ -75,6 +75,14 @@ public final class CollisionSystem implements System {
             }
 
             long bulletEntityId = entityManager.idAt(index);
+
+            // Bullet-vs-terrain: a bullet that has dropped below ground level is spent. Strict
+            // less-than so a level shot skimming flat ground (z == height) still flies.
+            if (bulletPosition.z() < gameMap.heightAt(bulletPosition.x(), bulletPosition.y())) {
+                bulletsToDestroy.add(bulletEntityId);
+                continue;
+            }
+
             TileType tileHit = CollisionDetector.bulletTileHit(
                     gameMap,
                     bulletPosition.x(),

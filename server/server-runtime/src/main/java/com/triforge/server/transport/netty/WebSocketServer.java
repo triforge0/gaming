@@ -48,6 +48,7 @@ public final class WebSocketServer {
         EnvelopeCodec envelopeCodec = new EnvelopeCodec();
         CommandDispatcher commandDispatcher = new CommandDispatcher(roomRegistry);
         LobbyHttpHandler lobbyHttpHandler = new LobbyHttpHandler(discoveryService);
+        AdminHttpHandler adminHttpHandler = new AdminHttpHandler();
 
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
@@ -60,6 +61,7 @@ public final class WebSocketServer {
                  pipeline.addLast(new HttpServerCodec());
                  pipeline.addLast(new HttpObjectAggregator(MAX_HTTP_CONTENT_LENGTH));
                  pipeline.addLast(lobbyHttpHandler);
+                 pipeline.addLast(adminHttpHandler);
                  pipeline.addLast(new StaticFileHandler());
                  pipeline.addLast(new WebSocketServerProtocolHandler("/ws", null, true));
                  pipeline.addLast(envelopeCodec);

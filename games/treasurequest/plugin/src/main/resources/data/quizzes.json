@@ -1,0 +1,49 @@
+{
+  "quizzes": [
+    {
+      "id": "q1",
+      "passThreshold": 20,
+      "questions": [
+        { "id": "q1a", "text": "2 + 2 = ?", "options": ["3", "4", "5"], "correctIndex": 1, "points": 10, "timeLimitSec": 20 },
+        { "id": "q1b", "text": "Thu do cua Viet Nam?", "options": ["Ha Noi", "Hue", "Da Nang"], "correctIndex": 0, "points": 10, "timeLimitSec": 20 },
+        { "id": "q1c", "text": "Mau cua bau troi ban ngay?", "options": ["Do", "Xanh", "Vang"], "correctIndex": 1, "points": 10, "timeLimitSec": 20 }
+      ]
+    },
+    {
+      "id": "q2",
+      "passThreshold": 20,
+      "questions": [
+        { "id": "q2a", "text": "10 / 2 = ?", "options": ["4", "5", "6"], "correctIndex": 1, "points": 10, "timeLimitSec": 20 },
+        { "id": "q2b", "text": "Nuoc soi o bao nhieu do C?", "options": ["50", "100", "150"], "correctIndex": 1, "points": 10, "timeLimitSec": 20 },
+        { "id": "q2c", "text": "So ngay trong tuan?", "options": ["5", "6", "7"], "correctIndex": 2, "points": 10, "timeLimitSec": 20 }
+      ]
+    },
+    {
+      "id": "q3",
+      "passThreshold": 20,
+      "questions": [
+        { "id": "q3a", "text": "3 x 3 = ?", "options": ["6", "9", "12"], "correctIndex": 1, "points": 10, "timeLimitSec": 20 },
+        { "id": "q3b", "text": "Trai Dat quay quanh gi?", "options": ["Mat Trang", "Mat Troi", "Sao Hoa"], "correctIndex": 1, "points": 10, "timeLimitSec": 20 },
+        { "id": "q3c", "text": "Mot nam co bao nhieu thang?", "options": ["10", "11", "12"], "correctIndex": 2, "points": 10, "timeLimitSec": 20 }
+      ]
+    },
+    {
+      "id": "q4",
+      "passThreshold": 20,
+      "questions": [
+        { "id": "q4a", "text": "7 - 4 = ?", "options": ["2", "3", "4"], "correctIndex": 1, "points": 10, "timeLimitSec": 20 },
+        { "id": "q4b", "text": "Dai duong lon nhat?", "options": ["Dai Tay Duong", "Thai Binh Duong", "An Do Duong"], "correctIndex": 1, "points": 10, "timeLimitSec": 20 },
+        { "id": "q4c", "text": "H2O la cong thuc cua?", "options": ["Muoi", "Nuoc", "Duong"], "correctIndex": 1, "points": 10, "timeLimitSec": 20 }
+      ]
+    },
+    {
+      "id": "qboss",
+      "passThreshold": 30,
+      "questions": [
+        { "id": "qb1", "text": "12 x 12 = ?", "options": ["124", "144", "154"], "correctIndex": 1, "points": 10, "timeLimitSec": 25 },
+        { "id": "qb2", "text": "Hanh tinh gan Mat Troi nhat?", "options": ["Kim Tinh", "Thuy Tinh", "Hoa Tinh"], "correctIndex": 1, "points": 10, "timeLimitSec": 25 },
+        { "id": "qb3", "text": "So nguyen to nho nhat?", "options": ["0", "1", "2"], "correctIndex": 2, "points": 10, "timeLimitSec": 25 }
+      ]
+    }
+  ]
+}

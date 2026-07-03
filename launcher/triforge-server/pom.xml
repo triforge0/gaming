@@ -23,6 +23,7 @@
         <shared.ui.dir>${project.basedir}/../../frontend/shared-ui</shared.ui.dir>
         <launcher.web.dir>${project.basedir}/../../frontend/launcher-web</launcher.web.dir>
         <tankarena.frontend.dir>${project.basedir}/../../games/tankarena/frontend</tankarena.frontend.dir>
+        <treasurequest.frontend.dir>${project.basedir}/../../games/treasurequest/frontend</treasurequest.frontend.dir>
     </properties>
 
     <dependencies>
@@ -40,6 +41,11 @@
         <dependency>
             <groupId>com.triforge</groupId>
             <artifactId>demo-game</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
+            <artifactId>treasurequest-game</artifactId>
         </dependency>
 
     </dependencies>
@@ -119,6 +125,30 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>treasurequest-npm-ci</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${treasurequest.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>treasurequest-npm-build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${treasurequest.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>launcher-npm-ci</id>
                         <phase>prepare-package</phase>
                         <goals>
@@ -150,6 +180,57 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>copy-prebuilt-launcher-assets</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${launcher.web.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-prebuilt-tankarena-assets</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/tankarena</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${tankarena.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-prebuilt-treasurequest-assets</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/treasurequest</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${treasurequest.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-launcher-assets</id>
                         <phase>prepare-package</phase>
                         <goals>
@@ -178,6 +259,23 @@
                             <resources>
                                 <resource>
                                     <directory>${tankarena.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-treasurequest-assets</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/treasurequest</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${treasurequest.frontend.dir}/dist</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>

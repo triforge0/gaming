@@ -4,6 +4,7 @@ import com.triforge.engine.game.Game;
 import com.triforge.engine.game.RoomBroadcastView;
 import com.triforge.engine.match.MatchController;
 import com.triforge.protocol.proto.GameEvent;
+import com.triforge.protocol.proto.GameMessage;
 import com.triforge.protocol.proto.JoinResponse;
 import com.triforge.protocol.proto.RoomLobbySnapshot;
 import com.triforge.protocol.proto.TileChange;
@@ -15,6 +16,15 @@ import java.util.List;
 public interface RoomBroadcastAccess {
 
     void sendJoinResponse(Channel channel, JoinResponse response);
+
+    /**
+     * Sends a pre-built {@link GameMessage} to a single connected player. No-op if the player is
+     * not connected. Generic surface for plugin-specific messaging (e.g. TreasureQuest quiz/duel).
+     */
+    void sendTo(long playerId, GameMessage message);
+
+    /** Broadcasts a pre-built {@link GameMessage} to every connected player in the room. */
+    void broadcast(GameMessage message);
 
     JoinResponse.Builder joinResponseBuilder(long playerId, Game game, RoomLobbySnapshot lobby);
 

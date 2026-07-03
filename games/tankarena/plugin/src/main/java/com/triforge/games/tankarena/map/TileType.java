@@ -41,7 +41,7 @@ public enum TileType {
         return this == STEEL || this == BRICK || this == TREE;
     }
 
-    /** Cover tiles hide a tank standing on them; detection then needs short range or a clear ray. */
+    /** Cover tiles hide a tank standing on them until an enemy closes within {@link MapConfig#coverRevealRadiusWorld()}. */
     public boolean providesCover() {
         return this == TREE || this == BRICK;
     }

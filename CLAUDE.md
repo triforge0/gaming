@@ -29,7 +29,7 @@ triforge-gaming/
 ├── games/
 │   ├── tankarena/
 │   │   ├── plugin/                   Maven artifact: tankarena-game
-│   │   └── frontend/                 Phaser 3 + TypeScript (Vite)
+│   │   └── frontend/                 React + Three.js (Vite) — 3D client
 │   └── demo/
 │       └── plugin/                   Maven artifact: demo-game
 └── frontend/                         Platform web shell + shared client library
@@ -37,7 +37,10 @@ triforge-gaming/
     └── launcher-web/                 Multi-game picker (served at /)
 ```
 
-Tank Arena client is served at `/games/tankarena/` after package. Launcher home is `/`.
+Tank Arena is a React + Three.js 3D client served at `/games/tankarena/` (plan-004
+migrated it from Phaser 2D to Three.js 3D; the authoritative server is fully 3D with
+terrain elevation). Launcher home is `/`. The wire proto still carries the legacy 2D
+`Direction`/`x,y` fields alongside the 3D `z`/orientation fields.
 
 Build order: `protocol → engine-ecs → engine-api → engine-match → engine-sync → engine-core → tankarena-game → demo-game → server-runtime → triforge-server`
 
@@ -75,12 +78,12 @@ npm install
 npm run proto    # generates TS from ../../proto/envelope.proto
 ```
 
-Tank Arena client (inside `games/tankarena/frontend/`):
+Tank Arena client — React + Three.js (inside `games/tankarena/frontend/`):
 
 ```bash
 cd games/tankarena/frontend
 npm install
-npm run build    # depends on @triforge/shared-ui via file: link
+npm run build    # React + Three.js; depends on @triforge/shared-ui via file: link (dev port 3002)
 ```
 
 Launcher web (inside `frontend/launcher-web/`):
@@ -141,7 +144,7 @@ helpers live in `TankArenaRoomSupport` under integration tests.
 
 | Concern | Choice |
 |---------|--------|
-| Frontend | Phaser 3 + TypeScript, Vite |
+| Frontend | Tank Arena: React + Three.js, Vite (TypeScript) |
 | Backend | Java 21, Netty, Maven multi-module |
 | Wire format | Protobuf (`proto/envelope.proto`, package `com.triforge.protocol.proto`) |
 | Game loop | 60 TPS (`engine.loop.GameLoop`) |

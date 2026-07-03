@@ -10,12 +10,55 @@ public final class InputComponent implements Component {
     private boolean moveRight;
     private boolean shoot;
 
+    // 3D keyboard intent (server accumulates yaw/pitch).
+    private boolean moveForward;
+    private boolean moveBackward;
+    private boolean turnLeft;
+    private boolean turnRight;
+    private boolean aimUp;
+    private boolean aimDown;
+
     public void apply(InputCommand command) {
         moveUp = command.getMoveUp();
         moveDown = command.getMoveDown();
         moveLeft = command.getMoveLeft();
         moveRight = command.getMoveRight();
         shoot = command.getShoot();
+        moveForward = command.getMoveForward();
+        moveBackward = command.getMoveBackward();
+        turnLeft = command.getTurnLeft();
+        turnRight = command.getTurnRight();
+        aimUp = command.getAimUp();
+        aimDown = command.getAimDown();
+    }
+
+    public boolean moveForward() {
+        return moveForward;
+    }
+
+    public boolean moveBackward() {
+        return moveBackward;
+    }
+
+    public boolean turnLeft() {
+        return turnLeft;
+    }
+
+    public boolean turnRight() {
+        return turnRight;
+    }
+
+    public boolean aimUp() {
+        return aimUp;
+    }
+
+    public boolean aimDown() {
+        return aimDown;
+    }
+
+    /** True when any legacy 4-way key is pressed (Phaser client during the parity window). */
+    public boolean hasLegacyMove() {
+        return moveUp || moveDown || moveLeft || moveRight;
     }
 
     public boolean moveUp() {

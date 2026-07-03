@@ -1,0 +1,76 @@
+{
+  "width": 20,
+  "height": 15,
+  "tileSize": 32,
+  "start": "cp1",
+  "rows": [
+    "####################",
+    "#..................#",
+    "#..................#",
+    "#..................#",
+    "#..................#",
+    "#..................#",
+    "#..................#",
+    "#.........~~.......#",
+    "#.........~~.......#",
+    "#..................#",
+    "#..................#",
+    "#......T...........#",
+    "#......T...........#",
+    "#..................#",
+    "####################"
+  ],
+  "treasure": { "x": 16, "y": 11, "w": 2, "h": 2 },
+  "checkpoints": [
+    {
+      "id": "cp1",
+      "x": 2, "y": 6, "w": 2, "h": 2,
+      "quizId": "q1",
+      "next": ["cp2a", "cp2b"],
+      "isBoss": false,
+      "risk": "NORMAL",
+      "hint": "Chon duong: an toan (phia bac) hay nguy hiem (phia nam).",
+      "reward": { "points": 20, "item": null }
+    },
+    {
+      "id": "cp2a",
+      "x": 8, "y": 2, "w": 2, "h": 2,
+      "quizId": "q2",
+      "next": ["cp3"],
+      "isBoss": false,
+      "risk": "SAFE",
+      "hint": "Toi nga ba giua ban do.",
+      "reward": { "points": 80, "item": null }
+    },
+    {
+      "id": "cp2b",
+      "x": 8, "y": 11, "w": 2, "h": 2,
+      "quizId": "q3",
+      "next": ["cp3"],
+      "isBoss": false,
+      "risk": "DANGEROUS",
+      "hint": "Toi nga ba giua ban do (coi chung doi thu).",
+      "reward": { "points": 200, "item": "shield" }
+    },
+    {
+      "id": "cp3",
+      "x": 13, "y": 6, "w": 2, "h": 2,
+      "quizId": "q4",
+      "next": ["boss"],
+      "isBoss": false,
+      "risk": "NORMAL",
+      "hint": "Toi hang boss phia dong.",
+      "reward": { "points": 120, "item": null }
+    },
+    {
+      "id": "boss",
+      "x": 16, "y": 6, "w": 2, "h": 2,
+      "quizId": "qboss",
+      "next": [],
+      "isBoss": true,
+      "risk": "DANGEROUS",
+      "hint": "Kho bau o phia nam hang boss!",
+      "reward": { "points": 300, "item": null }
+    }
+  ]
+}

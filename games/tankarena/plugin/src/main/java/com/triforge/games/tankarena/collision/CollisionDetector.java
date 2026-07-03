@@ -15,6 +15,8 @@ import java.util.List;
 
 public final class CollisionDetector {
     public static final float BULLET_RADIUS = 4f;
+    /** Half the tank's vertical extent; used to gate collisions by elevation in 3D. */
+    public static final float TANK_HALF_HEIGHT = WorldBounds.TANK_HALF_SIZE;
 
     private CollisionDetector() {
     }
@@ -54,12 +56,24 @@ public final class CollisionDetector {
     ) {
         float dx = Math.abs(tankPosition.x() - bulletPosition.x());
         float dy = Math.abs(tankPosition.y() - bulletPosition.y());
-        return dx <= WorldBounds.TANK_HALF_SIZE + BULLET_RADIUS
-                && dy <= WorldBounds.TANK_HALF_SIZE + BULLET_RADIUS;
+        if (dx > WorldBounds.TANK_HALF_SIZE + BULLET_RADIUS
+                || dy > WorldBounds.TANK_HALF_SIZE + BULLET_RADIUS) {
+            return false;
+        }
+        // 3D: bullet must also be within the tank's vertical extent. The hull base sits at
+        // the tank's z; its centre is one half-height up.
+        float tankCenterZ = tankPosition.z() + TANK_HALF_HEIGHT;
+        float dz = Math.abs(bulletPosition.z() - tankCenterZ);
+        return dz <= TANK_HALF_HEIGHT + BULLET_RADIUS;
     }
 
     public static boolean tanksOverlap(PositionComponent a, PositionComponent b) {
-        return tanksOverlap(a.x(), a.y(), b.x(), b.y());
+        // 3D: tanks must overlap on the ground plane AND at a similar elevation. Tanks on
+        // ledges well above/below one another pass without colliding.
+        if (!tanksOverlap(a.x(), a.y(), b.x(), b.y())) {
+            return false;
+        }
+        return Math.abs(a.z() - b.z()) <= TANK_HALF_HEIGHT * 2f;
     }
 
     public static boolean tanksOverlap(float x1, float y1, float x2, float y2) {

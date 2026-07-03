@@ -18,6 +18,7 @@
         <module>engine</module>
         <module>games/tankarena/plugin</module>
         <module>games/demo/plugin</module>
+        <module>games/treasurequest/plugin</module>
         <module>server/server-runtime</module>
         <module>launcher/triforge-server</module>
     </modules>
@@ -52,6 +53,12 @@
             <dependency>
                 <groupId>com.triforge</groupId>
                 <artifactId>demo-game</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.triforge</groupId>
+                <artifactId>treasurequest-game</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

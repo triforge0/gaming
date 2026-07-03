@@ -180,6 +180,12 @@ export namespace com {
 
                     /** GameMessage mapSnapshot */
                     mapSnapshot?: (com.triforge.protocol.proto.IMapSnapshot|null);
+
+                    /** GameMessage tq */
+                    tq?: (com.triforge.protocol.proto.ITreasureQuestMessage|null);
+
+                    /** GameMessage lobbyCommandRejected */
+                    lobbyCommandRejected?: (com.triforge.protocol.proto.ILobbyCommandRejected|null);
                 }
 
                 /** Represents a GameMessage. */
@@ -224,8 +230,14 @@ export namespace com {
                     /** GameMessage mapSnapshot. */
                     public mapSnapshot?: (com.triforge.protocol.proto.IMapSnapshot|null);
 
+                    /** GameMessage tq. */
+                    public tq?: (com.triforge.protocol.proto.ITreasureQuestMessage|null);
+
+                    /** GameMessage lobbyCommandRejected. */
+                    public lobbyCommandRejected?: (com.triforge.protocol.proto.ILobbyCommandRejected|null);
+
                     /** GameMessage content. */
-                    public content?: ("joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot");
+                    public content?: ("joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected");
 
                     /**
                      * Creates a new GameMessage instance using the specified properties.
@@ -713,6 +725,9 @@ export namespace com {
 
                     /** MapSnapshot headquarters */
                     headquarters?: (com.triforge.protocol.proto.IHeadquartersProto[]|null);
+
+                    /** MapSnapshot heights */
+                    heights?: (number[]|null);
                 }
 
                 /** Represents a MapSnapshot. */
@@ -738,6 +753,9 @@ export namespace com {
 
                     /** MapSnapshot headquarters. */
                     public headquarters: com.triforge.protocol.proto.IHeadquartersProto[];
+
+                    /** MapSnapshot heights. */
+                    public heights: number[];
 
                     /**
                      * Creates a new MapSnapshot instance using the specified properties.
@@ -955,6 +973,9 @@ export namespace com {
 
                     /** TileChange tile */
                     tile?: (com.triforge.protocol.proto.TileType|null);
+
+                    /** TileChange height */
+                    height?: (number|null);
                 }
 
                 /** Represents a TileChange. */
@@ -974,6 +995,9 @@ export namespace com {
 
                     /** TileChange tile. */
                     public tile: com.triforge.protocol.proto.TileType;
+
+                    /** TileChange height. */
+                    public height: number;
 
                     /**
                      * Creates a new TileChange instance using the specified properties.
@@ -1321,6 +1345,9 @@ export namespace com {
 
                     /** PositionComponentProto y */
                     y?: (number|null);
+
+                    /** PositionComponentProto z */
+                    z?: (number|null);
                 }
 
                 /** Represents a PositionComponentProto. */
@@ -1337,6 +1364,9 @@ export namespace com {
 
                     /** PositionComponentProto y. */
                     public y: number;
+
+                    /** PositionComponentProto z. */
+                    public z: number;
 
                     /**
                      * Creates a new PositionComponentProto instance using the specified properties.
@@ -1513,6 +1543,109 @@ export namespace com {
                     public static getTypeUrl(typeUrlPrefix?: string): string;
                 }
 
+                /** Properties of an OrientationComponentProto. */
+                interface IOrientationComponentProto {
+
+                    /** OrientationComponentProto yaw */
+                    yaw?: (number|null);
+
+                    /** OrientationComponentProto pitch */
+                    pitch?: (number|null);
+                }
+
+                /** Represents an OrientationComponentProto. */
+                class OrientationComponentProto implements IOrientationComponentProto {
+
+                    /**
+                     * Constructs a new OrientationComponentProto.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IOrientationComponentProto);
+
+                    /** OrientationComponentProto yaw. */
+                    public yaw: number;
+
+                    /** OrientationComponentProto pitch. */
+                    public pitch: number;
+
+                    /**
+                     * Creates a new OrientationComponentProto instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns OrientationComponentProto instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IOrientationComponentProto): com.triforge.protocol.proto.OrientationComponentProto;
+
+                    /**
+                     * Encodes the specified OrientationComponentProto message. Does not implicitly {@link com.triforge.protocol.proto.OrientationComponentProto.verify|verify} messages.
+                     * @param message OrientationComponentProto message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IOrientationComponentProto, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified OrientationComponentProto message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OrientationComponentProto.verify|verify} messages.
+                     * @param message OrientationComponentProto message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IOrientationComponentProto, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes an OrientationComponentProto message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns OrientationComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.OrientationComponentProto;
+
+                    /**
+                     * Decodes an OrientationComponentProto message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns OrientationComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.OrientationComponentProto;
+
+                    /**
+                     * Verifies an OrientationComponentProto message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates an OrientationComponentProto message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns OrientationComponentProto
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.OrientationComponentProto;
+
+                    /**
+                     * Creates a plain object from an OrientationComponentProto message. Also converts values to other types if specified.
+                     * @param message OrientationComponentProto
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.OrientationComponentProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this OrientationComponentProto to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for OrientationComponentProto
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
                 /** Properties of a TankComponentProto. */
                 interface ITankComponentProto {
 
@@ -1636,6 +1769,9 @@ export namespace com {
 
                     /** BulletComponentProto dy */
                     dy?: (number|null);
+
+                    /** BulletComponentProto dz */
+                    dz?: (number|null);
                 }
 
                 /** Represents a BulletComponentProto. */
@@ -1658,6 +1794,9 @@ export namespace com {
 
                     /** BulletComponentProto dy. */
                     public dy: number;
+
+                    /** BulletComponentProto dz. */
+                    public dz: number;
 
                     /**
                      * Creates a new BulletComponentProto instance using the specified properties.
@@ -1757,6 +1896,12 @@ export namespace com {
 
                     /** EntityProto bullet */
                     bullet?: (com.triforge.protocol.proto.IBulletComponentProto|null);
+
+                    /** EntityProto questAvatar */
+                    questAvatar?: (com.triforge.protocol.proto.IQuestAvatarComponentProto|null);
+
+                    /** EntityProto orientation */
+                    orientation?: (com.triforge.protocol.proto.IOrientationComponentProto|null);
                 }
 
                 /** Represents an EntityProto. */
@@ -1785,6 +1930,12 @@ export namespace com {
 
                     /** EntityProto bullet. */
                     public bullet?: (com.triforge.protocol.proto.IBulletComponentProto|null);
+
+                    /** EntityProto questAvatar. */
+                    public questAvatar?: (com.triforge.protocol.proto.IQuestAvatarComponentProto|null);
+
+                    /** EntityProto orientation. */
+                    public orientation?: (com.triforge.protocol.proto.IOrientationComponentProto|null);
 
                     /**
                      * Creates a new EntityProto instance using the specified properties.
@@ -2111,6 +2262,24 @@ export namespace com {
 
                     /** InputCommand shoot */
                     shoot?: (boolean|null);
+
+                    /** InputCommand moveForward */
+                    moveForward?: (boolean|null);
+
+                    /** InputCommand moveBackward */
+                    moveBackward?: (boolean|null);
+
+                    /** InputCommand turnLeft */
+                    turnLeft?: (boolean|null);
+
+                    /** InputCommand turnRight */
+                    turnRight?: (boolean|null);
+
+                    /** InputCommand aimUp */
+                    aimUp?: (boolean|null);
+
+                    /** InputCommand aimDown */
+                    aimDown?: (boolean|null);
                 }
 
                 /** Represents an InputCommand. */
@@ -2136,6 +2305,24 @@ export namespace com {
 
                     /** InputCommand shoot. */
                     public shoot: boolean;
+
+                    /** InputCommand moveForward. */
+                    public moveForward: boolean;
+
+                    /** InputCommand moveBackward. */
+                    public moveBackward: boolean;
+
+                    /** InputCommand turnLeft. */
+                    public turnLeft: boolean;
+
+                    /** InputCommand turnRight. */
+                    public turnRight: boolean;
+
+                    /** InputCommand aimUp. */
+                    public aimUp: boolean;
+
+                    /** InputCommand aimDown. */
+                    public aimDown: boolean;
 
                     /**
                      * Creates a new InputCommand instance using the specified properties.
@@ -3308,6 +3495,123 @@ export namespace com {
                     public static getTypeUrl(typeUrlPrefix?: string): string;
                 }
 
+                /** LobbyRejectReason enum. */
+                enum LobbyRejectReason {
+                    LOBBY_REJECT_UNSPECIFIED = 0,
+                    NOT_IN_LOBBY_PHASE = 1,
+                    PLAYER_NOT_FOUND = 2,
+                    INVALID_NAME = 3,
+                    INVALID_TEAM = 4,
+                    TEAM_BALANCE = 5,
+                    NOT_ON_PLAYABLE_TEAM = 6,
+                    NOT_TEAM_CAPTAIN = 7,
+                    INVALID_SPAWN_REGION = 8,
+                    TEAM_SETUP_INCOMPLETE = 9
+                }
+
+                /** Properties of a LobbyCommandRejected. */
+                interface ILobbyCommandRejected {
+
+                    /** LobbyCommandRejected playerId */
+                    playerId?: (number|Long|null);
+
+                    /** LobbyCommandRejected reason */
+                    reason?: (com.triforge.protocol.proto.LobbyRejectReason|null);
+                }
+
+                /** Represents a LobbyCommandRejected. */
+                class LobbyCommandRejected implements ILobbyCommandRejected {
+
+                    /**
+                     * Constructs a new LobbyCommandRejected.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.ILobbyCommandRejected);
+
+                    /** LobbyCommandRejected playerId. */
+                    public playerId: (number|Long);
+
+                    /** LobbyCommandRejected reason. */
+                    public reason: com.triforge.protocol.proto.LobbyRejectReason;
+
+                    /**
+                     * Creates a new LobbyCommandRejected instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns LobbyCommandRejected instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.ILobbyCommandRejected): com.triforge.protocol.proto.LobbyCommandRejected;
+
+                    /**
+                     * Encodes the specified LobbyCommandRejected message. Does not implicitly {@link com.triforge.protocol.proto.LobbyCommandRejected.verify|verify} messages.
+                     * @param message LobbyCommandRejected message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.ILobbyCommandRejected, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified LobbyCommandRejected message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.LobbyCommandRejected.verify|verify} messages.
+                     * @param message LobbyCommandRejected message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.ILobbyCommandRejected, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a LobbyCommandRejected message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns LobbyCommandRejected
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.LobbyCommandRejected;
+
+                    /**
+                     * Decodes a LobbyCommandRejected message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns LobbyCommandRejected
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.LobbyCommandRejected;
+
+                    /**
+                     * Verifies a LobbyCommandRejected message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a LobbyCommandRejected message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns LobbyCommandRejected
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.LobbyCommandRejected;
+
+                    /**
+                     * Creates a plain object from a LobbyCommandRejected message. Also converts values to other types if specified.
+                     * @param message LobbyCommandRejected
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.LobbyCommandRejected, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this LobbyCommandRejected to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for LobbyCommandRejected
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
                 /** Properties of a MatchPhaseUpdate. */
                 interface IMatchPhaseUpdate {
 
@@ -3701,6 +4005,2502 @@ export namespace com {
 
                     /**
                      * Gets the default type url for MatchResult
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** ItemType enum. */
+                enum ItemType {
+                    ITEM_NONE = 0,
+                    ITEM_SHIELD = 1,
+                    ITEM_SPEED = 2,
+                    ITEM_FAKE_MAP = 3,
+                    ITEM_TREASURE_LOCK = 4
+                }
+
+                /** QuizOutcome enum. */
+                enum QuizOutcome {
+                    QUIZ_PENDING = 0,
+                    QUIZ_PASS = 1,
+                    QUIZ_FAIL = 2
+                }
+
+                /** EncounterState enum. */
+                enum EncounterState {
+                    ENC_OFFERED = 0,
+                    ENC_ACCEPTED = 1,
+                    ENC_DECLINED = 2,
+                    ENC_CANCELLED = 3
+                }
+
+                /** Properties of a QuestAvatarComponentProto. */
+                interface IQuestAvatarComponentProto {
+
+                    /** QuestAvatarComponentProto playerId */
+                    playerId?: (number|Long|null);
+
+                    /** QuestAvatarComponentProto name */
+                    name?: (string|null);
+
+                    /** QuestAvatarComponentProto score */
+                    score?: (number|null);
+
+                    /** QuestAvatarComponentProto currentCheckpoint */
+                    currentCheckpoint?: (string|null);
+
+                    /** QuestAvatarComponentProto checkpointsCleared */
+                    checkpointsCleared?: (number|null);
+
+                    /** QuestAvatarComponentProto shielded */
+                    shielded?: (boolean|null);
+
+                    /** QuestAvatarComponentProto pvpCooldown */
+                    pvpCooldown?: (boolean|null);
+
+                    /** QuestAvatarComponentProto stealImmune */
+                    stealImmune?: (boolean|null);
+
+                    /** QuestAvatarComponentProto inDuel */
+                    inDuel?: (boolean|null);
+                }
+
+                /** Represents a QuestAvatarComponentProto. */
+                class QuestAvatarComponentProto implements IQuestAvatarComponentProto {
+
+                    /**
+                     * Constructs a new QuestAvatarComponentProto.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IQuestAvatarComponentProto);
+
+                    /** QuestAvatarComponentProto playerId. */
+                    public playerId: (number|Long);
+
+                    /** QuestAvatarComponentProto name. */
+                    public name: string;
+
+                    /** QuestAvatarComponentProto score. */
+                    public score: number;
+
+                    /** QuestAvatarComponentProto currentCheckpoint. */
+                    public currentCheckpoint: string;
+
+                    /** QuestAvatarComponentProto checkpointsCleared. */
+                    public checkpointsCleared: number;
+
+                    /** QuestAvatarComponentProto shielded. */
+                    public shielded: boolean;
+
+                    /** QuestAvatarComponentProto pvpCooldown. */
+                    public pvpCooldown: boolean;
+
+                    /** QuestAvatarComponentProto stealImmune. */
+                    public stealImmune: boolean;
+
+                    /** QuestAvatarComponentProto inDuel. */
+                    public inDuel: boolean;
+
+                    /**
+                     * Creates a new QuestAvatarComponentProto instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns QuestAvatarComponentProto instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IQuestAvatarComponentProto): com.triforge.protocol.proto.QuestAvatarComponentProto;
+
+                    /**
+                     * Encodes the specified QuestAvatarComponentProto message. Does not implicitly {@link com.triforge.protocol.proto.QuestAvatarComponentProto.verify|verify} messages.
+                     * @param message QuestAvatarComponentProto message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IQuestAvatarComponentProto, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified QuestAvatarComponentProto message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuestAvatarComponentProto.verify|verify} messages.
+                     * @param message QuestAvatarComponentProto message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IQuestAvatarComponentProto, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a QuestAvatarComponentProto message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns QuestAvatarComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.QuestAvatarComponentProto;
+
+                    /**
+                     * Decodes a QuestAvatarComponentProto message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns QuestAvatarComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.QuestAvatarComponentProto;
+
+                    /**
+                     * Verifies a QuestAvatarComponentProto message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a QuestAvatarComponentProto message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns QuestAvatarComponentProto
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.QuestAvatarComponentProto;
+
+                    /**
+                     * Creates a plain object from a QuestAvatarComponentProto message. Also converts values to other types if specified.
+                     * @param message QuestAvatarComponentProto
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.QuestAvatarComponentProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this QuestAvatarComponentProto to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for QuestAvatarComponentProto
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of an InventoryItemProto. */
+                interface IInventoryItemProto {
+
+                    /** InventoryItemProto item */
+                    item?: (com.triforge.protocol.proto.ItemType|null);
+
+                    /** InventoryItemProto count */
+                    count?: (number|null);
+                }
+
+                /** Represents an InventoryItemProto. */
+                class InventoryItemProto implements IInventoryItemProto {
+
+                    /**
+                     * Constructs a new InventoryItemProto.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IInventoryItemProto);
+
+                    /** InventoryItemProto item. */
+                    public item: com.triforge.protocol.proto.ItemType;
+
+                    /** InventoryItemProto count. */
+                    public count: number;
+
+                    /**
+                     * Creates a new InventoryItemProto instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns InventoryItemProto instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IInventoryItemProto): com.triforge.protocol.proto.InventoryItemProto;
+
+                    /**
+                     * Encodes the specified InventoryItemProto message. Does not implicitly {@link com.triforge.protocol.proto.InventoryItemProto.verify|verify} messages.
+                     * @param message InventoryItemProto message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IInventoryItemProto, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified InventoryItemProto message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.InventoryItemProto.verify|verify} messages.
+                     * @param message InventoryItemProto message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IInventoryItemProto, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes an InventoryItemProto message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns InventoryItemProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.InventoryItemProto;
+
+                    /**
+                     * Decodes an InventoryItemProto message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns InventoryItemProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.InventoryItemProto;
+
+                    /**
+                     * Verifies an InventoryItemProto message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates an InventoryItemProto message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns InventoryItemProto
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.InventoryItemProto;
+
+                    /**
+                     * Creates a plain object from an InventoryItemProto message. Also converts values to other types if specified.
+                     * @param message InventoryItemProto
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.InventoryItemProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this InventoryItemProto to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for InventoryItemProto
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a QuizQuestionProto. */
+                interface IQuizQuestionProto {
+
+                    /** QuizQuestionProto questionId */
+                    questionId?: (string|null);
+
+                    /** QuizQuestionProto text */
+                    text?: (string|null);
+
+                    /** QuizQuestionProto options */
+                    options?: (string[]|null);
+
+                    /** QuizQuestionProto timeLimitSec */
+                    timeLimitSec?: (number|null);
+
+                    /** QuizQuestionProto points */
+                    points?: (number|null);
+                }
+
+                /** Represents a QuizQuestionProto. */
+                class QuizQuestionProto implements IQuizQuestionProto {
+
+                    /**
+                     * Constructs a new QuizQuestionProto.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IQuizQuestionProto);
+
+                    /** QuizQuestionProto questionId. */
+                    public questionId: string;
+
+                    /** QuizQuestionProto text. */
+                    public text: string;
+
+                    /** QuizQuestionProto options. */
+                    public options: string[];
+
+                    /** QuizQuestionProto timeLimitSec. */
+                    public timeLimitSec: number;
+
+                    /** QuizQuestionProto points. */
+                    public points: number;
+
+                    /**
+                     * Creates a new QuizQuestionProto instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns QuizQuestionProto instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IQuizQuestionProto): com.triforge.protocol.proto.QuizQuestionProto;
+
+                    /**
+                     * Encodes the specified QuizQuestionProto message. Does not implicitly {@link com.triforge.protocol.proto.QuizQuestionProto.verify|verify} messages.
+                     * @param message QuizQuestionProto message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IQuizQuestionProto, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified QuizQuestionProto message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuizQuestionProto.verify|verify} messages.
+                     * @param message QuizQuestionProto message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IQuizQuestionProto, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a QuizQuestionProto message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns QuizQuestionProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.QuizQuestionProto;
+
+                    /**
+                     * Decodes a QuizQuestionProto message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns QuizQuestionProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.QuizQuestionProto;
+
+                    /**
+                     * Verifies a QuizQuestionProto message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a QuizQuestionProto message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns QuizQuestionProto
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.QuizQuestionProto;
+
+                    /**
+                     * Creates a plain object from a QuizQuestionProto message. Also converts values to other types if specified.
+                     * @param message QuizQuestionProto
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.QuizQuestionProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this QuizQuestionProto to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for QuizQuestionProto
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a QuizAnswer. */
+                interface IQuizAnswer {
+
+                    /** QuizAnswer questionId */
+                    questionId?: (string|null);
+
+                    /** QuizAnswer selectedIndex */
+                    selectedIndex?: (number|null);
+                }
+
+                /** Represents a QuizAnswer. */
+                class QuizAnswer implements IQuizAnswer {
+
+                    /**
+                     * Constructs a new QuizAnswer.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IQuizAnswer);
+
+                    /** QuizAnswer questionId. */
+                    public questionId: string;
+
+                    /** QuizAnswer selectedIndex. */
+                    public selectedIndex: number;
+
+                    /**
+                     * Creates a new QuizAnswer instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns QuizAnswer instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IQuizAnswer): com.triforge.protocol.proto.QuizAnswer;
+
+                    /**
+                     * Encodes the specified QuizAnswer message. Does not implicitly {@link com.triforge.protocol.proto.QuizAnswer.verify|verify} messages.
+                     * @param message QuizAnswer message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IQuizAnswer, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified QuizAnswer message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuizAnswer.verify|verify} messages.
+                     * @param message QuizAnswer message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IQuizAnswer, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a QuizAnswer message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns QuizAnswer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.QuizAnswer;
+
+                    /**
+                     * Decodes a QuizAnswer message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns QuizAnswer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.QuizAnswer;
+
+                    /**
+                     * Verifies a QuizAnswer message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a QuizAnswer message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns QuizAnswer
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.QuizAnswer;
+
+                    /**
+                     * Creates a plain object from a QuizAnswer message. Also converts values to other types if specified.
+                     * @param message QuizAnswer
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.QuizAnswer, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this QuizAnswer to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for QuizAnswer
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a HintReveal. */
+                interface IHintReveal {
+
+                    /** HintReveal text */
+                    text?: (string|null);
+
+                    /** HintReveal nextCheckpointIds */
+                    nextCheckpointIds?: (string[]|null);
+
+                    /** HintReveal x */
+                    x?: (number|null);
+
+                    /** HintReveal y */
+                    y?: (number|null);
+                }
+
+                /** Represents a HintReveal. */
+                class HintReveal implements IHintReveal {
+
+                    /**
+                     * Constructs a new HintReveal.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IHintReveal);
+
+                    /** HintReveal text. */
+                    public text: string;
+
+                    /** HintReveal nextCheckpointIds. */
+                    public nextCheckpointIds: string[];
+
+                    /** HintReveal x. */
+                    public x: number;
+
+                    /** HintReveal y. */
+                    public y: number;
+
+                    /**
+                     * Creates a new HintReveal instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns HintReveal instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IHintReveal): com.triforge.protocol.proto.HintReveal;
+
+                    /**
+                     * Encodes the specified HintReveal message. Does not implicitly {@link com.triforge.protocol.proto.HintReveal.verify|verify} messages.
+                     * @param message HintReveal message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IHintReveal, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified HintReveal message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.HintReveal.verify|verify} messages.
+                     * @param message HintReveal message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IHintReveal, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a HintReveal message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns HintReveal
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.HintReveal;
+
+                    /**
+                     * Decodes a HintReveal message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns HintReveal
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.HintReveal;
+
+                    /**
+                     * Verifies a HintReveal message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a HintReveal message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns HintReveal
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.HintReveal;
+
+                    /**
+                     * Creates a plain object from a HintReveal message. Also converts values to other types if specified.
+                     * @param message HintReveal
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.HintReveal, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this HintReveal to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for HintReveal
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of an InteractCommand. */
+                interface IInteractCommand {
+
+                    /** InteractCommand checkpointId */
+                    checkpointId?: (string|null);
+                }
+
+                /** Represents an InteractCommand. */
+                class InteractCommand implements IInteractCommand {
+
+                    /**
+                     * Constructs a new InteractCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IInteractCommand);
+
+                    /** InteractCommand checkpointId. */
+                    public checkpointId: string;
+
+                    /**
+                     * Creates a new InteractCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns InteractCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IInteractCommand): com.triforge.protocol.proto.InteractCommand;
+
+                    /**
+                     * Encodes the specified InteractCommand message. Does not implicitly {@link com.triforge.protocol.proto.InteractCommand.verify|verify} messages.
+                     * @param message InteractCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IInteractCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified InteractCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.InteractCommand.verify|verify} messages.
+                     * @param message InteractCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IInteractCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes an InteractCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns InteractCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.InteractCommand;
+
+                    /**
+                     * Decodes an InteractCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns InteractCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.InteractCommand;
+
+                    /**
+                     * Verifies an InteractCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates an InteractCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns InteractCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.InteractCommand;
+
+                    /**
+                     * Creates a plain object from an InteractCommand message. Also converts values to other types if specified.
+                     * @param message InteractCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.InteractCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this InteractCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for InteractCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a QuizPrompt. */
+                interface IQuizPrompt {
+
+                    /** QuizPrompt quizId */
+                    quizId?: (string|null);
+
+                    /** QuizPrompt checkpointId */
+                    checkpointId?: (string|null);
+
+                    /** QuizPrompt questions */
+                    questions?: (com.triforge.protocol.proto.IQuizQuestionProto[]|null);
+
+                    /** QuizPrompt passThreshold */
+                    passThreshold?: (number|null);
+
+                    /** QuizPrompt deadlineTick */
+                    deadlineTick?: (number|Long|null);
+                }
+
+                /** Represents a QuizPrompt. */
+                class QuizPrompt implements IQuizPrompt {
+
+                    /**
+                     * Constructs a new QuizPrompt.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IQuizPrompt);
+
+                    /** QuizPrompt quizId. */
+                    public quizId: string;
+
+                    /** QuizPrompt checkpointId. */
+                    public checkpointId: string;
+
+                    /** QuizPrompt questions. */
+                    public questions: com.triforge.protocol.proto.IQuizQuestionProto[];
+
+                    /** QuizPrompt passThreshold. */
+                    public passThreshold: number;
+
+                    /** QuizPrompt deadlineTick. */
+                    public deadlineTick: (number|Long);
+
+                    /**
+                     * Creates a new QuizPrompt instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns QuizPrompt instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IQuizPrompt): com.triforge.protocol.proto.QuizPrompt;
+
+                    /**
+                     * Encodes the specified QuizPrompt message. Does not implicitly {@link com.triforge.protocol.proto.QuizPrompt.verify|verify} messages.
+                     * @param message QuizPrompt message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IQuizPrompt, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified QuizPrompt message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuizPrompt.verify|verify} messages.
+                     * @param message QuizPrompt message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IQuizPrompt, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a QuizPrompt message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns QuizPrompt
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.QuizPrompt;
+
+                    /**
+                     * Decodes a QuizPrompt message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns QuizPrompt
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.QuizPrompt;
+
+                    /**
+                     * Verifies a QuizPrompt message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a QuizPrompt message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns QuizPrompt
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.QuizPrompt;
+
+                    /**
+                     * Creates a plain object from a QuizPrompt message. Also converts values to other types if specified.
+                     * @param message QuizPrompt
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.QuizPrompt, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this QuizPrompt to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for QuizPrompt
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a QuizSubmit. */
+                interface IQuizSubmit {
+
+                    /** QuizSubmit quizId */
+                    quizId?: (string|null);
+
+                    /** QuizSubmit answers */
+                    answers?: (com.triforge.protocol.proto.IQuizAnswer[]|null);
+                }
+
+                /** Represents a QuizSubmit. */
+                class QuizSubmit implements IQuizSubmit {
+
+                    /**
+                     * Constructs a new QuizSubmit.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IQuizSubmit);
+
+                    /** QuizSubmit quizId. */
+                    public quizId: string;
+
+                    /** QuizSubmit answers. */
+                    public answers: com.triforge.protocol.proto.IQuizAnswer[];
+
+                    /**
+                     * Creates a new QuizSubmit instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns QuizSubmit instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IQuizSubmit): com.triforge.protocol.proto.QuizSubmit;
+
+                    /**
+                     * Encodes the specified QuizSubmit message. Does not implicitly {@link com.triforge.protocol.proto.QuizSubmit.verify|verify} messages.
+                     * @param message QuizSubmit message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IQuizSubmit, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified QuizSubmit message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuizSubmit.verify|verify} messages.
+                     * @param message QuizSubmit message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IQuizSubmit, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a QuizSubmit message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns QuizSubmit
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.QuizSubmit;
+
+                    /**
+                     * Decodes a QuizSubmit message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns QuizSubmit
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.QuizSubmit;
+
+                    /**
+                     * Verifies a QuizSubmit message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a QuizSubmit message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns QuizSubmit
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.QuizSubmit;
+
+                    /**
+                     * Creates a plain object from a QuizSubmit message. Also converts values to other types if specified.
+                     * @param message QuizSubmit
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.QuizSubmit, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this QuizSubmit to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for QuizSubmit
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a QuizResult. */
+                interface IQuizResult {
+
+                    /** QuizResult quizId */
+                    quizId?: (string|null);
+
+                    /** QuizResult outcome */
+                    outcome?: (com.triforge.protocol.proto.QuizOutcome|null);
+
+                    /** QuizResult correctCount */
+                    correctCount?: (number|null);
+
+                    /** QuizResult totalQuestions */
+                    totalQuestions?: (number|null);
+
+                    /** QuizResult pointsEarned */
+                    pointsEarned?: (number|null);
+
+                    /** QuizResult totalScore */
+                    totalScore?: (number|null);
+                }
+
+                /** Represents a QuizResult. */
+                class QuizResult implements IQuizResult {
+
+                    /**
+                     * Constructs a new QuizResult.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IQuizResult);
+
+                    /** QuizResult quizId. */
+                    public quizId: string;
+
+                    /** QuizResult outcome. */
+                    public outcome: com.triforge.protocol.proto.QuizOutcome;
+
+                    /** QuizResult correctCount. */
+                    public correctCount: number;
+
+                    /** QuizResult totalQuestions. */
+                    public totalQuestions: number;
+
+                    /** QuizResult pointsEarned. */
+                    public pointsEarned: number;
+
+                    /** QuizResult totalScore. */
+                    public totalScore: number;
+
+                    /**
+                     * Creates a new QuizResult instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns QuizResult instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IQuizResult): com.triforge.protocol.proto.QuizResult;
+
+                    /**
+                     * Encodes the specified QuizResult message. Does not implicitly {@link com.triforge.protocol.proto.QuizResult.verify|verify} messages.
+                     * @param message QuizResult message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IQuizResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified QuizResult message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuizResult.verify|verify} messages.
+                     * @param message QuizResult message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IQuizResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a QuizResult message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns QuizResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.QuizResult;
+
+                    /**
+                     * Decodes a QuizResult message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns QuizResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.QuizResult;
+
+                    /**
+                     * Verifies a QuizResult message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a QuizResult message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns QuizResult
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.QuizResult;
+
+                    /**
+                     * Creates a plain object from a QuizResult message. Also converts values to other types if specified.
+                     * @param message QuizResult
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.QuizResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this QuizResult to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for QuizResult
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of an EncounterOffer. */
+                interface IEncounterOffer {
+
+                    /** EncounterOffer encounterId */
+                    encounterId?: (string|null);
+
+                    /** EncounterOffer opponentPlayerId */
+                    opponentPlayerId?: (number|Long|null);
+
+                    /** EncounterOffer opponentName */
+                    opponentName?: (string|null);
+
+                    /** EncounterOffer state */
+                    state?: (com.triforge.protocol.proto.EncounterState|null);
+
+                    /** EncounterOffer deadlineTick */
+                    deadlineTick?: (number|Long|null);
+                }
+
+                /** Represents an EncounterOffer. */
+                class EncounterOffer implements IEncounterOffer {
+
+                    /**
+                     * Constructs a new EncounterOffer.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IEncounterOffer);
+
+                    /** EncounterOffer encounterId. */
+                    public encounterId: string;
+
+                    /** EncounterOffer opponentPlayerId. */
+                    public opponentPlayerId: (number|Long);
+
+                    /** EncounterOffer opponentName. */
+                    public opponentName: string;
+
+                    /** EncounterOffer state. */
+                    public state: com.triforge.protocol.proto.EncounterState;
+
+                    /** EncounterOffer deadlineTick. */
+                    public deadlineTick: (number|Long);
+
+                    /**
+                     * Creates a new EncounterOffer instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns EncounterOffer instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IEncounterOffer): com.triforge.protocol.proto.EncounterOffer;
+
+                    /**
+                     * Encodes the specified EncounterOffer message. Does not implicitly {@link com.triforge.protocol.proto.EncounterOffer.verify|verify} messages.
+                     * @param message EncounterOffer message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IEncounterOffer, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified EncounterOffer message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.EncounterOffer.verify|verify} messages.
+                     * @param message EncounterOffer message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IEncounterOffer, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes an EncounterOffer message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns EncounterOffer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.EncounterOffer;
+
+                    /**
+                     * Decodes an EncounterOffer message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns EncounterOffer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.EncounterOffer;
+
+                    /**
+                     * Verifies an EncounterOffer message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates an EncounterOffer message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns EncounterOffer
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.EncounterOffer;
+
+                    /**
+                     * Creates a plain object from an EncounterOffer message. Also converts values to other types if specified.
+                     * @param message EncounterOffer
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.EncounterOffer, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this EncounterOffer to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for EncounterOffer
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a ChallengeResponse. */
+                interface IChallengeResponse {
+
+                    /** ChallengeResponse encounterId */
+                    encounterId?: (string|null);
+
+                    /** ChallengeResponse accept */
+                    accept?: (boolean|null);
+                }
+
+                /** Represents a ChallengeResponse. */
+                class ChallengeResponse implements IChallengeResponse {
+
+                    /**
+                     * Constructs a new ChallengeResponse.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IChallengeResponse);
+
+                    /** ChallengeResponse encounterId. */
+                    public encounterId: string;
+
+                    /** ChallengeResponse accept. */
+                    public accept: boolean;
+
+                    /**
+                     * Creates a new ChallengeResponse instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ChallengeResponse instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IChallengeResponse): com.triforge.protocol.proto.ChallengeResponse;
+
+                    /**
+                     * Encodes the specified ChallengeResponse message. Does not implicitly {@link com.triforge.protocol.proto.ChallengeResponse.verify|verify} messages.
+                     * @param message ChallengeResponse message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IChallengeResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified ChallengeResponse message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.ChallengeResponse.verify|verify} messages.
+                     * @param message ChallengeResponse message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IChallengeResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ChallengeResponse message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns ChallengeResponse
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.ChallengeResponse;
+
+                    /**
+                     * Decodes a ChallengeResponse message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns ChallengeResponse
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.ChallengeResponse;
+
+                    /**
+                     * Verifies a ChallengeResponse message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a ChallengeResponse message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns ChallengeResponse
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.ChallengeResponse;
+
+                    /**
+                     * Creates a plain object from a ChallengeResponse message. Also converts values to other types if specified.
+                     * @param message ChallengeResponse
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.ChallengeResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this ChallengeResponse to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for ChallengeResponse
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a DuelPrompt. */
+                interface IDuelPrompt {
+
+                    /** DuelPrompt duelId */
+                    duelId?: (string|null);
+
+                    /** DuelPrompt opponentPlayerId */
+                    opponentPlayerId?: (number|Long|null);
+
+                    /** DuelPrompt opponentName */
+                    opponentName?: (string|null);
+
+                    /** DuelPrompt questions */
+                    questions?: (com.triforge.protocol.proto.IQuizQuestionProto[]|null);
+
+                    /** DuelPrompt deadlineTick */
+                    deadlineTick?: (number|Long|null);
+                }
+
+                /** Represents a DuelPrompt. */
+                class DuelPrompt implements IDuelPrompt {
+
+                    /**
+                     * Constructs a new DuelPrompt.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IDuelPrompt);
+
+                    /** DuelPrompt duelId. */
+                    public duelId: string;
+
+                    /** DuelPrompt opponentPlayerId. */
+                    public opponentPlayerId: (number|Long);
+
+                    /** DuelPrompt opponentName. */
+                    public opponentName: string;
+
+                    /** DuelPrompt questions. */
+                    public questions: com.triforge.protocol.proto.IQuizQuestionProto[];
+
+                    /** DuelPrompt deadlineTick. */
+                    public deadlineTick: (number|Long);
+
+                    /**
+                     * Creates a new DuelPrompt instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns DuelPrompt instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IDuelPrompt): com.triforge.protocol.proto.DuelPrompt;
+
+                    /**
+                     * Encodes the specified DuelPrompt message. Does not implicitly {@link com.triforge.protocol.proto.DuelPrompt.verify|verify} messages.
+                     * @param message DuelPrompt message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IDuelPrompt, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified DuelPrompt message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.DuelPrompt.verify|verify} messages.
+                     * @param message DuelPrompt message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IDuelPrompt, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a DuelPrompt message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns DuelPrompt
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.DuelPrompt;
+
+                    /**
+                     * Decodes a DuelPrompt message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns DuelPrompt
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.DuelPrompt;
+
+                    /**
+                     * Verifies a DuelPrompt message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a DuelPrompt message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns DuelPrompt
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.DuelPrompt;
+
+                    /**
+                     * Creates a plain object from a DuelPrompt message. Also converts values to other types if specified.
+                     * @param message DuelPrompt
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.DuelPrompt, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this DuelPrompt to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for DuelPrompt
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a DuelSubmit. */
+                interface IDuelSubmit {
+
+                    /** DuelSubmit duelId */
+                    duelId?: (string|null);
+
+                    /** DuelSubmit answers */
+                    answers?: (com.triforge.protocol.proto.IQuizAnswer[]|null);
+                }
+
+                /** Represents a DuelSubmit. */
+                class DuelSubmit implements IDuelSubmit {
+
+                    /**
+                     * Constructs a new DuelSubmit.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IDuelSubmit);
+
+                    /** DuelSubmit duelId. */
+                    public duelId: string;
+
+                    /** DuelSubmit answers. */
+                    public answers: com.triforge.protocol.proto.IQuizAnswer[];
+
+                    /**
+                     * Creates a new DuelSubmit instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns DuelSubmit instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IDuelSubmit): com.triforge.protocol.proto.DuelSubmit;
+
+                    /**
+                     * Encodes the specified DuelSubmit message. Does not implicitly {@link com.triforge.protocol.proto.DuelSubmit.verify|verify} messages.
+                     * @param message DuelSubmit message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IDuelSubmit, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified DuelSubmit message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.DuelSubmit.verify|verify} messages.
+                     * @param message DuelSubmit message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IDuelSubmit, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a DuelSubmit message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns DuelSubmit
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.DuelSubmit;
+
+                    /**
+                     * Decodes a DuelSubmit message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns DuelSubmit
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.DuelSubmit;
+
+                    /**
+                     * Verifies a DuelSubmit message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a DuelSubmit message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns DuelSubmit
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.DuelSubmit;
+
+                    /**
+                     * Creates a plain object from a DuelSubmit message. Also converts values to other types if specified.
+                     * @param message DuelSubmit
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.DuelSubmit, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this DuelSubmit to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for DuelSubmit
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a DuelResult. */
+                interface IDuelResult {
+
+                    /** DuelResult duelId */
+                    duelId?: (string|null);
+
+                    /** DuelResult winnerPlayerId */
+                    winnerPlayerId?: (number|Long|null);
+
+                    /** DuelResult tie */
+                    tie?: (boolean|null);
+
+                    /** DuelResult yourCorrect */
+                    yourCorrect?: (number|null);
+
+                    /** DuelResult opponentCorrect */
+                    opponentCorrect?: (number|null);
+
+                    /** DuelResult scoreDelta */
+                    scoreDelta?: (number|null);
+
+                    /** DuelResult totalScore */
+                    totalScore?: (number|null);
+                }
+
+                /** Represents a DuelResult. */
+                class DuelResult implements IDuelResult {
+
+                    /**
+                     * Constructs a new DuelResult.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IDuelResult);
+
+                    /** DuelResult duelId. */
+                    public duelId: string;
+
+                    /** DuelResult winnerPlayerId. */
+                    public winnerPlayerId: (number|Long);
+
+                    /** DuelResult tie. */
+                    public tie: boolean;
+
+                    /** DuelResult yourCorrect. */
+                    public yourCorrect: number;
+
+                    /** DuelResult opponentCorrect. */
+                    public opponentCorrect: number;
+
+                    /** DuelResult scoreDelta. */
+                    public scoreDelta: number;
+
+                    /** DuelResult totalScore. */
+                    public totalScore: number;
+
+                    /**
+                     * Creates a new DuelResult instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns DuelResult instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IDuelResult): com.triforge.protocol.proto.DuelResult;
+
+                    /**
+                     * Encodes the specified DuelResult message. Does not implicitly {@link com.triforge.protocol.proto.DuelResult.verify|verify} messages.
+                     * @param message DuelResult message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IDuelResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified DuelResult message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.DuelResult.verify|verify} messages.
+                     * @param message DuelResult message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IDuelResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a DuelResult message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns DuelResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.DuelResult;
+
+                    /**
+                     * Decodes a DuelResult message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns DuelResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.DuelResult;
+
+                    /**
+                     * Verifies a DuelResult message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a DuelResult message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns DuelResult
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.DuelResult;
+
+                    /**
+                     * Creates a plain object from a DuelResult message. Also converts values to other types if specified.
+                     * @param message DuelResult
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.DuelResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this DuelResult to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for DuelResult
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of an ItemUse. */
+                interface IItemUse {
+
+                    /** ItemUse item */
+                    item?: (com.triforge.protocol.proto.ItemType|null);
+
+                    /** ItemUse targetPlayerId */
+                    targetPlayerId?: (number|Long|null);
+                }
+
+                /** Represents an ItemUse. */
+                class ItemUse implements IItemUse {
+
+                    /**
+                     * Constructs a new ItemUse.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IItemUse);
+
+                    /** ItemUse item. */
+                    public item: com.triforge.protocol.proto.ItemType;
+
+                    /** ItemUse targetPlayerId. */
+                    public targetPlayerId: (number|Long);
+
+                    /**
+                     * Creates a new ItemUse instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ItemUse instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IItemUse): com.triforge.protocol.proto.ItemUse;
+
+                    /**
+                     * Encodes the specified ItemUse message. Does not implicitly {@link com.triforge.protocol.proto.ItemUse.verify|verify} messages.
+                     * @param message ItemUse message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IItemUse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified ItemUse message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.ItemUse.verify|verify} messages.
+                     * @param message ItemUse message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IItemUse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes an ItemUse message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns ItemUse
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.ItemUse;
+
+                    /**
+                     * Decodes an ItemUse message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns ItemUse
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.ItemUse;
+
+                    /**
+                     * Verifies an ItemUse message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates an ItemUse message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns ItemUse
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.ItemUse;
+
+                    /**
+                     * Creates a plain object from an ItemUse message. Also converts values to other types if specified.
+                     * @param message ItemUse
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.ItemUse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this ItemUse to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for ItemUse
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of an InventoryUpdate. */
+                interface IInventoryUpdate {
+
+                    /** InventoryUpdate items */
+                    items?: (com.triforge.protocol.proto.IInventoryItemProto[]|null);
+                }
+
+                /** Represents an InventoryUpdate. */
+                class InventoryUpdate implements IInventoryUpdate {
+
+                    /**
+                     * Constructs a new InventoryUpdate.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IInventoryUpdate);
+
+                    /** InventoryUpdate items. */
+                    public items: com.triforge.protocol.proto.IInventoryItemProto[];
+
+                    /**
+                     * Creates a new InventoryUpdate instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns InventoryUpdate instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IInventoryUpdate): com.triforge.protocol.proto.InventoryUpdate;
+
+                    /**
+                     * Encodes the specified InventoryUpdate message. Does not implicitly {@link com.triforge.protocol.proto.InventoryUpdate.verify|verify} messages.
+                     * @param message InventoryUpdate message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IInventoryUpdate, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified InventoryUpdate message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.InventoryUpdate.verify|verify} messages.
+                     * @param message InventoryUpdate message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IInventoryUpdate, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes an InventoryUpdate message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns InventoryUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.InventoryUpdate;
+
+                    /**
+                     * Decodes an InventoryUpdate message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns InventoryUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.InventoryUpdate;
+
+                    /**
+                     * Verifies an InventoryUpdate message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates an InventoryUpdate message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns InventoryUpdate
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.InventoryUpdate;
+
+                    /**
+                     * Creates a plain object from an InventoryUpdate message. Also converts values to other types if specified.
+                     * @param message InventoryUpdate
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.InventoryUpdate, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this InventoryUpdate to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for InventoryUpdate
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a LeaderboardEntry. */
+                interface ILeaderboardEntry {
+
+                    /** LeaderboardEntry playerId */
+                    playerId?: (number|Long|null);
+
+                    /** LeaderboardEntry name */
+                    name?: (string|null);
+
+                    /** LeaderboardEntry power */
+                    power?: (number|null);
+
+                    /** LeaderboardEntry score */
+                    score?: (number|null);
+
+                    /** LeaderboardEntry checkpointsCleared */
+                    checkpointsCleared?: (number|null);
+
+                    /** LeaderboardEntry rank */
+                    rank?: (number|null);
+                }
+
+                /** Represents a LeaderboardEntry. */
+                class LeaderboardEntry implements ILeaderboardEntry {
+
+                    /**
+                     * Constructs a new LeaderboardEntry.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.ILeaderboardEntry);
+
+                    /** LeaderboardEntry playerId. */
+                    public playerId: (number|Long);
+
+                    /** LeaderboardEntry name. */
+                    public name: string;
+
+                    /** LeaderboardEntry power. */
+                    public power: number;
+
+                    /** LeaderboardEntry score. */
+                    public score: number;
+
+                    /** LeaderboardEntry checkpointsCleared. */
+                    public checkpointsCleared: number;
+
+                    /** LeaderboardEntry rank. */
+                    public rank: number;
+
+                    /**
+                     * Creates a new LeaderboardEntry instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns LeaderboardEntry instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.ILeaderboardEntry): com.triforge.protocol.proto.LeaderboardEntry;
+
+                    /**
+                     * Encodes the specified LeaderboardEntry message. Does not implicitly {@link com.triforge.protocol.proto.LeaderboardEntry.verify|verify} messages.
+                     * @param message LeaderboardEntry message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.ILeaderboardEntry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified LeaderboardEntry message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.LeaderboardEntry.verify|verify} messages.
+                     * @param message LeaderboardEntry message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.ILeaderboardEntry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a LeaderboardEntry message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns LeaderboardEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.LeaderboardEntry;
+
+                    /**
+                     * Decodes a LeaderboardEntry message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns LeaderboardEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.LeaderboardEntry;
+
+                    /**
+                     * Verifies a LeaderboardEntry message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a LeaderboardEntry message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns LeaderboardEntry
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.LeaderboardEntry;
+
+                    /**
+                     * Creates a plain object from a LeaderboardEntry message. Also converts values to other types if specified.
+                     * @param message LeaderboardEntry
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.LeaderboardEntry, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this LeaderboardEntry to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for LeaderboardEntry
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a Leaderboard. */
+                interface ILeaderboard {
+
+                    /** Leaderboard entries */
+                    entries?: (com.triforge.protocol.proto.ILeaderboardEntry[]|null);
+
+                    /** Leaderboard finalStandings */
+                    finalStandings?: (boolean|null);
+                }
+
+                /** Represents a Leaderboard. */
+                class Leaderboard implements ILeaderboard {
+
+                    /**
+                     * Constructs a new Leaderboard.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.ILeaderboard);
+
+                    /** Leaderboard entries. */
+                    public entries: com.triforge.protocol.proto.ILeaderboardEntry[];
+
+                    /** Leaderboard finalStandings. */
+                    public finalStandings: boolean;
+
+                    /**
+                     * Creates a new Leaderboard instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns Leaderboard instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.ILeaderboard): com.triforge.protocol.proto.Leaderboard;
+
+                    /**
+                     * Encodes the specified Leaderboard message. Does not implicitly {@link com.triforge.protocol.proto.Leaderboard.verify|verify} messages.
+                     * @param message Leaderboard message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.ILeaderboard, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified Leaderboard message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.Leaderboard.verify|verify} messages.
+                     * @param message Leaderboard message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.ILeaderboard, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a Leaderboard message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns Leaderboard
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.Leaderboard;
+
+                    /**
+                     * Decodes a Leaderboard message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns Leaderboard
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.Leaderboard;
+
+                    /**
+                     * Verifies a Leaderboard message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a Leaderboard message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns Leaderboard
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.Leaderboard;
+
+                    /**
+                     * Creates a plain object from a Leaderboard message. Also converts values to other types if specified.
+                     * @param message Leaderboard
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.Leaderboard, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this Leaderboard to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for Leaderboard
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of an ExpeditionComplete. */
+                interface IExpeditionComplete {
+
+                    /** ExpeditionComplete winnerPlayerId */
+                    winnerPlayerId?: (number|Long|null);
+
+                    /** ExpeditionComplete winnerName */
+                    winnerName?: (string|null);
+
+                    /** ExpeditionComplete youWon */
+                    youWon?: (boolean|null);
+                }
+
+                /** Represents an ExpeditionComplete. */
+                class ExpeditionComplete implements IExpeditionComplete {
+
+                    /**
+                     * Constructs a new ExpeditionComplete.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IExpeditionComplete);
+
+                    /** ExpeditionComplete winnerPlayerId. */
+                    public winnerPlayerId: (number|Long);
+
+                    /** ExpeditionComplete winnerName. */
+                    public winnerName: string;
+
+                    /** ExpeditionComplete youWon. */
+                    public youWon: boolean;
+
+                    /**
+                     * Creates a new ExpeditionComplete instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ExpeditionComplete instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IExpeditionComplete): com.triforge.protocol.proto.ExpeditionComplete;
+
+                    /**
+                     * Encodes the specified ExpeditionComplete message. Does not implicitly {@link com.triforge.protocol.proto.ExpeditionComplete.verify|verify} messages.
+                     * @param message ExpeditionComplete message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IExpeditionComplete, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified ExpeditionComplete message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.ExpeditionComplete.verify|verify} messages.
+                     * @param message ExpeditionComplete message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IExpeditionComplete, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes an ExpeditionComplete message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns ExpeditionComplete
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.ExpeditionComplete;
+
+                    /**
+                     * Decodes an ExpeditionComplete message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns ExpeditionComplete
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.ExpeditionComplete;
+
+                    /**
+                     * Verifies an ExpeditionComplete message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates an ExpeditionComplete message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns ExpeditionComplete
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.ExpeditionComplete;
+
+                    /**
+                     * Creates a plain object from an ExpeditionComplete message. Also converts values to other types if specified.
+                     * @param message ExpeditionComplete
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.ExpeditionComplete, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this ExpeditionComplete to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for ExpeditionComplete
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a PlayerStateUpdate. */
+                interface IPlayerStateUpdate {
+
+                    /** PlayerStateUpdate score */
+                    score?: (number|null);
+
+                    /** PlayerStateUpdate currentCheckpoint */
+                    currentCheckpoint?: (string|null);
+
+                    /** PlayerStateUpdate checkpointsCleared */
+                    checkpointsCleared?: (number|null);
+
+                    /** PlayerStateUpdate shielded */
+                    shielded?: (boolean|null);
+
+                    /** PlayerStateUpdate pvpCooldown */
+                    pvpCooldown?: (boolean|null);
+
+                    /** PlayerStateUpdate stealImmune */
+                    stealImmune?: (boolean|null);
+
+                    /** PlayerStateUpdate inventory */
+                    inventory?: (com.triforge.protocol.proto.IInventoryItemProto[]|null);
+                }
+
+                /** Represents a PlayerStateUpdate. */
+                class PlayerStateUpdate implements IPlayerStateUpdate {
+
+                    /**
+                     * Constructs a new PlayerStateUpdate.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IPlayerStateUpdate);
+
+                    /** PlayerStateUpdate score. */
+                    public score: number;
+
+                    /** PlayerStateUpdate currentCheckpoint. */
+                    public currentCheckpoint: string;
+
+                    /** PlayerStateUpdate checkpointsCleared. */
+                    public checkpointsCleared: number;
+
+                    /** PlayerStateUpdate shielded. */
+                    public shielded: boolean;
+
+                    /** PlayerStateUpdate pvpCooldown. */
+                    public pvpCooldown: boolean;
+
+                    /** PlayerStateUpdate stealImmune. */
+                    public stealImmune: boolean;
+
+                    /** PlayerStateUpdate inventory. */
+                    public inventory: com.triforge.protocol.proto.IInventoryItemProto[];
+
+                    /**
+                     * Creates a new PlayerStateUpdate instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns PlayerStateUpdate instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IPlayerStateUpdate): com.triforge.protocol.proto.PlayerStateUpdate;
+
+                    /**
+                     * Encodes the specified PlayerStateUpdate message. Does not implicitly {@link com.triforge.protocol.proto.PlayerStateUpdate.verify|verify} messages.
+                     * @param message PlayerStateUpdate message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IPlayerStateUpdate, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified PlayerStateUpdate message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.PlayerStateUpdate.verify|verify} messages.
+                     * @param message PlayerStateUpdate message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IPlayerStateUpdate, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a PlayerStateUpdate message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns PlayerStateUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.PlayerStateUpdate;
+
+                    /**
+                     * Decodes a PlayerStateUpdate message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns PlayerStateUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.PlayerStateUpdate;
+
+                    /**
+                     * Verifies a PlayerStateUpdate message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a PlayerStateUpdate message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns PlayerStateUpdate
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.PlayerStateUpdate;
+
+                    /**
+                     * Creates a plain object from a PlayerStateUpdate message. Also converts values to other types if specified.
+                     * @param message PlayerStateUpdate
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.PlayerStateUpdate, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this PlayerStateUpdate to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for PlayerStateUpdate
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a TreasureQuestMessage. */
+                interface ITreasureQuestMessage {
+
+                    /** TreasureQuestMessage interact */
+                    interact?: (com.triforge.protocol.proto.IInteractCommand|null);
+
+                    /** TreasureQuestMessage hintReveal */
+                    hintReveal?: (com.triforge.protocol.proto.IHintReveal|null);
+
+                    /** TreasureQuestMessage quizPrompt */
+                    quizPrompt?: (com.triforge.protocol.proto.IQuizPrompt|null);
+
+                    /** TreasureQuestMessage quizSubmit */
+                    quizSubmit?: (com.triforge.protocol.proto.IQuizSubmit|null);
+
+                    /** TreasureQuestMessage quizResult */
+                    quizResult?: (com.triforge.protocol.proto.IQuizResult|null);
+
+                    /** TreasureQuestMessage encounterOffer */
+                    encounterOffer?: (com.triforge.protocol.proto.IEncounterOffer|null);
+
+                    /** TreasureQuestMessage challengeResponse */
+                    challengeResponse?: (com.triforge.protocol.proto.IChallengeResponse|null);
+
+                    /** TreasureQuestMessage duelPrompt */
+                    duelPrompt?: (com.triforge.protocol.proto.IDuelPrompt|null);
+
+                    /** TreasureQuestMessage duelSubmit */
+                    duelSubmit?: (com.triforge.protocol.proto.IDuelSubmit|null);
+
+                    /** TreasureQuestMessage duelResult */
+                    duelResult?: (com.triforge.protocol.proto.IDuelResult|null);
+
+                    /** TreasureQuestMessage itemUse */
+                    itemUse?: (com.triforge.protocol.proto.IItemUse|null);
+
+                    /** TreasureQuestMessage inventoryUpdate */
+                    inventoryUpdate?: (com.triforge.protocol.proto.IInventoryUpdate|null);
+
+                    /** TreasureQuestMessage leaderboard */
+                    leaderboard?: (com.triforge.protocol.proto.ILeaderboard|null);
+
+                    /** TreasureQuestMessage expeditionComplete */
+                    expeditionComplete?: (com.triforge.protocol.proto.IExpeditionComplete|null);
+
+                    /** TreasureQuestMessage playerStateUpdate */
+                    playerStateUpdate?: (com.triforge.protocol.proto.IPlayerStateUpdate|null);
+                }
+
+                /** Represents a TreasureQuestMessage. */
+                class TreasureQuestMessage implements ITreasureQuestMessage {
+
+                    /**
+                     * Constructs a new TreasureQuestMessage.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.ITreasureQuestMessage);
+
+                    /** TreasureQuestMessage interact. */
+                    public interact?: (com.triforge.protocol.proto.IInteractCommand|null);
+
+                    /** TreasureQuestMessage hintReveal. */
+                    public hintReveal?: (com.triforge.protocol.proto.IHintReveal|null);
+
+                    /** TreasureQuestMessage quizPrompt. */
+                    public quizPrompt?: (com.triforge.protocol.proto.IQuizPrompt|null);
+
+                    /** TreasureQuestMessage quizSubmit. */
+                    public quizSubmit?: (com.triforge.protocol.proto.IQuizSubmit|null);
+
+                    /** TreasureQuestMessage quizResult. */
+                    public quizResult?: (com.triforge.protocol.proto.IQuizResult|null);
+
+                    /** TreasureQuestMessage encounterOffer. */
+                    public encounterOffer?: (com.triforge.protocol.proto.IEncounterOffer|null);
+
+                    /** TreasureQuestMessage challengeResponse. */
+                    public challengeResponse?: (com.triforge.protocol.proto.IChallengeResponse|null);
+
+                    /** TreasureQuestMessage duelPrompt. */
+                    public duelPrompt?: (com.triforge.protocol.proto.IDuelPrompt|null);
+
+                    /** TreasureQuestMessage duelSubmit. */
+                    public duelSubmit?: (com.triforge.protocol.proto.IDuelSubmit|null);
+
+                    /** TreasureQuestMessage duelResult. */
+                    public duelResult?: (com.triforge.protocol.proto.IDuelResult|null);
+
+                    /** TreasureQuestMessage itemUse. */
+                    public itemUse?: (com.triforge.protocol.proto.IItemUse|null);
+
+                    /** TreasureQuestMessage inventoryUpdate. */
+                    public inventoryUpdate?: (com.triforge.protocol.proto.IInventoryUpdate|null);
+
+                    /** TreasureQuestMessage leaderboard. */
+                    public leaderboard?: (com.triforge.protocol.proto.ILeaderboard|null);
+
+                    /** TreasureQuestMessage expeditionComplete. */
+                    public expeditionComplete?: (com.triforge.protocol.proto.IExpeditionComplete|null);
+
+                    /** TreasureQuestMessage playerStateUpdate. */
+                    public playerStateUpdate?: (com.triforge.protocol.proto.IPlayerStateUpdate|null);
+
+                    /** TreasureQuestMessage content. */
+                    public content?: ("interact"|"hintReveal"|"quizPrompt"|"quizSubmit"|"quizResult"|"encounterOffer"|"challengeResponse"|"duelPrompt"|"duelSubmit"|"duelResult"|"itemUse"|"inventoryUpdate"|"leaderboard"|"expeditionComplete"|"playerStateUpdate");
+
+                    /**
+                     * Creates a new TreasureQuestMessage instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns TreasureQuestMessage instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.ITreasureQuestMessage): com.triforge.protocol.proto.TreasureQuestMessage;
+
+                    /**
+                     * Encodes the specified TreasureQuestMessage message. Does not implicitly {@link com.triforge.protocol.proto.TreasureQuestMessage.verify|verify} messages.
+                     * @param message TreasureQuestMessage message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.ITreasureQuestMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified TreasureQuestMessage message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.TreasureQuestMessage.verify|verify} messages.
+                     * @param message TreasureQuestMessage message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.ITreasureQuestMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a TreasureQuestMessage message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns TreasureQuestMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.TreasureQuestMessage;
+
+                    /**
+                     * Decodes a TreasureQuestMessage message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns TreasureQuestMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.TreasureQuestMessage;
+
+                    /**
+                     * Verifies a TreasureQuestMessage message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a TreasureQuestMessage message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns TreasureQuestMessage
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.TreasureQuestMessage;
+
+                    /**
+                     * Creates a plain object from a TreasureQuestMessage message. Also converts values to other types if specified.
+                     * @param message TreasureQuestMessage
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.TreasureQuestMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this TreasureQuestMessage to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for TreasureQuestMessage
                      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                      * @returns The default type url
                      */

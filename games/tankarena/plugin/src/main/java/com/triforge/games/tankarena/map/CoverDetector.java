@@ -20,20 +20,6 @@ public final class CoverDetector {
         return dx * dx + dy * dy <= config.coverRevealRadiusWorld() * config.coverRevealRadiusWorld();
     }
 
-    public static boolean canDetectCoverTarget(
-            float viewerX,
-            float viewerY,
-            float targetX,
-            float targetY,
-            GameMap map,
-            MapConfig config
-    ) {
-        if (isWithinRevealRange(viewerX, viewerY, targetX, targetY, config)) {
-            return true;
-        }
-        return LineOfSight.hasWorldLineOfSight(map, viewerX, viewerY, targetX, targetY);
-    }
-
     public static boolean isEntityHiddenByCover(
             VisibilityMap viewerFog,
             GameMap map,
@@ -50,7 +36,7 @@ public final class CoverDetector {
             if (!isOnCoverTile(map, targetTileX, targetTileY)) {
                 return false;
             }
-            return !canDetectCoverTarget(viewerX, viewerY, targetX, targetY, map, config);
+            return !isWithinRevealRange(viewerX, viewerY, targetX, targetY, config);
         }
 
         if (isWithinRevealRange(viewerX, viewerY, targetX, targetY, config)) {

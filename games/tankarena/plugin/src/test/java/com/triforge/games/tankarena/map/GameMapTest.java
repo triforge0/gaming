@@ -50,4 +50,41 @@ final class GameMapTest {
         assertThrows(IllegalArgumentException.class, () ->
                 GameMap.builder(2, 2).tileSize(16).tiles(new TileType[3]).build());
     }
+
+    @Test
+    void mapIsFlatByDefaultAndHeightAtIsZero() {
+        GameMap map = GameMap.builder(2, 2).tileSize(10).tiles(new TileType[4]).build();
+
+        assertTrue(map.isFlat());
+        assertEquals(0f, map.heightAt(5f, 5f));
+        assertEquals(0f, map.cellHeight(0, 0));
+    }
+
+    @Test
+    void heightAtBilinearlyInterpolatesBetweenTileCenters() {
+        // 2x2, tileSize 10. Tile centers at (5,5),(15,5),(5,15),(15,15).
+        float[] heights = {0f, 10f, 20f, 30f}; // row-major: y0=[0,10], y1=[20,30]
+        GameMap map = GameMap.builder(2, 2).tileSize(10).tiles(new TileType[4])
+                .heights(heights).build();
+
+        assertTrue(!map.isFlat());
+        // Exact tile centers return the cell height.
+        assertEquals(0f, map.heightAt(5f, 5f), 1e-4f);
+        assertEquals(10f, map.heightAt(15f, 5f), 1e-4f);
+        assertEquals(20f, map.heightAt(5f, 15f), 1e-4f);
+        assertEquals(30f, map.heightAt(15f, 15f), 1e-4f);
+        // Midpoint between (5,5)=0 and (15,5)=10 → 5.
+        assertEquals(5f, map.heightAt(10f, 5f), 1e-4f);
+        // Center of the map interpolates all four → mean 15.
+        assertEquals(15f, map.heightAt(10f, 10f), 1e-4f);
+        // Sampling past the edge clamps to the border cell.
+        assertEquals(0f, map.heightAt(0f, 0f), 1e-4f);
+    }
+
+    @Test
+    void builderRejectsMismatchedHeightArrayLength() {
+        assertThrows(IllegalArgumentException.class, () ->
+                GameMap.builder(2, 2).tileSize(10).tiles(new TileType[4])
+                        .heights(new float[3]).build());
+    }
 }

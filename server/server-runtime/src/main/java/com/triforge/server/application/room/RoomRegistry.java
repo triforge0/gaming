@@ -41,6 +41,10 @@ public final class RoomRegistry {
     }
 
     public GameRoom getOrCreate(String roomId) {
+        GameRoom existing = rooms.get(roomId);
+        if (existing != null) {
+            return existing;
+        }
         return ensureRoom(roomId, formatRoomName(roomId));
     }
 
@@ -132,6 +136,9 @@ public final class RoomRegistry {
     private static String formatRoomName(String roomId) {
         if ("main".equalsIgnoreCase(roomId)) {
             return "Main Arena";
+        }
+        if ("quest".equalsIgnoreCase(roomId)) {
+            return "Treasure Quest";
         }
         return roomId;
     }

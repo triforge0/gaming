@@ -49,6 +49,26 @@ public final class ShootingSystemTest {
     }
 
     @Test
+    void pitchedShotGivesBulletUpwardVelocity() {
+        EcsWorld world = new EcsWorld();
+        EntityManager entityManager = world.entityManager();
+        ComponentManager componentManager = world.componentManager();
+        SystemScheduler scheduler = new SystemScheduler().add(new ShootingSystem(TEST_BOUNDS));
+
+        Entity tank = createTank(entityManager, componentManager, 400f, 300f, Direction.UP);
+        // Aim the turret up before firing.
+        componentManager.get(tank, com.triforge.games.tankarena.components.OrientationComponent.class)
+                .setPitch((float) Math.toRadians(30.0));
+        shoot(scheduler, entityManager, componentManager, tank);
+
+        BulletComponent bullet = componentManager.get(
+                findBullet(entityManager, componentManager), BulletComponent.class);
+        // sin(30°) = 0.5 upward component.
+        assertEquals(0.5f, bullet.directionZ(), 0.01f);
+        assertTrue(bullet.directionZ() > 0f);
+    }
+
+    @Test
     void movesBulletDeterministically() {
         EcsWorld world = new EcsWorld();
         EntityManager entityManager = world.entityManager();

@@ -1,8 +1,8 @@
 package com.triforge.games.tankarena.systems;
 
 import com.triforge.games.tankarena.components.BulletComponent;
-import com.triforge.games.tankarena.components.DirectionComponent;
 import com.triforge.games.tankarena.components.InputComponent;
+import com.triforge.games.tankarena.components.OrientationComponent;
 import com.triforge.games.tankarena.components.PositionComponent;
 import com.triforge.games.tankarena.components.TankComponent;
 import com.triforge.engine.ecs.ComponentManager;
@@ -12,7 +12,6 @@ import com.triforge.engine.ecs.System;
 import com.triforge.engine.loop.GameLoop;
 import com.triforge.games.tankarena.world.TankGeometry;
 import com.triforge.games.tankarena.world.WorldBounds;
-import com.triforge.protocol.proto.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,22 +66,27 @@ public final class ShootingSystem implements System {
         InputComponent input = componentManager.getAt(tankIndex, InputComponent.class);
         TankComponent tankComponent = componentManager.getAt(tankIndex, TankComponent.class);
         PositionComponent position = componentManager.getAt(tankIndex, PositionComponent.class);
-        DirectionComponent direction = componentManager.getAt(tankIndex, DirectionComponent.class);
+        OrientationComponent orientation = componentManager.getAt(tankIndex, OrientationComponent.class);
 
-        if (input == null || tankComponent == null || position == null || direction == null) {
+        if (input == null || tankComponent == null || position == null || orientation == null) {
             return;
         }
         if (!input.shoot() || !tankComponent.canShoot()) {
             return;
         }
 
-        Direction facing = direction.direction();
-        float[] muzzle = TankGeometry.muzzlePosition(position.x(), position.y(), facing);
-        float[] velocity = TankGeometry.directionVector(facing);
+        float yaw = orientation.yaw();
+        float pitch = orientation.pitch();
+        float[] muzzle = TankGeometry.muzzlePosition3D(position.x(), position.y(), position.z(), yaw, pitch);
+        float[] velocity = TankGeometry.directionVector3D(yaw, pitch);
 
         Entity bullet = entityManager.create();
-        componentManager.add(bullet, new PositionComponent(muzzle[0], muzzle[1]));
-        componentManager.add(bullet, new BulletComponent(tankEntityId, velocity[0], velocity[1]));
+        componentManager.add(bullet, new PositionComponent(muzzle[0], muzzle[1], muzzle[2]));
+        componentManager.add(bullet, new BulletComponent(
+                tankEntityId,
+                BulletComponent.DEFAULT_SPEED,
+                velocity[0], velocity[1], velocity[2],
+                BulletComponent.DEFAULT_MAX_RANGE));
         tankComponent.startCooldown();
         bulletFiredHandler.accept(tankEntityId);
     }
@@ -100,7 +104,8 @@ public final class ShootingSystem implements System {
             float step = bullet.speed() * FIXED_DELTA_SECONDS;
             float nextX = position.x() + bullet.directionX() * step;
             float nextY = position.y() + bullet.directionY() * step;
-            position.set(nextX, nextY);
+            float nextZ = position.z() + bullet.directionZ() * step;
+            position.set(nextX, nextY, nextZ);
             bullet.addDistance(step);
 
             if (!worldBounds.isInside(nextX, nextY) || bullet.exceededRange()) {

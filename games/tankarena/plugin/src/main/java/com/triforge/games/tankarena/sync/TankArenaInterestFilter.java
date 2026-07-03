@@ -2,7 +2,6 @@ package com.triforge.games.tankarena.sync;
 
 import com.triforge.engine.sync.InterestFilter;
 import com.triforge.engine.sync.ViewerContext;
-import com.triforge.games.tankarena.map.CoverDetector;
 import com.triforge.games.tankarena.map.GameMap;
 import com.triforge.games.tankarena.map.MapConfig;
 import com.triforge.games.tankarena.map.VisibilityMap;
@@ -23,11 +22,14 @@ public final class TankArenaInterestFilter implements InterestFilter {
     private final RoomVisionState visionState;
     private final GameMap map;
     private final MapConfig config;
+    private final PlayerVisibilityTracker visibilityTracker = new PlayerVisibilityTracker();
+    private final PlayerVisibilityTracker.EntityVisibility entityVisibility;
 
     public TankArenaInterestFilter(RoomVisionState visionState, GameMap map, MapConfig config) {
         this.visionState = visionState;
         this.map = map;
         this.config = config;
+        this.entityVisibility = PlayerVisibilityTracker.coverVisibility(map, config);
     }
 
     @Override
@@ -48,7 +50,10 @@ public final class TankArenaInterestFilter implements InterestFilter {
         } else if (snapshot.hasFog()) {
             builder.setFog(snapshot.getFog());
         }
-        return builder.build();
+
+        FullSnapshot filtered = builder.build();
+        visibilityTracker.onFullSnapshot(viewer.playerId(), filtered);
+        return filtered;
     }
 
     @Override
@@ -57,18 +62,20 @@ public final class TankArenaInterestFilter implements InterestFilter {
                 .setTick(delta.getTick());
 
         VisibilityMap viewerFog = visionState.visibilityOrNull(viewer.playerId());
-        int filteredOut = 0;
-        for (EntityProto entity : delta.getUpdatedEntitiesList()) {
-            if (isEntityVisible(entity, viewer, viewerFog)) {
-                builder.addUpdatedEntities(entity);
-            } else {
-                filteredOut++;
-            }
+        if (viewerFog == null) {
+            return filterDeltaByRadius(delta, viewer.x(), viewer.y(), viewer.entityId());
         }
 
-        for (long removedEntityId : delta.getRemovedEntityIdsList()) {
-            builder.addRemovedEntityIds(removedEntityId);
-        }
+        visibilityTracker.applyDeltaVisibility(
+                viewer.playerId(),
+                viewer,
+                delta,
+                builder,
+                viewerFog,
+                map,
+                config,
+                entityVisibility
+        );
 
         for (TileChange tileChange : delta.getTileChangesList()) {
             if (isTileVisible(tileChange, viewerFog, viewer)) {
@@ -76,13 +83,14 @@ public final class TankArenaInterestFilter implements InterestFilter {
             }
         }
 
-        if (viewerFog != null && viewerFog.hasChangedSinceLastSent()) {
+        if (viewerFog.hasChangedSinceLastSent()) {
             builder.setFog(TankArenaFogSnapshotService.toProto(viewerFog));
             viewerFog.markSent();
         } else if (delta.hasFog()) {
             builder.setFog(delta.getFog());
         }
 
+        int filteredOut = delta.getUpdatedEntitiesCount() - builder.getUpdatedEntitiesCount();
         if (filteredOut > 0) {
             logger.debug("Interest filter removed {} entity updates outside vision", filteredOut);
         }
@@ -115,28 +123,7 @@ public final class TankArenaInterestFilter implements InterestFilter {
     }
 
     private boolean isEntityVisible(EntityProto entity, ViewerContext viewer, VisibilityMap viewerFog) {
-        if (entity.getEntityId() == viewer.entityId()) {
-            return true;
-        }
-        if (!entity.hasPosition()) {
-            return true;
-        }
-        float entityX = entity.getPosition().getX();
-        float entityY = entity.getPosition().getY();
-
-        if (viewerFog == null) {
-            return isVisibleByRadius(entity, viewer.x(), viewer.y());
-        }
-
-        return !CoverDetector.isEntityHiddenByCover(
-                viewerFog,
-                map,
-                config,
-                viewer.x(),
-                viewer.y(),
-                entityX,
-                entityY
-        );
+        return entityVisibility.isVisible(entity, viewer, viewerFog);
     }
 
     private static boolean isVisibleByRadius(EntityProto entity, float viewerX, float viewerY) {

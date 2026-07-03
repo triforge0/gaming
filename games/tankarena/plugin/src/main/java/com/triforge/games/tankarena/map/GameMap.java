@@ -16,6 +16,7 @@ public final class GameMap {
     private final int height;
     private final int tileSize;
     private final TileType[] tiles;
+    private final float[] heights;
     private final Map<SpawnRegion, SpawnRegionDefinition> spawnRegions;
     private final List<HeadquartersDefinition> headquarters;
 
@@ -32,6 +33,7 @@ public final class GameMap {
             int height,
             int tileSize,
             TileType[] tiles,
+            float[] heights,
             Map<SpawnRegion, SpawnRegionDefinition> spawnRegions,
             List<HeadquartersDefinition> headquarters
     ) {
@@ -39,6 +41,7 @@ public final class GameMap {
         this.height = height;
         this.tileSize = tileSize;
         this.tiles = tiles;
+        this.heights = heights;
         this.spawnRegions = spawnRegions;
         this.headquarters = headquarters;
     }
@@ -48,6 +51,7 @@ public final class GameMap {
         private int height;
         private int tileSize;
         private TileType[] tiles;
+        private float[] heights;
         private Map<SpawnRegion, SpawnRegionDefinition> spawnRegions;
         private List<HeadquartersDefinition> headquarters;
 
@@ -76,6 +80,12 @@ public final class GameMap {
             return this;
         }
 
+        /** Optional per-cell elevation (row-major, length width*height). Null = flat. */
+        public Builder heights(float[] heights) {
+            this.heights = heights;
+            return this;
+        }
+
         public Builder spawnRegions(Map<SpawnRegion, SpawnRegionDefinition> spawnRegions) {
             this.spawnRegions = Objects.requireNonNull(spawnRegions, "spawnRegions");
             return this;
@@ -98,6 +108,15 @@ public final class GameMap {
                 throw new IllegalArgumentException("Tile array length must equal width * height");
             }
 
+            float[] resolvedHeights;
+            if (heights == null) {
+                resolvedHeights = new float[width * height]; // flat terrain
+            } else if (heights.length != width * height) {
+                throw new IllegalArgumentException("Height array length must equal width * height");
+            } else {
+                resolvedHeights = heights.clone();
+            }
+
             Map<SpawnRegion, SpawnRegionDefinition> resolvedSpawnRegions = spawnRegions != null
                     ? new EnumMap<>(spawnRegions)
                     : SpawnRegionDefinition.defaultCorners(width, height);
@@ -110,6 +129,7 @@ public final class GameMap {
                     height,
                     tileSize,
                     tiles.clone(),
+                    resolvedHeights,
                     resolvedSpawnRegions,
                     resolvedHeadquarters
             );
@@ -210,6 +230,50 @@ public final class GameMap {
 
     public TileType tileAtWorld(float worldX, float worldY) {
         return tileAt(worldToTileX(worldX), worldToTileY(worldY));
+    }
+
+    /** Elevation at a tile's sample point, clamped to bounds. Flat maps return 0. */
+    public float cellHeight(int tileX, int tileY) {
+        int cx = Math.max(0, Math.min(width - 1, tileX));
+        int cy = Math.max(0, Math.min(height - 1, tileY));
+        return heights[index(cx, cy)];
+    }
+
+    /**
+     * Ground elevation at a world position, bilinearly interpolated between the four
+     * nearest tile-center samples. Height samples sit at tile centers, so a world point
+     * exactly on a tile center returns that cell's height.
+     */
+    public float heightAt(float worldX, float worldY) {
+        float fx = worldX / tileSize - 0.5f;
+        float fy = worldY / tileSize - 0.5f;
+        int x0 = (int) Math.floor(fx);
+        int y0 = (int) Math.floor(fy);
+        float tx = fx - x0;
+        float ty = fy - y0;
+
+        float h00 = cellHeight(x0, y0);
+        float h10 = cellHeight(x0 + 1, y0);
+        float h01 = cellHeight(x0, y0 + 1);
+        float h11 = cellHeight(x0 + 1, y0 + 1);
+
+        float top = h00 + (h10 - h00) * tx;
+        float bottom = h01 + (h11 - h01) * tx;
+        return top + (bottom - top) * ty;
+    }
+
+    /** True when every cell is at elevation 0 — lets the snapshot omit the heightfield. */
+    public boolean isFlat() {
+        for (float h : heights) {
+            if (h != 0f) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public float[] copyHeights() {
+        return heights.clone();
     }
 
     public int worldToTileX(float worldX) {

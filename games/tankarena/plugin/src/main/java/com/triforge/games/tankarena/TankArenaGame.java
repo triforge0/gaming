@@ -32,6 +32,8 @@ import com.triforge.games.tankarena.systems.WorldBoundsCollisionSystem;
 import com.triforge.games.tankarena.vision.FogOfWarCalculator;
 import com.triforge.games.tankarena.vision.RoomVisionState;
 import com.triforge.games.tankarena.world.WorldBounds;
+import com.triforge.games.tankarena.match.LobbyCommandOutcome;
+import com.triforge.games.tankarena.match.LobbyRejectReason;
 import com.triforge.games.tankarena.match.LobbyPlayer;
 import com.triforge.engine.match.MatchConfig;
 import com.triforge.engine.match.MatchController;
@@ -44,6 +46,7 @@ import com.triforge.games.tankarena.match.TeamSetup;
 import com.triforge.protocol.proto.Direction;
 import com.triforge.protocol.proto.GameEvent;
 import com.triforge.protocol.proto.GameEventType;
+import com.triforge.protocol.proto.GameMessage;
 import com.triforge.protocol.proto.InputCommand;
 import com.triforge.protocol.proto.JoinResponse;
 import com.triforge.protocol.proto.LobbyCommand;
@@ -125,7 +128,7 @@ public final class TankArenaGame implements Game {
                 this::handleHqHit
         );
         this.systemScheduler = new SystemScheduler()
-                .add(new MovementSystem())
+                .add(new MovementSystem(gameMap))
                 .add(new WorldBoundsCollisionSystem(worldBounds))
                 .add(new MapCollisionSystem(gameMap, mapConfig))
                 .add(new TankTankCollisionSystem())
@@ -296,7 +299,7 @@ public final class TankArenaGame implements Game {
             return;
         }
 
-        boolean applied = switch (command.getActionCase()) {
+        LobbyCommandOutcome outcome = switch (command.getActionCase()) {
             case SETNAME -> matchController.setDisplayName(playerId, command.getSetName().getDisplayName());
             case SETTEAM -> matchController.setTeam(playerId, MatchProtoMapper.toDomain(command.getSetTeam().getTeam()));
             case SETSPAWN -> matchController.setSpawnRegion(playerId,
@@ -309,10 +312,10 @@ public final class TankArenaGame implements Game {
                         MatchProtoMapper.toDomain(setup.getHqRegion()));
             }
             case SETREADY -> matchController.setReady(playerId, command.getSetReady().getReady());
-            case STARTMATCH, ACTION_NOT_SET -> false;
+            case STARTMATCH, ACTION_NOT_SET -> LobbyCommandOutcome.reject(LobbyRejectReason.NOT_IN_LOBBY_PHASE);
         };
 
-        if (applied) {
+        if (outcome.applied()) {
             if (command.getActionCase() == LobbyCommand.ActionCase.SETTEAMSETUP
                     || command.getActionCase() == LobbyCommand.ActionCase.SETSPAWN) {
                 applyConfiguredHeadquarters();
@@ -323,8 +326,15 @@ public final class TankArenaGame implements Game {
                 beginCountdown();
             }
         } else {
-            logger.debug("Rejected lobby command {} from playerId={} in room '{}' (phase={})",
-                    command.getActionCase(), playerId, host().roomId(), matchController.phase());
+            logger.debug("Rejected lobby command {} from playerId={} in room '{}' (phase={}, reason={})",
+                    command.getActionCase(), playerId, host().roomId(),
+                    matchController.phase(), outcome.reason());
+            host().broadcaster().sendTo(playerId, GameMessage.newBuilder()
+                    .setLobbyCommandRejected(com.triforge.protocol.proto.LobbyCommandRejected.newBuilder()
+                            .setPlayerId(playerId)
+                            .setReason(MatchProtoMapper.toProto(outcome.reason()))
+                            .build())
+                    .build());
         }
     }
 
@@ -464,6 +474,7 @@ public final class TankArenaGame implements Game {
                 .player(playerId, playerName, lives, team)
                 .withInput()
                 .controllable()
+                .onTerrain(gameMap)
                 .vision(mapConfig, gameMap.tileSize())
                 .build();
         playerEntities.put(playerId, tank);

@@ -122,22 +122,30 @@ public final class TankArenaMatchController implements MatchController {
         return player != null && player.isTeamCaptain();
     }
 
-    public boolean setDisplayName(long playerId, String name) {
-        LobbyPlayer player = editablePlayer(playerId);
-        if (player == null || !LobbyPlayer.isValidName(name)) {
-            return false;
+    public LobbyCommandOutcome setDisplayName(long playerId, String name) {
+        LobbyRejectReason editReject = editRejectReason(playerId);
+        if (editReject != null) {
+            return LobbyCommandOutcome.reject(editReject);
+        }
+        LobbyPlayer player = lobbyPlayers.get(playerId);
+        if (!LobbyPlayer.isValidName(name)) {
+            return LobbyCommandOutcome.reject(LobbyRejectReason.INVALID_NAME);
         }
         putPlayer(player.withDisplayName(name));
-        return true;
+        return LobbyCommandOutcome.ok();
     }
 
-    public boolean setTeam(long playerId, Team team) {
-        LobbyPlayer player = editablePlayer(playerId);
-        if (player == null || team == null) {
-            return false;
+    public LobbyCommandOutcome setTeam(long playerId, Team team) {
+        LobbyRejectReason editReject = editRejectReason(playerId);
+        if (editReject != null) {
+            return LobbyCommandOutcome.reject(editReject);
+        }
+        LobbyPlayer player = lobbyPlayers.get(playerId);
+        if (team == null) {
+            return LobbyCommandOutcome.reject(LobbyRejectReason.INVALID_TEAM);
         }
         if (team.isPlayable() && !teamSwitchKeepsBalance(playerId, team)) {
-            return false;
+            return LobbyCommandOutcome.reject(LobbyRejectReason.TEAM_BALANCE);
         }
 
         Team previousTeam = player.team();
@@ -150,33 +158,47 @@ public final class TankArenaMatchController implements MatchController {
         if (team.isPlayable()) {
             ensureTeamCaptain(playerId, team);
         }
-        return true;
+        return LobbyCommandOutcome.ok();
     }
 
-    public boolean setTeamSetup(long playerId, SpawnRegion spawnRegion, SpawnRegion hqRegion) {
-        LobbyPlayer player = editablePlayer(playerId);
-        if (player == null || !player.team().isPlayable() || !player.isTeamCaptain()) {
-            return false;
+    public LobbyCommandOutcome setTeamSetup(long playerId, SpawnRegion spawnRegion, SpawnRegion hqRegion) {
+        LobbyRejectReason editReject = editRejectReason(playerId);
+        if (editReject != null) {
+            return LobbyCommandOutcome.reject(editReject);
+        }
+        LobbyPlayer player = lobbyPlayers.get(playerId);
+        if (!player.team().isPlayable()) {
+            return LobbyCommandOutcome.reject(LobbyRejectReason.NOT_ON_PLAYABLE_TEAM);
+        }
+        if (!player.isTeamCaptain()) {
+            return LobbyCommandOutcome.reject(LobbyRejectReason.NOT_TEAM_CAPTAIN);
         }
         if (spawnRegion == null || hqRegion == null
                 || !spawnRegion.isChosen() || !hqRegion.isChosen()) {
-            return false;
+            return LobbyCommandOutcome.reject(LobbyRejectReason.INVALID_SPAWN_REGION);
         }
         Team team = player.team();
         if (!spawnRegion.isValidForTeam(team) || !hqRegion.isValidForTeam(team)) {
-            return false;
+            return LobbyCommandOutcome.reject(LobbyRejectReason.INVALID_SPAWN_REGION);
         }
 
         teamSetups.put(team, new TeamSetup(team, playerId, spawnRegion, hqRegion));
         syncTeamSpawnRegions(team, spawnRegion);
         clearReadyForTeam(team);
-        return true;
+        return LobbyCommandOutcome.ok();
     }
 
-    public boolean setSpawnRegion(long playerId, SpawnRegion region) {
-        LobbyPlayer player = editablePlayer(playerId);
-        if (player == null || !player.isTeamCaptain() || region == null || !region.isChosen()) {
-            return false;
+    public LobbyCommandOutcome setSpawnRegion(long playerId, SpawnRegion region) {
+        LobbyRejectReason editReject = editRejectReason(playerId);
+        if (editReject != null) {
+            return LobbyCommandOutcome.reject(editReject);
+        }
+        LobbyPlayer player = lobbyPlayers.get(playerId);
+        if (!player.isTeamCaptain()) {
+            return LobbyCommandOutcome.reject(LobbyRejectReason.NOT_TEAM_CAPTAIN);
+        }
+        if (region == null || !region.isChosen()) {
+            return LobbyCommandOutcome.reject(LobbyRejectReason.INVALID_SPAWN_REGION);
         }
         TeamSetup existing = teamSetups.get(player.team());
         SpawnRegion hq = existing != null && existing.hqRegion().isChosen()
@@ -185,20 +207,27 @@ public final class TankArenaMatchController implements MatchController {
         return setTeamSetup(playerId, region, hq);
     }
 
-    public boolean setReady(long playerId, boolean ready) {
-        LobbyPlayer player = editablePlayer(playerId);
-        if (player == null) {
-            return false;
+    public LobbyCommandOutcome setReady(long playerId, boolean ready) {
+        LobbyRejectReason editReject = editRejectReason(playerId);
+        if (editReject != null) {
+            return LobbyCommandOutcome.reject(editReject);
         }
+        LobbyPlayer player = lobbyPlayers.get(playerId);
         if (ready && !player.canReady(teamSetups.get(player.team()))) {
-            return false;
+            return LobbyCommandOutcome.reject(LobbyRejectReason.TEAM_SETUP_INCOMPLETE);
         }
         putPlayer(player.withReady(ready));
-        return true;
+        return LobbyCommandOutcome.ok();
     }
 
-    private LobbyPlayer editablePlayer(long playerId) {
-        return phaseMachine.phase() == MatchPhase.LOBBY ? lobbyPlayers.get(playerId) : null;
+    private LobbyRejectReason editRejectReason(long playerId) {
+        if (phaseMachine.phase() != MatchPhase.LOBBY) {
+            return LobbyRejectReason.NOT_IN_LOBBY_PHASE;
+        }
+        if (!lobbyPlayers.containsKey(playerId)) {
+            return LobbyRejectReason.PLAYER_NOT_FOUND;
+        }
+        return null;
     }
 
     private void ensureTeamCaptain(long joiningPlayerId, Team team) {
@@ -346,7 +375,12 @@ public final class TankArenaMatchController implements MatchController {
 
     public void returnToLobby() {
         phaseMachine.returnToLobby();
-        lobbyPlayers.replaceAll((id, player) -> player.withReady(false));
+        teamSetups.clear();
+        lobbyPlayers.replaceAll((id, player) -> player
+                .withTeam(Team.NONE)
+                .withSpawnRegion(SpawnRegion.UNSPECIFIED)
+                .withReady(false)
+                .withTeamCaptain(false));
     }
 
     @Override

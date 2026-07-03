@@ -59,6 +59,19 @@ public final class RoomBroadcaster implements RoomBroadcastAccess {
     }
 
     @Override
+    public void sendTo(long playerId, GameMessage message) {
+        Channel channel = sessions.channelOf(playerId);
+        if (channel != null && channel.isActive()) {
+            channel.writeAndFlush(buildEnvelope(message));
+        }
+    }
+
+    @Override
+    public void broadcast(GameMessage message) {
+        broadcastToAll(buildEnvelope(message));
+    }
+
+    @Override
     public void broadcastLobbySnapshot(RoomHost host, Game game) {
         RoomLobbySnapshot snapshot = game.toLobbySnapshot(host);
         broadcastToAll(buildEnvelope(GameMessage.newBuilder().setRoomLobbySnapshot(snapshot).build()));

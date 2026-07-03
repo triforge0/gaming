@@ -40,4 +40,22 @@ final class TankArenaMatchControllerTest {
         controller.removePlayer(2L);
         assertEquals(-1L, controller.hostPlayerId(), "no host when roster empties");
     }
+
+    @Test
+    void returnToLobbyResetsTeamsAndSetup() {
+        TankArenaMatchController controller = newController();
+        controller.putPlayer(LobbyPlayer.joining(1L, "P1", true));
+        controller.setTeam(1L, Team.RED);
+        controller.setTeamSetup(1L, SpawnRegion.TOP_LEFT, SpawnRegion.BOTTOM_LEFT);
+        controller.startCountdown();
+        controller.startMatch();
+        controller.endMatch();
+        controller.returnToLobby();
+
+        assertEquals(Team.NONE, controller.player(1L).team());
+        assertEquals(SpawnRegion.UNSPECIFIED, controller.player(1L).spawnRegion());
+        assertFalse(controller.player(1L).ready());
+        assertFalse(controller.player(1L).isTeamCaptain());
+        assertEquals(null, controller.teamSetup(Team.RED));
+    }
 }

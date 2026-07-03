@@ -4,6 +4,7 @@ import com.triforge.engine.ecs.ComponentManager;
 import com.triforge.engine.snapshot.EntitySnapshotWriter;
 import com.triforge.games.tankarena.components.BulletComponent;
 import com.triforge.games.tankarena.components.DirectionComponent;
+import com.triforge.games.tankarena.components.OrientationComponent;
 import com.triforge.games.tankarena.components.PlayerComponent;
 import com.triforge.games.tankarena.components.PositionComponent;
 import com.triforge.games.tankarena.components.TankComponent;
@@ -11,6 +12,7 @@ import com.triforge.games.tankarena.match.MatchProtoMapper;
 import com.triforge.protocol.proto.BulletComponentProto;
 import com.triforge.protocol.proto.DirectionComponentProto;
 import com.triforge.protocol.proto.EntityProto;
+import com.triforge.protocol.proto.OrientationComponentProto;
 import com.triforge.protocol.proto.PlayerComponentProto;
 import com.triforge.protocol.proto.PositionComponentProto;
 import com.triforge.protocol.proto.TankComponentProto;
@@ -42,6 +44,11 @@ public final class TankArenaSnapshotWriter implements EntitySnapshotWriter {
             builder.setDirection(toDirectionProto(direction));
         }
 
+        OrientationComponent orientation = componentManager.getAt(entityIndex, OrientationComponent.class);
+        if (orientation != null) {
+            builder.setOrientation(toOrientationProto(orientation));
+        }
+
         TankComponent tank = componentManager.getAt(entityIndex, TankComponent.class);
         if (tank != null) {
             builder.setTank(toTankProto(tank));
@@ -69,12 +76,20 @@ public final class TankArenaSnapshotWriter implements EntitySnapshotWriter {
         return PositionComponentProto.newBuilder()
                 .setX(position.x())
                 .setY(position.y())
+                .setZ(position.z())
                 .build();
     }
 
     private static DirectionComponentProto toDirectionProto(DirectionComponent direction) {
         return DirectionComponentProto.newBuilder()
                 .setDirection(direction.direction())
+                .build();
+    }
+
+    private static OrientationComponentProto toOrientationProto(OrientationComponent orientation) {
+        return OrientationComponentProto.newBuilder()
+                .setYaw(orientation.yaw())
+                .setPitch(orientation.pitch())
                 .build();
     }
 
@@ -92,6 +107,7 @@ public final class TankArenaSnapshotWriter implements EntitySnapshotWriter {
                 .setSpeed(bullet.speed())
                 .setDx(bullet.directionX())
                 .setDy(bullet.directionY())
+                .setDz(bullet.directionZ())
                 .build();
     }
 }

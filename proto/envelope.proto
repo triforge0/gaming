@@ -32,6 +32,8 @@ message GameMessage {
     MatchPhaseUpdate matchPhaseUpdate = 9;
     MatchResult matchResult = 10;
     MapSnapshot mapSnapshot = 11;
+    TreasureQuestMessage tq = 12;
+    LobbyCommandRejected lobbyCommandRejected = 13;
   }
 }
 
@@ -118,6 +120,7 @@ message MapSnapshot {
   uint32 tileSize = 3;
   repeated TileType tiles = 4;
   repeated HeadquartersProto headquarters = 5;
+  repeated float heights = 6;  // per-cell terrain elevation, row-major (empty = flat)
 }
 
 message HeadquartersProto {
@@ -133,6 +136,7 @@ message TileChange {
   uint32 x = 1;
   uint32 y = 2;
   TileType tile = 3;
+  float height = 4;  // new terrain elevation for this cell (destructible terrain)
 }
 
 message GameEvent {
@@ -157,10 +161,18 @@ message PlayerComponentProto {
 message PositionComponentProto {
   float x = 1;
   float y = 2;
+  float z = 3;  // elevation (3D); 0 on legacy flat maps
 }
 
 message DirectionComponentProto {
   Direction direction = 1;
+}
+
+// 3D orientation: hull heading (yaw) + turret elevation (pitch), radians.
+// Added alongside DirectionComponentProto during the 2D→3D parity window.
+message OrientationComponentProto {
+  float yaw = 1;
+  float pitch = 2;
 }
 
 message TankComponentProto {
@@ -174,6 +186,7 @@ message BulletComponentProto {
   float speed = 2;
   float dx = 3;
   float dy = 4;
+  float dz = 5;  // 3D velocity component (straight-line, no gravity)
 }
 
 message EntityProto {
@@ -183,6 +196,8 @@ message EntityProto {
   DirectionComponentProto direction = 4;
   TankComponentProto tank = 5;
   BulletComponentProto bullet = 6;
+  QuestAvatarComponentProto questAvatar = 7;
+  OrientationComponentProto orientation = 8;  // 3D hull yaw + turret pitch
 }
 
 message FullSnapshot {
@@ -200,11 +215,20 @@ message DeltaSnapshot {
 }
 
 message InputCommand {
+  // Legacy 2D 4-way input (still read by the 2D server path / Phaser client).
   bool moveUp = 1;
   bool moveDown = 2;
   bool moveLeft = 3;
   bool moveRight = 4;
   bool shoot = 5;
+
+  // 3D keyboard input: rotation *intent*, server accumulates yaw/pitch.
+  bool moveForward = 6;
+  bool moveBackward = 7;
+  bool turnLeft = 8;    // rotate hull yaw left
+  bool turnRight = 9;   // rotate hull yaw right
+  bool aimUp = 10;      // raise turret pitch
+  bool aimDown = 11;    // lower turret pitch
 }
 
 // ── Lobby & match flow ─────────────────────────────────────────────
@@ -258,6 +282,24 @@ message LobbyCommand {
   }
 }
 
+enum LobbyRejectReason {
+  LOBBY_REJECT_UNSPECIFIED = 0;
+  NOT_IN_LOBBY_PHASE = 1;
+  PLAYER_NOT_FOUND = 2;
+  INVALID_NAME = 3;
+  INVALID_TEAM = 4;
+  TEAM_BALANCE = 5;
+  NOT_ON_PLAYABLE_TEAM = 6;
+  NOT_TEAM_CAPTAIN = 7;
+  INVALID_SPAWN_REGION = 8;
+  TEAM_SETUP_INCOMPLETE = 9;
+}
+
+message LobbyCommandRejected {
+  uint64 playerId = 1;
+  LobbyRejectReason reason = 2;
+}
+
 message MatchPhaseUpdate {
   MatchPhase phase = 1;
   uint32 countdownSeconds = 2;
@@ -286,4 +328,204 @@ message MatchResult {
   uint32 blueScore = 3;
   repeated PlayerMatchStats stats = 4;
   uint64 matchDurationMs = 5;
+}
+
+// ── TreasureQuest (2D in-world adventure + quiz) ────────────────────
+// All game↔client messages for the treasurequest plugin ride GameMessage.tq.
+// Spatial avatar state instead rides EntityProto.questAvatar via the snapshot path.
+// Enum values are prefixed to stay unique in the file-level enum namespace.
+
+enum ItemType {
+  ITEM_NONE = 0;
+  ITEM_SHIELD = 1;
+  ITEM_SPEED = 2;
+  ITEM_FAKE_MAP = 3;
+  ITEM_TREASURE_LOCK = 4;
+}
+
+enum QuizOutcome {
+  QUIZ_PENDING = 0;
+  QUIZ_PASS = 1;
+  QUIZ_FAIL = 2;
+}
+
+enum EncounterState {
+  ENC_OFFERED = 0;
+  ENC_ACCEPTED = 1;
+  ENC_DECLINED = 2;
+  ENC_CANCELLED = 3;
+}
+
+// Spatial avatar state, carried on EntityProto in full/delta snapshots.
+message QuestAvatarComponentProto {
+  uint64 playerId = 1;
+  string name = 2;
+  int32 score = 3;
+  string currentCheckpoint = 4;      // current target checkpoint node id
+  int32 checkpointsCleared = 5;
+  bool shielded = 6;                  // immune to PvP (quiz-win shield)
+  bool pvpCooldown = 7;              // cannot initiate PvP (post-win cooldown)
+  bool stealImmune = 8;             // cannot be robbed (post-loss immunity)
+  bool inDuel = 9;
+}
+
+message InventoryItemProto {
+  ItemType item = 1;
+  uint32 count = 2;
+}
+
+message QuizQuestionProto {
+  string questionId = 1;
+  string text = 2;
+  repeated string options = 3;       // server NEVER sends the correct index
+  uint32 timeLimitSec = 4;
+  uint32 points = 5;
+}
+
+message QuizAnswer {
+  string questionId = 1;
+  int32 selectedIndex = 2;
+}
+
+// server → client: available next hint(s); branching gives multiple options
+message HintReveal {
+  string text = 1;
+  repeated string nextCheckpointIds = 2;
+  float x = 3;                        // optional map marker
+  float y = 4;
+}
+
+// client → server: open the quiz at the current checkpoint zone
+message InteractCommand {
+  string checkpointId = 1;           // optional; server may infer from zone
+}
+
+// server → client: the quiz to solve at a checkpoint
+message QuizPrompt {
+  string quizId = 1;
+  string checkpointId = 2;
+  repeated QuizQuestionProto questions = 3;
+  uint32 passThreshold = 4;
+  uint64 deadlineTick = 5;
+}
+
+// client → server: submitted answers
+message QuizSubmit {
+  string quizId = 1;
+  repeated QuizAnswer answers = 2;
+}
+
+// server → client: scored result
+message QuizResult {
+  string quizId = 1;
+  QuizOutcome outcome = 2;
+  uint32 correctCount = 3;
+  uint32 totalQuestions = 4;
+  int32 pointsEarned = 5;
+  int32 totalScore = 6;
+}
+
+// server → both: a proximity encounter is available
+message EncounterOffer {
+  string encounterId = 1;
+  uint64 opponentPlayerId = 2;
+  string opponentName = 3;
+  EncounterState state = 4;
+  uint64 deadlineTick = 5;
+}
+
+// client → server: accept/decline a challenge
+message ChallengeResponse {
+  string encounterId = 1;
+  bool accept = 2;
+}
+
+// server → both: the duel questions (5 Q / 30 s)
+message DuelPrompt {
+  string duelId = 1;
+  uint64 opponentPlayerId = 2;
+  string opponentName = 3;
+  repeated QuizQuestionProto questions = 4;
+  uint64 deadlineTick = 5;
+}
+
+// client → server: duel answers
+message DuelSubmit {
+  string duelId = 1;
+  repeated QuizAnswer answers = 2;
+}
+
+// server → client: duel outcome (viewer-relative scoreDelta)
+message DuelResult {
+  string duelId = 1;
+  uint64 winnerPlayerId = 2;
+  bool tie = 3;
+  uint32 yourCorrect = 4;
+  uint32 opponentCorrect = 5;
+  int32 scoreDelta = 6;              // signed, from the viewer's perspective
+  int32 totalScore = 7;
+}
+
+// client → server: use an inventory item (target for Fake Map / Treasure Lock)
+message ItemUse {
+  ItemType item = 1;
+  uint64 targetPlayerId = 2;         // 0 = self
+}
+
+// server → client: full inventory after a change
+message InventoryUpdate {
+  repeated InventoryItemProto items = 1;
+}
+
+message LeaderboardEntry {
+  uint64 playerId = 1;
+  string name = 2;
+  int32 power = 3;
+  int32 score = 4;
+  int32 checkpointsCleared = 5;
+  uint32 rank = 6;
+}
+
+// server → client: live standings (finalStandings=true on match end)
+message Leaderboard {
+  repeated LeaderboardEntry entries = 1;
+  bool finalStandings = 2;
+}
+
+// server → client: first-to-treasure winner; match ends for all
+message ExpeditionComplete {
+  uint64 winnerPlayerId = 1;
+  string winnerName = 2;
+  bool youWon = 3;
+}
+
+// server → client: authoritative non-spatial state summary for the viewer
+message PlayerStateUpdate {
+  int32 score = 1;
+  string currentCheckpoint = 2;
+  int32 checkpointsCleared = 3;
+  bool shielded = 4;
+  bool pvpCooldown = 5;
+  bool stealImmune = 6;
+  repeated InventoryItemProto inventory = 7;
+}
+
+message TreasureQuestMessage {
+  oneof content {
+    InteractCommand interact = 1;
+    HintReveal hintReveal = 2;
+    QuizPrompt quizPrompt = 3;
+    QuizSubmit quizSubmit = 4;
+    QuizResult quizResult = 5;
+    EncounterOffer encounterOffer = 6;
+    ChallengeResponse challengeResponse = 7;
+    DuelPrompt duelPrompt = 8;
+    DuelSubmit duelSubmit = 9;
+    DuelResult duelResult = 10;
+    ItemUse itemUse = 11;
+    InventoryUpdate inventoryUpdate = 12;
+    Leaderboard leaderboard = 13;
+    ExpeditionComplete expeditionComplete = 14;
+    PlayerStateUpdate playerStateUpdate = 15;
+  }
 }

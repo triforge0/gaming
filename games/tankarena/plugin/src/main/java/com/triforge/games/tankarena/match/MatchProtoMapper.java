@@ -101,4 +101,19 @@ public final class MatchProtoMapper {
                 .setShotsHit(stats.shotsHit())
                 .build();
     }
+
+    public static com.triforge.protocol.proto.LobbyRejectReason toProto(LobbyRejectReason reason) {
+        return switch (reason) {
+            case NONE -> com.triforge.protocol.proto.LobbyRejectReason.LOBBY_REJECT_UNSPECIFIED;
+            case NOT_IN_LOBBY_PHASE -> com.triforge.protocol.proto.LobbyRejectReason.NOT_IN_LOBBY_PHASE;
+            case PLAYER_NOT_FOUND -> com.triforge.protocol.proto.LobbyRejectReason.PLAYER_NOT_FOUND;
+            case INVALID_NAME -> com.triforge.protocol.proto.LobbyRejectReason.INVALID_NAME;
+            case INVALID_TEAM -> com.triforge.protocol.proto.LobbyRejectReason.INVALID_TEAM;
+            case TEAM_BALANCE -> com.triforge.protocol.proto.LobbyRejectReason.TEAM_BALANCE;
+            case NOT_ON_PLAYABLE_TEAM -> com.triforge.protocol.proto.LobbyRejectReason.NOT_ON_PLAYABLE_TEAM;
+            case NOT_TEAM_CAPTAIN -> com.triforge.protocol.proto.LobbyRejectReason.NOT_TEAM_CAPTAIN;
+            case INVALID_SPAWN_REGION -> com.triforge.protocol.proto.LobbyRejectReason.INVALID_SPAWN_REGION;
+            case TEAM_SETUP_INCOMPLETE -> com.triforge.protocol.proto.LobbyRejectReason.TEAM_SETUP_INCOMPLETE;
+        };
+    }
 }

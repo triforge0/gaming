@@ -499,6 +499,8 @@ export const com = $root.com = (() => {
                      * @property {com.triforge.protocol.proto.IMatchPhaseUpdate|null} [matchPhaseUpdate] GameMessage matchPhaseUpdate
                      * @property {com.triforge.protocol.proto.IMatchResult|null} [matchResult] GameMessage matchResult
                      * @property {com.triforge.protocol.proto.IMapSnapshot|null} [mapSnapshot] GameMessage mapSnapshot
+                     * @property {com.triforge.protocol.proto.ITreasureQuestMessage|null} [tq] GameMessage tq
+                     * @property {com.triforge.protocol.proto.ILobbyCommandRejected|null} [lobbyCommandRejected] GameMessage lobbyCommandRejected
                      */
 
                     /**
@@ -604,17 +606,33 @@ export const com = $root.com = (() => {
                      */
                     GameMessage.prototype.mapSnapshot = null;
 
+                    /**
+                     * GameMessage tq.
+                     * @member {com.triforge.protocol.proto.ITreasureQuestMessage|null|undefined} tq
+                     * @memberof com.triforge.protocol.proto.GameMessage
+                     * @instance
+                     */
+                    GameMessage.prototype.tq = null;
+
+                    /**
+                     * GameMessage lobbyCommandRejected.
+                     * @member {com.triforge.protocol.proto.ILobbyCommandRejected|null|undefined} lobbyCommandRejected
+                     * @memberof com.triforge.protocol.proto.GameMessage
+                     * @instance
+                     */
+                    GameMessage.prototype.lobbyCommandRejected = null;
+
                     // OneOf field names bound to virtual getters and setters
                     let $oneOfFields;
 
                     /**
                      * GameMessage content.
-                     * @member {"joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|undefined} content
+                     * @member {"joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|undefined} content
                      * @memberof com.triforge.protocol.proto.GameMessage
                      * @instance
                      */
                     Object.defineProperty(GameMessage.prototype, "content", {
-                        get: $util.oneOfGetter($oneOfFields = ["joinRequest", "joinResponse", "fullSnapshot", "deltaSnapshot", "inputCommand", "gameEvent", "lobbyCommand", "roomLobbySnapshot", "matchPhaseUpdate", "matchResult", "mapSnapshot"]),
+                        get: $util.oneOfGetter($oneOfFields = ["joinRequest", "joinResponse", "fullSnapshot", "deltaSnapshot", "inputCommand", "gameEvent", "lobbyCommand", "roomLobbySnapshot", "matchPhaseUpdate", "matchResult", "mapSnapshot", "tq", "lobbyCommandRejected"]),
                         set: $util.oneOfSetter($oneOfFields)
                     });
 
@@ -668,6 +686,10 @@ export const com = $root.com = (() => {
                             $root.com.triforge.protocol.proto.MatchResult.encode(message.matchResult, writer.uint32(/* id 10, wireType 2 =*/82).fork(), q + 1).ldelim();
                         if (message.mapSnapshot != null && Object.hasOwnProperty.call(message, "mapSnapshot"))
                             $root.com.triforge.protocol.proto.MapSnapshot.encode(message.mapSnapshot, writer.uint32(/* id 11, wireType 2 =*/90).fork(), q + 1).ldelim();
+                        if (message.tq != null && Object.hasOwnProperty.call(message, "tq"))
+                            $root.com.triforge.protocol.proto.TreasureQuestMessage.encode(message.tq, writer.uint32(/* id 12, wireType 2 =*/98).fork(), q + 1).ldelim();
+                        if (message.lobbyCommandRejected != null && Object.hasOwnProperty.call(message, "lobbyCommandRejected"))
+                            $root.com.triforge.protocol.proto.LobbyCommandRejected.encode(message.lobbyCommandRejected, writer.uint32(/* id 13, wireType 2 =*/106).fork(), q + 1).ldelim();
                         return writer;
                     };
 
@@ -750,6 +772,14 @@ export const com = $root.com = (() => {
                                 }
                             case 11: {
                                     message.mapSnapshot = $root.com.triforge.protocol.proto.MapSnapshot.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 12: {
+                                    message.tq = $root.com.triforge.protocol.proto.TreasureQuestMessage.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 13: {
+                                    message.lobbyCommandRejected = $root.com.triforge.protocol.proto.LobbyCommandRejected.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 }
                             default:
@@ -900,6 +930,26 @@ export const com = $root.com = (() => {
                                     return "mapSnapshot." + error;
                             }
                         }
+                        if (message.tq != null && Object.hasOwnProperty.call(message, "tq")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.TreasureQuestMessage.verify(message.tq, long + 1);
+                                if (error)
+                                    return "tq." + error;
+                            }
+                        }
+                        if (message.lobbyCommandRejected != null && Object.hasOwnProperty.call(message, "lobbyCommandRejected")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.LobbyCommandRejected.verify(message.lobbyCommandRejected, long + 1);
+                                if (error)
+                                    return "lobbyCommandRejected." + error;
+                            }
+                        }
                         return null;
                     };
 
@@ -976,6 +1026,16 @@ export const com = $root.com = (() => {
                                 throw TypeError(".com.triforge.protocol.proto.GameMessage.mapSnapshot: object expected");
                             message.mapSnapshot = $root.com.triforge.protocol.proto.MapSnapshot.fromObject(object.mapSnapshot, long + 1);
                         }
+                        if (object.tq != null) {
+                            if (!$util.isObject(object.tq))
+                                throw TypeError(".com.triforge.protocol.proto.GameMessage.tq: object expected");
+                            message.tq = $root.com.triforge.protocol.proto.TreasureQuestMessage.fromObject(object.tq, long + 1);
+                        }
+                        if (object.lobbyCommandRejected != null) {
+                            if (!$util.isObject(object.lobbyCommandRejected))
+                                throw TypeError(".com.triforge.protocol.proto.GameMessage.lobbyCommandRejected: object expected");
+                            message.lobbyCommandRejected = $root.com.triforge.protocol.proto.LobbyCommandRejected.fromObject(object.lobbyCommandRejected, long + 1);
+                        }
                         return message;
                     };
 
@@ -1050,6 +1110,16 @@ export const com = $root.com = (() => {
                             object.mapSnapshot = $root.com.triforge.protocol.proto.MapSnapshot.toObject(message.mapSnapshot, options, q + 1);
                             if (options.oneofs)
                                 object.content = "mapSnapshot";
+                        }
+                        if (message.tq != null && Object.hasOwnProperty.call(message, "tq")) {
+                            object.tq = $root.com.triforge.protocol.proto.TreasureQuestMessage.toObject(message.tq, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "tq";
+                        }
+                        if (message.lobbyCommandRejected != null && Object.hasOwnProperty.call(message, "lobbyCommandRejected")) {
+                            object.lobbyCommandRejected = $root.com.triforge.protocol.proto.LobbyCommandRejected.toObject(message.lobbyCommandRejected, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "lobbyCommandRejected";
                         }
                         return object;
                     };
@@ -2113,6 +2183,7 @@ export const com = $root.com = (() => {
                      * @property {number|null} [tileSize] MapSnapshot tileSize
                      * @property {Array.<com.triforge.protocol.proto.TileType>|null} [tiles] MapSnapshot tiles
                      * @property {Array.<com.triforge.protocol.proto.IHeadquartersProto>|null} [headquarters] MapSnapshot headquarters
+                     * @property {Array.<number>|null} [heights] MapSnapshot heights
                      */
 
                     /**
@@ -2126,6 +2197,7 @@ export const com = $root.com = (() => {
                     function MapSnapshot(properties) {
                         this.tiles = [];
                         this.headquarters = [];
+                        this.heights = [];
                         if (properties)
                             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                                 if (properties[keys[i]] != null && keys[i] !== "__proto__")
@@ -2173,6 +2245,14 @@ export const com = $root.com = (() => {
                     MapSnapshot.prototype.headquarters = $util.emptyArray;
 
                     /**
+                     * MapSnapshot heights.
+                     * @member {Array.<number>} heights
+                     * @memberof com.triforge.protocol.proto.MapSnapshot
+                     * @instance
+                     */
+                    MapSnapshot.prototype.heights = $util.emptyArray;
+
+                    /**
                      * Creates a new MapSnapshot instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.MapSnapshot
@@ -2215,6 +2295,12 @@ export const com = $root.com = (() => {
                         if (message.headquarters != null && message.headquarters.length)
                             for (let i = 0; i < message.headquarters.length; ++i)
                                 $root.com.triforge.protocol.proto.HeadquartersProto.encode(message.headquarters[i], writer.uint32(/* id 5, wireType 2 =*/42).fork(), q + 1).ldelim();
+                        if (message.heights != null && message.heights.length) {
+                            writer.uint32(/* id 6, wireType 2 =*/50).fork();
+                            for (let i = 0; i < message.heights.length; ++i)
+                                writer.float(message.heights[i]);
+                            writer.ldelim();
+                        }
                         return writer;
                     };
 
@@ -2282,6 +2368,17 @@ export const com = $root.com = (() => {
                                     if (!(message.headquarters && message.headquarters.length))
                                         message.headquarters = [];
                                     message.headquarters.push($root.com.triforge.protocol.proto.HeadquartersProto.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            case 6: {
+                                    if (!(message.heights && message.heights.length))
+                                        message.heights = [];
+                                    if ((tag & 7) === 2) {
+                                        let end2 = reader.uint32() + reader.pos;
+                                        while (reader.pos < end2)
+                                            message.heights.push(reader.float());
+                                    } else
+                                        message.heights.push(reader.float());
                                     break;
                                 }
                             default:
@@ -2358,6 +2455,13 @@ export const com = $root.com = (() => {
                                 if (error)
                                     return "headquarters." + error;
                             }
+                        }
+                        if (message.heights != null && Object.hasOwnProperty.call(message, "heights")) {
+                            if (!Array.isArray(message.heights))
+                                return "heights: array expected";
+                            for (let i = 0; i < message.heights.length; ++i)
+                                if (typeof message.heights[i] !== "number")
+                                    return "heights: number[] expected";
                         }
                         return null;
                     };
@@ -2441,6 +2545,13 @@ export const com = $root.com = (() => {
                                 message.headquarters[i] = $root.com.triforge.protocol.proto.HeadquartersProto.fromObject(object.headquarters[i], long + 1);
                             }
                         }
+                        if (object.heights) {
+                            if (!Array.isArray(object.heights))
+                                throw TypeError(".com.triforge.protocol.proto.MapSnapshot.heights: array expected");
+                            message.heights = [];
+                            for (let i = 0; i < object.heights.length; ++i)
+                                message.heights[i] = Number(object.heights[i]);
+                        }
                         return message;
                     };
 
@@ -2464,6 +2575,7 @@ export const com = $root.com = (() => {
                         if (options.arrays || options.defaults) {
                             object.tiles = [];
                             object.headquarters = [];
+                            object.heights = [];
                         }
                         if (options.defaults) {
                             object.width = 0;
@@ -2485,6 +2597,11 @@ export const com = $root.com = (() => {
                             object.headquarters = [];
                             for (let j = 0; j < message.headquarters.length; ++j)
                                 object.headquarters[j] = $root.com.triforge.protocol.proto.HeadquartersProto.toObject(message.headquarters[j], options, q + 1);
+                        }
+                        if (message.heights && message.heights.length) {
+                            object.heights = [];
+                            for (let j = 0; j < message.heights.length; ++j)
+                                object.heights[j] = options.json && !isFinite(message.heights[j]) ? String(message.heights[j]) : message.heights[j];
                         }
                         return object;
                     };
@@ -2894,6 +3011,7 @@ export const com = $root.com = (() => {
                      * @property {number|null} [x] TileChange x
                      * @property {number|null} [y] TileChange y
                      * @property {com.triforge.protocol.proto.TileType|null} [tile] TileChange tile
+                     * @property {number|null} [height] TileChange height
                      */
 
                     /**
@@ -2936,6 +3054,14 @@ export const com = $root.com = (() => {
                     TileChange.prototype.tile = 0;
 
                     /**
+                     * TileChange height.
+                     * @member {number} height
+                     * @memberof com.triforge.protocol.proto.TileChange
+                     * @instance
+                     */
+                    TileChange.prototype.height = 0;
+
+                    /**
                      * Creates a new TileChange instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.TileChange
@@ -2969,6 +3095,8 @@ export const com = $root.com = (() => {
                             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.y);
                         if (message.tile != null && Object.hasOwnProperty.call(message, "tile"))
                             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.tile);
+                        if (message.height != null && Object.hasOwnProperty.call(message, "height"))
+                            writer.uint32(/* id 4, wireType 5 =*/37).float(message.height);
                         return writer;
                     };
 
@@ -3019,6 +3147,10 @@ export const com = $root.com = (() => {
                                 }
                             case 3: {
                                     message.tile = reader.int32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.height = reader.float();
                                     break;
                                 }
                             default:
@@ -3080,6 +3212,9 @@ export const com = $root.com = (() => {
                             case 7:
                                 break;
                             }
+                        if (message.height != null && Object.hasOwnProperty.call(message, "height"))
+                            if (typeof message.height !== "number")
+                                return "height: number expected";
                         return null;
                     };
 
@@ -3145,6 +3280,8 @@ export const com = $root.com = (() => {
                             message.tile = 7;
                             break;
                         }
+                        if (object.height != null)
+                            message.height = Number(object.height);
                         return message;
                     };
 
@@ -3169,6 +3306,7 @@ export const com = $root.com = (() => {
                             object.x = 0;
                             object.y = 0;
                             object.tile = options.enums === String ? "EMPTY" : 0;
+                            object.height = 0;
                         }
                         if (message.x != null && Object.hasOwnProperty.call(message, "x"))
                             object.x = message.x;
@@ -3176,6 +3314,8 @@ export const com = $root.com = (() => {
                             object.y = message.y;
                         if (message.tile != null && Object.hasOwnProperty.call(message, "tile"))
                             object.tile = options.enums === String ? $root.com.triforge.protocol.proto.TileType[message.tile] === undefined ? message.tile : $root.com.triforge.protocol.proto.TileType[message.tile] : message.tile;
+                        if (message.height != null && Object.hasOwnProperty.call(message, "height"))
+                            object.height = options.json && !isFinite(message.height) ? String(message.height) : message.height;
                         return object;
                     };
 
@@ -4144,6 +4284,7 @@ export const com = $root.com = (() => {
                      * @interface IPositionComponentProto
                      * @property {number|null} [x] PositionComponentProto x
                      * @property {number|null} [y] PositionComponentProto y
+                     * @property {number|null} [z] PositionComponentProto z
                      */
 
                     /**
@@ -4178,6 +4319,14 @@ export const com = $root.com = (() => {
                     PositionComponentProto.prototype.y = 0;
 
                     /**
+                     * PositionComponentProto z.
+                     * @member {number} z
+                     * @memberof com.triforge.protocol.proto.PositionComponentProto
+                     * @instance
+                     */
+                    PositionComponentProto.prototype.z = 0;
+
+                    /**
                      * Creates a new PositionComponentProto instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.PositionComponentProto
@@ -4209,6 +4358,8 @@ export const com = $root.com = (() => {
                             writer.uint32(/* id 1, wireType 5 =*/13).float(message.x);
                         if (message.y != null && Object.hasOwnProperty.call(message, "y"))
                             writer.uint32(/* id 2, wireType 5 =*/21).float(message.y);
+                        if (message.z != null && Object.hasOwnProperty.call(message, "z"))
+                            writer.uint32(/* id 3, wireType 5 =*/29).float(message.z);
                         return writer;
                     };
 
@@ -4257,6 +4408,10 @@ export const com = $root.com = (() => {
                                     message.y = reader.float();
                                     break;
                                 }
+                            case 3: {
+                                    message.z = reader.float();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7, long);
                                 break;
@@ -4302,6 +4457,9 @@ export const com = $root.com = (() => {
                         if (message.y != null && Object.hasOwnProperty.call(message, "y"))
                             if (typeof message.y !== "number")
                                 return "y: number expected";
+                        if (message.z != null && Object.hasOwnProperty.call(message, "z"))
+                            if (typeof message.z !== "number")
+                                return "z: number expected";
                         return null;
                     };
 
@@ -4327,6 +4485,8 @@ export const com = $root.com = (() => {
                             message.x = Number(object.x);
                         if (object.y != null)
                             message.y = Number(object.y);
+                        if (object.z != null)
+                            message.z = Number(object.z);
                         return message;
                     };
 
@@ -4350,11 +4510,14 @@ export const com = $root.com = (() => {
                         if (options.defaults) {
                             object.x = 0;
                             object.y = 0;
+                            object.z = 0;
                         }
                         if (message.x != null && Object.hasOwnProperty.call(message, "x"))
                             object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
                         if (message.y != null && Object.hasOwnProperty.call(message, "y"))
                             object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
+                        if (message.z != null && Object.hasOwnProperty.call(message, "z"))
+                            object.z = options.json && !isFinite(message.z) ? String(message.z) : message.z;
                         return object;
                     };
 
@@ -4641,6 +4804,257 @@ export const com = $root.com = (() => {
                     };
 
                     return DirectionComponentProto;
+                })();
+
+                proto.OrientationComponentProto = (function() {
+
+                    /**
+                     * Properties of an OrientationComponentProto.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IOrientationComponentProto
+                     * @property {number|null} [yaw] OrientationComponentProto yaw
+                     * @property {number|null} [pitch] OrientationComponentProto pitch
+                     */
+
+                    /**
+                     * Constructs a new OrientationComponentProto.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents an OrientationComponentProto.
+                     * @implements IOrientationComponentProto
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IOrientationComponentProto=} [properties] Properties to set
+                     */
+                    function OrientationComponentProto(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * OrientationComponentProto yaw.
+                     * @member {number} yaw
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @instance
+                     */
+                    OrientationComponentProto.prototype.yaw = 0;
+
+                    /**
+                     * OrientationComponentProto pitch.
+                     * @member {number} pitch
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @instance
+                     */
+                    OrientationComponentProto.prototype.pitch = 0;
+
+                    /**
+                     * Creates a new OrientationComponentProto instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOrientationComponentProto=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.OrientationComponentProto} OrientationComponentProto instance
+                     */
+                    OrientationComponentProto.create = function create(properties) {
+                        return new OrientationComponentProto(properties);
+                    };
+
+                    /**
+                     * Encodes the specified OrientationComponentProto message. Does not implicitly {@link com.triforge.protocol.proto.OrientationComponentProto.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOrientationComponentProto} message OrientationComponentProto message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OrientationComponentProto.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.yaw != null && Object.hasOwnProperty.call(message, "yaw"))
+                            writer.uint32(/* id 1, wireType 5 =*/13).float(message.yaw);
+                        if (message.pitch != null && Object.hasOwnProperty.call(message, "pitch"))
+                            writer.uint32(/* id 2, wireType 5 =*/21).float(message.pitch);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified OrientationComponentProto message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OrientationComponentProto.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOrientationComponentProto} message OrientationComponentProto message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OrientationComponentProto.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes an OrientationComponentProto message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.OrientationComponentProto} OrientationComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OrientationComponentProto.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.OrientationComponentProto();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.yaw = reader.float();
+                                    break;
+                                }
+                            case 2: {
+                                    message.pitch = reader.float();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes an OrientationComponentProto message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.OrientationComponentProto} OrientationComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OrientationComponentProto.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies an OrientationComponentProto message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    OrientationComponentProto.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.yaw != null && Object.hasOwnProperty.call(message, "yaw"))
+                            if (typeof message.yaw !== "number")
+                                return "yaw: number expected";
+                        if (message.pitch != null && Object.hasOwnProperty.call(message, "pitch"))
+                            if (typeof message.pitch !== "number")
+                                return "pitch: number expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates an OrientationComponentProto message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.OrientationComponentProto} OrientationComponentProto
+                     */
+                    OrientationComponentProto.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.OrientationComponentProto)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.OrientationComponentProto: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.OrientationComponentProto();
+                        if (object.yaw != null)
+                            message.yaw = Number(object.yaw);
+                        if (object.pitch != null)
+                            message.pitch = Number(object.pitch);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from an OrientationComponentProto message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.OrientationComponentProto} message OrientationComponentProto
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    OrientationComponentProto.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.yaw = 0;
+                            object.pitch = 0;
+                        }
+                        if (message.yaw != null && Object.hasOwnProperty.call(message, "yaw"))
+                            object.yaw = options.json && !isFinite(message.yaw) ? String(message.yaw) : message.yaw;
+                        if (message.pitch != null && Object.hasOwnProperty.call(message, "pitch"))
+                            object.pitch = options.json && !isFinite(message.pitch) ? String(message.pitch) : message.pitch;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this OrientationComponentProto to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    OrientationComponentProto.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for OrientationComponentProto
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.OrientationComponentProto
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    OrientationComponentProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.OrientationComponentProto";
+                    };
+
+                    return OrientationComponentProto;
                 })();
 
                 proto.TankComponentProto = (function() {
@@ -4959,6 +5373,7 @@ export const com = $root.com = (() => {
                      * @property {number|null} [speed] BulletComponentProto speed
                      * @property {number|null} [dx] BulletComponentProto dx
                      * @property {number|null} [dy] BulletComponentProto dy
+                     * @property {number|null} [dz] BulletComponentProto dz
                      */
 
                     /**
@@ -5009,6 +5424,14 @@ export const com = $root.com = (() => {
                     BulletComponentProto.prototype.dy = 0;
 
                     /**
+                     * BulletComponentProto dz.
+                     * @member {number} dz
+                     * @memberof com.triforge.protocol.proto.BulletComponentProto
+                     * @instance
+                     */
+                    BulletComponentProto.prototype.dz = 0;
+
+                    /**
                      * Creates a new BulletComponentProto instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.BulletComponentProto
@@ -5044,6 +5467,8 @@ export const com = $root.com = (() => {
                             writer.uint32(/* id 3, wireType 5 =*/29).float(message.dx);
                         if (message.dy != null && Object.hasOwnProperty.call(message, "dy"))
                             writer.uint32(/* id 4, wireType 5 =*/37).float(message.dy);
+                        if (message.dz != null && Object.hasOwnProperty.call(message, "dz"))
+                            writer.uint32(/* id 5, wireType 5 =*/45).float(message.dz);
                         return writer;
                     };
 
@@ -5100,6 +5525,10 @@ export const com = $root.com = (() => {
                                     message.dy = reader.float();
                                     break;
                                 }
+                            case 5: {
+                                    message.dz = reader.float();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7, long);
                                 break;
@@ -5151,6 +5580,9 @@ export const com = $root.com = (() => {
                         if (message.dy != null && Object.hasOwnProperty.call(message, "dy"))
                             if (typeof message.dy !== "number")
                                 return "dy: number expected";
+                        if (message.dz != null && Object.hasOwnProperty.call(message, "dz"))
+                            if (typeof message.dz !== "number")
+                                return "dz: number expected";
                         return null;
                     };
 
@@ -5187,6 +5619,8 @@ export const com = $root.com = (() => {
                             message.dx = Number(object.dx);
                         if (object.dy != null)
                             message.dy = Number(object.dy);
+                        if (object.dz != null)
+                            message.dz = Number(object.dz);
                         return message;
                     };
 
@@ -5216,6 +5650,7 @@ export const com = $root.com = (() => {
                             object.speed = 0;
                             object.dx = 0;
                             object.dy = 0;
+                            object.dz = 0;
                         }
                         if (message.ownerEntityId != null && Object.hasOwnProperty.call(message, "ownerEntityId"))
                             if (typeof BigInt !== "undefined" && options.longs === BigInt)
@@ -5230,6 +5665,8 @@ export const com = $root.com = (() => {
                             object.dx = options.json && !isFinite(message.dx) ? String(message.dx) : message.dx;
                         if (message.dy != null && Object.hasOwnProperty.call(message, "dy"))
                             object.dy = options.json && !isFinite(message.dy) ? String(message.dy) : message.dy;
+                        if (message.dz != null && Object.hasOwnProperty.call(message, "dz"))
+                            object.dz = options.json && !isFinite(message.dz) ? String(message.dz) : message.dz;
                         return object;
                     };
 
@@ -5274,6 +5711,8 @@ export const com = $root.com = (() => {
                      * @property {com.triforge.protocol.proto.IDirectionComponentProto|null} [direction] EntityProto direction
                      * @property {com.triforge.protocol.proto.ITankComponentProto|null} [tank] EntityProto tank
                      * @property {com.triforge.protocol.proto.IBulletComponentProto|null} [bullet] EntityProto bullet
+                     * @property {com.triforge.protocol.proto.IQuestAvatarComponentProto|null} [questAvatar] EntityProto questAvatar
+                     * @property {com.triforge.protocol.proto.IOrientationComponentProto|null} [orientation] EntityProto orientation
                      */
 
                     /**
@@ -5340,6 +5779,22 @@ export const com = $root.com = (() => {
                     EntityProto.prototype.bullet = null;
 
                     /**
+                     * EntityProto questAvatar.
+                     * @member {com.triforge.protocol.proto.IQuestAvatarComponentProto|null|undefined} questAvatar
+                     * @memberof com.triforge.protocol.proto.EntityProto
+                     * @instance
+                     */
+                    EntityProto.prototype.questAvatar = null;
+
+                    /**
+                     * EntityProto orientation.
+                     * @member {com.triforge.protocol.proto.IOrientationComponentProto|null|undefined} orientation
+                     * @memberof com.triforge.protocol.proto.EntityProto
+                     * @instance
+                     */
+                    EntityProto.prototype.orientation = null;
+
+                    /**
                      * Creates a new EntityProto instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.EntityProto
@@ -5379,6 +5834,10 @@ export const com = $root.com = (() => {
                             $root.com.triforge.protocol.proto.TankComponentProto.encode(message.tank, writer.uint32(/* id 5, wireType 2 =*/42).fork(), q + 1).ldelim();
                         if (message.bullet != null && Object.hasOwnProperty.call(message, "bullet"))
                             $root.com.triforge.protocol.proto.BulletComponentProto.encode(message.bullet, writer.uint32(/* id 6, wireType 2 =*/50).fork(), q + 1).ldelim();
+                        if (message.questAvatar != null && Object.hasOwnProperty.call(message, "questAvatar"))
+                            $root.com.triforge.protocol.proto.QuestAvatarComponentProto.encode(message.questAvatar, writer.uint32(/* id 7, wireType 2 =*/58).fork(), q + 1).ldelim();
+                        if (message.orientation != null && Object.hasOwnProperty.call(message, "orientation"))
+                            $root.com.triforge.protocol.proto.OrientationComponentProto.encode(message.orientation, writer.uint32(/* id 8, wireType 2 =*/66).fork(), q + 1).ldelim();
                         return writer;
                     };
 
@@ -5441,6 +5900,14 @@ export const com = $root.com = (() => {
                                 }
                             case 6: {
                                     message.bullet = $root.com.triforge.protocol.proto.BulletComponentProto.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 7: {
+                                    message.questAvatar = $root.com.triforge.protocol.proto.QuestAvatarComponentProto.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 8: {
+                                    message.orientation = $root.com.triforge.protocol.proto.OrientationComponentProto.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 }
                             default:
@@ -5510,6 +5977,16 @@ export const com = $root.com = (() => {
                             if (error)
                                 return "bullet." + error;
                         }
+                        if (message.questAvatar != null && Object.hasOwnProperty.call(message, "questAvatar")) {
+                            let error = $root.com.triforge.protocol.proto.QuestAvatarComponentProto.verify(message.questAvatar, long + 1);
+                            if (error)
+                                return "questAvatar." + error;
+                        }
+                        if (message.orientation != null && Object.hasOwnProperty.call(message, "orientation")) {
+                            let error = $root.com.triforge.protocol.proto.OrientationComponentProto.verify(message.orientation, long + 1);
+                            if (error)
+                                return "orientation." + error;
+                        }
                         return null;
                     };
 
@@ -5565,6 +6042,16 @@ export const com = $root.com = (() => {
                                 throw TypeError(".com.triforge.protocol.proto.EntityProto.bullet: object expected");
                             message.bullet = $root.com.triforge.protocol.proto.BulletComponentProto.fromObject(object.bullet, long + 1);
                         }
+                        if (object.questAvatar != null) {
+                            if (!$util.isObject(object.questAvatar))
+                                throw TypeError(".com.triforge.protocol.proto.EntityProto.questAvatar: object expected");
+                            message.questAvatar = $root.com.triforge.protocol.proto.QuestAvatarComponentProto.fromObject(object.questAvatar, long + 1);
+                        }
+                        if (object.orientation != null) {
+                            if (!$util.isObject(object.orientation))
+                                throw TypeError(".com.triforge.protocol.proto.EntityProto.orientation: object expected");
+                            message.orientation = $root.com.triforge.protocol.proto.OrientationComponentProto.fromObject(object.orientation, long + 1);
+                        }
                         return message;
                     };
 
@@ -5596,6 +6083,8 @@ export const com = $root.com = (() => {
                             object.direction = null;
                             object.tank = null;
                             object.bullet = null;
+                            object.questAvatar = null;
+                            object.orientation = null;
                         }
                         if (message.entityId != null && Object.hasOwnProperty.call(message, "entityId"))
                             if (typeof BigInt !== "undefined" && options.longs === BigInt)
@@ -5614,6 +6103,10 @@ export const com = $root.com = (() => {
                             object.tank = $root.com.triforge.protocol.proto.TankComponentProto.toObject(message.tank, options, q + 1);
                         if (message.bullet != null && Object.hasOwnProperty.call(message, "bullet"))
                             object.bullet = $root.com.triforge.protocol.proto.BulletComponentProto.toObject(message.bullet, options, q + 1);
+                        if (message.questAvatar != null && Object.hasOwnProperty.call(message, "questAvatar"))
+                            object.questAvatar = $root.com.triforge.protocol.proto.QuestAvatarComponentProto.toObject(message.questAvatar, options, q + 1);
+                        if (message.orientation != null && Object.hasOwnProperty.call(message, "orientation"))
+                            object.orientation = $root.com.triforge.protocol.proto.OrientationComponentProto.toObject(message.orientation, options, q + 1);
                         return object;
                     };
 
@@ -6395,6 +6888,12 @@ export const com = $root.com = (() => {
                      * @property {boolean|null} [moveLeft] InputCommand moveLeft
                      * @property {boolean|null} [moveRight] InputCommand moveRight
                      * @property {boolean|null} [shoot] InputCommand shoot
+                     * @property {boolean|null} [moveForward] InputCommand moveForward
+                     * @property {boolean|null} [moveBackward] InputCommand moveBackward
+                     * @property {boolean|null} [turnLeft] InputCommand turnLeft
+                     * @property {boolean|null} [turnRight] InputCommand turnRight
+                     * @property {boolean|null} [aimUp] InputCommand aimUp
+                     * @property {boolean|null} [aimDown] InputCommand aimDown
                      */
 
                     /**
@@ -6453,6 +6952,54 @@ export const com = $root.com = (() => {
                     InputCommand.prototype.shoot = false;
 
                     /**
+                     * InputCommand moveForward.
+                     * @member {boolean} moveForward
+                     * @memberof com.triforge.protocol.proto.InputCommand
+                     * @instance
+                     */
+                    InputCommand.prototype.moveForward = false;
+
+                    /**
+                     * InputCommand moveBackward.
+                     * @member {boolean} moveBackward
+                     * @memberof com.triforge.protocol.proto.InputCommand
+                     * @instance
+                     */
+                    InputCommand.prototype.moveBackward = false;
+
+                    /**
+                     * InputCommand turnLeft.
+                     * @member {boolean} turnLeft
+                     * @memberof com.triforge.protocol.proto.InputCommand
+                     * @instance
+                     */
+                    InputCommand.prototype.turnLeft = false;
+
+                    /**
+                     * InputCommand turnRight.
+                     * @member {boolean} turnRight
+                     * @memberof com.triforge.protocol.proto.InputCommand
+                     * @instance
+                     */
+                    InputCommand.prototype.turnRight = false;
+
+                    /**
+                     * InputCommand aimUp.
+                     * @member {boolean} aimUp
+                     * @memberof com.triforge.protocol.proto.InputCommand
+                     * @instance
+                     */
+                    InputCommand.prototype.aimUp = false;
+
+                    /**
+                     * InputCommand aimDown.
+                     * @member {boolean} aimDown
+                     * @memberof com.triforge.protocol.proto.InputCommand
+                     * @instance
+                     */
+                    InputCommand.prototype.aimDown = false;
+
+                    /**
                      * Creates a new InputCommand instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.InputCommand
@@ -6490,6 +7037,18 @@ export const com = $root.com = (() => {
                             writer.uint32(/* id 4, wireType 0 =*/32).bool(message.moveRight);
                         if (message.shoot != null && Object.hasOwnProperty.call(message, "shoot"))
                             writer.uint32(/* id 5, wireType 0 =*/40).bool(message.shoot);
+                        if (message.moveForward != null && Object.hasOwnProperty.call(message, "moveForward"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).bool(message.moveForward);
+                        if (message.moveBackward != null && Object.hasOwnProperty.call(message, "moveBackward"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).bool(message.moveBackward);
+                        if (message.turnLeft != null && Object.hasOwnProperty.call(message, "turnLeft"))
+                            writer.uint32(/* id 8, wireType 0 =*/64).bool(message.turnLeft);
+                        if (message.turnRight != null && Object.hasOwnProperty.call(message, "turnRight"))
+                            writer.uint32(/* id 9, wireType 0 =*/72).bool(message.turnRight);
+                        if (message.aimUp != null && Object.hasOwnProperty.call(message, "aimUp"))
+                            writer.uint32(/* id 10, wireType 0 =*/80).bool(message.aimUp);
+                        if (message.aimDown != null && Object.hasOwnProperty.call(message, "aimDown"))
+                            writer.uint32(/* id 11, wireType 0 =*/88).bool(message.aimDown);
                         return writer;
                     };
 
@@ -6550,6 +7109,30 @@ export const com = $root.com = (() => {
                                     message.shoot = reader.bool();
                                     break;
                                 }
+                            case 6: {
+                                    message.moveForward = reader.bool();
+                                    break;
+                                }
+                            case 7: {
+                                    message.moveBackward = reader.bool();
+                                    break;
+                                }
+                            case 8: {
+                                    message.turnLeft = reader.bool();
+                                    break;
+                                }
+                            case 9: {
+                                    message.turnRight = reader.bool();
+                                    break;
+                                }
+                            case 10: {
+                                    message.aimUp = reader.bool();
+                                    break;
+                                }
+                            case 11: {
+                                    message.aimDown = reader.bool();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7, long);
                                 break;
@@ -6604,6 +7187,24 @@ export const com = $root.com = (() => {
                         if (message.shoot != null && Object.hasOwnProperty.call(message, "shoot"))
                             if (typeof message.shoot !== "boolean")
                                 return "shoot: boolean expected";
+                        if (message.moveForward != null && Object.hasOwnProperty.call(message, "moveForward"))
+                            if (typeof message.moveForward !== "boolean")
+                                return "moveForward: boolean expected";
+                        if (message.moveBackward != null && Object.hasOwnProperty.call(message, "moveBackward"))
+                            if (typeof message.moveBackward !== "boolean")
+                                return "moveBackward: boolean expected";
+                        if (message.turnLeft != null && Object.hasOwnProperty.call(message, "turnLeft"))
+                            if (typeof message.turnLeft !== "boolean")
+                                return "turnLeft: boolean expected";
+                        if (message.turnRight != null && Object.hasOwnProperty.call(message, "turnRight"))
+                            if (typeof message.turnRight !== "boolean")
+                                return "turnRight: boolean expected";
+                        if (message.aimUp != null && Object.hasOwnProperty.call(message, "aimUp"))
+                            if (typeof message.aimUp !== "boolean")
+                                return "aimUp: boolean expected";
+                        if (message.aimDown != null && Object.hasOwnProperty.call(message, "aimDown"))
+                            if (typeof message.aimDown !== "boolean")
+                                return "aimDown: boolean expected";
                         return null;
                     };
 
@@ -6635,6 +7236,18 @@ export const com = $root.com = (() => {
                             message.moveRight = Boolean(object.moveRight);
                         if (object.shoot != null)
                             message.shoot = Boolean(object.shoot);
+                        if (object.moveForward != null)
+                            message.moveForward = Boolean(object.moveForward);
+                        if (object.moveBackward != null)
+                            message.moveBackward = Boolean(object.moveBackward);
+                        if (object.turnLeft != null)
+                            message.turnLeft = Boolean(object.turnLeft);
+                        if (object.turnRight != null)
+                            message.turnRight = Boolean(object.turnRight);
+                        if (object.aimUp != null)
+                            message.aimUp = Boolean(object.aimUp);
+                        if (object.aimDown != null)
+                            message.aimDown = Boolean(object.aimDown);
                         return message;
                     };
 
@@ -6661,6 +7274,12 @@ export const com = $root.com = (() => {
                             object.moveLeft = false;
                             object.moveRight = false;
                             object.shoot = false;
+                            object.moveForward = false;
+                            object.moveBackward = false;
+                            object.turnLeft = false;
+                            object.turnRight = false;
+                            object.aimUp = false;
+                            object.aimDown = false;
                         }
                         if (message.moveUp != null && Object.hasOwnProperty.call(message, "moveUp"))
                             object.moveUp = message.moveUp;
@@ -6672,6 +7291,18 @@ export const com = $root.com = (() => {
                             object.moveRight = message.moveRight;
                         if (message.shoot != null && Object.hasOwnProperty.call(message, "shoot"))
                             object.shoot = message.shoot;
+                        if (message.moveForward != null && Object.hasOwnProperty.call(message, "moveForward"))
+                            object.moveForward = message.moveForward;
+                        if (message.moveBackward != null && Object.hasOwnProperty.call(message, "moveBackward"))
+                            object.moveBackward = message.moveBackward;
+                        if (message.turnLeft != null && Object.hasOwnProperty.call(message, "turnLeft"))
+                            object.turnLeft = message.turnLeft;
+                        if (message.turnRight != null && Object.hasOwnProperty.call(message, "turnRight"))
+                            object.turnRight = message.turnRight;
+                        if (message.aimUp != null && Object.hasOwnProperty.call(message, "aimUp"))
+                            object.aimUp = message.aimUp;
+                        if (message.aimDown != null && Object.hasOwnProperty.call(message, "aimDown"))
+                            object.aimDown = message.aimDown;
                         return object;
                     };
 
@@ -9888,6 +10519,362 @@ export const com = $root.com = (() => {
                     return LobbyCommand;
                 })();
 
+                /**
+                 * LobbyRejectReason enum.
+                 * @name com.triforge.protocol.proto.LobbyRejectReason
+                 * @enum {number}
+                 * @property {number} LOBBY_REJECT_UNSPECIFIED=0 LOBBY_REJECT_UNSPECIFIED value
+                 * @property {number} NOT_IN_LOBBY_PHASE=1 NOT_IN_LOBBY_PHASE value
+                 * @property {number} PLAYER_NOT_FOUND=2 PLAYER_NOT_FOUND value
+                 * @property {number} INVALID_NAME=3 INVALID_NAME value
+                 * @property {number} INVALID_TEAM=4 INVALID_TEAM value
+                 * @property {number} TEAM_BALANCE=5 TEAM_BALANCE value
+                 * @property {number} NOT_ON_PLAYABLE_TEAM=6 NOT_ON_PLAYABLE_TEAM value
+                 * @property {number} NOT_TEAM_CAPTAIN=7 NOT_TEAM_CAPTAIN value
+                 * @property {number} INVALID_SPAWN_REGION=8 INVALID_SPAWN_REGION value
+                 * @property {number} TEAM_SETUP_INCOMPLETE=9 TEAM_SETUP_INCOMPLETE value
+                 */
+                proto.LobbyRejectReason = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "LOBBY_REJECT_UNSPECIFIED"] = 0;
+                    values[valuesById[1] = "NOT_IN_LOBBY_PHASE"] = 1;
+                    values[valuesById[2] = "PLAYER_NOT_FOUND"] = 2;
+                    values[valuesById[3] = "INVALID_NAME"] = 3;
+                    values[valuesById[4] = "INVALID_TEAM"] = 4;
+                    values[valuesById[5] = "TEAM_BALANCE"] = 5;
+                    values[valuesById[6] = "NOT_ON_PLAYABLE_TEAM"] = 6;
+                    values[valuesById[7] = "NOT_TEAM_CAPTAIN"] = 7;
+                    values[valuesById[8] = "INVALID_SPAWN_REGION"] = 8;
+                    values[valuesById[9] = "TEAM_SETUP_INCOMPLETE"] = 9;
+                    return values;
+                })();
+
+                proto.LobbyCommandRejected = (function() {
+
+                    /**
+                     * Properties of a LobbyCommandRejected.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface ILobbyCommandRejected
+                     * @property {number|Long|null} [playerId] LobbyCommandRejected playerId
+                     * @property {com.triforge.protocol.proto.LobbyRejectReason|null} [reason] LobbyCommandRejected reason
+                     */
+
+                    /**
+                     * Constructs a new LobbyCommandRejected.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a LobbyCommandRejected.
+                     * @implements ILobbyCommandRejected
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.ILobbyCommandRejected=} [properties] Properties to set
+                     */
+                    function LobbyCommandRejected(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * LobbyCommandRejected playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @instance
+                     */
+                    LobbyCommandRejected.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * LobbyCommandRejected reason.
+                     * @member {com.triforge.protocol.proto.LobbyRejectReason} reason
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @instance
+                     */
+                    LobbyCommandRejected.prototype.reason = 0;
+
+                    /**
+                     * Creates a new LobbyCommandRejected instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @static
+                     * @param {com.triforge.protocol.proto.ILobbyCommandRejected=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.LobbyCommandRejected} LobbyCommandRejected instance
+                     */
+                    LobbyCommandRejected.create = function create(properties) {
+                        return new LobbyCommandRejected(properties);
+                    };
+
+                    /**
+                     * Encodes the specified LobbyCommandRejected message. Does not implicitly {@link com.triforge.protocol.proto.LobbyCommandRejected.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @static
+                     * @param {com.triforge.protocol.proto.ILobbyCommandRejected} message LobbyCommandRejected message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    LobbyCommandRejected.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.playerId);
+                        if (message.reason != null && Object.hasOwnProperty.call(message, "reason"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.reason);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified LobbyCommandRejected message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.LobbyCommandRejected.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @static
+                     * @param {com.triforge.protocol.proto.ILobbyCommandRejected} message LobbyCommandRejected message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    LobbyCommandRejected.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a LobbyCommandRejected message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.LobbyCommandRejected} LobbyCommandRejected
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    LobbyCommandRejected.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.LobbyCommandRejected();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.reason = reader.int32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a LobbyCommandRejected message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.LobbyCommandRejected} LobbyCommandRejected
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    LobbyCommandRejected.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a LobbyCommandRejected message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    LobbyCommandRejected.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        if (message.reason != null && Object.hasOwnProperty.call(message, "reason"))
+                            switch (message.reason) {
+                            default:
+                                return "reason: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                            case 6:
+                            case 7:
+                            case 8:
+                            case 9:
+                                break;
+                            }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a LobbyCommandRejected message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.LobbyCommandRejected} LobbyCommandRejected
+                     */
+                    LobbyCommandRejected.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.LobbyCommandRejected)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.LobbyCommandRejected: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.LobbyCommandRejected();
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        switch (object.reason) {
+                        default:
+                            if (typeof object.reason === "number") {
+                                message.reason = object.reason;
+                                break;
+                            }
+                            break;
+                        case "LOBBY_REJECT_UNSPECIFIED":
+                        case 0:
+                            message.reason = 0;
+                            break;
+                        case "NOT_IN_LOBBY_PHASE":
+                        case 1:
+                            message.reason = 1;
+                            break;
+                        case "PLAYER_NOT_FOUND":
+                        case 2:
+                            message.reason = 2;
+                            break;
+                        case "INVALID_NAME":
+                        case 3:
+                            message.reason = 3;
+                            break;
+                        case "INVALID_TEAM":
+                        case 4:
+                            message.reason = 4;
+                            break;
+                        case "TEAM_BALANCE":
+                        case 5:
+                            message.reason = 5;
+                            break;
+                        case "NOT_ON_PLAYABLE_TEAM":
+                        case 6:
+                            message.reason = 6;
+                            break;
+                        case "NOT_TEAM_CAPTAIN":
+                        case 7:
+                            message.reason = 7;
+                            break;
+                        case "INVALID_SPAWN_REGION":
+                        case 8:
+                            message.reason = 8;
+                            break;
+                        case "TEAM_SETUP_INCOMPLETE":
+                        case 9:
+                            message.reason = 9;
+                            break;
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a LobbyCommandRejected message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @static
+                     * @param {com.triforge.protocol.proto.LobbyCommandRejected} message LobbyCommandRejected
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    LobbyCommandRejected.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.reason = options.enums === String ? "LOBBY_REJECT_UNSPECIFIED" : 0;
+                        }
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        if (message.reason != null && Object.hasOwnProperty.call(message, "reason"))
+                            object.reason = options.enums === String ? $root.com.triforge.protocol.proto.LobbyRejectReason[message.reason] === undefined ? message.reason : $root.com.triforge.protocol.proto.LobbyRejectReason[message.reason] : message.reason;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this LobbyCommandRejected to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    LobbyCommandRejected.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for LobbyCommandRejected
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.LobbyCommandRejected
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    LobbyCommandRejected.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.LobbyCommandRejected";
+                    };
+
+                    return LobbyCommandRejected;
+                })();
+
                 proto.MatchPhaseUpdate = (function() {
 
                     /**
@@ -11147,6 +12134,7158 @@ export const com = $root.com = (() => {
                     };
 
                     return MatchResult;
+                })();
+
+                /**
+                 * ItemType enum.
+                 * @name com.triforge.protocol.proto.ItemType
+                 * @enum {number}
+                 * @property {number} ITEM_NONE=0 ITEM_NONE value
+                 * @property {number} ITEM_SHIELD=1 ITEM_SHIELD value
+                 * @property {number} ITEM_SPEED=2 ITEM_SPEED value
+                 * @property {number} ITEM_FAKE_MAP=3 ITEM_FAKE_MAP value
+                 * @property {number} ITEM_TREASURE_LOCK=4 ITEM_TREASURE_LOCK value
+                 */
+                proto.ItemType = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "ITEM_NONE"] = 0;
+                    values[valuesById[1] = "ITEM_SHIELD"] = 1;
+                    values[valuesById[2] = "ITEM_SPEED"] = 2;
+                    values[valuesById[3] = "ITEM_FAKE_MAP"] = 3;
+                    values[valuesById[4] = "ITEM_TREASURE_LOCK"] = 4;
+                    return values;
+                })();
+
+                /**
+                 * QuizOutcome enum.
+                 * @name com.triforge.protocol.proto.QuizOutcome
+                 * @enum {number}
+                 * @property {number} QUIZ_PENDING=0 QUIZ_PENDING value
+                 * @property {number} QUIZ_PASS=1 QUIZ_PASS value
+                 * @property {number} QUIZ_FAIL=2 QUIZ_FAIL value
+                 */
+                proto.QuizOutcome = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "QUIZ_PENDING"] = 0;
+                    values[valuesById[1] = "QUIZ_PASS"] = 1;
+                    values[valuesById[2] = "QUIZ_FAIL"] = 2;
+                    return values;
+                })();
+
+                /**
+                 * EncounterState enum.
+                 * @name com.triforge.protocol.proto.EncounterState
+                 * @enum {number}
+                 * @property {number} ENC_OFFERED=0 ENC_OFFERED value
+                 * @property {number} ENC_ACCEPTED=1 ENC_ACCEPTED value
+                 * @property {number} ENC_DECLINED=2 ENC_DECLINED value
+                 * @property {number} ENC_CANCELLED=3 ENC_CANCELLED value
+                 */
+                proto.EncounterState = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "ENC_OFFERED"] = 0;
+                    values[valuesById[1] = "ENC_ACCEPTED"] = 1;
+                    values[valuesById[2] = "ENC_DECLINED"] = 2;
+                    values[valuesById[3] = "ENC_CANCELLED"] = 3;
+                    return values;
+                })();
+
+                proto.QuestAvatarComponentProto = (function() {
+
+                    /**
+                     * Properties of a QuestAvatarComponentProto.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IQuestAvatarComponentProto
+                     * @property {number|Long|null} [playerId] QuestAvatarComponentProto playerId
+                     * @property {string|null} [name] QuestAvatarComponentProto name
+                     * @property {number|null} [score] QuestAvatarComponentProto score
+                     * @property {string|null} [currentCheckpoint] QuestAvatarComponentProto currentCheckpoint
+                     * @property {number|null} [checkpointsCleared] QuestAvatarComponentProto checkpointsCleared
+                     * @property {boolean|null} [shielded] QuestAvatarComponentProto shielded
+                     * @property {boolean|null} [pvpCooldown] QuestAvatarComponentProto pvpCooldown
+                     * @property {boolean|null} [stealImmune] QuestAvatarComponentProto stealImmune
+                     * @property {boolean|null} [inDuel] QuestAvatarComponentProto inDuel
+                     */
+
+                    /**
+                     * Constructs a new QuestAvatarComponentProto.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a QuestAvatarComponentProto.
+                     * @implements IQuestAvatarComponentProto
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IQuestAvatarComponentProto=} [properties] Properties to set
+                     */
+                    function QuestAvatarComponentProto(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * QuestAvatarComponentProto playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @instance
+                     */
+                    QuestAvatarComponentProto.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * QuestAvatarComponentProto name.
+                     * @member {string} name
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @instance
+                     */
+                    QuestAvatarComponentProto.prototype.name = "";
+
+                    /**
+                     * QuestAvatarComponentProto score.
+                     * @member {number} score
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @instance
+                     */
+                    QuestAvatarComponentProto.prototype.score = 0;
+
+                    /**
+                     * QuestAvatarComponentProto currentCheckpoint.
+                     * @member {string} currentCheckpoint
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @instance
+                     */
+                    QuestAvatarComponentProto.prototype.currentCheckpoint = "";
+
+                    /**
+                     * QuestAvatarComponentProto checkpointsCleared.
+                     * @member {number} checkpointsCleared
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @instance
+                     */
+                    QuestAvatarComponentProto.prototype.checkpointsCleared = 0;
+
+                    /**
+                     * QuestAvatarComponentProto shielded.
+                     * @member {boolean} shielded
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @instance
+                     */
+                    QuestAvatarComponentProto.prototype.shielded = false;
+
+                    /**
+                     * QuestAvatarComponentProto pvpCooldown.
+                     * @member {boolean} pvpCooldown
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @instance
+                     */
+                    QuestAvatarComponentProto.prototype.pvpCooldown = false;
+
+                    /**
+                     * QuestAvatarComponentProto stealImmune.
+                     * @member {boolean} stealImmune
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @instance
+                     */
+                    QuestAvatarComponentProto.prototype.stealImmune = false;
+
+                    /**
+                     * QuestAvatarComponentProto inDuel.
+                     * @member {boolean} inDuel
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @instance
+                     */
+                    QuestAvatarComponentProto.prototype.inDuel = false;
+
+                    /**
+                     * Creates a new QuestAvatarComponentProto instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuestAvatarComponentProto=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.QuestAvatarComponentProto} QuestAvatarComponentProto instance
+                     */
+                    QuestAvatarComponentProto.create = function create(properties) {
+                        return new QuestAvatarComponentProto(properties);
+                    };
+
+                    /**
+                     * Encodes the specified QuestAvatarComponentProto message. Does not implicitly {@link com.triforge.protocol.proto.QuestAvatarComponentProto.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuestAvatarComponentProto} message QuestAvatarComponentProto message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuestAvatarComponentProto.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.playerId);
+                        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.score);
+                        if (message.currentCheckpoint != null && Object.hasOwnProperty.call(message, "currentCheckpoint"))
+                            writer.uint32(/* id 4, wireType 2 =*/34).string(message.currentCheckpoint);
+                        if (message.checkpointsCleared != null && Object.hasOwnProperty.call(message, "checkpointsCleared"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.checkpointsCleared);
+                        if (message.shielded != null && Object.hasOwnProperty.call(message, "shielded"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).bool(message.shielded);
+                        if (message.pvpCooldown != null && Object.hasOwnProperty.call(message, "pvpCooldown"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).bool(message.pvpCooldown);
+                        if (message.stealImmune != null && Object.hasOwnProperty.call(message, "stealImmune"))
+                            writer.uint32(/* id 8, wireType 0 =*/64).bool(message.stealImmune);
+                        if (message.inDuel != null && Object.hasOwnProperty.call(message, "inDuel"))
+                            writer.uint32(/* id 9, wireType 0 =*/72).bool(message.inDuel);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified QuestAvatarComponentProto message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuestAvatarComponentProto.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuestAvatarComponentProto} message QuestAvatarComponentProto message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuestAvatarComponentProto.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a QuestAvatarComponentProto message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.QuestAvatarComponentProto} QuestAvatarComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuestAvatarComponentProto.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.QuestAvatarComponentProto();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.name = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    message.score = reader.int32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.currentCheckpoint = reader.string();
+                                    break;
+                                }
+                            case 5: {
+                                    message.checkpointsCleared = reader.int32();
+                                    break;
+                                }
+                            case 6: {
+                                    message.shielded = reader.bool();
+                                    break;
+                                }
+                            case 7: {
+                                    message.pvpCooldown = reader.bool();
+                                    break;
+                                }
+                            case 8: {
+                                    message.stealImmune = reader.bool();
+                                    break;
+                                }
+                            case 9: {
+                                    message.inDuel = reader.bool();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a QuestAvatarComponentProto message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.QuestAvatarComponentProto} QuestAvatarComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuestAvatarComponentProto.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a QuestAvatarComponentProto message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    QuestAvatarComponentProto.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                            if (!$util.isString(message.name))
+                                return "name: string expected";
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            if (!$util.isInteger(message.score))
+                                return "score: integer expected";
+                        if (message.currentCheckpoint != null && Object.hasOwnProperty.call(message, "currentCheckpoint"))
+                            if (!$util.isString(message.currentCheckpoint))
+                                return "currentCheckpoint: string expected";
+                        if (message.checkpointsCleared != null && Object.hasOwnProperty.call(message, "checkpointsCleared"))
+                            if (!$util.isInteger(message.checkpointsCleared))
+                                return "checkpointsCleared: integer expected";
+                        if (message.shielded != null && Object.hasOwnProperty.call(message, "shielded"))
+                            if (typeof message.shielded !== "boolean")
+                                return "shielded: boolean expected";
+                        if (message.pvpCooldown != null && Object.hasOwnProperty.call(message, "pvpCooldown"))
+                            if (typeof message.pvpCooldown !== "boolean")
+                                return "pvpCooldown: boolean expected";
+                        if (message.stealImmune != null && Object.hasOwnProperty.call(message, "stealImmune"))
+                            if (typeof message.stealImmune !== "boolean")
+                                return "stealImmune: boolean expected";
+                        if (message.inDuel != null && Object.hasOwnProperty.call(message, "inDuel"))
+                            if (typeof message.inDuel !== "boolean")
+                                return "inDuel: boolean expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a QuestAvatarComponentProto message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.QuestAvatarComponentProto} QuestAvatarComponentProto
+                     */
+                    QuestAvatarComponentProto.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.QuestAvatarComponentProto)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.QuestAvatarComponentProto: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.QuestAvatarComponentProto();
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        if (object.name != null)
+                            message.name = String(object.name);
+                        if (object.score != null)
+                            message.score = object.score | 0;
+                        if (object.currentCheckpoint != null)
+                            message.currentCheckpoint = String(object.currentCheckpoint);
+                        if (object.checkpointsCleared != null)
+                            message.checkpointsCleared = object.checkpointsCleared | 0;
+                        if (object.shielded != null)
+                            message.shielded = Boolean(object.shielded);
+                        if (object.pvpCooldown != null)
+                            message.pvpCooldown = Boolean(object.pvpCooldown);
+                        if (object.stealImmune != null)
+                            message.stealImmune = Boolean(object.stealImmune);
+                        if (object.inDuel != null)
+                            message.inDuel = Boolean(object.inDuel);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a QuestAvatarComponentProto message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.QuestAvatarComponentProto} message QuestAvatarComponentProto
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    QuestAvatarComponentProto.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.name = "";
+                            object.score = 0;
+                            object.currentCheckpoint = "";
+                            object.checkpointsCleared = 0;
+                            object.shielded = false;
+                            object.pvpCooldown = false;
+                            object.stealImmune = false;
+                            object.inDuel = false;
+                        }
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                            object.name = message.name;
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            object.score = message.score;
+                        if (message.currentCheckpoint != null && Object.hasOwnProperty.call(message, "currentCheckpoint"))
+                            object.currentCheckpoint = message.currentCheckpoint;
+                        if (message.checkpointsCleared != null && Object.hasOwnProperty.call(message, "checkpointsCleared"))
+                            object.checkpointsCleared = message.checkpointsCleared;
+                        if (message.shielded != null && Object.hasOwnProperty.call(message, "shielded"))
+                            object.shielded = message.shielded;
+                        if (message.pvpCooldown != null && Object.hasOwnProperty.call(message, "pvpCooldown"))
+                            object.pvpCooldown = message.pvpCooldown;
+                        if (message.stealImmune != null && Object.hasOwnProperty.call(message, "stealImmune"))
+                            object.stealImmune = message.stealImmune;
+                        if (message.inDuel != null && Object.hasOwnProperty.call(message, "inDuel"))
+                            object.inDuel = message.inDuel;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this QuestAvatarComponentProto to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    QuestAvatarComponentProto.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for QuestAvatarComponentProto
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.QuestAvatarComponentProto
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    QuestAvatarComponentProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.QuestAvatarComponentProto";
+                    };
+
+                    return QuestAvatarComponentProto;
+                })();
+
+                proto.InventoryItemProto = (function() {
+
+                    /**
+                     * Properties of an InventoryItemProto.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IInventoryItemProto
+                     * @property {com.triforge.protocol.proto.ItemType|null} [item] InventoryItemProto item
+                     * @property {number|null} [count] InventoryItemProto count
+                     */
+
+                    /**
+                     * Constructs a new InventoryItemProto.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents an InventoryItemProto.
+                     * @implements IInventoryItemProto
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IInventoryItemProto=} [properties] Properties to set
+                     */
+                    function InventoryItemProto(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * InventoryItemProto item.
+                     * @member {com.triforge.protocol.proto.ItemType} item
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @instance
+                     */
+                    InventoryItemProto.prototype.item = 0;
+
+                    /**
+                     * InventoryItemProto count.
+                     * @member {number} count
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @instance
+                     */
+                    InventoryItemProto.prototype.count = 0;
+
+                    /**
+                     * Creates a new InventoryItemProto instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IInventoryItemProto=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.InventoryItemProto} InventoryItemProto instance
+                     */
+                    InventoryItemProto.create = function create(properties) {
+                        return new InventoryItemProto(properties);
+                    };
+
+                    /**
+                     * Encodes the specified InventoryItemProto message. Does not implicitly {@link com.triforge.protocol.proto.InventoryItemProto.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IInventoryItemProto} message InventoryItemProto message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    InventoryItemProto.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.item != null && Object.hasOwnProperty.call(message, "item"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.item);
+                        if (message.count != null && Object.hasOwnProperty.call(message, "count"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.count);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified InventoryItemProto message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.InventoryItemProto.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IInventoryItemProto} message InventoryItemProto message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    InventoryItemProto.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes an InventoryItemProto message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.InventoryItemProto} InventoryItemProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    InventoryItemProto.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.InventoryItemProto();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.item = reader.int32();
+                                    break;
+                                }
+                            case 2: {
+                                    message.count = reader.uint32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes an InventoryItemProto message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.InventoryItemProto} InventoryItemProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    InventoryItemProto.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies an InventoryItemProto message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    InventoryItemProto.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.item != null && Object.hasOwnProperty.call(message, "item"))
+                            switch (message.item) {
+                            default:
+                                return "item: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                                break;
+                            }
+                        if (message.count != null && Object.hasOwnProperty.call(message, "count"))
+                            if (!$util.isInteger(message.count))
+                                return "count: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates an InventoryItemProto message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.InventoryItemProto} InventoryItemProto
+                     */
+                    InventoryItemProto.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.InventoryItemProto)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.InventoryItemProto: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.InventoryItemProto();
+                        switch (object.item) {
+                        default:
+                            if (typeof object.item === "number") {
+                                message.item = object.item;
+                                break;
+                            }
+                            break;
+                        case "ITEM_NONE":
+                        case 0:
+                            message.item = 0;
+                            break;
+                        case "ITEM_SHIELD":
+                        case 1:
+                            message.item = 1;
+                            break;
+                        case "ITEM_SPEED":
+                        case 2:
+                            message.item = 2;
+                            break;
+                        case "ITEM_FAKE_MAP":
+                        case 3:
+                            message.item = 3;
+                            break;
+                        case "ITEM_TREASURE_LOCK":
+                        case 4:
+                            message.item = 4;
+                            break;
+                        }
+                        if (object.count != null)
+                            message.count = object.count >>> 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from an InventoryItemProto message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.InventoryItemProto} message InventoryItemProto
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    InventoryItemProto.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.item = options.enums === String ? "ITEM_NONE" : 0;
+                            object.count = 0;
+                        }
+                        if (message.item != null && Object.hasOwnProperty.call(message, "item"))
+                            object.item = options.enums === String ? $root.com.triforge.protocol.proto.ItemType[message.item] === undefined ? message.item : $root.com.triforge.protocol.proto.ItemType[message.item] : message.item;
+                        if (message.count != null && Object.hasOwnProperty.call(message, "count"))
+                            object.count = message.count;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this InventoryItemProto to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    InventoryItemProto.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for InventoryItemProto
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.InventoryItemProto
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    InventoryItemProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.InventoryItemProto";
+                    };
+
+                    return InventoryItemProto;
+                })();
+
+                proto.QuizQuestionProto = (function() {
+
+                    /**
+                     * Properties of a QuizQuestionProto.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IQuizQuestionProto
+                     * @property {string|null} [questionId] QuizQuestionProto questionId
+                     * @property {string|null} [text] QuizQuestionProto text
+                     * @property {Array.<string>|null} [options] QuizQuestionProto options
+                     * @property {number|null} [timeLimitSec] QuizQuestionProto timeLimitSec
+                     * @property {number|null} [points] QuizQuestionProto points
+                     */
+
+                    /**
+                     * Constructs a new QuizQuestionProto.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a QuizQuestionProto.
+                     * @implements IQuizQuestionProto
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IQuizQuestionProto=} [properties] Properties to set
+                     */
+                    function QuizQuestionProto(properties) {
+                        this.options = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * QuizQuestionProto questionId.
+                     * @member {string} questionId
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @instance
+                     */
+                    QuizQuestionProto.prototype.questionId = "";
+
+                    /**
+                     * QuizQuestionProto text.
+                     * @member {string} text
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @instance
+                     */
+                    QuizQuestionProto.prototype.text = "";
+
+                    /**
+                     * QuizQuestionProto options.
+                     * @member {Array.<string>} options
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @instance
+                     */
+                    QuizQuestionProto.prototype.options = $util.emptyArray;
+
+                    /**
+                     * QuizQuestionProto timeLimitSec.
+                     * @member {number} timeLimitSec
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @instance
+                     */
+                    QuizQuestionProto.prototype.timeLimitSec = 0;
+
+                    /**
+                     * QuizQuestionProto points.
+                     * @member {number} points
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @instance
+                     */
+                    QuizQuestionProto.prototype.points = 0;
+
+                    /**
+                     * Creates a new QuizQuestionProto instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizQuestionProto=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.QuizQuestionProto} QuizQuestionProto instance
+                     */
+                    QuizQuestionProto.create = function create(properties) {
+                        return new QuizQuestionProto(properties);
+                    };
+
+                    /**
+                     * Encodes the specified QuizQuestionProto message. Does not implicitly {@link com.triforge.protocol.proto.QuizQuestionProto.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizQuestionProto} message QuizQuestionProto message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuizQuestionProto.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.questionId != null && Object.hasOwnProperty.call(message, "questionId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.questionId);
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.text);
+                        if (message.options != null && message.options.length)
+                            for (let i = 0; i < message.options.length; ++i)
+                                writer.uint32(/* id 3, wireType 2 =*/26).string(message.options[i]);
+                        if (message.timeLimitSec != null && Object.hasOwnProperty.call(message, "timeLimitSec"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.timeLimitSec);
+                        if (message.points != null && Object.hasOwnProperty.call(message, "points"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.points);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified QuizQuestionProto message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuizQuestionProto.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizQuestionProto} message QuizQuestionProto message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuizQuestionProto.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a QuizQuestionProto message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.QuizQuestionProto} QuizQuestionProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuizQuestionProto.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.QuizQuestionProto();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.questionId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.text = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    if (!(message.options && message.options.length))
+                                        message.options = [];
+                                    message.options.push(reader.string());
+                                    break;
+                                }
+                            case 4: {
+                                    message.timeLimitSec = reader.uint32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.points = reader.uint32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a QuizQuestionProto message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.QuizQuestionProto} QuizQuestionProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuizQuestionProto.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a QuizQuestionProto message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    QuizQuestionProto.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.questionId != null && Object.hasOwnProperty.call(message, "questionId"))
+                            if (!$util.isString(message.questionId))
+                                return "questionId: string expected";
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            if (!$util.isString(message.text))
+                                return "text: string expected";
+                        if (message.options != null && Object.hasOwnProperty.call(message, "options")) {
+                            if (!Array.isArray(message.options))
+                                return "options: array expected";
+                            for (let i = 0; i < message.options.length; ++i)
+                                if (!$util.isString(message.options[i]))
+                                    return "options: string[] expected";
+                        }
+                        if (message.timeLimitSec != null && Object.hasOwnProperty.call(message, "timeLimitSec"))
+                            if (!$util.isInteger(message.timeLimitSec))
+                                return "timeLimitSec: integer expected";
+                        if (message.points != null && Object.hasOwnProperty.call(message, "points"))
+                            if (!$util.isInteger(message.points))
+                                return "points: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a QuizQuestionProto message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.QuizQuestionProto} QuizQuestionProto
+                     */
+                    QuizQuestionProto.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.QuizQuestionProto)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.QuizQuestionProto: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.QuizQuestionProto();
+                        if (object.questionId != null)
+                            message.questionId = String(object.questionId);
+                        if (object.text != null)
+                            message.text = String(object.text);
+                        if (object.options) {
+                            if (!Array.isArray(object.options))
+                                throw TypeError(".com.triforge.protocol.proto.QuizQuestionProto.options: array expected");
+                            message.options = [];
+                            for (let i = 0; i < object.options.length; ++i)
+                                message.options[i] = String(object.options[i]);
+                        }
+                        if (object.timeLimitSec != null)
+                            message.timeLimitSec = object.timeLimitSec >>> 0;
+                        if (object.points != null)
+                            message.points = object.points >>> 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a QuizQuestionProto message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.QuizQuestionProto} message QuizQuestionProto
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    QuizQuestionProto.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.options = [];
+                        if (options.defaults) {
+                            object.questionId = "";
+                            object.text = "";
+                            object.timeLimitSec = 0;
+                            object.points = 0;
+                        }
+                        if (message.questionId != null && Object.hasOwnProperty.call(message, "questionId"))
+                            object.questionId = message.questionId;
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            object.text = message.text;
+                        if (message.options && message.options.length) {
+                            object.options = [];
+                            for (let j = 0; j < message.options.length; ++j)
+                                object.options[j] = message.options[j];
+                        }
+                        if (message.timeLimitSec != null && Object.hasOwnProperty.call(message, "timeLimitSec"))
+                            object.timeLimitSec = message.timeLimitSec;
+                        if (message.points != null && Object.hasOwnProperty.call(message, "points"))
+                            object.points = message.points;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this QuizQuestionProto to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    QuizQuestionProto.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for QuizQuestionProto
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.QuizQuestionProto
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    QuizQuestionProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.QuizQuestionProto";
+                    };
+
+                    return QuizQuestionProto;
+                })();
+
+                proto.QuizAnswer = (function() {
+
+                    /**
+                     * Properties of a QuizAnswer.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IQuizAnswer
+                     * @property {string|null} [questionId] QuizAnswer questionId
+                     * @property {number|null} [selectedIndex] QuizAnswer selectedIndex
+                     */
+
+                    /**
+                     * Constructs a new QuizAnswer.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a QuizAnswer.
+                     * @implements IQuizAnswer
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IQuizAnswer=} [properties] Properties to set
+                     */
+                    function QuizAnswer(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * QuizAnswer questionId.
+                     * @member {string} questionId
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @instance
+                     */
+                    QuizAnswer.prototype.questionId = "";
+
+                    /**
+                     * QuizAnswer selectedIndex.
+                     * @member {number} selectedIndex
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @instance
+                     */
+                    QuizAnswer.prototype.selectedIndex = 0;
+
+                    /**
+                     * Creates a new QuizAnswer instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizAnswer=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.QuizAnswer} QuizAnswer instance
+                     */
+                    QuizAnswer.create = function create(properties) {
+                        return new QuizAnswer(properties);
+                    };
+
+                    /**
+                     * Encodes the specified QuizAnswer message. Does not implicitly {@link com.triforge.protocol.proto.QuizAnswer.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizAnswer} message QuizAnswer message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuizAnswer.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.questionId != null && Object.hasOwnProperty.call(message, "questionId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.questionId);
+                        if (message.selectedIndex != null && Object.hasOwnProperty.call(message, "selectedIndex"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.selectedIndex);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified QuizAnswer message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuizAnswer.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizAnswer} message QuizAnswer message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuizAnswer.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a QuizAnswer message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.QuizAnswer} QuizAnswer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuizAnswer.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.QuizAnswer();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.questionId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.selectedIndex = reader.int32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a QuizAnswer message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.QuizAnswer} QuizAnswer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuizAnswer.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a QuizAnswer message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    QuizAnswer.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.questionId != null && Object.hasOwnProperty.call(message, "questionId"))
+                            if (!$util.isString(message.questionId))
+                                return "questionId: string expected";
+                        if (message.selectedIndex != null && Object.hasOwnProperty.call(message, "selectedIndex"))
+                            if (!$util.isInteger(message.selectedIndex))
+                                return "selectedIndex: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a QuizAnswer message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.QuizAnswer} QuizAnswer
+                     */
+                    QuizAnswer.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.QuizAnswer)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.QuizAnswer: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.QuizAnswer();
+                        if (object.questionId != null)
+                            message.questionId = String(object.questionId);
+                        if (object.selectedIndex != null)
+                            message.selectedIndex = object.selectedIndex | 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a QuizAnswer message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @static
+                     * @param {com.triforge.protocol.proto.QuizAnswer} message QuizAnswer
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    QuizAnswer.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.questionId = "";
+                            object.selectedIndex = 0;
+                        }
+                        if (message.questionId != null && Object.hasOwnProperty.call(message, "questionId"))
+                            object.questionId = message.questionId;
+                        if (message.selectedIndex != null && Object.hasOwnProperty.call(message, "selectedIndex"))
+                            object.selectedIndex = message.selectedIndex;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this QuizAnswer to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    QuizAnswer.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for QuizAnswer
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.QuizAnswer
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    QuizAnswer.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.QuizAnswer";
+                    };
+
+                    return QuizAnswer;
+                })();
+
+                proto.HintReveal = (function() {
+
+                    /**
+                     * Properties of a HintReveal.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IHintReveal
+                     * @property {string|null} [text] HintReveal text
+                     * @property {Array.<string>|null} [nextCheckpointIds] HintReveal nextCheckpointIds
+                     * @property {number|null} [x] HintReveal x
+                     * @property {number|null} [y] HintReveal y
+                     */
+
+                    /**
+                     * Constructs a new HintReveal.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a HintReveal.
+                     * @implements IHintReveal
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IHintReveal=} [properties] Properties to set
+                     */
+                    function HintReveal(properties) {
+                        this.nextCheckpointIds = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * HintReveal text.
+                     * @member {string} text
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @instance
+                     */
+                    HintReveal.prototype.text = "";
+
+                    /**
+                     * HintReveal nextCheckpointIds.
+                     * @member {Array.<string>} nextCheckpointIds
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @instance
+                     */
+                    HintReveal.prototype.nextCheckpointIds = $util.emptyArray;
+
+                    /**
+                     * HintReveal x.
+                     * @member {number} x
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @instance
+                     */
+                    HintReveal.prototype.x = 0;
+
+                    /**
+                     * HintReveal y.
+                     * @member {number} y
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @instance
+                     */
+                    HintReveal.prototype.y = 0;
+
+                    /**
+                     * Creates a new HintReveal instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @static
+                     * @param {com.triforge.protocol.proto.IHintReveal=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.HintReveal} HintReveal instance
+                     */
+                    HintReveal.create = function create(properties) {
+                        return new HintReveal(properties);
+                    };
+
+                    /**
+                     * Encodes the specified HintReveal message. Does not implicitly {@link com.triforge.protocol.proto.HintReveal.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @static
+                     * @param {com.triforge.protocol.proto.IHintReveal} message HintReveal message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    HintReveal.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.text);
+                        if (message.nextCheckpointIds != null && message.nextCheckpointIds.length)
+                            for (let i = 0; i < message.nextCheckpointIds.length; ++i)
+                                writer.uint32(/* id 2, wireType 2 =*/18).string(message.nextCheckpointIds[i]);
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            writer.uint32(/* id 3, wireType 5 =*/29).float(message.x);
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            writer.uint32(/* id 4, wireType 5 =*/37).float(message.y);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified HintReveal message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.HintReveal.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @static
+                     * @param {com.triforge.protocol.proto.IHintReveal} message HintReveal message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    HintReveal.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a HintReveal message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.HintReveal} HintReveal
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    HintReveal.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.HintReveal();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.text = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    if (!(message.nextCheckpointIds && message.nextCheckpointIds.length))
+                                        message.nextCheckpointIds = [];
+                                    message.nextCheckpointIds.push(reader.string());
+                                    break;
+                                }
+                            case 3: {
+                                    message.x = reader.float();
+                                    break;
+                                }
+                            case 4: {
+                                    message.y = reader.float();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a HintReveal message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.HintReveal} HintReveal
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    HintReveal.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a HintReveal message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    HintReveal.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            if (!$util.isString(message.text))
+                                return "text: string expected";
+                        if (message.nextCheckpointIds != null && Object.hasOwnProperty.call(message, "nextCheckpointIds")) {
+                            if (!Array.isArray(message.nextCheckpointIds))
+                                return "nextCheckpointIds: array expected";
+                            for (let i = 0; i < message.nextCheckpointIds.length; ++i)
+                                if (!$util.isString(message.nextCheckpointIds[i]))
+                                    return "nextCheckpointIds: string[] expected";
+                        }
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            if (typeof message.x !== "number")
+                                return "x: number expected";
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            if (typeof message.y !== "number")
+                                return "y: number expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a HintReveal message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.HintReveal} HintReveal
+                     */
+                    HintReveal.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.HintReveal)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.HintReveal: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.HintReveal();
+                        if (object.text != null)
+                            message.text = String(object.text);
+                        if (object.nextCheckpointIds) {
+                            if (!Array.isArray(object.nextCheckpointIds))
+                                throw TypeError(".com.triforge.protocol.proto.HintReveal.nextCheckpointIds: array expected");
+                            message.nextCheckpointIds = [];
+                            for (let i = 0; i < object.nextCheckpointIds.length; ++i)
+                                message.nextCheckpointIds[i] = String(object.nextCheckpointIds[i]);
+                        }
+                        if (object.x != null)
+                            message.x = Number(object.x);
+                        if (object.y != null)
+                            message.y = Number(object.y);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a HintReveal message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @static
+                     * @param {com.triforge.protocol.proto.HintReveal} message HintReveal
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    HintReveal.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.nextCheckpointIds = [];
+                        if (options.defaults) {
+                            object.text = "";
+                            object.x = 0;
+                            object.y = 0;
+                        }
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            object.text = message.text;
+                        if (message.nextCheckpointIds && message.nextCheckpointIds.length) {
+                            object.nextCheckpointIds = [];
+                            for (let j = 0; j < message.nextCheckpointIds.length; ++j)
+                                object.nextCheckpointIds[j] = message.nextCheckpointIds[j];
+                        }
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this HintReveal to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    HintReveal.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for HintReveal
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.HintReveal
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    HintReveal.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.HintReveal";
+                    };
+
+                    return HintReveal;
+                })();
+
+                proto.InteractCommand = (function() {
+
+                    /**
+                     * Properties of an InteractCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IInteractCommand
+                     * @property {string|null} [checkpointId] InteractCommand checkpointId
+                     */
+
+                    /**
+                     * Constructs a new InteractCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents an InteractCommand.
+                     * @implements IInteractCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IInteractCommand=} [properties] Properties to set
+                     */
+                    function InteractCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * InteractCommand checkpointId.
+                     * @member {string} checkpointId
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @instance
+                     */
+                    InteractCommand.prototype.checkpointId = "";
+
+                    /**
+                     * Creates a new InteractCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IInteractCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.InteractCommand} InteractCommand instance
+                     */
+                    InteractCommand.create = function create(properties) {
+                        return new InteractCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified InteractCommand message. Does not implicitly {@link com.triforge.protocol.proto.InteractCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IInteractCommand} message InteractCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    InteractCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.checkpointId != null && Object.hasOwnProperty.call(message, "checkpointId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.checkpointId);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified InteractCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.InteractCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IInteractCommand} message InteractCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    InteractCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes an InteractCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.InteractCommand} InteractCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    InteractCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.InteractCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.checkpointId = reader.string();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes an InteractCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.InteractCommand} InteractCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    InteractCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies an InteractCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    InteractCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.checkpointId != null && Object.hasOwnProperty.call(message, "checkpointId"))
+                            if (!$util.isString(message.checkpointId))
+                                return "checkpointId: string expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates an InteractCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.InteractCommand} InteractCommand
+                     */
+                    InteractCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.InteractCommand)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.InteractCommand: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.InteractCommand();
+                        if (object.checkpointId != null)
+                            message.checkpointId = String(object.checkpointId);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from an InteractCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.InteractCommand} message InteractCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    InteractCommand.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults)
+                            object.checkpointId = "";
+                        if (message.checkpointId != null && Object.hasOwnProperty.call(message, "checkpointId"))
+                            object.checkpointId = message.checkpointId;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this InteractCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    InteractCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for InteractCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.InteractCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    InteractCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.InteractCommand";
+                    };
+
+                    return InteractCommand;
+                })();
+
+                proto.QuizPrompt = (function() {
+
+                    /**
+                     * Properties of a QuizPrompt.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IQuizPrompt
+                     * @property {string|null} [quizId] QuizPrompt quizId
+                     * @property {string|null} [checkpointId] QuizPrompt checkpointId
+                     * @property {Array.<com.triforge.protocol.proto.IQuizQuestionProto>|null} [questions] QuizPrompt questions
+                     * @property {number|null} [passThreshold] QuizPrompt passThreshold
+                     * @property {number|Long|null} [deadlineTick] QuizPrompt deadlineTick
+                     */
+
+                    /**
+                     * Constructs a new QuizPrompt.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a QuizPrompt.
+                     * @implements IQuizPrompt
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IQuizPrompt=} [properties] Properties to set
+                     */
+                    function QuizPrompt(properties) {
+                        this.questions = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * QuizPrompt quizId.
+                     * @member {string} quizId
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @instance
+                     */
+                    QuizPrompt.prototype.quizId = "";
+
+                    /**
+                     * QuizPrompt checkpointId.
+                     * @member {string} checkpointId
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @instance
+                     */
+                    QuizPrompt.prototype.checkpointId = "";
+
+                    /**
+                     * QuizPrompt questions.
+                     * @member {Array.<com.triforge.protocol.proto.IQuizQuestionProto>} questions
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @instance
+                     */
+                    QuizPrompt.prototype.questions = $util.emptyArray;
+
+                    /**
+                     * QuizPrompt passThreshold.
+                     * @member {number} passThreshold
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @instance
+                     */
+                    QuizPrompt.prototype.passThreshold = 0;
+
+                    /**
+                     * QuizPrompt deadlineTick.
+                     * @member {number|Long} deadlineTick
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @instance
+                     */
+                    QuizPrompt.prototype.deadlineTick = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * Creates a new QuizPrompt instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizPrompt=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.QuizPrompt} QuizPrompt instance
+                     */
+                    QuizPrompt.create = function create(properties) {
+                        return new QuizPrompt(properties);
+                    };
+
+                    /**
+                     * Encodes the specified QuizPrompt message. Does not implicitly {@link com.triforge.protocol.proto.QuizPrompt.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizPrompt} message QuizPrompt message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuizPrompt.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.quizId != null && Object.hasOwnProperty.call(message, "quizId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.quizId);
+                        if (message.checkpointId != null && Object.hasOwnProperty.call(message, "checkpointId"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.checkpointId);
+                        if (message.questions != null && message.questions.length)
+                            for (let i = 0; i < message.questions.length; ++i)
+                                $root.com.triforge.protocol.proto.QuizQuestionProto.encode(message.questions[i], writer.uint32(/* id 3, wireType 2 =*/26).fork(), q + 1).ldelim();
+                        if (message.passThreshold != null && Object.hasOwnProperty.call(message, "passThreshold"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.passThreshold);
+                        if (message.deadlineTick != null && Object.hasOwnProperty.call(message, "deadlineTick"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.deadlineTick);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified QuizPrompt message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuizPrompt.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizPrompt} message QuizPrompt message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuizPrompt.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a QuizPrompt message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.QuizPrompt} QuizPrompt
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuizPrompt.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.QuizPrompt();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.quizId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.checkpointId = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    if (!(message.questions && message.questions.length))
+                                        message.questions = [];
+                                    message.questions.push($root.com.triforge.protocol.proto.QuizQuestionProto.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            case 4: {
+                                    message.passThreshold = reader.uint32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.deadlineTick = reader.uint64();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a QuizPrompt message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.QuizPrompt} QuizPrompt
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuizPrompt.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a QuizPrompt message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    QuizPrompt.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.quizId != null && Object.hasOwnProperty.call(message, "quizId"))
+                            if (!$util.isString(message.quizId))
+                                return "quizId: string expected";
+                        if (message.checkpointId != null && Object.hasOwnProperty.call(message, "checkpointId"))
+                            if (!$util.isString(message.checkpointId))
+                                return "checkpointId: string expected";
+                        if (message.questions != null && Object.hasOwnProperty.call(message, "questions")) {
+                            if (!Array.isArray(message.questions))
+                                return "questions: array expected";
+                            for (let i = 0; i < message.questions.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.QuizQuestionProto.verify(message.questions[i], long + 1);
+                                if (error)
+                                    return "questions." + error;
+                            }
+                        }
+                        if (message.passThreshold != null && Object.hasOwnProperty.call(message, "passThreshold"))
+                            if (!$util.isInteger(message.passThreshold))
+                                return "passThreshold: integer expected";
+                        if (message.deadlineTick != null && Object.hasOwnProperty.call(message, "deadlineTick"))
+                            if (!$util.isInteger(message.deadlineTick) && !(message.deadlineTick && $util.isInteger(message.deadlineTick.low) && $util.isInteger(message.deadlineTick.high)))
+                                return "deadlineTick: integer|Long expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a QuizPrompt message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.QuizPrompt} QuizPrompt
+                     */
+                    QuizPrompt.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.QuizPrompt)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.QuizPrompt: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.QuizPrompt();
+                        if (object.quizId != null)
+                            message.quizId = String(object.quizId);
+                        if (object.checkpointId != null)
+                            message.checkpointId = String(object.checkpointId);
+                        if (object.questions) {
+                            if (!Array.isArray(object.questions))
+                                throw TypeError(".com.triforge.protocol.proto.QuizPrompt.questions: array expected");
+                            message.questions = [];
+                            for (let i = 0; i < object.questions.length; ++i) {
+                                if (!$util.isObject(object.questions[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.QuizPrompt.questions: object expected");
+                                message.questions[i] = $root.com.triforge.protocol.proto.QuizQuestionProto.fromObject(object.questions[i], long + 1);
+                            }
+                        }
+                        if (object.passThreshold != null)
+                            message.passThreshold = object.passThreshold >>> 0;
+                        if (object.deadlineTick != null)
+                            if ($util.Long)
+                                message.deadlineTick = $util.Long.fromValue(object.deadlineTick, true);
+                            else if (typeof object.deadlineTick === "string")
+                                message.deadlineTick = parseInt(object.deadlineTick, 10);
+                            else if (typeof object.deadlineTick === "number")
+                                message.deadlineTick = object.deadlineTick;
+                            else if (typeof object.deadlineTick === "object")
+                                message.deadlineTick = new $util.LongBits(object.deadlineTick.low >>> 0, object.deadlineTick.high >>> 0).toNumber(true);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a QuizPrompt message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @static
+                     * @param {com.triforge.protocol.proto.QuizPrompt} message QuizPrompt
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    QuizPrompt.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.questions = [];
+                        if (options.defaults) {
+                            object.quizId = "";
+                            object.checkpointId = "";
+                            object.passThreshold = 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.deadlineTick = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.deadlineTick = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                        }
+                        if (message.quizId != null && Object.hasOwnProperty.call(message, "quizId"))
+                            object.quizId = message.quizId;
+                        if (message.checkpointId != null && Object.hasOwnProperty.call(message, "checkpointId"))
+                            object.checkpointId = message.checkpointId;
+                        if (message.questions && message.questions.length) {
+                            object.questions = [];
+                            for (let j = 0; j < message.questions.length; ++j)
+                                object.questions[j] = $root.com.triforge.protocol.proto.QuizQuestionProto.toObject(message.questions[j], options, q + 1);
+                        }
+                        if (message.passThreshold != null && Object.hasOwnProperty.call(message, "passThreshold"))
+                            object.passThreshold = message.passThreshold;
+                        if (message.deadlineTick != null && Object.hasOwnProperty.call(message, "deadlineTick"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.deadlineTick = typeof message.deadlineTick === "number" ? BigInt(message.deadlineTick) : $util.Long.fromBits(message.deadlineTick.low >>> 0, message.deadlineTick.high >>> 0, true).toBigInt();
+                            else if (typeof message.deadlineTick === "number")
+                                object.deadlineTick = options.longs === String ? String(message.deadlineTick) : message.deadlineTick;
+                            else
+                                object.deadlineTick = options.longs === String ? $util.Long.prototype.toString.call(message.deadlineTick) : options.longs === Number ? new $util.LongBits(message.deadlineTick.low >>> 0, message.deadlineTick.high >>> 0).toNumber(true) : message.deadlineTick;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this QuizPrompt to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    QuizPrompt.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for QuizPrompt
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.QuizPrompt
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    QuizPrompt.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.QuizPrompt";
+                    };
+
+                    return QuizPrompt;
+                })();
+
+                proto.QuizSubmit = (function() {
+
+                    /**
+                     * Properties of a QuizSubmit.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IQuizSubmit
+                     * @property {string|null} [quizId] QuizSubmit quizId
+                     * @property {Array.<com.triforge.protocol.proto.IQuizAnswer>|null} [answers] QuizSubmit answers
+                     */
+
+                    /**
+                     * Constructs a new QuizSubmit.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a QuizSubmit.
+                     * @implements IQuizSubmit
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IQuizSubmit=} [properties] Properties to set
+                     */
+                    function QuizSubmit(properties) {
+                        this.answers = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * QuizSubmit quizId.
+                     * @member {string} quizId
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @instance
+                     */
+                    QuizSubmit.prototype.quizId = "";
+
+                    /**
+                     * QuizSubmit answers.
+                     * @member {Array.<com.triforge.protocol.proto.IQuizAnswer>} answers
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @instance
+                     */
+                    QuizSubmit.prototype.answers = $util.emptyArray;
+
+                    /**
+                     * Creates a new QuizSubmit instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizSubmit=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.QuizSubmit} QuizSubmit instance
+                     */
+                    QuizSubmit.create = function create(properties) {
+                        return new QuizSubmit(properties);
+                    };
+
+                    /**
+                     * Encodes the specified QuizSubmit message. Does not implicitly {@link com.triforge.protocol.proto.QuizSubmit.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizSubmit} message QuizSubmit message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuizSubmit.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.quizId != null && Object.hasOwnProperty.call(message, "quizId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.quizId);
+                        if (message.answers != null && message.answers.length)
+                            for (let i = 0; i < message.answers.length; ++i)
+                                $root.com.triforge.protocol.proto.QuizAnswer.encode(message.answers[i], writer.uint32(/* id 2, wireType 2 =*/18).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified QuizSubmit message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuizSubmit.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizSubmit} message QuizSubmit message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuizSubmit.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a QuizSubmit message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.QuizSubmit} QuizSubmit
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuizSubmit.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.QuizSubmit();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.quizId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    if (!(message.answers && message.answers.length))
+                                        message.answers = [];
+                                    message.answers.push($root.com.triforge.protocol.proto.QuizAnswer.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a QuizSubmit message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.QuizSubmit} QuizSubmit
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuizSubmit.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a QuizSubmit message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    QuizSubmit.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.quizId != null && Object.hasOwnProperty.call(message, "quizId"))
+                            if (!$util.isString(message.quizId))
+                                return "quizId: string expected";
+                        if (message.answers != null && Object.hasOwnProperty.call(message, "answers")) {
+                            if (!Array.isArray(message.answers))
+                                return "answers: array expected";
+                            for (let i = 0; i < message.answers.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.QuizAnswer.verify(message.answers[i], long + 1);
+                                if (error)
+                                    return "answers." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a QuizSubmit message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.QuizSubmit} QuizSubmit
+                     */
+                    QuizSubmit.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.QuizSubmit)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.QuizSubmit: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.QuizSubmit();
+                        if (object.quizId != null)
+                            message.quizId = String(object.quizId);
+                        if (object.answers) {
+                            if (!Array.isArray(object.answers))
+                                throw TypeError(".com.triforge.protocol.proto.QuizSubmit.answers: array expected");
+                            message.answers = [];
+                            for (let i = 0; i < object.answers.length; ++i) {
+                                if (!$util.isObject(object.answers[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.QuizSubmit.answers: object expected");
+                                message.answers[i] = $root.com.triforge.protocol.proto.QuizAnswer.fromObject(object.answers[i], long + 1);
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a QuizSubmit message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @static
+                     * @param {com.triforge.protocol.proto.QuizSubmit} message QuizSubmit
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    QuizSubmit.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.answers = [];
+                        if (options.defaults)
+                            object.quizId = "";
+                        if (message.quizId != null && Object.hasOwnProperty.call(message, "quizId"))
+                            object.quizId = message.quizId;
+                        if (message.answers && message.answers.length) {
+                            object.answers = [];
+                            for (let j = 0; j < message.answers.length; ++j)
+                                object.answers[j] = $root.com.triforge.protocol.proto.QuizAnswer.toObject(message.answers[j], options, q + 1);
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this QuizSubmit to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    QuizSubmit.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for QuizSubmit
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.QuizSubmit
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    QuizSubmit.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.QuizSubmit";
+                    };
+
+                    return QuizSubmit;
+                })();
+
+                proto.QuizResult = (function() {
+
+                    /**
+                     * Properties of a QuizResult.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IQuizResult
+                     * @property {string|null} [quizId] QuizResult quizId
+                     * @property {com.triforge.protocol.proto.QuizOutcome|null} [outcome] QuizResult outcome
+                     * @property {number|null} [correctCount] QuizResult correctCount
+                     * @property {number|null} [totalQuestions] QuizResult totalQuestions
+                     * @property {number|null} [pointsEarned] QuizResult pointsEarned
+                     * @property {number|null} [totalScore] QuizResult totalScore
+                     */
+
+                    /**
+                     * Constructs a new QuizResult.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a QuizResult.
+                     * @implements IQuizResult
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IQuizResult=} [properties] Properties to set
+                     */
+                    function QuizResult(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * QuizResult quizId.
+                     * @member {string} quizId
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @instance
+                     */
+                    QuizResult.prototype.quizId = "";
+
+                    /**
+                     * QuizResult outcome.
+                     * @member {com.triforge.protocol.proto.QuizOutcome} outcome
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @instance
+                     */
+                    QuizResult.prototype.outcome = 0;
+
+                    /**
+                     * QuizResult correctCount.
+                     * @member {number} correctCount
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @instance
+                     */
+                    QuizResult.prototype.correctCount = 0;
+
+                    /**
+                     * QuizResult totalQuestions.
+                     * @member {number} totalQuestions
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @instance
+                     */
+                    QuizResult.prototype.totalQuestions = 0;
+
+                    /**
+                     * QuizResult pointsEarned.
+                     * @member {number} pointsEarned
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @instance
+                     */
+                    QuizResult.prototype.pointsEarned = 0;
+
+                    /**
+                     * QuizResult totalScore.
+                     * @member {number} totalScore
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @instance
+                     */
+                    QuizResult.prototype.totalScore = 0;
+
+                    /**
+                     * Creates a new QuizResult instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizResult=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.QuizResult} QuizResult instance
+                     */
+                    QuizResult.create = function create(properties) {
+                        return new QuizResult(properties);
+                    };
+
+                    /**
+                     * Encodes the specified QuizResult message. Does not implicitly {@link com.triforge.protocol.proto.QuizResult.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizResult} message QuizResult message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuizResult.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.quizId != null && Object.hasOwnProperty.call(message, "quizId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.quizId);
+                        if (message.outcome != null && Object.hasOwnProperty.call(message, "outcome"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.outcome);
+                        if (message.correctCount != null && Object.hasOwnProperty.call(message, "correctCount"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.correctCount);
+                        if (message.totalQuestions != null && Object.hasOwnProperty.call(message, "totalQuestions"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.totalQuestions);
+                        if (message.pointsEarned != null && Object.hasOwnProperty.call(message, "pointsEarned"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.pointsEarned);
+                        if (message.totalScore != null && Object.hasOwnProperty.call(message, "totalScore"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).int32(message.totalScore);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified QuizResult message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.QuizResult.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IQuizResult} message QuizResult message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    QuizResult.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a QuizResult message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.QuizResult} QuizResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuizResult.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.QuizResult();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.quizId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.outcome = reader.int32();
+                                    break;
+                                }
+                            case 3: {
+                                    message.correctCount = reader.uint32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.totalQuestions = reader.uint32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.pointsEarned = reader.int32();
+                                    break;
+                                }
+                            case 6: {
+                                    message.totalScore = reader.int32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a QuizResult message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.QuizResult} QuizResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    QuizResult.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a QuizResult message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    QuizResult.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.quizId != null && Object.hasOwnProperty.call(message, "quizId"))
+                            if (!$util.isString(message.quizId))
+                                return "quizId: string expected";
+                        if (message.outcome != null && Object.hasOwnProperty.call(message, "outcome"))
+                            switch (message.outcome) {
+                            default:
+                                return "outcome: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                                break;
+                            }
+                        if (message.correctCount != null && Object.hasOwnProperty.call(message, "correctCount"))
+                            if (!$util.isInteger(message.correctCount))
+                                return "correctCount: integer expected";
+                        if (message.totalQuestions != null && Object.hasOwnProperty.call(message, "totalQuestions"))
+                            if (!$util.isInteger(message.totalQuestions))
+                                return "totalQuestions: integer expected";
+                        if (message.pointsEarned != null && Object.hasOwnProperty.call(message, "pointsEarned"))
+                            if (!$util.isInteger(message.pointsEarned))
+                                return "pointsEarned: integer expected";
+                        if (message.totalScore != null && Object.hasOwnProperty.call(message, "totalScore"))
+                            if (!$util.isInteger(message.totalScore))
+                                return "totalScore: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a QuizResult message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.QuizResult} QuizResult
+                     */
+                    QuizResult.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.QuizResult)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.QuizResult: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.QuizResult();
+                        if (object.quizId != null)
+                            message.quizId = String(object.quizId);
+                        switch (object.outcome) {
+                        default:
+                            if (typeof object.outcome === "number") {
+                                message.outcome = object.outcome;
+                                break;
+                            }
+                            break;
+                        case "QUIZ_PENDING":
+                        case 0:
+                            message.outcome = 0;
+                            break;
+                        case "QUIZ_PASS":
+                        case 1:
+                            message.outcome = 1;
+                            break;
+                        case "QUIZ_FAIL":
+                        case 2:
+                            message.outcome = 2;
+                            break;
+                        }
+                        if (object.correctCount != null)
+                            message.correctCount = object.correctCount >>> 0;
+                        if (object.totalQuestions != null)
+                            message.totalQuestions = object.totalQuestions >>> 0;
+                        if (object.pointsEarned != null)
+                            message.pointsEarned = object.pointsEarned | 0;
+                        if (object.totalScore != null)
+                            message.totalScore = object.totalScore | 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a QuizResult message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.QuizResult} message QuizResult
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    QuizResult.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.quizId = "";
+                            object.outcome = options.enums === String ? "QUIZ_PENDING" : 0;
+                            object.correctCount = 0;
+                            object.totalQuestions = 0;
+                            object.pointsEarned = 0;
+                            object.totalScore = 0;
+                        }
+                        if (message.quizId != null && Object.hasOwnProperty.call(message, "quizId"))
+                            object.quizId = message.quizId;
+                        if (message.outcome != null && Object.hasOwnProperty.call(message, "outcome"))
+                            object.outcome = options.enums === String ? $root.com.triforge.protocol.proto.QuizOutcome[message.outcome] === undefined ? message.outcome : $root.com.triforge.protocol.proto.QuizOutcome[message.outcome] : message.outcome;
+                        if (message.correctCount != null && Object.hasOwnProperty.call(message, "correctCount"))
+                            object.correctCount = message.correctCount;
+                        if (message.totalQuestions != null && Object.hasOwnProperty.call(message, "totalQuestions"))
+                            object.totalQuestions = message.totalQuestions;
+                        if (message.pointsEarned != null && Object.hasOwnProperty.call(message, "pointsEarned"))
+                            object.pointsEarned = message.pointsEarned;
+                        if (message.totalScore != null && Object.hasOwnProperty.call(message, "totalScore"))
+                            object.totalScore = message.totalScore;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this QuizResult to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    QuizResult.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for QuizResult
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.QuizResult
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    QuizResult.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.QuizResult";
+                    };
+
+                    return QuizResult;
+                })();
+
+                proto.EncounterOffer = (function() {
+
+                    /**
+                     * Properties of an EncounterOffer.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IEncounterOffer
+                     * @property {string|null} [encounterId] EncounterOffer encounterId
+                     * @property {number|Long|null} [opponentPlayerId] EncounterOffer opponentPlayerId
+                     * @property {string|null} [opponentName] EncounterOffer opponentName
+                     * @property {com.triforge.protocol.proto.EncounterState|null} [state] EncounterOffer state
+                     * @property {number|Long|null} [deadlineTick] EncounterOffer deadlineTick
+                     */
+
+                    /**
+                     * Constructs a new EncounterOffer.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents an EncounterOffer.
+                     * @implements IEncounterOffer
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IEncounterOffer=} [properties] Properties to set
+                     */
+                    function EncounterOffer(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * EncounterOffer encounterId.
+                     * @member {string} encounterId
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @instance
+                     */
+                    EncounterOffer.prototype.encounterId = "";
+
+                    /**
+                     * EncounterOffer opponentPlayerId.
+                     * @member {number|Long} opponentPlayerId
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @instance
+                     */
+                    EncounterOffer.prototype.opponentPlayerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * EncounterOffer opponentName.
+                     * @member {string} opponentName
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @instance
+                     */
+                    EncounterOffer.prototype.opponentName = "";
+
+                    /**
+                     * EncounterOffer state.
+                     * @member {com.triforge.protocol.proto.EncounterState} state
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @instance
+                     */
+                    EncounterOffer.prototype.state = 0;
+
+                    /**
+                     * EncounterOffer deadlineTick.
+                     * @member {number|Long} deadlineTick
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @instance
+                     */
+                    EncounterOffer.prototype.deadlineTick = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * Creates a new EncounterOffer instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @static
+                     * @param {com.triforge.protocol.proto.IEncounterOffer=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.EncounterOffer} EncounterOffer instance
+                     */
+                    EncounterOffer.create = function create(properties) {
+                        return new EncounterOffer(properties);
+                    };
+
+                    /**
+                     * Encodes the specified EncounterOffer message. Does not implicitly {@link com.triforge.protocol.proto.EncounterOffer.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @static
+                     * @param {com.triforge.protocol.proto.IEncounterOffer} message EncounterOffer message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    EncounterOffer.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.encounterId != null && Object.hasOwnProperty.call(message, "encounterId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.encounterId);
+                        if (message.opponentPlayerId != null && Object.hasOwnProperty.call(message, "opponentPlayerId"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.opponentPlayerId);
+                        if (message.opponentName != null && Object.hasOwnProperty.call(message, "opponentName"))
+                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.opponentName);
+                        if (message.state != null && Object.hasOwnProperty.call(message, "state"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.state);
+                        if (message.deadlineTick != null && Object.hasOwnProperty.call(message, "deadlineTick"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.deadlineTick);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified EncounterOffer message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.EncounterOffer.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @static
+                     * @param {com.triforge.protocol.proto.IEncounterOffer} message EncounterOffer message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    EncounterOffer.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes an EncounterOffer message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.EncounterOffer} EncounterOffer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    EncounterOffer.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.EncounterOffer();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.encounterId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.opponentPlayerId = reader.uint64();
+                                    break;
+                                }
+                            case 3: {
+                                    message.opponentName = reader.string();
+                                    break;
+                                }
+                            case 4: {
+                                    message.state = reader.int32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.deadlineTick = reader.uint64();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes an EncounterOffer message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.EncounterOffer} EncounterOffer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    EncounterOffer.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies an EncounterOffer message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    EncounterOffer.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.encounterId != null && Object.hasOwnProperty.call(message, "encounterId"))
+                            if (!$util.isString(message.encounterId))
+                                return "encounterId: string expected";
+                        if (message.opponentPlayerId != null && Object.hasOwnProperty.call(message, "opponentPlayerId"))
+                            if (!$util.isInteger(message.opponentPlayerId) && !(message.opponentPlayerId && $util.isInteger(message.opponentPlayerId.low) && $util.isInteger(message.opponentPlayerId.high)))
+                                return "opponentPlayerId: integer|Long expected";
+                        if (message.opponentName != null && Object.hasOwnProperty.call(message, "opponentName"))
+                            if (!$util.isString(message.opponentName))
+                                return "opponentName: string expected";
+                        if (message.state != null && Object.hasOwnProperty.call(message, "state"))
+                            switch (message.state) {
+                            default:
+                                return "state: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                                break;
+                            }
+                        if (message.deadlineTick != null && Object.hasOwnProperty.call(message, "deadlineTick"))
+                            if (!$util.isInteger(message.deadlineTick) && !(message.deadlineTick && $util.isInteger(message.deadlineTick.low) && $util.isInteger(message.deadlineTick.high)))
+                                return "deadlineTick: integer|Long expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates an EncounterOffer message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.EncounterOffer} EncounterOffer
+                     */
+                    EncounterOffer.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.EncounterOffer)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.EncounterOffer: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.EncounterOffer();
+                        if (object.encounterId != null)
+                            message.encounterId = String(object.encounterId);
+                        if (object.opponentPlayerId != null)
+                            if ($util.Long)
+                                message.opponentPlayerId = $util.Long.fromValue(object.opponentPlayerId, true);
+                            else if (typeof object.opponentPlayerId === "string")
+                                message.opponentPlayerId = parseInt(object.opponentPlayerId, 10);
+                            else if (typeof object.opponentPlayerId === "number")
+                                message.opponentPlayerId = object.opponentPlayerId;
+                            else if (typeof object.opponentPlayerId === "object")
+                                message.opponentPlayerId = new $util.LongBits(object.opponentPlayerId.low >>> 0, object.opponentPlayerId.high >>> 0).toNumber(true);
+                        if (object.opponentName != null)
+                            message.opponentName = String(object.opponentName);
+                        switch (object.state) {
+                        default:
+                            if (typeof object.state === "number") {
+                                message.state = object.state;
+                                break;
+                            }
+                            break;
+                        case "ENC_OFFERED":
+                        case 0:
+                            message.state = 0;
+                            break;
+                        case "ENC_ACCEPTED":
+                        case 1:
+                            message.state = 1;
+                            break;
+                        case "ENC_DECLINED":
+                        case 2:
+                            message.state = 2;
+                            break;
+                        case "ENC_CANCELLED":
+                        case 3:
+                            message.state = 3;
+                            break;
+                        }
+                        if (object.deadlineTick != null)
+                            if ($util.Long)
+                                message.deadlineTick = $util.Long.fromValue(object.deadlineTick, true);
+                            else if (typeof object.deadlineTick === "string")
+                                message.deadlineTick = parseInt(object.deadlineTick, 10);
+                            else if (typeof object.deadlineTick === "number")
+                                message.deadlineTick = object.deadlineTick;
+                            else if (typeof object.deadlineTick === "object")
+                                message.deadlineTick = new $util.LongBits(object.deadlineTick.low >>> 0, object.deadlineTick.high >>> 0).toNumber(true);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from an EncounterOffer message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @static
+                     * @param {com.triforge.protocol.proto.EncounterOffer} message EncounterOffer
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    EncounterOffer.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.encounterId = "";
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.opponentPlayerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.opponentPlayerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.opponentName = "";
+                            object.state = options.enums === String ? "ENC_OFFERED" : 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.deadlineTick = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.deadlineTick = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                        }
+                        if (message.encounterId != null && Object.hasOwnProperty.call(message, "encounterId"))
+                            object.encounterId = message.encounterId;
+                        if (message.opponentPlayerId != null && Object.hasOwnProperty.call(message, "opponentPlayerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.opponentPlayerId = typeof message.opponentPlayerId === "number" ? BigInt(message.opponentPlayerId) : $util.Long.fromBits(message.opponentPlayerId.low >>> 0, message.opponentPlayerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.opponentPlayerId === "number")
+                                object.opponentPlayerId = options.longs === String ? String(message.opponentPlayerId) : message.opponentPlayerId;
+                            else
+                                object.opponentPlayerId = options.longs === String ? $util.Long.prototype.toString.call(message.opponentPlayerId) : options.longs === Number ? new $util.LongBits(message.opponentPlayerId.low >>> 0, message.opponentPlayerId.high >>> 0).toNumber(true) : message.opponentPlayerId;
+                        if (message.opponentName != null && Object.hasOwnProperty.call(message, "opponentName"))
+                            object.opponentName = message.opponentName;
+                        if (message.state != null && Object.hasOwnProperty.call(message, "state"))
+                            object.state = options.enums === String ? $root.com.triforge.protocol.proto.EncounterState[message.state] === undefined ? message.state : $root.com.triforge.protocol.proto.EncounterState[message.state] : message.state;
+                        if (message.deadlineTick != null && Object.hasOwnProperty.call(message, "deadlineTick"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.deadlineTick = typeof message.deadlineTick === "number" ? BigInt(message.deadlineTick) : $util.Long.fromBits(message.deadlineTick.low >>> 0, message.deadlineTick.high >>> 0, true).toBigInt();
+                            else if (typeof message.deadlineTick === "number")
+                                object.deadlineTick = options.longs === String ? String(message.deadlineTick) : message.deadlineTick;
+                            else
+                                object.deadlineTick = options.longs === String ? $util.Long.prototype.toString.call(message.deadlineTick) : options.longs === Number ? new $util.LongBits(message.deadlineTick.low >>> 0, message.deadlineTick.high >>> 0).toNumber(true) : message.deadlineTick;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this EncounterOffer to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    EncounterOffer.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for EncounterOffer
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.EncounterOffer
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    EncounterOffer.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.EncounterOffer";
+                    };
+
+                    return EncounterOffer;
+                })();
+
+                proto.ChallengeResponse = (function() {
+
+                    /**
+                     * Properties of a ChallengeResponse.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IChallengeResponse
+                     * @property {string|null} [encounterId] ChallengeResponse encounterId
+                     * @property {boolean|null} [accept] ChallengeResponse accept
+                     */
+
+                    /**
+                     * Constructs a new ChallengeResponse.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a ChallengeResponse.
+                     * @implements IChallengeResponse
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IChallengeResponse=} [properties] Properties to set
+                     */
+                    function ChallengeResponse(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * ChallengeResponse encounterId.
+                     * @member {string} encounterId
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @instance
+                     */
+                    ChallengeResponse.prototype.encounterId = "";
+
+                    /**
+                     * ChallengeResponse accept.
+                     * @member {boolean} accept
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @instance
+                     */
+                    ChallengeResponse.prototype.accept = false;
+
+                    /**
+                     * Creates a new ChallengeResponse instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @static
+                     * @param {com.triforge.protocol.proto.IChallengeResponse=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.ChallengeResponse} ChallengeResponse instance
+                     */
+                    ChallengeResponse.create = function create(properties) {
+                        return new ChallengeResponse(properties);
+                    };
+
+                    /**
+                     * Encodes the specified ChallengeResponse message. Does not implicitly {@link com.triforge.protocol.proto.ChallengeResponse.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @static
+                     * @param {com.triforge.protocol.proto.IChallengeResponse} message ChallengeResponse message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ChallengeResponse.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.encounterId != null && Object.hasOwnProperty.call(message, "encounterId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.encounterId);
+                        if (message.accept != null && Object.hasOwnProperty.call(message, "accept"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).bool(message.accept);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified ChallengeResponse message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.ChallengeResponse.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @static
+                     * @param {com.triforge.protocol.proto.IChallengeResponse} message ChallengeResponse message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ChallengeResponse.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a ChallengeResponse message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.ChallengeResponse} ChallengeResponse
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ChallengeResponse.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.ChallengeResponse();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.encounterId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.accept = reader.bool();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a ChallengeResponse message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.ChallengeResponse} ChallengeResponse
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ChallengeResponse.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a ChallengeResponse message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    ChallengeResponse.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.encounterId != null && Object.hasOwnProperty.call(message, "encounterId"))
+                            if (!$util.isString(message.encounterId))
+                                return "encounterId: string expected";
+                        if (message.accept != null && Object.hasOwnProperty.call(message, "accept"))
+                            if (typeof message.accept !== "boolean")
+                                return "accept: boolean expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a ChallengeResponse message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.ChallengeResponse} ChallengeResponse
+                     */
+                    ChallengeResponse.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.ChallengeResponse)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.ChallengeResponse: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.ChallengeResponse();
+                        if (object.encounterId != null)
+                            message.encounterId = String(object.encounterId);
+                        if (object.accept != null)
+                            message.accept = Boolean(object.accept);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a ChallengeResponse message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @static
+                     * @param {com.triforge.protocol.proto.ChallengeResponse} message ChallengeResponse
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    ChallengeResponse.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.encounterId = "";
+                            object.accept = false;
+                        }
+                        if (message.encounterId != null && Object.hasOwnProperty.call(message, "encounterId"))
+                            object.encounterId = message.encounterId;
+                        if (message.accept != null && Object.hasOwnProperty.call(message, "accept"))
+                            object.accept = message.accept;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this ChallengeResponse to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    ChallengeResponse.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for ChallengeResponse
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.ChallengeResponse
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    ChallengeResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.ChallengeResponse";
+                    };
+
+                    return ChallengeResponse;
+                })();
+
+                proto.DuelPrompt = (function() {
+
+                    /**
+                     * Properties of a DuelPrompt.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IDuelPrompt
+                     * @property {string|null} [duelId] DuelPrompt duelId
+                     * @property {number|Long|null} [opponentPlayerId] DuelPrompt opponentPlayerId
+                     * @property {string|null} [opponentName] DuelPrompt opponentName
+                     * @property {Array.<com.triforge.protocol.proto.IQuizQuestionProto>|null} [questions] DuelPrompt questions
+                     * @property {number|Long|null} [deadlineTick] DuelPrompt deadlineTick
+                     */
+
+                    /**
+                     * Constructs a new DuelPrompt.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a DuelPrompt.
+                     * @implements IDuelPrompt
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IDuelPrompt=} [properties] Properties to set
+                     */
+                    function DuelPrompt(properties) {
+                        this.questions = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * DuelPrompt duelId.
+                     * @member {string} duelId
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @instance
+                     */
+                    DuelPrompt.prototype.duelId = "";
+
+                    /**
+                     * DuelPrompt opponentPlayerId.
+                     * @member {number|Long} opponentPlayerId
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @instance
+                     */
+                    DuelPrompt.prototype.opponentPlayerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * DuelPrompt opponentName.
+                     * @member {string} opponentName
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @instance
+                     */
+                    DuelPrompt.prototype.opponentName = "";
+
+                    /**
+                     * DuelPrompt questions.
+                     * @member {Array.<com.triforge.protocol.proto.IQuizQuestionProto>} questions
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @instance
+                     */
+                    DuelPrompt.prototype.questions = $util.emptyArray;
+
+                    /**
+                     * DuelPrompt deadlineTick.
+                     * @member {number|Long} deadlineTick
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @instance
+                     */
+                    DuelPrompt.prototype.deadlineTick = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * Creates a new DuelPrompt instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @static
+                     * @param {com.triforge.protocol.proto.IDuelPrompt=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.DuelPrompt} DuelPrompt instance
+                     */
+                    DuelPrompt.create = function create(properties) {
+                        return new DuelPrompt(properties);
+                    };
+
+                    /**
+                     * Encodes the specified DuelPrompt message. Does not implicitly {@link com.triforge.protocol.proto.DuelPrompt.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @static
+                     * @param {com.triforge.protocol.proto.IDuelPrompt} message DuelPrompt message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    DuelPrompt.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.duelId != null && Object.hasOwnProperty.call(message, "duelId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.duelId);
+                        if (message.opponentPlayerId != null && Object.hasOwnProperty.call(message, "opponentPlayerId"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.opponentPlayerId);
+                        if (message.opponentName != null && Object.hasOwnProperty.call(message, "opponentName"))
+                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.opponentName);
+                        if (message.questions != null && message.questions.length)
+                            for (let i = 0; i < message.questions.length; ++i)
+                                $root.com.triforge.protocol.proto.QuizQuestionProto.encode(message.questions[i], writer.uint32(/* id 4, wireType 2 =*/34).fork(), q + 1).ldelim();
+                        if (message.deadlineTick != null && Object.hasOwnProperty.call(message, "deadlineTick"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.deadlineTick);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified DuelPrompt message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.DuelPrompt.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @static
+                     * @param {com.triforge.protocol.proto.IDuelPrompt} message DuelPrompt message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    DuelPrompt.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a DuelPrompt message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.DuelPrompt} DuelPrompt
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    DuelPrompt.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.DuelPrompt();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.duelId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.opponentPlayerId = reader.uint64();
+                                    break;
+                                }
+                            case 3: {
+                                    message.opponentName = reader.string();
+                                    break;
+                                }
+                            case 4: {
+                                    if (!(message.questions && message.questions.length))
+                                        message.questions = [];
+                                    message.questions.push($root.com.triforge.protocol.proto.QuizQuestionProto.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            case 5: {
+                                    message.deadlineTick = reader.uint64();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a DuelPrompt message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.DuelPrompt} DuelPrompt
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    DuelPrompt.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a DuelPrompt message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    DuelPrompt.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.duelId != null && Object.hasOwnProperty.call(message, "duelId"))
+                            if (!$util.isString(message.duelId))
+                                return "duelId: string expected";
+                        if (message.opponentPlayerId != null && Object.hasOwnProperty.call(message, "opponentPlayerId"))
+                            if (!$util.isInteger(message.opponentPlayerId) && !(message.opponentPlayerId && $util.isInteger(message.opponentPlayerId.low) && $util.isInteger(message.opponentPlayerId.high)))
+                                return "opponentPlayerId: integer|Long expected";
+                        if (message.opponentName != null && Object.hasOwnProperty.call(message, "opponentName"))
+                            if (!$util.isString(message.opponentName))
+                                return "opponentName: string expected";
+                        if (message.questions != null && Object.hasOwnProperty.call(message, "questions")) {
+                            if (!Array.isArray(message.questions))
+                                return "questions: array expected";
+                            for (let i = 0; i < message.questions.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.QuizQuestionProto.verify(message.questions[i], long + 1);
+                                if (error)
+                                    return "questions." + error;
+                            }
+                        }
+                        if (message.deadlineTick != null && Object.hasOwnProperty.call(message, "deadlineTick"))
+                            if (!$util.isInteger(message.deadlineTick) && !(message.deadlineTick && $util.isInteger(message.deadlineTick.low) && $util.isInteger(message.deadlineTick.high)))
+                                return "deadlineTick: integer|Long expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a DuelPrompt message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.DuelPrompt} DuelPrompt
+                     */
+                    DuelPrompt.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.DuelPrompt)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.DuelPrompt: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.DuelPrompt();
+                        if (object.duelId != null)
+                            message.duelId = String(object.duelId);
+                        if (object.opponentPlayerId != null)
+                            if ($util.Long)
+                                message.opponentPlayerId = $util.Long.fromValue(object.opponentPlayerId, true);
+                            else if (typeof object.opponentPlayerId === "string")
+                                message.opponentPlayerId = parseInt(object.opponentPlayerId, 10);
+                            else if (typeof object.opponentPlayerId === "number")
+                                message.opponentPlayerId = object.opponentPlayerId;
+                            else if (typeof object.opponentPlayerId === "object")
+                                message.opponentPlayerId = new $util.LongBits(object.opponentPlayerId.low >>> 0, object.opponentPlayerId.high >>> 0).toNumber(true);
+                        if (object.opponentName != null)
+                            message.opponentName = String(object.opponentName);
+                        if (object.questions) {
+                            if (!Array.isArray(object.questions))
+                                throw TypeError(".com.triforge.protocol.proto.DuelPrompt.questions: array expected");
+                            message.questions = [];
+                            for (let i = 0; i < object.questions.length; ++i) {
+                                if (!$util.isObject(object.questions[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.DuelPrompt.questions: object expected");
+                                message.questions[i] = $root.com.triforge.protocol.proto.QuizQuestionProto.fromObject(object.questions[i], long + 1);
+                            }
+                        }
+                        if (object.deadlineTick != null)
+                            if ($util.Long)
+                                message.deadlineTick = $util.Long.fromValue(object.deadlineTick, true);
+                            else if (typeof object.deadlineTick === "string")
+                                message.deadlineTick = parseInt(object.deadlineTick, 10);
+                            else if (typeof object.deadlineTick === "number")
+                                message.deadlineTick = object.deadlineTick;
+                            else if (typeof object.deadlineTick === "object")
+                                message.deadlineTick = new $util.LongBits(object.deadlineTick.low >>> 0, object.deadlineTick.high >>> 0).toNumber(true);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a DuelPrompt message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @static
+                     * @param {com.triforge.protocol.proto.DuelPrompt} message DuelPrompt
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    DuelPrompt.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.questions = [];
+                        if (options.defaults) {
+                            object.duelId = "";
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.opponentPlayerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.opponentPlayerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.opponentName = "";
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.deadlineTick = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.deadlineTick = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                        }
+                        if (message.duelId != null && Object.hasOwnProperty.call(message, "duelId"))
+                            object.duelId = message.duelId;
+                        if (message.opponentPlayerId != null && Object.hasOwnProperty.call(message, "opponentPlayerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.opponentPlayerId = typeof message.opponentPlayerId === "number" ? BigInt(message.opponentPlayerId) : $util.Long.fromBits(message.opponentPlayerId.low >>> 0, message.opponentPlayerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.opponentPlayerId === "number")
+                                object.opponentPlayerId = options.longs === String ? String(message.opponentPlayerId) : message.opponentPlayerId;
+                            else
+                                object.opponentPlayerId = options.longs === String ? $util.Long.prototype.toString.call(message.opponentPlayerId) : options.longs === Number ? new $util.LongBits(message.opponentPlayerId.low >>> 0, message.opponentPlayerId.high >>> 0).toNumber(true) : message.opponentPlayerId;
+                        if (message.opponentName != null && Object.hasOwnProperty.call(message, "opponentName"))
+                            object.opponentName = message.opponentName;
+                        if (message.questions && message.questions.length) {
+                            object.questions = [];
+                            for (let j = 0; j < message.questions.length; ++j)
+                                object.questions[j] = $root.com.triforge.protocol.proto.QuizQuestionProto.toObject(message.questions[j], options, q + 1);
+                        }
+                        if (message.deadlineTick != null && Object.hasOwnProperty.call(message, "deadlineTick"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.deadlineTick = typeof message.deadlineTick === "number" ? BigInt(message.deadlineTick) : $util.Long.fromBits(message.deadlineTick.low >>> 0, message.deadlineTick.high >>> 0, true).toBigInt();
+                            else if (typeof message.deadlineTick === "number")
+                                object.deadlineTick = options.longs === String ? String(message.deadlineTick) : message.deadlineTick;
+                            else
+                                object.deadlineTick = options.longs === String ? $util.Long.prototype.toString.call(message.deadlineTick) : options.longs === Number ? new $util.LongBits(message.deadlineTick.low >>> 0, message.deadlineTick.high >>> 0).toNumber(true) : message.deadlineTick;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this DuelPrompt to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    DuelPrompt.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for DuelPrompt
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.DuelPrompt
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    DuelPrompt.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.DuelPrompt";
+                    };
+
+                    return DuelPrompt;
+                })();
+
+                proto.DuelSubmit = (function() {
+
+                    /**
+                     * Properties of a DuelSubmit.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IDuelSubmit
+                     * @property {string|null} [duelId] DuelSubmit duelId
+                     * @property {Array.<com.triforge.protocol.proto.IQuizAnswer>|null} [answers] DuelSubmit answers
+                     */
+
+                    /**
+                     * Constructs a new DuelSubmit.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a DuelSubmit.
+                     * @implements IDuelSubmit
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IDuelSubmit=} [properties] Properties to set
+                     */
+                    function DuelSubmit(properties) {
+                        this.answers = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * DuelSubmit duelId.
+                     * @member {string} duelId
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @instance
+                     */
+                    DuelSubmit.prototype.duelId = "";
+
+                    /**
+                     * DuelSubmit answers.
+                     * @member {Array.<com.triforge.protocol.proto.IQuizAnswer>} answers
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @instance
+                     */
+                    DuelSubmit.prototype.answers = $util.emptyArray;
+
+                    /**
+                     * Creates a new DuelSubmit instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @static
+                     * @param {com.triforge.protocol.proto.IDuelSubmit=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.DuelSubmit} DuelSubmit instance
+                     */
+                    DuelSubmit.create = function create(properties) {
+                        return new DuelSubmit(properties);
+                    };
+
+                    /**
+                     * Encodes the specified DuelSubmit message. Does not implicitly {@link com.triforge.protocol.proto.DuelSubmit.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @static
+                     * @param {com.triforge.protocol.proto.IDuelSubmit} message DuelSubmit message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    DuelSubmit.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.duelId != null && Object.hasOwnProperty.call(message, "duelId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.duelId);
+                        if (message.answers != null && message.answers.length)
+                            for (let i = 0; i < message.answers.length; ++i)
+                                $root.com.triforge.protocol.proto.QuizAnswer.encode(message.answers[i], writer.uint32(/* id 2, wireType 2 =*/18).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified DuelSubmit message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.DuelSubmit.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @static
+                     * @param {com.triforge.protocol.proto.IDuelSubmit} message DuelSubmit message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    DuelSubmit.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a DuelSubmit message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.DuelSubmit} DuelSubmit
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    DuelSubmit.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.DuelSubmit();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.duelId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    if (!(message.answers && message.answers.length))
+                                        message.answers = [];
+                                    message.answers.push($root.com.triforge.protocol.proto.QuizAnswer.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a DuelSubmit message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.DuelSubmit} DuelSubmit
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    DuelSubmit.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a DuelSubmit message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    DuelSubmit.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.duelId != null && Object.hasOwnProperty.call(message, "duelId"))
+                            if (!$util.isString(message.duelId))
+                                return "duelId: string expected";
+                        if (message.answers != null && Object.hasOwnProperty.call(message, "answers")) {
+                            if (!Array.isArray(message.answers))
+                                return "answers: array expected";
+                            for (let i = 0; i < message.answers.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.QuizAnswer.verify(message.answers[i], long + 1);
+                                if (error)
+                                    return "answers." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a DuelSubmit message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.DuelSubmit} DuelSubmit
+                     */
+                    DuelSubmit.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.DuelSubmit)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.DuelSubmit: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.DuelSubmit();
+                        if (object.duelId != null)
+                            message.duelId = String(object.duelId);
+                        if (object.answers) {
+                            if (!Array.isArray(object.answers))
+                                throw TypeError(".com.triforge.protocol.proto.DuelSubmit.answers: array expected");
+                            message.answers = [];
+                            for (let i = 0; i < object.answers.length; ++i) {
+                                if (!$util.isObject(object.answers[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.DuelSubmit.answers: object expected");
+                                message.answers[i] = $root.com.triforge.protocol.proto.QuizAnswer.fromObject(object.answers[i], long + 1);
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a DuelSubmit message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @static
+                     * @param {com.triforge.protocol.proto.DuelSubmit} message DuelSubmit
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    DuelSubmit.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.answers = [];
+                        if (options.defaults)
+                            object.duelId = "";
+                        if (message.duelId != null && Object.hasOwnProperty.call(message, "duelId"))
+                            object.duelId = message.duelId;
+                        if (message.answers && message.answers.length) {
+                            object.answers = [];
+                            for (let j = 0; j < message.answers.length; ++j)
+                                object.answers[j] = $root.com.triforge.protocol.proto.QuizAnswer.toObject(message.answers[j], options, q + 1);
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this DuelSubmit to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    DuelSubmit.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for DuelSubmit
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.DuelSubmit
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    DuelSubmit.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.DuelSubmit";
+                    };
+
+                    return DuelSubmit;
+                })();
+
+                proto.DuelResult = (function() {
+
+                    /**
+                     * Properties of a DuelResult.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IDuelResult
+                     * @property {string|null} [duelId] DuelResult duelId
+                     * @property {number|Long|null} [winnerPlayerId] DuelResult winnerPlayerId
+                     * @property {boolean|null} [tie] DuelResult tie
+                     * @property {number|null} [yourCorrect] DuelResult yourCorrect
+                     * @property {number|null} [opponentCorrect] DuelResult opponentCorrect
+                     * @property {number|null} [scoreDelta] DuelResult scoreDelta
+                     * @property {number|null} [totalScore] DuelResult totalScore
+                     */
+
+                    /**
+                     * Constructs a new DuelResult.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a DuelResult.
+                     * @implements IDuelResult
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IDuelResult=} [properties] Properties to set
+                     */
+                    function DuelResult(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * DuelResult duelId.
+                     * @member {string} duelId
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @instance
+                     */
+                    DuelResult.prototype.duelId = "";
+
+                    /**
+                     * DuelResult winnerPlayerId.
+                     * @member {number|Long} winnerPlayerId
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @instance
+                     */
+                    DuelResult.prototype.winnerPlayerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * DuelResult tie.
+                     * @member {boolean} tie
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @instance
+                     */
+                    DuelResult.prototype.tie = false;
+
+                    /**
+                     * DuelResult yourCorrect.
+                     * @member {number} yourCorrect
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @instance
+                     */
+                    DuelResult.prototype.yourCorrect = 0;
+
+                    /**
+                     * DuelResult opponentCorrect.
+                     * @member {number} opponentCorrect
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @instance
+                     */
+                    DuelResult.prototype.opponentCorrect = 0;
+
+                    /**
+                     * DuelResult scoreDelta.
+                     * @member {number} scoreDelta
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @instance
+                     */
+                    DuelResult.prototype.scoreDelta = 0;
+
+                    /**
+                     * DuelResult totalScore.
+                     * @member {number} totalScore
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @instance
+                     */
+                    DuelResult.prototype.totalScore = 0;
+
+                    /**
+                     * Creates a new DuelResult instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IDuelResult=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.DuelResult} DuelResult instance
+                     */
+                    DuelResult.create = function create(properties) {
+                        return new DuelResult(properties);
+                    };
+
+                    /**
+                     * Encodes the specified DuelResult message. Does not implicitly {@link com.triforge.protocol.proto.DuelResult.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IDuelResult} message DuelResult message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    DuelResult.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.duelId != null && Object.hasOwnProperty.call(message, "duelId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.duelId);
+                        if (message.winnerPlayerId != null && Object.hasOwnProperty.call(message, "winnerPlayerId"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.winnerPlayerId);
+                        if (message.tie != null && Object.hasOwnProperty.call(message, "tie"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).bool(message.tie);
+                        if (message.yourCorrect != null && Object.hasOwnProperty.call(message, "yourCorrect"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.yourCorrect);
+                        if (message.opponentCorrect != null && Object.hasOwnProperty.call(message, "opponentCorrect"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.opponentCorrect);
+                        if (message.scoreDelta != null && Object.hasOwnProperty.call(message, "scoreDelta"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).int32(message.scoreDelta);
+                        if (message.totalScore != null && Object.hasOwnProperty.call(message, "totalScore"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).int32(message.totalScore);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified DuelResult message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.DuelResult.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IDuelResult} message DuelResult message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    DuelResult.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a DuelResult message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.DuelResult} DuelResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    DuelResult.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.DuelResult();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.duelId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.winnerPlayerId = reader.uint64();
+                                    break;
+                                }
+                            case 3: {
+                                    message.tie = reader.bool();
+                                    break;
+                                }
+                            case 4: {
+                                    message.yourCorrect = reader.uint32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.opponentCorrect = reader.uint32();
+                                    break;
+                                }
+                            case 6: {
+                                    message.scoreDelta = reader.int32();
+                                    break;
+                                }
+                            case 7: {
+                                    message.totalScore = reader.int32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a DuelResult message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.DuelResult} DuelResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    DuelResult.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a DuelResult message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    DuelResult.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.duelId != null && Object.hasOwnProperty.call(message, "duelId"))
+                            if (!$util.isString(message.duelId))
+                                return "duelId: string expected";
+                        if (message.winnerPlayerId != null && Object.hasOwnProperty.call(message, "winnerPlayerId"))
+                            if (!$util.isInteger(message.winnerPlayerId) && !(message.winnerPlayerId && $util.isInteger(message.winnerPlayerId.low) && $util.isInteger(message.winnerPlayerId.high)))
+                                return "winnerPlayerId: integer|Long expected";
+                        if (message.tie != null && Object.hasOwnProperty.call(message, "tie"))
+                            if (typeof message.tie !== "boolean")
+                                return "tie: boolean expected";
+                        if (message.yourCorrect != null && Object.hasOwnProperty.call(message, "yourCorrect"))
+                            if (!$util.isInteger(message.yourCorrect))
+                                return "yourCorrect: integer expected";
+                        if (message.opponentCorrect != null && Object.hasOwnProperty.call(message, "opponentCorrect"))
+                            if (!$util.isInteger(message.opponentCorrect))
+                                return "opponentCorrect: integer expected";
+                        if (message.scoreDelta != null && Object.hasOwnProperty.call(message, "scoreDelta"))
+                            if (!$util.isInteger(message.scoreDelta))
+                                return "scoreDelta: integer expected";
+                        if (message.totalScore != null && Object.hasOwnProperty.call(message, "totalScore"))
+                            if (!$util.isInteger(message.totalScore))
+                                return "totalScore: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a DuelResult message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.DuelResult} DuelResult
+                     */
+                    DuelResult.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.DuelResult)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.DuelResult: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.DuelResult();
+                        if (object.duelId != null)
+                            message.duelId = String(object.duelId);
+                        if (object.winnerPlayerId != null)
+                            if ($util.Long)
+                                message.winnerPlayerId = $util.Long.fromValue(object.winnerPlayerId, true);
+                            else if (typeof object.winnerPlayerId === "string")
+                                message.winnerPlayerId = parseInt(object.winnerPlayerId, 10);
+                            else if (typeof object.winnerPlayerId === "number")
+                                message.winnerPlayerId = object.winnerPlayerId;
+                            else if (typeof object.winnerPlayerId === "object")
+                                message.winnerPlayerId = new $util.LongBits(object.winnerPlayerId.low >>> 0, object.winnerPlayerId.high >>> 0).toNumber(true);
+                        if (object.tie != null)
+                            message.tie = Boolean(object.tie);
+                        if (object.yourCorrect != null)
+                            message.yourCorrect = object.yourCorrect >>> 0;
+                        if (object.opponentCorrect != null)
+                            message.opponentCorrect = object.opponentCorrect >>> 0;
+                        if (object.scoreDelta != null)
+                            message.scoreDelta = object.scoreDelta | 0;
+                        if (object.totalScore != null)
+                            message.totalScore = object.totalScore | 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a DuelResult message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.DuelResult} message DuelResult
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    DuelResult.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.duelId = "";
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.winnerPlayerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.winnerPlayerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.tie = false;
+                            object.yourCorrect = 0;
+                            object.opponentCorrect = 0;
+                            object.scoreDelta = 0;
+                            object.totalScore = 0;
+                        }
+                        if (message.duelId != null && Object.hasOwnProperty.call(message, "duelId"))
+                            object.duelId = message.duelId;
+                        if (message.winnerPlayerId != null && Object.hasOwnProperty.call(message, "winnerPlayerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.winnerPlayerId = typeof message.winnerPlayerId === "number" ? BigInt(message.winnerPlayerId) : $util.Long.fromBits(message.winnerPlayerId.low >>> 0, message.winnerPlayerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.winnerPlayerId === "number")
+                                object.winnerPlayerId = options.longs === String ? String(message.winnerPlayerId) : message.winnerPlayerId;
+                            else
+                                object.winnerPlayerId = options.longs === String ? $util.Long.prototype.toString.call(message.winnerPlayerId) : options.longs === Number ? new $util.LongBits(message.winnerPlayerId.low >>> 0, message.winnerPlayerId.high >>> 0).toNumber(true) : message.winnerPlayerId;
+                        if (message.tie != null && Object.hasOwnProperty.call(message, "tie"))
+                            object.tie = message.tie;
+                        if (message.yourCorrect != null && Object.hasOwnProperty.call(message, "yourCorrect"))
+                            object.yourCorrect = message.yourCorrect;
+                        if (message.opponentCorrect != null && Object.hasOwnProperty.call(message, "opponentCorrect"))
+                            object.opponentCorrect = message.opponentCorrect;
+                        if (message.scoreDelta != null && Object.hasOwnProperty.call(message, "scoreDelta"))
+                            object.scoreDelta = message.scoreDelta;
+                        if (message.totalScore != null && Object.hasOwnProperty.call(message, "totalScore"))
+                            object.totalScore = message.totalScore;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this DuelResult to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    DuelResult.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for DuelResult
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.DuelResult
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    DuelResult.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.DuelResult";
+                    };
+
+                    return DuelResult;
+                })();
+
+                proto.ItemUse = (function() {
+
+                    /**
+                     * Properties of an ItemUse.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IItemUse
+                     * @property {com.triforge.protocol.proto.ItemType|null} [item] ItemUse item
+                     * @property {number|Long|null} [targetPlayerId] ItemUse targetPlayerId
+                     */
+
+                    /**
+                     * Constructs a new ItemUse.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents an ItemUse.
+                     * @implements IItemUse
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IItemUse=} [properties] Properties to set
+                     */
+                    function ItemUse(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * ItemUse item.
+                     * @member {com.triforge.protocol.proto.ItemType} item
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @instance
+                     */
+                    ItemUse.prototype.item = 0;
+
+                    /**
+                     * ItemUse targetPlayerId.
+                     * @member {number|Long} targetPlayerId
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @instance
+                     */
+                    ItemUse.prototype.targetPlayerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * Creates a new ItemUse instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @static
+                     * @param {com.triforge.protocol.proto.IItemUse=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.ItemUse} ItemUse instance
+                     */
+                    ItemUse.create = function create(properties) {
+                        return new ItemUse(properties);
+                    };
+
+                    /**
+                     * Encodes the specified ItemUse message. Does not implicitly {@link com.triforge.protocol.proto.ItemUse.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @static
+                     * @param {com.triforge.protocol.proto.IItemUse} message ItemUse message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ItemUse.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.item != null && Object.hasOwnProperty.call(message, "item"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.item);
+                        if (message.targetPlayerId != null && Object.hasOwnProperty.call(message, "targetPlayerId"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.targetPlayerId);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified ItemUse message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.ItemUse.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @static
+                     * @param {com.triforge.protocol.proto.IItemUse} message ItemUse message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ItemUse.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes an ItemUse message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.ItemUse} ItemUse
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ItemUse.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.ItemUse();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.item = reader.int32();
+                                    break;
+                                }
+                            case 2: {
+                                    message.targetPlayerId = reader.uint64();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes an ItemUse message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.ItemUse} ItemUse
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ItemUse.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies an ItemUse message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    ItemUse.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.item != null && Object.hasOwnProperty.call(message, "item"))
+                            switch (message.item) {
+                            default:
+                                return "item: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                                break;
+                            }
+                        if (message.targetPlayerId != null && Object.hasOwnProperty.call(message, "targetPlayerId"))
+                            if (!$util.isInteger(message.targetPlayerId) && !(message.targetPlayerId && $util.isInteger(message.targetPlayerId.low) && $util.isInteger(message.targetPlayerId.high)))
+                                return "targetPlayerId: integer|Long expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates an ItemUse message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.ItemUse} ItemUse
+                     */
+                    ItemUse.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.ItemUse)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.ItemUse: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.ItemUse();
+                        switch (object.item) {
+                        default:
+                            if (typeof object.item === "number") {
+                                message.item = object.item;
+                                break;
+                            }
+                            break;
+                        case "ITEM_NONE":
+                        case 0:
+                            message.item = 0;
+                            break;
+                        case "ITEM_SHIELD":
+                        case 1:
+                            message.item = 1;
+                            break;
+                        case "ITEM_SPEED":
+                        case 2:
+                            message.item = 2;
+                            break;
+                        case "ITEM_FAKE_MAP":
+                        case 3:
+                            message.item = 3;
+                            break;
+                        case "ITEM_TREASURE_LOCK":
+                        case 4:
+                            message.item = 4;
+                            break;
+                        }
+                        if (object.targetPlayerId != null)
+                            if ($util.Long)
+                                message.targetPlayerId = $util.Long.fromValue(object.targetPlayerId, true);
+                            else if (typeof object.targetPlayerId === "string")
+                                message.targetPlayerId = parseInt(object.targetPlayerId, 10);
+                            else if (typeof object.targetPlayerId === "number")
+                                message.targetPlayerId = object.targetPlayerId;
+                            else if (typeof object.targetPlayerId === "object")
+                                message.targetPlayerId = new $util.LongBits(object.targetPlayerId.low >>> 0, object.targetPlayerId.high >>> 0).toNumber(true);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from an ItemUse message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @static
+                     * @param {com.triforge.protocol.proto.ItemUse} message ItemUse
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    ItemUse.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.item = options.enums === String ? "ITEM_NONE" : 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.targetPlayerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.targetPlayerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                        }
+                        if (message.item != null && Object.hasOwnProperty.call(message, "item"))
+                            object.item = options.enums === String ? $root.com.triforge.protocol.proto.ItemType[message.item] === undefined ? message.item : $root.com.triforge.protocol.proto.ItemType[message.item] : message.item;
+                        if (message.targetPlayerId != null && Object.hasOwnProperty.call(message, "targetPlayerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.targetPlayerId = typeof message.targetPlayerId === "number" ? BigInt(message.targetPlayerId) : $util.Long.fromBits(message.targetPlayerId.low >>> 0, message.targetPlayerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.targetPlayerId === "number")
+                                object.targetPlayerId = options.longs === String ? String(message.targetPlayerId) : message.targetPlayerId;
+                            else
+                                object.targetPlayerId = options.longs === String ? $util.Long.prototype.toString.call(message.targetPlayerId) : options.longs === Number ? new $util.LongBits(message.targetPlayerId.low >>> 0, message.targetPlayerId.high >>> 0).toNumber(true) : message.targetPlayerId;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this ItemUse to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    ItemUse.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for ItemUse
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.ItemUse
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    ItemUse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.ItemUse";
+                    };
+
+                    return ItemUse;
+                })();
+
+                proto.InventoryUpdate = (function() {
+
+                    /**
+                     * Properties of an InventoryUpdate.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IInventoryUpdate
+                     * @property {Array.<com.triforge.protocol.proto.IInventoryItemProto>|null} [items] InventoryUpdate items
+                     */
+
+                    /**
+                     * Constructs a new InventoryUpdate.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents an InventoryUpdate.
+                     * @implements IInventoryUpdate
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IInventoryUpdate=} [properties] Properties to set
+                     */
+                    function InventoryUpdate(properties) {
+                        this.items = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * InventoryUpdate items.
+                     * @member {Array.<com.triforge.protocol.proto.IInventoryItemProto>} items
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @instance
+                     */
+                    InventoryUpdate.prototype.items = $util.emptyArray;
+
+                    /**
+                     * Creates a new InventoryUpdate instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.IInventoryUpdate=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.InventoryUpdate} InventoryUpdate instance
+                     */
+                    InventoryUpdate.create = function create(properties) {
+                        return new InventoryUpdate(properties);
+                    };
+
+                    /**
+                     * Encodes the specified InventoryUpdate message. Does not implicitly {@link com.triforge.protocol.proto.InventoryUpdate.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.IInventoryUpdate} message InventoryUpdate message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    InventoryUpdate.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.items != null && message.items.length)
+                            for (let i = 0; i < message.items.length; ++i)
+                                $root.com.triforge.protocol.proto.InventoryItemProto.encode(message.items[i], writer.uint32(/* id 1, wireType 2 =*/10).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified InventoryUpdate message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.InventoryUpdate.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.IInventoryUpdate} message InventoryUpdate message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    InventoryUpdate.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes an InventoryUpdate message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.InventoryUpdate} InventoryUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    InventoryUpdate.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.InventoryUpdate();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    if (!(message.items && message.items.length))
+                                        message.items = [];
+                                    message.items.push($root.com.triforge.protocol.proto.InventoryItemProto.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes an InventoryUpdate message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.InventoryUpdate} InventoryUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    InventoryUpdate.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies an InventoryUpdate message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    InventoryUpdate.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.items != null && Object.hasOwnProperty.call(message, "items")) {
+                            if (!Array.isArray(message.items))
+                                return "items: array expected";
+                            for (let i = 0; i < message.items.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.InventoryItemProto.verify(message.items[i], long + 1);
+                                if (error)
+                                    return "items." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates an InventoryUpdate message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.InventoryUpdate} InventoryUpdate
+                     */
+                    InventoryUpdate.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.InventoryUpdate)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.InventoryUpdate: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.InventoryUpdate();
+                        if (object.items) {
+                            if (!Array.isArray(object.items))
+                                throw TypeError(".com.triforge.protocol.proto.InventoryUpdate.items: array expected");
+                            message.items = [];
+                            for (let i = 0; i < object.items.length; ++i) {
+                                if (!$util.isObject(object.items[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.InventoryUpdate.items: object expected");
+                                message.items[i] = $root.com.triforge.protocol.proto.InventoryItemProto.fromObject(object.items[i], long + 1);
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from an InventoryUpdate message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.InventoryUpdate} message InventoryUpdate
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    InventoryUpdate.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.items = [];
+                        if (message.items && message.items.length) {
+                            object.items = [];
+                            for (let j = 0; j < message.items.length; ++j)
+                                object.items[j] = $root.com.triforge.protocol.proto.InventoryItemProto.toObject(message.items[j], options, q + 1);
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this InventoryUpdate to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    InventoryUpdate.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for InventoryUpdate
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.InventoryUpdate
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    InventoryUpdate.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.InventoryUpdate";
+                    };
+
+                    return InventoryUpdate;
+                })();
+
+                proto.LeaderboardEntry = (function() {
+
+                    /**
+                     * Properties of a LeaderboardEntry.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface ILeaderboardEntry
+                     * @property {number|Long|null} [playerId] LeaderboardEntry playerId
+                     * @property {string|null} [name] LeaderboardEntry name
+                     * @property {number|null} [power] LeaderboardEntry power
+                     * @property {number|null} [score] LeaderboardEntry score
+                     * @property {number|null} [checkpointsCleared] LeaderboardEntry checkpointsCleared
+                     * @property {number|null} [rank] LeaderboardEntry rank
+                     */
+
+                    /**
+                     * Constructs a new LeaderboardEntry.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a LeaderboardEntry.
+                     * @implements ILeaderboardEntry
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.ILeaderboardEntry=} [properties] Properties to set
+                     */
+                    function LeaderboardEntry(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * LeaderboardEntry playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @instance
+                     */
+                    LeaderboardEntry.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * LeaderboardEntry name.
+                     * @member {string} name
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @instance
+                     */
+                    LeaderboardEntry.prototype.name = "";
+
+                    /**
+                     * LeaderboardEntry power.
+                     * @member {number} power
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @instance
+                     */
+                    LeaderboardEntry.prototype.power = 0;
+
+                    /**
+                     * LeaderboardEntry score.
+                     * @member {number} score
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @instance
+                     */
+                    LeaderboardEntry.prototype.score = 0;
+
+                    /**
+                     * LeaderboardEntry checkpointsCleared.
+                     * @member {number} checkpointsCleared
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @instance
+                     */
+                    LeaderboardEntry.prototype.checkpointsCleared = 0;
+
+                    /**
+                     * LeaderboardEntry rank.
+                     * @member {number} rank
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @instance
+                     */
+                    LeaderboardEntry.prototype.rank = 0;
+
+                    /**
+                     * Creates a new LeaderboardEntry instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.ILeaderboardEntry=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.LeaderboardEntry} LeaderboardEntry instance
+                     */
+                    LeaderboardEntry.create = function create(properties) {
+                        return new LeaderboardEntry(properties);
+                    };
+
+                    /**
+                     * Encodes the specified LeaderboardEntry message. Does not implicitly {@link com.triforge.protocol.proto.LeaderboardEntry.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.ILeaderboardEntry} message LeaderboardEntry message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    LeaderboardEntry.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.playerId);
+                        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+                        if (message.power != null && Object.hasOwnProperty.call(message, "power"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.power);
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.score);
+                        if (message.checkpointsCleared != null && Object.hasOwnProperty.call(message, "checkpointsCleared"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.checkpointsCleared);
+                        if (message.rank != null && Object.hasOwnProperty.call(message, "rank"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.rank);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified LeaderboardEntry message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.LeaderboardEntry.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.ILeaderboardEntry} message LeaderboardEntry message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    LeaderboardEntry.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a LeaderboardEntry message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.LeaderboardEntry} LeaderboardEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    LeaderboardEntry.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.LeaderboardEntry();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.name = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    message.power = reader.int32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.score = reader.int32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.checkpointsCleared = reader.int32();
+                                    break;
+                                }
+                            case 6: {
+                                    message.rank = reader.uint32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a LeaderboardEntry message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.LeaderboardEntry} LeaderboardEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    LeaderboardEntry.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a LeaderboardEntry message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    LeaderboardEntry.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                            if (!$util.isString(message.name))
+                                return "name: string expected";
+                        if (message.power != null && Object.hasOwnProperty.call(message, "power"))
+                            if (!$util.isInteger(message.power))
+                                return "power: integer expected";
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            if (!$util.isInteger(message.score))
+                                return "score: integer expected";
+                        if (message.checkpointsCleared != null && Object.hasOwnProperty.call(message, "checkpointsCleared"))
+                            if (!$util.isInteger(message.checkpointsCleared))
+                                return "checkpointsCleared: integer expected";
+                        if (message.rank != null && Object.hasOwnProperty.call(message, "rank"))
+                            if (!$util.isInteger(message.rank))
+                                return "rank: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a LeaderboardEntry message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.LeaderboardEntry} LeaderboardEntry
+                     */
+                    LeaderboardEntry.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.LeaderboardEntry)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.LeaderboardEntry: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.LeaderboardEntry();
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        if (object.name != null)
+                            message.name = String(object.name);
+                        if (object.power != null)
+                            message.power = object.power | 0;
+                        if (object.score != null)
+                            message.score = object.score | 0;
+                        if (object.checkpointsCleared != null)
+                            message.checkpointsCleared = object.checkpointsCleared | 0;
+                        if (object.rank != null)
+                            message.rank = object.rank >>> 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a LeaderboardEntry message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.LeaderboardEntry} message LeaderboardEntry
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    LeaderboardEntry.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.name = "";
+                            object.power = 0;
+                            object.score = 0;
+                            object.checkpointsCleared = 0;
+                            object.rank = 0;
+                        }
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                            object.name = message.name;
+                        if (message.power != null && Object.hasOwnProperty.call(message, "power"))
+                            object.power = message.power;
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            object.score = message.score;
+                        if (message.checkpointsCleared != null && Object.hasOwnProperty.call(message, "checkpointsCleared"))
+                            object.checkpointsCleared = message.checkpointsCleared;
+                        if (message.rank != null && Object.hasOwnProperty.call(message, "rank"))
+                            object.rank = message.rank;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this LeaderboardEntry to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    LeaderboardEntry.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for LeaderboardEntry
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.LeaderboardEntry
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    LeaderboardEntry.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.LeaderboardEntry";
+                    };
+
+                    return LeaderboardEntry;
+                })();
+
+                proto.Leaderboard = (function() {
+
+                    /**
+                     * Properties of a Leaderboard.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface ILeaderboard
+                     * @property {Array.<com.triforge.protocol.proto.ILeaderboardEntry>|null} [entries] Leaderboard entries
+                     * @property {boolean|null} [finalStandings] Leaderboard finalStandings
+                     */
+
+                    /**
+                     * Constructs a new Leaderboard.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a Leaderboard.
+                     * @implements ILeaderboard
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.ILeaderboard=} [properties] Properties to set
+                     */
+                    function Leaderboard(properties) {
+                        this.entries = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Leaderboard entries.
+                     * @member {Array.<com.triforge.protocol.proto.ILeaderboardEntry>} entries
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @instance
+                     */
+                    Leaderboard.prototype.entries = $util.emptyArray;
+
+                    /**
+                     * Leaderboard finalStandings.
+                     * @member {boolean} finalStandings
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @instance
+                     */
+                    Leaderboard.prototype.finalStandings = false;
+
+                    /**
+                     * Creates a new Leaderboard instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @static
+                     * @param {com.triforge.protocol.proto.ILeaderboard=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.Leaderboard} Leaderboard instance
+                     */
+                    Leaderboard.create = function create(properties) {
+                        return new Leaderboard(properties);
+                    };
+
+                    /**
+                     * Encodes the specified Leaderboard message. Does not implicitly {@link com.triforge.protocol.proto.Leaderboard.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @static
+                     * @param {com.triforge.protocol.proto.ILeaderboard} message Leaderboard message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    Leaderboard.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.entries != null && message.entries.length)
+                            for (let i = 0; i < message.entries.length; ++i)
+                                $root.com.triforge.protocol.proto.LeaderboardEntry.encode(message.entries[i], writer.uint32(/* id 1, wireType 2 =*/10).fork(), q + 1).ldelim();
+                        if (message.finalStandings != null && Object.hasOwnProperty.call(message, "finalStandings"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).bool(message.finalStandings);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified Leaderboard message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.Leaderboard.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @static
+                     * @param {com.triforge.protocol.proto.ILeaderboard} message Leaderboard message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    Leaderboard.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a Leaderboard message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.Leaderboard} Leaderboard
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    Leaderboard.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.Leaderboard();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    if (!(message.entries && message.entries.length))
+                                        message.entries = [];
+                                    message.entries.push($root.com.triforge.protocol.proto.LeaderboardEntry.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            case 2: {
+                                    message.finalStandings = reader.bool();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a Leaderboard message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.Leaderboard} Leaderboard
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    Leaderboard.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a Leaderboard message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    Leaderboard.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.entries != null && Object.hasOwnProperty.call(message, "entries")) {
+                            if (!Array.isArray(message.entries))
+                                return "entries: array expected";
+                            for (let i = 0; i < message.entries.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.LeaderboardEntry.verify(message.entries[i], long + 1);
+                                if (error)
+                                    return "entries." + error;
+                            }
+                        }
+                        if (message.finalStandings != null && Object.hasOwnProperty.call(message, "finalStandings"))
+                            if (typeof message.finalStandings !== "boolean")
+                                return "finalStandings: boolean expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a Leaderboard message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.Leaderboard} Leaderboard
+                     */
+                    Leaderboard.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.Leaderboard)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.Leaderboard: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.Leaderboard();
+                        if (object.entries) {
+                            if (!Array.isArray(object.entries))
+                                throw TypeError(".com.triforge.protocol.proto.Leaderboard.entries: array expected");
+                            message.entries = [];
+                            for (let i = 0; i < object.entries.length; ++i) {
+                                if (!$util.isObject(object.entries[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.Leaderboard.entries: object expected");
+                                message.entries[i] = $root.com.triforge.protocol.proto.LeaderboardEntry.fromObject(object.entries[i], long + 1);
+                            }
+                        }
+                        if (object.finalStandings != null)
+                            message.finalStandings = Boolean(object.finalStandings);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a Leaderboard message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @static
+                     * @param {com.triforge.protocol.proto.Leaderboard} message Leaderboard
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    Leaderboard.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.entries = [];
+                        if (options.defaults)
+                            object.finalStandings = false;
+                        if (message.entries && message.entries.length) {
+                            object.entries = [];
+                            for (let j = 0; j < message.entries.length; ++j)
+                                object.entries[j] = $root.com.triforge.protocol.proto.LeaderboardEntry.toObject(message.entries[j], options, q + 1);
+                        }
+                        if (message.finalStandings != null && Object.hasOwnProperty.call(message, "finalStandings"))
+                            object.finalStandings = message.finalStandings;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this Leaderboard to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    Leaderboard.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for Leaderboard
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.Leaderboard
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    Leaderboard.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.Leaderboard";
+                    };
+
+                    return Leaderboard;
+                })();
+
+                proto.ExpeditionComplete = (function() {
+
+                    /**
+                     * Properties of an ExpeditionComplete.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IExpeditionComplete
+                     * @property {number|Long|null} [winnerPlayerId] ExpeditionComplete winnerPlayerId
+                     * @property {string|null} [winnerName] ExpeditionComplete winnerName
+                     * @property {boolean|null} [youWon] ExpeditionComplete youWon
+                     */
+
+                    /**
+                     * Constructs a new ExpeditionComplete.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents an ExpeditionComplete.
+                     * @implements IExpeditionComplete
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IExpeditionComplete=} [properties] Properties to set
+                     */
+                    function ExpeditionComplete(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * ExpeditionComplete winnerPlayerId.
+                     * @member {number|Long} winnerPlayerId
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @instance
+                     */
+                    ExpeditionComplete.prototype.winnerPlayerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * ExpeditionComplete winnerName.
+                     * @member {string} winnerName
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @instance
+                     */
+                    ExpeditionComplete.prototype.winnerName = "";
+
+                    /**
+                     * ExpeditionComplete youWon.
+                     * @member {boolean} youWon
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @instance
+                     */
+                    ExpeditionComplete.prototype.youWon = false;
+
+                    /**
+                     * Creates a new ExpeditionComplete instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @static
+                     * @param {com.triforge.protocol.proto.IExpeditionComplete=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.ExpeditionComplete} ExpeditionComplete instance
+                     */
+                    ExpeditionComplete.create = function create(properties) {
+                        return new ExpeditionComplete(properties);
+                    };
+
+                    /**
+                     * Encodes the specified ExpeditionComplete message. Does not implicitly {@link com.triforge.protocol.proto.ExpeditionComplete.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @static
+                     * @param {com.triforge.protocol.proto.IExpeditionComplete} message ExpeditionComplete message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ExpeditionComplete.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.winnerPlayerId != null && Object.hasOwnProperty.call(message, "winnerPlayerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.winnerPlayerId);
+                        if (message.winnerName != null && Object.hasOwnProperty.call(message, "winnerName"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.winnerName);
+                        if (message.youWon != null && Object.hasOwnProperty.call(message, "youWon"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).bool(message.youWon);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified ExpeditionComplete message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.ExpeditionComplete.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @static
+                     * @param {com.triforge.protocol.proto.IExpeditionComplete} message ExpeditionComplete message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ExpeditionComplete.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes an ExpeditionComplete message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.ExpeditionComplete} ExpeditionComplete
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ExpeditionComplete.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.ExpeditionComplete();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.winnerPlayerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.winnerName = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    message.youWon = reader.bool();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes an ExpeditionComplete message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.ExpeditionComplete} ExpeditionComplete
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ExpeditionComplete.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies an ExpeditionComplete message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    ExpeditionComplete.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.winnerPlayerId != null && Object.hasOwnProperty.call(message, "winnerPlayerId"))
+                            if (!$util.isInteger(message.winnerPlayerId) && !(message.winnerPlayerId && $util.isInteger(message.winnerPlayerId.low) && $util.isInteger(message.winnerPlayerId.high)))
+                                return "winnerPlayerId: integer|Long expected";
+                        if (message.winnerName != null && Object.hasOwnProperty.call(message, "winnerName"))
+                            if (!$util.isString(message.winnerName))
+                                return "winnerName: string expected";
+                        if (message.youWon != null && Object.hasOwnProperty.call(message, "youWon"))
+                            if (typeof message.youWon !== "boolean")
+                                return "youWon: boolean expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates an ExpeditionComplete message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.ExpeditionComplete} ExpeditionComplete
+                     */
+                    ExpeditionComplete.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.ExpeditionComplete)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.ExpeditionComplete: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.ExpeditionComplete();
+                        if (object.winnerPlayerId != null)
+                            if ($util.Long)
+                                message.winnerPlayerId = $util.Long.fromValue(object.winnerPlayerId, true);
+                            else if (typeof object.winnerPlayerId === "string")
+                                message.winnerPlayerId = parseInt(object.winnerPlayerId, 10);
+                            else if (typeof object.winnerPlayerId === "number")
+                                message.winnerPlayerId = object.winnerPlayerId;
+                            else if (typeof object.winnerPlayerId === "object")
+                                message.winnerPlayerId = new $util.LongBits(object.winnerPlayerId.low >>> 0, object.winnerPlayerId.high >>> 0).toNumber(true);
+                        if (object.winnerName != null)
+                            message.winnerName = String(object.winnerName);
+                        if (object.youWon != null)
+                            message.youWon = Boolean(object.youWon);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from an ExpeditionComplete message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @static
+                     * @param {com.triforge.protocol.proto.ExpeditionComplete} message ExpeditionComplete
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    ExpeditionComplete.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.winnerPlayerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.winnerPlayerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.winnerName = "";
+                            object.youWon = false;
+                        }
+                        if (message.winnerPlayerId != null && Object.hasOwnProperty.call(message, "winnerPlayerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.winnerPlayerId = typeof message.winnerPlayerId === "number" ? BigInt(message.winnerPlayerId) : $util.Long.fromBits(message.winnerPlayerId.low >>> 0, message.winnerPlayerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.winnerPlayerId === "number")
+                                object.winnerPlayerId = options.longs === String ? String(message.winnerPlayerId) : message.winnerPlayerId;
+                            else
+                                object.winnerPlayerId = options.longs === String ? $util.Long.prototype.toString.call(message.winnerPlayerId) : options.longs === Number ? new $util.LongBits(message.winnerPlayerId.low >>> 0, message.winnerPlayerId.high >>> 0).toNumber(true) : message.winnerPlayerId;
+                        if (message.winnerName != null && Object.hasOwnProperty.call(message, "winnerName"))
+                            object.winnerName = message.winnerName;
+                        if (message.youWon != null && Object.hasOwnProperty.call(message, "youWon"))
+                            object.youWon = message.youWon;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this ExpeditionComplete to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    ExpeditionComplete.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for ExpeditionComplete
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.ExpeditionComplete
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    ExpeditionComplete.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.ExpeditionComplete";
+                    };
+
+                    return ExpeditionComplete;
+                })();
+
+                proto.PlayerStateUpdate = (function() {
+
+                    /**
+                     * Properties of a PlayerStateUpdate.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IPlayerStateUpdate
+                     * @property {number|null} [score] PlayerStateUpdate score
+                     * @property {string|null} [currentCheckpoint] PlayerStateUpdate currentCheckpoint
+                     * @property {number|null} [checkpointsCleared] PlayerStateUpdate checkpointsCleared
+                     * @property {boolean|null} [shielded] PlayerStateUpdate shielded
+                     * @property {boolean|null} [pvpCooldown] PlayerStateUpdate pvpCooldown
+                     * @property {boolean|null} [stealImmune] PlayerStateUpdate stealImmune
+                     * @property {Array.<com.triforge.protocol.proto.IInventoryItemProto>|null} [inventory] PlayerStateUpdate inventory
+                     */
+
+                    /**
+                     * Constructs a new PlayerStateUpdate.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a PlayerStateUpdate.
+                     * @implements IPlayerStateUpdate
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IPlayerStateUpdate=} [properties] Properties to set
+                     */
+                    function PlayerStateUpdate(properties) {
+                        this.inventory = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * PlayerStateUpdate score.
+                     * @member {number} score
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @instance
+                     */
+                    PlayerStateUpdate.prototype.score = 0;
+
+                    /**
+                     * PlayerStateUpdate currentCheckpoint.
+                     * @member {string} currentCheckpoint
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @instance
+                     */
+                    PlayerStateUpdate.prototype.currentCheckpoint = "";
+
+                    /**
+                     * PlayerStateUpdate checkpointsCleared.
+                     * @member {number} checkpointsCleared
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @instance
+                     */
+                    PlayerStateUpdate.prototype.checkpointsCleared = 0;
+
+                    /**
+                     * PlayerStateUpdate shielded.
+                     * @member {boolean} shielded
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @instance
+                     */
+                    PlayerStateUpdate.prototype.shielded = false;
+
+                    /**
+                     * PlayerStateUpdate pvpCooldown.
+                     * @member {boolean} pvpCooldown
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @instance
+                     */
+                    PlayerStateUpdate.prototype.pvpCooldown = false;
+
+                    /**
+                     * PlayerStateUpdate stealImmune.
+                     * @member {boolean} stealImmune
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @instance
+                     */
+                    PlayerStateUpdate.prototype.stealImmune = false;
+
+                    /**
+                     * PlayerStateUpdate inventory.
+                     * @member {Array.<com.triforge.protocol.proto.IInventoryItemProto>} inventory
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @instance
+                     */
+                    PlayerStateUpdate.prototype.inventory = $util.emptyArray;
+
+                    /**
+                     * Creates a new PlayerStateUpdate instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.IPlayerStateUpdate=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.PlayerStateUpdate} PlayerStateUpdate instance
+                     */
+                    PlayerStateUpdate.create = function create(properties) {
+                        return new PlayerStateUpdate(properties);
+                    };
+
+                    /**
+                     * Encodes the specified PlayerStateUpdate message. Does not implicitly {@link com.triforge.protocol.proto.PlayerStateUpdate.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.IPlayerStateUpdate} message PlayerStateUpdate message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    PlayerStateUpdate.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.score);
+                        if (message.currentCheckpoint != null && Object.hasOwnProperty.call(message, "currentCheckpoint"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.currentCheckpoint);
+                        if (message.checkpointsCleared != null && Object.hasOwnProperty.call(message, "checkpointsCleared"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.checkpointsCleared);
+                        if (message.shielded != null && Object.hasOwnProperty.call(message, "shielded"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).bool(message.shielded);
+                        if (message.pvpCooldown != null && Object.hasOwnProperty.call(message, "pvpCooldown"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).bool(message.pvpCooldown);
+                        if (message.stealImmune != null && Object.hasOwnProperty.call(message, "stealImmune"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).bool(message.stealImmune);
+                        if (message.inventory != null && message.inventory.length)
+                            for (let i = 0; i < message.inventory.length; ++i)
+                                $root.com.triforge.protocol.proto.InventoryItemProto.encode(message.inventory[i], writer.uint32(/* id 7, wireType 2 =*/58).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified PlayerStateUpdate message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.PlayerStateUpdate.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.IPlayerStateUpdate} message PlayerStateUpdate message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    PlayerStateUpdate.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a PlayerStateUpdate message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.PlayerStateUpdate} PlayerStateUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    PlayerStateUpdate.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.PlayerStateUpdate();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.score = reader.int32();
+                                    break;
+                                }
+                            case 2: {
+                                    message.currentCheckpoint = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    message.checkpointsCleared = reader.int32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.shielded = reader.bool();
+                                    break;
+                                }
+                            case 5: {
+                                    message.pvpCooldown = reader.bool();
+                                    break;
+                                }
+                            case 6: {
+                                    message.stealImmune = reader.bool();
+                                    break;
+                                }
+                            case 7: {
+                                    if (!(message.inventory && message.inventory.length))
+                                        message.inventory = [];
+                                    message.inventory.push($root.com.triforge.protocol.proto.InventoryItemProto.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a PlayerStateUpdate message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.PlayerStateUpdate} PlayerStateUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    PlayerStateUpdate.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a PlayerStateUpdate message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    PlayerStateUpdate.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            if (!$util.isInteger(message.score))
+                                return "score: integer expected";
+                        if (message.currentCheckpoint != null && Object.hasOwnProperty.call(message, "currentCheckpoint"))
+                            if (!$util.isString(message.currentCheckpoint))
+                                return "currentCheckpoint: string expected";
+                        if (message.checkpointsCleared != null && Object.hasOwnProperty.call(message, "checkpointsCleared"))
+                            if (!$util.isInteger(message.checkpointsCleared))
+                                return "checkpointsCleared: integer expected";
+                        if (message.shielded != null && Object.hasOwnProperty.call(message, "shielded"))
+                            if (typeof message.shielded !== "boolean")
+                                return "shielded: boolean expected";
+                        if (message.pvpCooldown != null && Object.hasOwnProperty.call(message, "pvpCooldown"))
+                            if (typeof message.pvpCooldown !== "boolean")
+                                return "pvpCooldown: boolean expected";
+                        if (message.stealImmune != null && Object.hasOwnProperty.call(message, "stealImmune"))
+                            if (typeof message.stealImmune !== "boolean")
+                                return "stealImmune: boolean expected";
+                        if (message.inventory != null && Object.hasOwnProperty.call(message, "inventory")) {
+                            if (!Array.isArray(message.inventory))
+                                return "inventory: array expected";
+                            for (let i = 0; i < message.inventory.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.InventoryItemProto.verify(message.inventory[i], long + 1);
+                                if (error)
+                                    return "inventory." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a PlayerStateUpdate message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.PlayerStateUpdate} PlayerStateUpdate
+                     */
+                    PlayerStateUpdate.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.PlayerStateUpdate)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.PlayerStateUpdate: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.PlayerStateUpdate();
+                        if (object.score != null)
+                            message.score = object.score | 0;
+                        if (object.currentCheckpoint != null)
+                            message.currentCheckpoint = String(object.currentCheckpoint);
+                        if (object.checkpointsCleared != null)
+                            message.checkpointsCleared = object.checkpointsCleared | 0;
+                        if (object.shielded != null)
+                            message.shielded = Boolean(object.shielded);
+                        if (object.pvpCooldown != null)
+                            message.pvpCooldown = Boolean(object.pvpCooldown);
+                        if (object.stealImmune != null)
+                            message.stealImmune = Boolean(object.stealImmune);
+                        if (object.inventory) {
+                            if (!Array.isArray(object.inventory))
+                                throw TypeError(".com.triforge.protocol.proto.PlayerStateUpdate.inventory: array expected");
+                            message.inventory = [];
+                            for (let i = 0; i < object.inventory.length; ++i) {
+                                if (!$util.isObject(object.inventory[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.PlayerStateUpdate.inventory: object expected");
+                                message.inventory[i] = $root.com.triforge.protocol.proto.InventoryItemProto.fromObject(object.inventory[i], long + 1);
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a PlayerStateUpdate message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.PlayerStateUpdate} message PlayerStateUpdate
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    PlayerStateUpdate.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.inventory = [];
+                        if (options.defaults) {
+                            object.score = 0;
+                            object.currentCheckpoint = "";
+                            object.checkpointsCleared = 0;
+                            object.shielded = false;
+                            object.pvpCooldown = false;
+                            object.stealImmune = false;
+                        }
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            object.score = message.score;
+                        if (message.currentCheckpoint != null && Object.hasOwnProperty.call(message, "currentCheckpoint"))
+                            object.currentCheckpoint = message.currentCheckpoint;
+                        if (message.checkpointsCleared != null && Object.hasOwnProperty.call(message, "checkpointsCleared"))
+                            object.checkpointsCleared = message.checkpointsCleared;
+                        if (message.shielded != null && Object.hasOwnProperty.call(message, "shielded"))
+                            object.shielded = message.shielded;
+                        if (message.pvpCooldown != null && Object.hasOwnProperty.call(message, "pvpCooldown"))
+                            object.pvpCooldown = message.pvpCooldown;
+                        if (message.stealImmune != null && Object.hasOwnProperty.call(message, "stealImmune"))
+                            object.stealImmune = message.stealImmune;
+                        if (message.inventory && message.inventory.length) {
+                            object.inventory = [];
+                            for (let j = 0; j < message.inventory.length; ++j)
+                                object.inventory[j] = $root.com.triforge.protocol.proto.InventoryItemProto.toObject(message.inventory[j], options, q + 1);
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this PlayerStateUpdate to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    PlayerStateUpdate.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for PlayerStateUpdate
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.PlayerStateUpdate
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    PlayerStateUpdate.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.PlayerStateUpdate";
+                    };
+
+                    return PlayerStateUpdate;
+                })();
+
+                proto.TreasureQuestMessage = (function() {
+
+                    /**
+                     * Properties of a TreasureQuestMessage.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface ITreasureQuestMessage
+                     * @property {com.triforge.protocol.proto.IInteractCommand|null} [interact] TreasureQuestMessage interact
+                     * @property {com.triforge.protocol.proto.IHintReveal|null} [hintReveal] TreasureQuestMessage hintReveal
+                     * @property {com.triforge.protocol.proto.IQuizPrompt|null} [quizPrompt] TreasureQuestMessage quizPrompt
+                     * @property {com.triforge.protocol.proto.IQuizSubmit|null} [quizSubmit] TreasureQuestMessage quizSubmit
+                     * @property {com.triforge.protocol.proto.IQuizResult|null} [quizResult] TreasureQuestMessage quizResult
+                     * @property {com.triforge.protocol.proto.IEncounterOffer|null} [encounterOffer] TreasureQuestMessage encounterOffer
+                     * @property {com.triforge.protocol.proto.IChallengeResponse|null} [challengeResponse] TreasureQuestMessage challengeResponse
+                     * @property {com.triforge.protocol.proto.IDuelPrompt|null} [duelPrompt] TreasureQuestMessage duelPrompt
+                     * @property {com.triforge.protocol.proto.IDuelSubmit|null} [duelSubmit] TreasureQuestMessage duelSubmit
+                     * @property {com.triforge.protocol.proto.IDuelResult|null} [duelResult] TreasureQuestMessage duelResult
+                     * @property {com.triforge.protocol.proto.IItemUse|null} [itemUse] TreasureQuestMessage itemUse
+                     * @property {com.triforge.protocol.proto.IInventoryUpdate|null} [inventoryUpdate] TreasureQuestMessage inventoryUpdate
+                     * @property {com.triforge.protocol.proto.ILeaderboard|null} [leaderboard] TreasureQuestMessage leaderboard
+                     * @property {com.triforge.protocol.proto.IExpeditionComplete|null} [expeditionComplete] TreasureQuestMessage expeditionComplete
+                     * @property {com.triforge.protocol.proto.IPlayerStateUpdate|null} [playerStateUpdate] TreasureQuestMessage playerStateUpdate
+                     */
+
+                    /**
+                     * Constructs a new TreasureQuestMessage.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a TreasureQuestMessage.
+                     * @implements ITreasureQuestMessage
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.ITreasureQuestMessage=} [properties] Properties to set
+                     */
+                    function TreasureQuestMessage(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * TreasureQuestMessage interact.
+                     * @member {com.triforge.protocol.proto.IInteractCommand|null|undefined} interact
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.interact = null;
+
+                    /**
+                     * TreasureQuestMessage hintReveal.
+                     * @member {com.triforge.protocol.proto.IHintReveal|null|undefined} hintReveal
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.hintReveal = null;
+
+                    /**
+                     * TreasureQuestMessage quizPrompt.
+                     * @member {com.triforge.protocol.proto.IQuizPrompt|null|undefined} quizPrompt
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.quizPrompt = null;
+
+                    /**
+                     * TreasureQuestMessage quizSubmit.
+                     * @member {com.triforge.protocol.proto.IQuizSubmit|null|undefined} quizSubmit
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.quizSubmit = null;
+
+                    /**
+                     * TreasureQuestMessage quizResult.
+                     * @member {com.triforge.protocol.proto.IQuizResult|null|undefined} quizResult
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.quizResult = null;
+
+                    /**
+                     * TreasureQuestMessage encounterOffer.
+                     * @member {com.triforge.protocol.proto.IEncounterOffer|null|undefined} encounterOffer
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.encounterOffer = null;
+
+                    /**
+                     * TreasureQuestMessage challengeResponse.
+                     * @member {com.triforge.protocol.proto.IChallengeResponse|null|undefined} challengeResponse
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.challengeResponse = null;
+
+                    /**
+                     * TreasureQuestMessage duelPrompt.
+                     * @member {com.triforge.protocol.proto.IDuelPrompt|null|undefined} duelPrompt
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.duelPrompt = null;
+
+                    /**
+                     * TreasureQuestMessage duelSubmit.
+                     * @member {com.triforge.protocol.proto.IDuelSubmit|null|undefined} duelSubmit
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.duelSubmit = null;
+
+                    /**
+                     * TreasureQuestMessage duelResult.
+                     * @member {com.triforge.protocol.proto.IDuelResult|null|undefined} duelResult
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.duelResult = null;
+
+                    /**
+                     * TreasureQuestMessage itemUse.
+                     * @member {com.triforge.protocol.proto.IItemUse|null|undefined} itemUse
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.itemUse = null;
+
+                    /**
+                     * TreasureQuestMessage inventoryUpdate.
+                     * @member {com.triforge.protocol.proto.IInventoryUpdate|null|undefined} inventoryUpdate
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.inventoryUpdate = null;
+
+                    /**
+                     * TreasureQuestMessage leaderboard.
+                     * @member {com.triforge.protocol.proto.ILeaderboard|null|undefined} leaderboard
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.leaderboard = null;
+
+                    /**
+                     * TreasureQuestMessage expeditionComplete.
+                     * @member {com.triforge.protocol.proto.IExpeditionComplete|null|undefined} expeditionComplete
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.expeditionComplete = null;
+
+                    /**
+                     * TreasureQuestMessage playerStateUpdate.
+                     * @member {com.triforge.protocol.proto.IPlayerStateUpdate|null|undefined} playerStateUpdate
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    TreasureQuestMessage.prototype.playerStateUpdate = null;
+
+                    // OneOf field names bound to virtual getters and setters
+                    let $oneOfFields;
+
+                    /**
+                     * TreasureQuestMessage content.
+                     * @member {"interact"|"hintReveal"|"quizPrompt"|"quizSubmit"|"quizResult"|"encounterOffer"|"challengeResponse"|"duelPrompt"|"duelSubmit"|"duelResult"|"itemUse"|"inventoryUpdate"|"leaderboard"|"expeditionComplete"|"playerStateUpdate"|undefined} content
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     */
+                    Object.defineProperty(TreasureQuestMessage.prototype, "content", {
+                        get: $util.oneOfGetter($oneOfFields = ["interact", "hintReveal", "quizPrompt", "quizSubmit", "quizResult", "encounterOffer", "challengeResponse", "duelPrompt", "duelSubmit", "duelResult", "itemUse", "inventoryUpdate", "leaderboard", "expeditionComplete", "playerStateUpdate"]),
+                        set: $util.oneOfSetter($oneOfFields)
+                    });
+
+                    /**
+                     * Creates a new TreasureQuestMessage instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.ITreasureQuestMessage=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.TreasureQuestMessage} TreasureQuestMessage instance
+                     */
+                    TreasureQuestMessage.create = function create(properties) {
+                        return new TreasureQuestMessage(properties);
+                    };
+
+                    /**
+                     * Encodes the specified TreasureQuestMessage message. Does not implicitly {@link com.triforge.protocol.proto.TreasureQuestMessage.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.ITreasureQuestMessage} message TreasureQuestMessage message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    TreasureQuestMessage.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.interact != null && Object.hasOwnProperty.call(message, "interact"))
+                            $root.com.triforge.protocol.proto.InteractCommand.encode(message.interact, writer.uint32(/* id 1, wireType 2 =*/10).fork(), q + 1).ldelim();
+                        if (message.hintReveal != null && Object.hasOwnProperty.call(message, "hintReveal"))
+                            $root.com.triforge.protocol.proto.HintReveal.encode(message.hintReveal, writer.uint32(/* id 2, wireType 2 =*/18).fork(), q + 1).ldelim();
+                        if (message.quizPrompt != null && Object.hasOwnProperty.call(message, "quizPrompt"))
+                            $root.com.triforge.protocol.proto.QuizPrompt.encode(message.quizPrompt, writer.uint32(/* id 3, wireType 2 =*/26).fork(), q + 1).ldelim();
+                        if (message.quizSubmit != null && Object.hasOwnProperty.call(message, "quizSubmit"))
+                            $root.com.triforge.protocol.proto.QuizSubmit.encode(message.quizSubmit, writer.uint32(/* id 4, wireType 2 =*/34).fork(), q + 1).ldelim();
+                        if (message.quizResult != null && Object.hasOwnProperty.call(message, "quizResult"))
+                            $root.com.triforge.protocol.proto.QuizResult.encode(message.quizResult, writer.uint32(/* id 5, wireType 2 =*/42).fork(), q + 1).ldelim();
+                        if (message.encounterOffer != null && Object.hasOwnProperty.call(message, "encounterOffer"))
+                            $root.com.triforge.protocol.proto.EncounterOffer.encode(message.encounterOffer, writer.uint32(/* id 6, wireType 2 =*/50).fork(), q + 1).ldelim();
+                        if (message.challengeResponse != null && Object.hasOwnProperty.call(message, "challengeResponse"))
+                            $root.com.triforge.protocol.proto.ChallengeResponse.encode(message.challengeResponse, writer.uint32(/* id 7, wireType 2 =*/58).fork(), q + 1).ldelim();
+                        if (message.duelPrompt != null && Object.hasOwnProperty.call(message, "duelPrompt"))
+                            $root.com.triforge.protocol.proto.DuelPrompt.encode(message.duelPrompt, writer.uint32(/* id 8, wireType 2 =*/66).fork(), q + 1).ldelim();
+                        if (message.duelSubmit != null && Object.hasOwnProperty.call(message, "duelSubmit"))
+                            $root.com.triforge.protocol.proto.DuelSubmit.encode(message.duelSubmit, writer.uint32(/* id 9, wireType 2 =*/74).fork(), q + 1).ldelim();
+                        if (message.duelResult != null && Object.hasOwnProperty.call(message, "duelResult"))
+                            $root.com.triforge.protocol.proto.DuelResult.encode(message.duelResult, writer.uint32(/* id 10, wireType 2 =*/82).fork(), q + 1).ldelim();
+                        if (message.itemUse != null && Object.hasOwnProperty.call(message, "itemUse"))
+                            $root.com.triforge.protocol.proto.ItemUse.encode(message.itemUse, writer.uint32(/* id 11, wireType 2 =*/90).fork(), q + 1).ldelim();
+                        if (message.inventoryUpdate != null && Object.hasOwnProperty.call(message, "inventoryUpdate"))
+                            $root.com.triforge.protocol.proto.InventoryUpdate.encode(message.inventoryUpdate, writer.uint32(/* id 12, wireType 2 =*/98).fork(), q + 1).ldelim();
+                        if (message.leaderboard != null && Object.hasOwnProperty.call(message, "leaderboard"))
+                            $root.com.triforge.protocol.proto.Leaderboard.encode(message.leaderboard, writer.uint32(/* id 13, wireType 2 =*/106).fork(), q + 1).ldelim();
+                        if (message.expeditionComplete != null && Object.hasOwnProperty.call(message, "expeditionComplete"))
+                            $root.com.triforge.protocol.proto.ExpeditionComplete.encode(message.expeditionComplete, writer.uint32(/* id 14, wireType 2 =*/114).fork(), q + 1).ldelim();
+                        if (message.playerStateUpdate != null && Object.hasOwnProperty.call(message, "playerStateUpdate"))
+                            $root.com.triforge.protocol.proto.PlayerStateUpdate.encode(message.playerStateUpdate, writer.uint32(/* id 15, wireType 2 =*/122).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified TreasureQuestMessage message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.TreasureQuestMessage.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.ITreasureQuestMessage} message TreasureQuestMessage message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    TreasureQuestMessage.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a TreasureQuestMessage message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.TreasureQuestMessage} TreasureQuestMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    TreasureQuestMessage.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.TreasureQuestMessage();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.interact = $root.com.triforge.protocol.proto.InteractCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 2: {
+                                    message.hintReveal = $root.com.triforge.protocol.proto.HintReveal.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 3: {
+                                    message.quizPrompt = $root.com.triforge.protocol.proto.QuizPrompt.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 4: {
+                                    message.quizSubmit = $root.com.triforge.protocol.proto.QuizSubmit.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 5: {
+                                    message.quizResult = $root.com.triforge.protocol.proto.QuizResult.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 6: {
+                                    message.encounterOffer = $root.com.triforge.protocol.proto.EncounterOffer.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 7: {
+                                    message.challengeResponse = $root.com.triforge.protocol.proto.ChallengeResponse.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 8: {
+                                    message.duelPrompt = $root.com.triforge.protocol.proto.DuelPrompt.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 9: {
+                                    message.duelSubmit = $root.com.triforge.protocol.proto.DuelSubmit.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 10: {
+                                    message.duelResult = $root.com.triforge.protocol.proto.DuelResult.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 11: {
+                                    message.itemUse = $root.com.triforge.protocol.proto.ItemUse.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 12: {
+                                    message.inventoryUpdate = $root.com.triforge.protocol.proto.InventoryUpdate.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 13: {
+                                    message.leaderboard = $root.com.triforge.protocol.proto.Leaderboard.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 14: {
+                                    message.expeditionComplete = $root.com.triforge.protocol.proto.ExpeditionComplete.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 15: {
+                                    message.playerStateUpdate = $root.com.triforge.protocol.proto.PlayerStateUpdate.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a TreasureQuestMessage message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.TreasureQuestMessage} TreasureQuestMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    TreasureQuestMessage.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a TreasureQuestMessage message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    TreasureQuestMessage.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        let properties = {};
+                        if (message.interact != null && Object.hasOwnProperty.call(message, "interact")) {
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.InteractCommand.verify(message.interact, long + 1);
+                                if (error)
+                                    return "interact." + error;
+                            }
+                        }
+                        if (message.hintReveal != null && Object.hasOwnProperty.call(message, "hintReveal")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.HintReveal.verify(message.hintReveal, long + 1);
+                                if (error)
+                                    return "hintReveal." + error;
+                            }
+                        }
+                        if (message.quizPrompt != null && Object.hasOwnProperty.call(message, "quizPrompt")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.QuizPrompt.verify(message.quizPrompt, long + 1);
+                                if (error)
+                                    return "quizPrompt." + error;
+                            }
+                        }
+                        if (message.quizSubmit != null && Object.hasOwnProperty.call(message, "quizSubmit")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.QuizSubmit.verify(message.quizSubmit, long + 1);
+                                if (error)
+                                    return "quizSubmit." + error;
+                            }
+                        }
+                        if (message.quizResult != null && Object.hasOwnProperty.call(message, "quizResult")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.QuizResult.verify(message.quizResult, long + 1);
+                                if (error)
+                                    return "quizResult." + error;
+                            }
+                        }
+                        if (message.encounterOffer != null && Object.hasOwnProperty.call(message, "encounterOffer")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.EncounterOffer.verify(message.encounterOffer, long + 1);
+                                if (error)
+                                    return "encounterOffer." + error;
+                            }
+                        }
+                        if (message.challengeResponse != null && Object.hasOwnProperty.call(message, "challengeResponse")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.ChallengeResponse.verify(message.challengeResponse, long + 1);
+                                if (error)
+                                    return "challengeResponse." + error;
+                            }
+                        }
+                        if (message.duelPrompt != null && Object.hasOwnProperty.call(message, "duelPrompt")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.DuelPrompt.verify(message.duelPrompt, long + 1);
+                                if (error)
+                                    return "duelPrompt." + error;
+                            }
+                        }
+                        if (message.duelSubmit != null && Object.hasOwnProperty.call(message, "duelSubmit")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.DuelSubmit.verify(message.duelSubmit, long + 1);
+                                if (error)
+                                    return "duelSubmit." + error;
+                            }
+                        }
+                        if (message.duelResult != null && Object.hasOwnProperty.call(message, "duelResult")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.DuelResult.verify(message.duelResult, long + 1);
+                                if (error)
+                                    return "duelResult." + error;
+                            }
+                        }
+                        if (message.itemUse != null && Object.hasOwnProperty.call(message, "itemUse")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.ItemUse.verify(message.itemUse, long + 1);
+                                if (error)
+                                    return "itemUse." + error;
+                            }
+                        }
+                        if (message.inventoryUpdate != null && Object.hasOwnProperty.call(message, "inventoryUpdate")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.InventoryUpdate.verify(message.inventoryUpdate, long + 1);
+                                if (error)
+                                    return "inventoryUpdate." + error;
+                            }
+                        }
+                        if (message.leaderboard != null && Object.hasOwnProperty.call(message, "leaderboard")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.Leaderboard.verify(message.leaderboard, long + 1);
+                                if (error)
+                                    return "leaderboard." + error;
+                            }
+                        }
+                        if (message.expeditionComplete != null && Object.hasOwnProperty.call(message, "expeditionComplete")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.ExpeditionComplete.verify(message.expeditionComplete, long + 1);
+                                if (error)
+                                    return "expeditionComplete." + error;
+                            }
+                        }
+                        if (message.playerStateUpdate != null && Object.hasOwnProperty.call(message, "playerStateUpdate")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.PlayerStateUpdate.verify(message.playerStateUpdate, long + 1);
+                                if (error)
+                                    return "playerStateUpdate." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a TreasureQuestMessage message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.TreasureQuestMessage} TreasureQuestMessage
+                     */
+                    TreasureQuestMessage.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.TreasureQuestMessage)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.TreasureQuestMessage();
+                        if (object.interact != null) {
+                            if (!$util.isObject(object.interact))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.interact: object expected");
+                            message.interact = $root.com.triforge.protocol.proto.InteractCommand.fromObject(object.interact, long + 1);
+                        }
+                        if (object.hintReveal != null) {
+                            if (!$util.isObject(object.hintReveal))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.hintReveal: object expected");
+                            message.hintReveal = $root.com.triforge.protocol.proto.HintReveal.fromObject(object.hintReveal, long + 1);
+                        }
+                        if (object.quizPrompt != null) {
+                            if (!$util.isObject(object.quizPrompt))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.quizPrompt: object expected");
+                            message.quizPrompt = $root.com.triforge.protocol.proto.QuizPrompt.fromObject(object.quizPrompt, long + 1);
+                        }
+                        if (object.quizSubmit != null) {
+                            if (!$util.isObject(object.quizSubmit))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.quizSubmit: object expected");
+                            message.quizSubmit = $root.com.triforge.protocol.proto.QuizSubmit.fromObject(object.quizSubmit, long + 1);
+                        }
+                        if (object.quizResult != null) {
+                            if (!$util.isObject(object.quizResult))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.quizResult: object expected");
+                            message.quizResult = $root.com.triforge.protocol.proto.QuizResult.fromObject(object.quizResult, long + 1);
+                        }
+                        if (object.encounterOffer != null) {
+                            if (!$util.isObject(object.encounterOffer))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.encounterOffer: object expected");
+                            message.encounterOffer = $root.com.triforge.protocol.proto.EncounterOffer.fromObject(object.encounterOffer, long + 1);
+                        }
+                        if (object.challengeResponse != null) {
+                            if (!$util.isObject(object.challengeResponse))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.challengeResponse: object expected");
+                            message.challengeResponse = $root.com.triforge.protocol.proto.ChallengeResponse.fromObject(object.challengeResponse, long + 1);
+                        }
+                        if (object.duelPrompt != null) {
+                            if (!$util.isObject(object.duelPrompt))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.duelPrompt: object expected");
+                            message.duelPrompt = $root.com.triforge.protocol.proto.DuelPrompt.fromObject(object.duelPrompt, long + 1);
+                        }
+                        if (object.duelSubmit != null) {
+                            if (!$util.isObject(object.duelSubmit))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.duelSubmit: object expected");
+                            message.duelSubmit = $root.com.triforge.protocol.proto.DuelSubmit.fromObject(object.duelSubmit, long + 1);
+                        }
+                        if (object.duelResult != null) {
+                            if (!$util.isObject(object.duelResult))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.duelResult: object expected");
+                            message.duelResult = $root.com.triforge.protocol.proto.DuelResult.fromObject(object.duelResult, long + 1);
+                        }
+                        if (object.itemUse != null) {
+                            if (!$util.isObject(object.itemUse))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.itemUse: object expected");
+                            message.itemUse = $root.com.triforge.protocol.proto.ItemUse.fromObject(object.itemUse, long + 1);
+                        }
+                        if (object.inventoryUpdate != null) {
+                            if (!$util.isObject(object.inventoryUpdate))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.inventoryUpdate: object expected");
+                            message.inventoryUpdate = $root.com.triforge.protocol.proto.InventoryUpdate.fromObject(object.inventoryUpdate, long + 1);
+                        }
+                        if (object.leaderboard != null) {
+                            if (!$util.isObject(object.leaderboard))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.leaderboard: object expected");
+                            message.leaderboard = $root.com.triforge.protocol.proto.Leaderboard.fromObject(object.leaderboard, long + 1);
+                        }
+                        if (object.expeditionComplete != null) {
+                            if (!$util.isObject(object.expeditionComplete))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.expeditionComplete: object expected");
+                            message.expeditionComplete = $root.com.triforge.protocol.proto.ExpeditionComplete.fromObject(object.expeditionComplete, long + 1);
+                        }
+                        if (object.playerStateUpdate != null) {
+                            if (!$util.isObject(object.playerStateUpdate))
+                                throw TypeError(".com.triforge.protocol.proto.TreasureQuestMessage.playerStateUpdate: object expected");
+                            message.playerStateUpdate = $root.com.triforge.protocol.proto.PlayerStateUpdate.fromObject(object.playerStateUpdate, long + 1);
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a TreasureQuestMessage message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.TreasureQuestMessage} message TreasureQuestMessage
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    TreasureQuestMessage.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (message.interact != null && Object.hasOwnProperty.call(message, "interact")) {
+                            object.interact = $root.com.triforge.protocol.proto.InteractCommand.toObject(message.interact, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "interact";
+                        }
+                        if (message.hintReveal != null && Object.hasOwnProperty.call(message, "hintReveal")) {
+                            object.hintReveal = $root.com.triforge.protocol.proto.HintReveal.toObject(message.hintReveal, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "hintReveal";
+                        }
+                        if (message.quizPrompt != null && Object.hasOwnProperty.call(message, "quizPrompt")) {
+                            object.quizPrompt = $root.com.triforge.protocol.proto.QuizPrompt.toObject(message.quizPrompt, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "quizPrompt";
+                        }
+                        if (message.quizSubmit != null && Object.hasOwnProperty.call(message, "quizSubmit")) {
+                            object.quizSubmit = $root.com.triforge.protocol.proto.QuizSubmit.toObject(message.quizSubmit, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "quizSubmit";
+                        }
+                        if (message.quizResult != null && Object.hasOwnProperty.call(message, "quizResult")) {
+                            object.quizResult = $root.com.triforge.protocol.proto.QuizResult.toObject(message.quizResult, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "quizResult";
+                        }
+                        if (message.encounterOffer != null && Object.hasOwnProperty.call(message, "encounterOffer")) {
+                            object.encounterOffer = $root.com.triforge.protocol.proto.EncounterOffer.toObject(message.encounterOffer, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "encounterOffer";
+                        }
+                        if (message.challengeResponse != null && Object.hasOwnProperty.call(message, "challengeResponse")) {
+                            object.challengeResponse = $root.com.triforge.protocol.proto.ChallengeResponse.toObject(message.challengeResponse, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "challengeResponse";
+                        }
+                        if (message.duelPrompt != null && Object.hasOwnProperty.call(message, "duelPrompt")) {
+                            object.duelPrompt = $root.com.triforge.protocol.proto.DuelPrompt.toObject(message.duelPrompt, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "duelPrompt";
+                        }
+                        if (message.duelSubmit != null && Object.hasOwnProperty.call(message, "duelSubmit")) {
+                            object.duelSubmit = $root.com.triforge.protocol.proto.DuelSubmit.toObject(message.duelSubmit, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "duelSubmit";
+                        }
+                        if (message.duelResult != null && Object.hasOwnProperty.call(message, "duelResult")) {
+                            object.duelResult = $root.com.triforge.protocol.proto.DuelResult.toObject(message.duelResult, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "duelResult";
+                        }
+                        if (message.itemUse != null && Object.hasOwnProperty.call(message, "itemUse")) {
+                            object.itemUse = $root.com.triforge.protocol.proto.ItemUse.toObject(message.itemUse, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "itemUse";
+                        }
+                        if (message.inventoryUpdate != null && Object.hasOwnProperty.call(message, "inventoryUpdate")) {
+                            object.inventoryUpdate = $root.com.triforge.protocol.proto.InventoryUpdate.toObject(message.inventoryUpdate, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "inventoryUpdate";
+                        }
+                        if (message.leaderboard != null && Object.hasOwnProperty.call(message, "leaderboard")) {
+                            object.leaderboard = $root.com.triforge.protocol.proto.Leaderboard.toObject(message.leaderboard, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "leaderboard";
+                        }
+                        if (message.expeditionComplete != null && Object.hasOwnProperty.call(message, "expeditionComplete")) {
+                            object.expeditionComplete = $root.com.triforge.protocol.proto.ExpeditionComplete.toObject(message.expeditionComplete, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "expeditionComplete";
+                        }
+                        if (message.playerStateUpdate != null && Object.hasOwnProperty.call(message, "playerStateUpdate")) {
+                            object.playerStateUpdate = $root.com.triforge.protocol.proto.PlayerStateUpdate.toObject(message.playerStateUpdate, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "playerStateUpdate";
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this TreasureQuestMessage to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    TreasureQuestMessage.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for TreasureQuestMessage
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.TreasureQuestMessage
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    TreasureQuestMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.TreasureQuestMessage";
+                    };
+
+                    return TreasureQuestMessage;
                 })();
 
                 return proto;

@@ -20,12 +20,12 @@ final class TeamCaptainTest {
         controller.putPlayer(LobbyPlayer.joining(2L, "P2", false));
         controller.putPlayer(LobbyPlayer.joining(3L, "P3", false));
 
-        assertTrue(controller.setTeam(1L, Team.RED));
-        assertTrue(controller.setTeam(2L, Team.BLUE));
+        assertTrue(controller.setTeam(1L, Team.RED).applied());
+        assertTrue(controller.setTeam(2L, Team.BLUE).applied());
         assertTrue(controller.player(1L).isTeamCaptain());
         assertTrue(controller.player(2L).isTeamCaptain());
 
-        assertTrue(controller.setTeam(3L, Team.RED));
+        assertTrue(controller.setTeam(3L, Team.RED).applied());
         assertTrue(controller.player(1L).isTeamCaptain());
         assertFalse(controller.player(3L).isTeamCaptain());
     }
@@ -35,11 +35,11 @@ final class TeamCaptainTest {
         TankArenaMatchController controller = new TankArenaMatchController(MatchConfig.defaults());
         controller.putPlayer(LobbyPlayer.joining(1L, "Cap", true));
         controller.putPlayer(LobbyPlayer.joining(2L, "Mem", false));
-        assertTrue(controller.setTeam(1L, Team.BLUE));
-        assertTrue(controller.setTeam(2L, Team.RED));
+        assertTrue(controller.setTeam(1L, Team.BLUE).applied());
+        assertTrue(controller.setTeam(2L, Team.RED).applied());
 
-        assertFalse(controller.setTeamSetup(2L, SpawnRegion.TOP_RIGHT, SpawnRegion.BOTTOM_RIGHT));
-        assertTrue(controller.setTeamSetup(1L, SpawnRegion.TOP_RIGHT, SpawnRegion.BOTTOM_RIGHT));
+        assertFalse(controller.setTeamSetup(2L, SpawnRegion.TOP_RIGHT, SpawnRegion.BOTTOM_RIGHT).applied());
+        assertTrue(controller.setTeamSetup(1L, SpawnRegion.TOP_RIGHT, SpawnRegion.BOTTOM_RIGHT).applied());
     }
 
     @Test
@@ -48,12 +48,12 @@ final class TeamCaptainTest {
         controller.putPlayer(LobbyPlayer.joining(1L, "Cap", true));
         controller.putPlayer(LobbyPlayer.joining(2L, "Mem", false));
         controller.putPlayer(LobbyPlayer.joining(3L, "Blue", false));
-        assertTrue(controller.setTeam(1L, Team.RED));
-        assertTrue(controller.setTeam(3L, Team.BLUE));
-        assertTrue(controller.setTeam(2L, Team.RED));
+        assertTrue(controller.setTeam(1L, Team.RED).applied());
+        assertTrue(controller.setTeam(3L, Team.BLUE).applied());
+        assertTrue(controller.setTeam(2L, Team.RED).applied());
         controller.setTeamSetup(1L, SpawnRegion.TOP_LEFT, SpawnRegion.BOTTOM_LEFT);
 
-        assertTrue(controller.setTeam(1L, Team.NONE));
+        assertTrue(controller.setTeam(1L, Team.NONE).applied());
 
         assertTrue(controller.player(2L).isTeamCaptain());
         assertEquals(2L, controller.teamSetup(Team.RED).captainPlayerId());
@@ -65,12 +65,12 @@ final class TeamCaptainTest {
         controller.putPlayer(LobbyPlayer.joining(1L, "Cap", true));
         controller.putPlayer(LobbyPlayer.joining(2L, "Mem", false));
         controller.putPlayer(LobbyPlayer.joining(3L, "Blue", false));
-        assertTrue(controller.setTeam(1L, Team.RED));
-        assertTrue(controller.setTeam(3L, Team.BLUE));
-        assertTrue(controller.setTeam(2L, Team.RED));
+        assertTrue(controller.setTeam(1L, Team.RED).applied());
+        assertTrue(controller.setTeam(3L, Team.BLUE).applied());
+        assertTrue(controller.setTeam(2L, Team.RED).applied());
 
-        assertFalse(controller.setReady(2L, true));
+        assertFalse(controller.setReady(2L, true).applied());
         controller.setTeamSetup(1L, SpawnRegion.TOP_LEFT, SpawnRegion.BOTTOM_LEFT);
-        assertTrue(controller.setReady(2L, true));
+        assertTrue(controller.setReady(2L, true).applied());
     }
 }

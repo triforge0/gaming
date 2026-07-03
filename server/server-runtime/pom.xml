@@ -32,6 +32,11 @@
 
         <dependency>
             <groupId>com.triforge</groupId>
+            <artifactId>treasurequest-game</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
             <artifactId>protocol</artifactId>
         </dependency>
 

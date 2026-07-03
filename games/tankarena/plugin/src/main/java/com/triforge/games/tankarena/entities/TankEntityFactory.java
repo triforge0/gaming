@@ -6,10 +6,13 @@ import com.triforge.engine.ecs.EntityManager;
 import com.triforge.games.tankarena.components.CanControlComponent;
 import com.triforge.games.tankarena.components.DirectionComponent;
 import com.triforge.games.tankarena.components.InputComponent;
+import com.triforge.games.tankarena.components.OrientationComponent;
+import com.triforge.games.tankarena.world.Heading;
 import com.triforge.games.tankarena.components.PlayerComponent;
 import com.triforge.games.tankarena.components.PositionComponent;
 import com.triforge.games.tankarena.components.TankComponent;
 import com.triforge.games.tankarena.components.VisionComponent;
+import com.triforge.games.tankarena.map.GameMap;
 import com.triforge.games.tankarena.map.MapConfig;
 import com.triforge.games.tankarena.match.Team;
 import com.triforge.protocol.proto.Direction;
@@ -43,6 +46,7 @@ public final class TankEntityFactory {
         private boolean controllable;
         private MapConfig visionConfig;
         private int visionTileSize;
+        private GameMap terrain;
 
         private Builder(EntityManager entityManager, ComponentManager componentManager) {
             this.entityManager = Objects.requireNonNull(entityManager, "entityManager");
@@ -88,6 +92,12 @@ public final class TankEntityFactory {
             return this;
         }
 
+        /** Grounds the tank's initial elevation on the terrain heightfield at its spawn point. */
+        public Builder onTerrain(GameMap map) {
+            this.terrain = map;
+            return this;
+        }
+
         public Builder vision(MapConfig mapConfig, int tileSize) {
             this.visionConfig = Objects.requireNonNull(mapConfig, "mapConfig");
             if (tileSize < 1) {
@@ -103,10 +113,14 @@ public final class TankEntityFactory {
             }
 
             Entity tank = entityManager.create();
-            componentManager.add(tank, new PositionComponent(x, y));
+            float z = terrain != null ? terrain.heightAt(x, y) : 0f;
+            componentManager.add(tank, new PositionComponent(x, y, z));
+            Direction initialDirection = direction != null ? direction : Direction.UP;
             if (direction != null) {
                 componentManager.add(tank, new DirectionComponent(direction));
             }
+            componentManager.add(tank,
+                    new OrientationComponent(Heading.yawForDirection(initialDirection), 0f));
             componentManager.add(tank, new TankComponent());
             if (input) {
                 InputComponent inputComponent = new InputComponent();

@@ -11,11 +11,14 @@ import com.triforge.games.tankarena.components.PlayerComponent;
 import com.triforge.games.tankarena.components.PositionComponent;
 import com.triforge.games.tankarena.components.TankComponent;
 import com.triforge.games.tankarena.components.VisionComponent;
+import com.triforge.games.tankarena.map.GameMap;
 import com.triforge.games.tankarena.map.MapConfig;
+import com.triforge.games.tankarena.map.TileType;
 import com.triforge.games.tankarena.match.Team;
 import com.triforge.protocol.proto.Direction;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -62,6 +65,28 @@ final class TankEntityFactoryTest {
         assertNotNull(player);
         assertNotNull(componentManager.get(tank, CanControlComponent.class));
         assertNotNull(componentManager.get(tank, VisionComponent.class));
+    }
+
+    @Test
+    void groundsInitialElevationOnTerrain() {
+        EcsWorld world = new EcsWorld();
+        EntityManager entityManager = world.entityManager();
+        ComponentManager componentManager = world.componentManager();
+
+        // 2x1 map, tileSize 10; right cell elevated to 40. Spawn at the right tile center.
+        GameMap map = GameMap.builder(2, 1).tileSize(10)
+                .tiles(new TileType[]{TileType.EMPTY, TileType.EMPTY})
+                .heights(new float[]{0f, 40f})
+                .build();
+
+        Entity tank = TankEntityFactory.tank(entityManager, componentManager)
+                .at(15f, 5f) // right tile center
+                .direction(Direction.UP)
+                .onTerrain(map)
+                .build();
+
+        PositionComponent position = componentManager.get(tank, PositionComponent.class);
+        assertEquals(40f, position.z(), 1e-4f);
     }
 
     @Test

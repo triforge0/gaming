@@ -21,6 +21,11 @@ public final class TankArenaMapSnapshotService {
         for (TileType tile : map.copyTiles()) {
             builder.addTiles(toProtoTile(tile));
         }
+        if (!map.isFlat()) {
+            for (float elevation : map.copyHeights()) {
+                builder.addHeights(elevation);
+            }
+        }
         for (HeadquartersDefinition hq : map.headquarters()) {
             builder.addHeadquarters(HeadquartersProto.newBuilder()
                     .setTeam(MatchProtoMapper.toProto(hq.team()))

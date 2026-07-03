@@ -55,6 +55,17 @@ public final class RoomRegistryTest {
     }
 
     @Test
+    void getOrCreateReturnsExistingRoomWithoutPluginConflict() {
+        RoomRegistry registry = new RoomRegistry();
+        registry.ensureRoom("quest", "Treasure Quest", "treasurequest");
+
+        GameRoom joined = registry.getOrCreate("quest");
+
+        assertEquals("treasurequest", joined.plugin().id());
+        registry.clear();
+    }
+
+    @Test
     void listsAvailablePluginsFromClasspath() {
         RoomRegistry registry = new RoomRegistry();
         assertTrue(registry.availablePlugins().stream()

@@ -56,9 +56,35 @@ public final class MapLoader {
         return GameMap.builder(definition.width(), definition.height())
                 .tileSize(definition.tileSize())
                 .tiles(tiles)
+                .heights(resolveHeights(definition))
                 .spawnRegions(resolveSpawnRegions(definition))
                 .headquarters(resolveHeadquarters(definition, tiles, definition.width()))
                 .build();
+    }
+
+    /**
+     * Parses the optional {@code heights} block (per-row elevation arrays mirroring
+     * {@code rows}). Absent → {@code null}, which the builder resolves to flat terrain.
+     */
+    private static float[] resolveHeights(MapDefinition definition) {
+        List<List<Double>> rows = definition.heights();
+        if (rows == null || rows.isEmpty()) {
+            return null;
+        }
+        if (rows.size() != definition.height()) {
+            throw new IllegalArgumentException("heights row count must match map height");
+        }
+        float[] heights = new float[definition.width() * definition.height()];
+        for (int y = 0; y < definition.height(); y++) {
+            List<Double> row = rows.get(y);
+            if (row.size() != definition.width()) {
+                throw new IllegalArgumentException("heights row " + y + " width mismatch");
+            }
+            for (int x = 0; x < definition.width(); x++) {
+                heights[y * definition.width() + x] = row.get(x).floatValue();
+            }
+        }
+        return heights;
     }
 
     private static List<HeadquartersDefinition> resolveHeadquarters(
@@ -132,6 +158,7 @@ public final class MapLoader {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     record MapDefinition(int width, int height, int tileSize, List<String> rows,
+                         List<List<Double>> heights,
                          Map<String, RegionRect> spawnRegions,
                          Map<String, RegionRect> headquarters) {
     }

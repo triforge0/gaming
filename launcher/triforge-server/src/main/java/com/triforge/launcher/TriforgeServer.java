@@ -39,6 +39,7 @@ public final class TriforgeServer {
 
         RoomRegistry roomRegistry = new RoomRegistry(appConfig.defaultPlugin());
         roomRegistry.ensureRoom("main", "Main Arena");
+        roomRegistry.ensureRoom("quest", "Treasure Quest", "treasurequest");
 
         try (UdpDiscoveryListener discoveryListener = new UdpDiscoveryListener(discoveryConfig.bindAddress())) {
             discoveryListener.start();
