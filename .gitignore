@@ -43,3 +43,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# brainstorming scratch (tooling-specific, not for public repo)
+docs/superpowers/
