@@ -25,6 +25,10 @@ export const ItemType = proto.ItemType;
 export const ItemUse = proto.ItemUse;
 export const ChatCommand = proto.ChatCommand;
 export const ChatMessage = proto.ChatMessage;
+export const OAnQuanMessage = proto.OAnQuanMessage;
+export const OAQMoveCommand = proto.OAQMoveCommand;
+export const OAQDirection = proto.OAQDirection;
+export const OAQStepType = proto.OAQStepType;
 
 export type IEntity = com.triforge.protocol.proto.IEntityProto;
 export type IOrientation = com.triforge.protocol.proto.IOrientationComponentProto;
@@ -64,6 +68,14 @@ export type LobbyRejectReasonValue = com.triforge.protocol.proto.LobbyRejectReas
 export type ILobbyCommandRejected = com.triforge.protocol.proto.ILobbyCommandRejected;
 export type IChatCommand = com.triforge.protocol.proto.IChatCommand;
 export type IChatMessage = com.triforge.protocol.proto.IChatMessage;
+export type IOAnQuanMessage = com.triforge.protocol.proto.IOAnQuanMessage;
+export type IOAQBoardState = com.triforge.protocol.proto.IOAQBoardState;
+export type IOAQMoveResult = com.triforge.protocol.proto.IOAQMoveResult;
+export type IOAQMoveRejected = com.triforge.protocol.proto.IOAQMoveRejected;
+export type IOAQStep = com.triforge.protocol.proto.IOAQStep;
+export type IOAQScore = com.triforge.protocol.proto.IOAQScore;
+export type OAQDirectionValue = com.triforge.protocol.proto.OAQDirection;
+export type OAQStepTypeValue = com.triforge.protocol.proto.OAQStepType;
 
 export interface InputState {
   // Legacy 2D 4-way input (Phaser client).
@@ -118,6 +130,7 @@ export interface GameClientHandlers {
   onJoinRejected?: (lobby: IRoomLobbySnapshot | null) => void;
   onLobbyCommandRejected?: (rejection: ILobbyCommandRejected) => void;
   onTreasureQuestMessage?: (message: ITreasureQuestMessage) => void;
+  onOAnQuanMessage?: (message: IOAnQuanMessage) => void;
   onConnected?: () => void;
   onDisconnected?: () => void;
 }
@@ -301,6 +314,16 @@ export class GameClient {
     );
   }
 
+  sendOAnQuanMove(pitIndex: number, direction: OAQDirectionValue): void {
+    this.send(
+      GameMessage.create({
+        oaq: OAnQuanMessage.create({
+          move: OAQMoveCommand.create({ pitIndex, direction }),
+        }),
+      }),
+    );
+  }
+
   sendItemUse(item: ItemTypeValue, targetPlayerId = 0): void {
     this.sendTreasureQuest(
       TreasureQuestMessage.create({
@@ -396,6 +419,8 @@ export class GameClient {
         this.lastInventory = gameMessage.tq.inventoryUpdate.items;
       }
       this.handlers.onTreasureQuestMessage?.(gameMessage.tq);
+    } else if (gameMessage.oaq) {
+      this.handlers.onOAnQuanMessage?.(gameMessage.oaq);
     } else if (gameMessage.chatMessage) {
       for (const listener of this.chatListeners) {
         listener(gameMessage.chatMessage);

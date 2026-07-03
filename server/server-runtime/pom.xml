@@ -37,6 +37,11 @@
 
         <dependency>
             <groupId>com.triforge</groupId>
+            <artifactId>oanquan-game</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
             <artifactId>protocol</artifactId>
         </dependency>
 

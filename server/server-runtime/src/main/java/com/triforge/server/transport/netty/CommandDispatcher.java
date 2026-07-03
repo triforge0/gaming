@@ -80,6 +80,15 @@ public final class CommandDispatcher extends SimpleChannelInboundHandler<Message
                 room.enqueueCommand(() -> room.queueTreasureQuestMessage(tqPlayerId, gameMsg.getTq()));
                 break;
 
+            case OAQ:
+                Long oaqPlayerId = ctx.channel().attr(GameRoom.PLAYER_ID_KEY).get();
+                if (oaqPlayerId == null) {
+                    logger.warn("Received oanquan message from channel without playerId in room '{}'", roomId);
+                    return;
+                }
+                room.enqueueCommand(() -> room.queueGameMessage(oaqPlayerId, gameMsg));
+                break;
+
             case CHATCOMMAND:
                 Long chatPlayerId = ctx.channel().attr(GameRoom.PLAYER_ID_KEY).get();
                 if (chatPlayerId == null) {

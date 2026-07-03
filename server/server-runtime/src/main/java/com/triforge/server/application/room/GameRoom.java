@@ -323,6 +323,11 @@ public final class GameRoom implements AutoCloseable, RoomHost {
         }
     }
 
+    /** Generic seam for plugin-owned {@link com.triforge.protocol.proto.GameMessage} arms. */
+    public void queueGameMessage(long playerId, com.triforge.protocol.proto.GameMessage message) {
+        game.handleGameMessage(playerId, message);
+    }
+
     private void onTick(long tick) {
         drainAndRunCommands(tick);
         game.onTick(tick);

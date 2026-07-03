@@ -24,6 +24,7 @@
         <launcher.web.dir>${project.basedir}/../../frontend/launcher-web</launcher.web.dir>
         <tankarena.frontend.dir>${project.basedir}/../../games/tankarena/frontend</tankarena.frontend.dir>
         <treasurequest.frontend.dir>${project.basedir}/../../games/treasurequest/frontend</treasurequest.frontend.dir>
+        <oanquan.frontend.dir>${project.basedir}/../../games/oanquan/frontend</oanquan.frontend.dir>
     </properties>
 
     <dependencies>
@@ -46,6 +47,11 @@
         <dependency>
             <groupId>com.triforge</groupId>
             <artifactId>treasurequest-game</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
+            <artifactId>oanquan-game</artifactId>
         </dependency>
 
     </dependencies>
@@ -149,6 +155,30 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>oanquan-npm-ci</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${oanquan.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>oanquan-npm-build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${oanquan.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>launcher-npm-ci</id>
                         <phase>prepare-package</phase>
                         <goals>
@@ -231,6 +261,23 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>copy-prebuilt-oanquan-assets</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/oanquan</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${oanquan.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-launcher-assets</id>
                         <phase>prepare-package</phase>
                         <goals>
@@ -276,6 +323,23 @@
                             <resources>
                                 <resource>
                                     <directory>${treasurequest.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-oanquan-assets</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/oanquan</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${oanquan.frontend.dir}/dist</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>

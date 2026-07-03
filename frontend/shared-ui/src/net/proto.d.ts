@@ -192,6 +192,9 @@ export namespace com {
 
                     /** GameMessage chatMessage */
                     chatMessage?: (com.triforge.protocol.proto.IChatMessage|null);
+
+                    /** GameMessage oaq */
+                    oaq?: (com.triforge.protocol.proto.IOAnQuanMessage|null);
                 }
 
                 /** Represents a GameMessage. */
@@ -248,8 +251,11 @@ export namespace com {
                     /** GameMessage chatMessage. */
                     public chatMessage?: (com.triforge.protocol.proto.IChatMessage|null);
 
+                    /** GameMessage oaq. */
+                    public oaq?: (com.triforge.protocol.proto.IOAnQuanMessage|null);
+
                     /** GameMessage content. */
-                    public content?: ("joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage");
+                    public content?: ("joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|"oaq");
 
                     /**
                      * Creates a new GameMessage instance using the specified properties.
@@ -6731,6 +6737,831 @@ export namespace com {
 
                     /**
                      * Gets the default type url for TreasureQuestMessage
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** OAQDirection enum. */
+                enum OAQDirection {
+                    OAQ_DIR_UNSPECIFIED = 0,
+                    OAQ_CLOCKWISE = 1,
+                    OAQ_COUNTER_CLOCKWISE = 2
+                }
+
+                /** OAQStepType enum. */
+                enum OAQStepType {
+                    OAQ_STEP_UNSPECIFIED = 0,
+                    OAQ_PICKUP = 1,
+                    OAQ_SOW = 2,
+                    OAQ_CAPTURE = 3,
+                    OAQ_BORROW = 4,
+                    OAQ_SWEEP = 5
+                }
+
+                /** Properties of a OAQMoveCommand. */
+                interface IOAQMoveCommand {
+
+                    /** OAQMoveCommand pitIndex */
+                    pitIndex?: (number|null);
+
+                    /** OAQMoveCommand direction */
+                    direction?: (com.triforge.protocol.proto.OAQDirection|null);
+                }
+
+                /** Represents a OAQMoveCommand. */
+                class OAQMoveCommand implements IOAQMoveCommand {
+
+                    /**
+                     * Constructs a new OAQMoveCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IOAQMoveCommand);
+
+                    /** OAQMoveCommand pitIndex. */
+                    public pitIndex: number;
+
+                    /** OAQMoveCommand direction. */
+                    public direction: com.triforge.protocol.proto.OAQDirection;
+
+                    /**
+                     * Creates a new OAQMoveCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns OAQMoveCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IOAQMoveCommand): com.triforge.protocol.proto.OAQMoveCommand;
+
+                    /**
+                     * Encodes the specified OAQMoveCommand message. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveCommand.verify|verify} messages.
+                     * @param message OAQMoveCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IOAQMoveCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified OAQMoveCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveCommand.verify|verify} messages.
+                     * @param message OAQMoveCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IOAQMoveCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a OAQMoveCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns OAQMoveCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.OAQMoveCommand;
+
+                    /**
+                     * Decodes a OAQMoveCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns OAQMoveCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.OAQMoveCommand;
+
+                    /**
+                     * Verifies a OAQMoveCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a OAQMoveCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns OAQMoveCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.OAQMoveCommand;
+
+                    /**
+                     * Creates a plain object from a OAQMoveCommand message. Also converts values to other types if specified.
+                     * @param message OAQMoveCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.OAQMoveCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this OAQMoveCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for OAQMoveCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a OAQMoveRejected. */
+                interface IOAQMoveRejected {
+
+                    /** OAQMoveRejected pitIndex */
+                    pitIndex?: (number|null);
+
+                    /** OAQMoveRejected direction */
+                    direction?: (com.triforge.protocol.proto.OAQDirection|null);
+
+                    /** OAQMoveRejected reason */
+                    reason?: (string|null);
+                }
+
+                /** Represents a OAQMoveRejected. */
+                class OAQMoveRejected implements IOAQMoveRejected {
+
+                    /**
+                     * Constructs a new OAQMoveRejected.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IOAQMoveRejected);
+
+                    /** OAQMoveRejected pitIndex. */
+                    public pitIndex: number;
+
+                    /** OAQMoveRejected direction. */
+                    public direction: com.triforge.protocol.proto.OAQDirection;
+
+                    /** OAQMoveRejected reason. */
+                    public reason: string;
+
+                    /**
+                     * Creates a new OAQMoveRejected instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns OAQMoveRejected instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IOAQMoveRejected): com.triforge.protocol.proto.OAQMoveRejected;
+
+                    /**
+                     * Encodes the specified OAQMoveRejected message. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveRejected.verify|verify} messages.
+                     * @param message OAQMoveRejected message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IOAQMoveRejected, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified OAQMoveRejected message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveRejected.verify|verify} messages.
+                     * @param message OAQMoveRejected message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IOAQMoveRejected, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a OAQMoveRejected message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns OAQMoveRejected
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.OAQMoveRejected;
+
+                    /**
+                     * Decodes a OAQMoveRejected message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns OAQMoveRejected
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.OAQMoveRejected;
+
+                    /**
+                     * Verifies a OAQMoveRejected message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a OAQMoveRejected message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns OAQMoveRejected
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.OAQMoveRejected;
+
+                    /**
+                     * Creates a plain object from a OAQMoveRejected message. Also converts values to other types if specified.
+                     * @param message OAQMoveRejected
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.OAQMoveRejected, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this OAQMoveRejected to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for OAQMoveRejected
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a OAQScore. */
+                interface IOAQScore {
+
+                    /** OAQScore playerId */
+                    playerId?: (number|Long|null);
+
+                    /** OAQScore seat */
+                    seat?: (number|null);
+
+                    /** OAQScore capturedDan */
+                    capturedDan?: (number|null);
+
+                    /** OAQScore capturedQuan */
+                    capturedQuan?: (number|null);
+
+                    /** OAQScore points */
+                    points?: (number|null);
+                }
+
+                /** Represents a OAQScore. */
+                class OAQScore implements IOAQScore {
+
+                    /**
+                     * Constructs a new OAQScore.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IOAQScore);
+
+                    /** OAQScore playerId. */
+                    public playerId: (number|Long);
+
+                    /** OAQScore seat. */
+                    public seat: number;
+
+                    /** OAQScore capturedDan. */
+                    public capturedDan: number;
+
+                    /** OAQScore capturedQuan. */
+                    public capturedQuan: number;
+
+                    /** OAQScore points. */
+                    public points: number;
+
+                    /**
+                     * Creates a new OAQScore instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns OAQScore instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IOAQScore): com.triforge.protocol.proto.OAQScore;
+
+                    /**
+                     * Encodes the specified OAQScore message. Does not implicitly {@link com.triforge.protocol.proto.OAQScore.verify|verify} messages.
+                     * @param message OAQScore message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IOAQScore, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified OAQScore message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQScore.verify|verify} messages.
+                     * @param message OAQScore message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IOAQScore, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a OAQScore message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns OAQScore
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.OAQScore;
+
+                    /**
+                     * Decodes a OAQScore message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns OAQScore
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.OAQScore;
+
+                    /**
+                     * Verifies a OAQScore message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a OAQScore message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns OAQScore
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.OAQScore;
+
+                    /**
+                     * Creates a plain object from a OAQScore message. Also converts values to other types if specified.
+                     * @param message OAQScore
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.OAQScore, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this OAQScore to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for OAQScore
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a OAQBoardState. */
+                interface IOAQBoardState {
+
+                    /** OAQBoardState pitStones */
+                    pitStones?: (number[]|null);
+
+                    /** OAQBoardState quanPieces */
+                    quanPieces?: (number[]|null);
+
+                    /** OAQBoardState currentPlayerId */
+                    currentPlayerId?: (number|Long|null);
+
+                    /** OAQBoardState scores */
+                    scores?: (com.triforge.protocol.proto.IOAQScore[]|null);
+
+                    /** OAQBoardState turnTicksRemaining */
+                    turnTicksRemaining?: (number|null);
+
+                    /** OAQBoardState gameOver */
+                    gameOver?: (boolean|null);
+
+                    /** OAQBoardState winnerPlayerId */
+                    winnerPlayerId?: (number|Long|null);
+                }
+
+                /** Represents a OAQBoardState. */
+                class OAQBoardState implements IOAQBoardState {
+
+                    /**
+                     * Constructs a new OAQBoardState.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IOAQBoardState);
+
+                    /** OAQBoardState pitStones. */
+                    public pitStones: number[];
+
+                    /** OAQBoardState quanPieces. */
+                    public quanPieces: number[];
+
+                    /** OAQBoardState currentPlayerId. */
+                    public currentPlayerId: (number|Long);
+
+                    /** OAQBoardState scores. */
+                    public scores: com.triforge.protocol.proto.IOAQScore[];
+
+                    /** OAQBoardState turnTicksRemaining. */
+                    public turnTicksRemaining: number;
+
+                    /** OAQBoardState gameOver. */
+                    public gameOver: boolean;
+
+                    /** OAQBoardState winnerPlayerId. */
+                    public winnerPlayerId: (number|Long);
+
+                    /**
+                     * Creates a new OAQBoardState instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns OAQBoardState instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IOAQBoardState): com.triforge.protocol.proto.OAQBoardState;
+
+                    /**
+                     * Encodes the specified OAQBoardState message. Does not implicitly {@link com.triforge.protocol.proto.OAQBoardState.verify|verify} messages.
+                     * @param message OAQBoardState message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IOAQBoardState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified OAQBoardState message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQBoardState.verify|verify} messages.
+                     * @param message OAQBoardState message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IOAQBoardState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a OAQBoardState message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns OAQBoardState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.OAQBoardState;
+
+                    /**
+                     * Decodes a OAQBoardState message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns OAQBoardState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.OAQBoardState;
+
+                    /**
+                     * Verifies a OAQBoardState message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a OAQBoardState message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns OAQBoardState
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.OAQBoardState;
+
+                    /**
+                     * Creates a plain object from a OAQBoardState message. Also converts values to other types if specified.
+                     * @param message OAQBoardState
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.OAQBoardState, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this OAQBoardState to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for OAQBoardState
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a OAQStep. */
+                interface IOAQStep {
+
+                    /** OAQStep type */
+                    type?: (com.triforge.protocol.proto.OAQStepType|null);
+
+                    /** OAQStep pitIndex */
+                    pitIndex?: (number|null);
+
+                    /** OAQStep stones */
+                    stones?: (number|null);
+
+                    /** OAQStep quanPieces */
+                    quanPieces?: (number|null);
+
+                    /** OAQStep toSeat */
+                    toSeat?: (number|null);
+                }
+
+                /** Represents a OAQStep. */
+                class OAQStep implements IOAQStep {
+
+                    /**
+                     * Constructs a new OAQStep.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IOAQStep);
+
+                    /** OAQStep type. */
+                    public type: com.triforge.protocol.proto.OAQStepType;
+
+                    /** OAQStep pitIndex. */
+                    public pitIndex: number;
+
+                    /** OAQStep stones. */
+                    public stones: number;
+
+                    /** OAQStep quanPieces. */
+                    public quanPieces: number;
+
+                    /** OAQStep toSeat. */
+                    public toSeat: number;
+
+                    /**
+                     * Creates a new OAQStep instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns OAQStep instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IOAQStep): com.triforge.protocol.proto.OAQStep;
+
+                    /**
+                     * Encodes the specified OAQStep message. Does not implicitly {@link com.triforge.protocol.proto.OAQStep.verify|verify} messages.
+                     * @param message OAQStep message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IOAQStep, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified OAQStep message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQStep.verify|verify} messages.
+                     * @param message OAQStep message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IOAQStep, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a OAQStep message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns OAQStep
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.OAQStep;
+
+                    /**
+                     * Decodes a OAQStep message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns OAQStep
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.OAQStep;
+
+                    /**
+                     * Verifies a OAQStep message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a OAQStep message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns OAQStep
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.OAQStep;
+
+                    /**
+                     * Creates a plain object from a OAQStep message. Also converts values to other types if specified.
+                     * @param message OAQStep
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.OAQStep, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this OAQStep to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for OAQStep
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a OAQMoveResult. */
+                interface IOAQMoveResult {
+
+                    /** OAQMoveResult playerId */
+                    playerId?: (number|Long|null);
+
+                    /** OAQMoveResult steps */
+                    steps?: (com.triforge.protocol.proto.IOAQStep[]|null);
+                }
+
+                /** Represents a OAQMoveResult. */
+                class OAQMoveResult implements IOAQMoveResult {
+
+                    /**
+                     * Constructs a new OAQMoveResult.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IOAQMoveResult);
+
+                    /** OAQMoveResult playerId. */
+                    public playerId: (number|Long);
+
+                    /** OAQMoveResult steps. */
+                    public steps: com.triforge.protocol.proto.IOAQStep[];
+
+                    /**
+                     * Creates a new OAQMoveResult instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns OAQMoveResult instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IOAQMoveResult): com.triforge.protocol.proto.OAQMoveResult;
+
+                    /**
+                     * Encodes the specified OAQMoveResult message. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveResult.verify|verify} messages.
+                     * @param message OAQMoveResult message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IOAQMoveResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified OAQMoveResult message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveResult.verify|verify} messages.
+                     * @param message OAQMoveResult message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IOAQMoveResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a OAQMoveResult message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns OAQMoveResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.OAQMoveResult;
+
+                    /**
+                     * Decodes a OAQMoveResult message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns OAQMoveResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.OAQMoveResult;
+
+                    /**
+                     * Verifies a OAQMoveResult message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a OAQMoveResult message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns OAQMoveResult
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.OAQMoveResult;
+
+                    /**
+                     * Creates a plain object from a OAQMoveResult message. Also converts values to other types if specified.
+                     * @param message OAQMoveResult
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.OAQMoveResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this OAQMoveResult to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for OAQMoveResult
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a OAnQuanMessage. */
+                interface IOAnQuanMessage {
+
+                    /** OAnQuanMessage move */
+                    move?: (com.triforge.protocol.proto.IOAQMoveCommand|null);
+
+                    /** OAnQuanMessage board */
+                    board?: (com.triforge.protocol.proto.IOAQBoardState|null);
+
+                    /** OAnQuanMessage moveResult */
+                    moveResult?: (com.triforge.protocol.proto.IOAQMoveResult|null);
+
+                    /** OAnQuanMessage moveRejected */
+                    moveRejected?: (com.triforge.protocol.proto.IOAQMoveRejected|null);
+                }
+
+                /** Represents a OAnQuanMessage. */
+                class OAnQuanMessage implements IOAnQuanMessage {
+
+                    /**
+                     * Constructs a new OAnQuanMessage.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IOAnQuanMessage);
+
+                    /** OAnQuanMessage move. */
+                    public move?: (com.triforge.protocol.proto.IOAQMoveCommand|null);
+
+                    /** OAnQuanMessage board. */
+                    public board?: (com.triforge.protocol.proto.IOAQBoardState|null);
+
+                    /** OAnQuanMessage moveResult. */
+                    public moveResult?: (com.triforge.protocol.proto.IOAQMoveResult|null);
+
+                    /** OAnQuanMessage moveRejected. */
+                    public moveRejected?: (com.triforge.protocol.proto.IOAQMoveRejected|null);
+
+                    /** OAnQuanMessage content. */
+                    public content?: ("move"|"board"|"moveResult"|"moveRejected");
+
+                    /**
+                     * Creates a new OAnQuanMessage instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns OAnQuanMessage instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IOAnQuanMessage): com.triforge.protocol.proto.OAnQuanMessage;
+
+                    /**
+                     * Encodes the specified OAnQuanMessage message. Does not implicitly {@link com.triforge.protocol.proto.OAnQuanMessage.verify|verify} messages.
+                     * @param message OAnQuanMessage message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IOAnQuanMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified OAnQuanMessage message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAnQuanMessage.verify|verify} messages.
+                     * @param message OAnQuanMessage message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IOAnQuanMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a OAnQuanMessage message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns OAnQuanMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.OAnQuanMessage;
+
+                    /**
+                     * Decodes a OAnQuanMessage message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns OAnQuanMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.OAnQuanMessage;
+
+                    /**
+                     * Verifies a OAnQuanMessage message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a OAnQuanMessage message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns OAnQuanMessage
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.OAnQuanMessage;
+
+                    /**
+                     * Creates a plain object from a OAnQuanMessage message. Also converts values to other types if specified.
+                     * @param message OAnQuanMessage
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.OAnQuanMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this OAnQuanMessage to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for OAnQuanMessage
                      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                      * @returns The default type url
                      */

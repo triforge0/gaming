@@ -58,6 +58,9 @@ triforge-gaming/
 │   ├── treasurequest/
 │   │   ├── plugin/                   Maven artifact: treasurequest-game
 │   │   └── frontend/                 Game-specific frontend
+│   ├── oanquan/
+│   │   ├── plugin/                   Maven artifact: oanquan-game (rules in core/, pure Java)
+│   │   └── frontend/                 React + Three.js (Vite) — 3D board client
 │   └── demo/
 │       └── plugin/                   Maven artifact: demo-game
 └── frontend/                         Platform web shell + shared client library
@@ -70,7 +73,14 @@ migrated it from Phaser 2D to Three.js 3D; the authoritative server is fully 3D 
 terrain elevation). Launcher home is `/`. The wire proto still carries the legacy 2D
 `Direction`/`x,y` fields alongside the 3D `z`/orientation fields.
 
-Build order: `protocol → engine-ecs → engine-api → engine-match → engine-sync → engine-core → tankarena-game → demo-game → server-runtime → triforge-server`
+Ô ăn quan (plan-005) is a 2-player turn-based board game (Vietnamese mancala) served at
+`/games/oanquan/`: clients send `(pitIndex, direction)` via the `GameMessage.oaq` arm and
+the server broadcasts an authoritative board plus a step trace clients replay as 3D
+animation. Game-specific inbound traffic routes through the generic
+`Game.handleGameMessage` seam (no `instanceof` in `GameRoom`). The launcher seeds the
+single `oanquan` room (multi-table rooms are future work).
+
+Build order: `protocol → engine-ecs → engine-api → engine-match → engine-sync → engine-core → tankarena-game → treasurequest-game → oanquan-game → demo-game → server-runtime → triforge-server`
 
 ---
 
@@ -94,6 +104,7 @@ Single module test:
 
 ```bash
 mvn test -pl games/tankarena/plugin
+mvn test -pl games/oanquan/plugin -am     # -am: rules-engine tests need the reactor protocol
 mvn test -pl engine/engine-ecs
 mvn test -pl engine/engine-api
 mvn test -pl engine/engine-match
@@ -114,6 +125,14 @@ Tank Arena client — React + Three.js (inside `games/tankarena/frontend/`):
 cd games/tankarena/frontend
 npm install
 npm run build    # React + Three.js; depends on @triforge/shared-ui via file: link (dev port 3002)
+```
+
+Ô ăn quan client — React + Three.js (inside `games/oanquan/frontend/`):
+
+```bash
+cd games/oanquan/frontend
+npm install
+npm run build    # depends on @triforge/shared-ui via file: link (dev port 3003)
 ```
 
 Launcher web (inside `frontend/launcher-web/`):
@@ -151,6 +170,7 @@ Game plugins register via Java `ServiceLoader`:
 ```
 META-INF/services/com.triforge.engine.game.GamePlugin
 → com.triforge.games.tankarena.TankArenaPlugin
+→ com.triforge.games.oanquan.OAnQuanPlugin
 → com.triforge.games.demo.DemoPlugin   (scaffold)
 ```
 
