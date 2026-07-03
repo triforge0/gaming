@@ -182,7 +182,7 @@ helpers live in `TankArenaRoomSupport` under integration tests.
 
 | Concern | Choice |
 |---------|--------|
-| Frontend | Tank Arena: React + Three.js, Vite (TypeScript) |
+| Frontend | Tank Arena: React + Three.js, Vite (TypeScript) · Launcher: React + Vite |
 | Backend | Java 21, Netty, Maven multi-module |
 | Wire format | Protobuf (`proto/envelope.proto`, package `com.triforge.protocol.proto`) |
 | Game loop | 60 TPS (`engine.loop.GameLoop`) |

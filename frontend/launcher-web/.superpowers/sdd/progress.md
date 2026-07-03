@@ -1,0 +1,5 @@
+# SDD Progress — launcher-web-redesign (2026-07-03)
+Task 1: complete (commits aac97ce..7e765bb, review clean; note: npm saved newer caret versions than brief text — adjudicated OK, npm-standard behavior, ranges compatible with Tank Arena)
+Task 2: complete (commits 7e765bb..915341d, review clean)
+Task 3: complete (commits 915341d..1fb02e5, review clean; Minor: hook tests do not cover unmount cleanup or visibilitychange resume)
+Task 4: complete (commits 1fb02e5..ce35ccf, review clean)
