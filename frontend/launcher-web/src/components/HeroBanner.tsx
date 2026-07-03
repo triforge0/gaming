@@ -13,7 +13,7 @@ export function HeroBanner({ entry, stats }: { entry: CatalogEntry; stats?: Plug
         <h2 className="hero-title">{entry.title}</h2>
         <p className="hero-desc">{entry.description}</p>
         <div className="hero-actions">
-          <a className="hero-play" href={entry.path}>▶ CHƠI NGAY</a>
+          <a className="hero-play" href={entry.path} aria-label={`Chơi ${entry.title}`}>▶ CHƠI NGAY</a>
           <LiveBadge stats={stats} />
         </div>
       </div>

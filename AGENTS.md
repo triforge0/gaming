@@ -62,7 +62,7 @@ triforge-gaming/
 │       └── plugin/                   Maven artifact: demo-game
 └── frontend/                         Platform web shell + shared client library
     ├── shared-ui/                    @triforge/shared-ui — WebSocket client, discovery, proto
-    └── launcher-web/                 Multi-game picker (served at /)
+    └── launcher-web/                 React + Vite hub — catalog + live lobby status (served at /)
 ```
 
 Tank Arena is a React + Three.js 3D client served at `/games/tankarena/` (plan-004
@@ -122,6 +122,7 @@ Launcher web (inside `frontend/launcher-web/`):
 cd frontend/launcher-web
 npm install
 npm run build
+npm test         # vitest
 ```
 
 Regenerate TS proto after editing `proto/envelope.proto`: `npm run proto` in `frontend/shared-ui`.

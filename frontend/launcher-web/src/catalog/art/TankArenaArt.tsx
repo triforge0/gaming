@@ -1,18 +1,23 @@
+import { useId } from 'react';
+
 export function TankArenaArt() {
+  const uid = useId().replace(/:/g, '');
+  const bgId = `ta-bg-${uid}`;
+  const glowId = `ta-glow-${uid}`;
   return (
     <svg viewBox="0 0 400 200" className="key-art" role="img" aria-label="Tank Arena" preserveAspectRatio="xMidYMid slice">
       <defs>
-        <linearGradient id="ta-bg" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id={bgId} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#16281a" />
           <stop offset="1" stopColor="#0e1420" />
         </linearGradient>
-        <radialGradient id="ta-glow" cx="0.75" cy="0.2" r="0.7">
+        <radialGradient id={glowId} cx="0.75" cy="0.2" r="0.7">
           <stop offset="0" stopColor="#7ee29b" stopOpacity="0.35" />
           <stop offset="1" stopColor="#7ee29b" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect width="400" height="200" fill="url(#ta-bg)" />
-      <rect width="400" height="200" fill="url(#ta-glow)" className="art-pulse" />
+      <rect width="400" height="200" fill={`url(#${bgId})`} />
+      <rect width="400" height="200" fill={`url(#${glowId})`} className="art-pulse" />
       <g>
         <rect x="120" y="92" width="92" height="46" rx="8" fill="#3d6b45" />
         <rect x="146" y="72" width="40" height="30" rx="6" fill="#4d8557" />
