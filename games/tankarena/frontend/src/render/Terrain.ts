@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { IMapSnapshot, TileType } from '@triforge/shared-ui';
+import { IMapSnapshot, TileType, toNum } from '@triforge/shared-ui';
 import { TileTextures } from './tileTextures';
 import { buildCover, buildHq, buildSolidBlock, buildTree, buildWater } from './propMeshes';
 
@@ -29,6 +29,38 @@ export class Terrain {
 
     this.group.add(this.buildGround(width, height, tileSize, heightAt));
     this.group.add(this.buildTiles(width, height, tileSize, tiles, heightAt));
+    this.group.add(this.buildHeadquarters(width, height, tileSize, map, heightAt));
+  }
+
+  private buildHeadquarters(
+    mapWidth: number,
+    mapHeight: number,
+    tileSize: number,
+    map: IMapSnapshot,
+    heightAt: (tx: number, ty: number) => number,
+  ): THREE.Group {
+    const group = new THREE.Group();
+    for (const hq of map.headquarters ?? []) {
+      const minX = hq.x ?? 0;
+      const minY = hq.y ?? 0;
+      const footprintW = hq.width ?? 1;
+      const footprintH = hq.height ?? 1;
+      const cx = (minX + minX + footprintW) * tileSize / 2;
+      const cz = (minY + minY + footprintH) * tileSize / 2;
+
+      let base = 0;
+      for (let ty = minY; ty < minY + footprintH && ty < mapHeight; ty++) {
+        for (let tx = minX; tx < minX + footprintW && tx < mapWidth; tx++) {
+          base = Math.max(base, heightAt(tx, ty));
+        }
+      }
+
+      const team = toNum(hq.team);
+      const obj = buildHq(tileSize, footprintW, footprintH, team);
+      obj.position.set(cx, base, cz);
+      group.add(obj);
+    }
+    return group;
   }
 
   private buildGround(
@@ -83,7 +115,7 @@ export class Terrain {
     for (let ty = 0; ty < height; ty++) {
       for (let tx = 0; tx < width; tx++) {
         const tile = tiles[ty * width + tx] ?? TileType.EMPTY;
-        if (tile === TileType.EMPTY) {
+        if (tile === TileType.EMPTY || tile === TileType.HQ) {
           continue;
         }
 
@@ -113,8 +145,6 @@ export class Terrain {
         return buildTree(tileSize);
       case TileType.COVER:
         return buildCover(tileSize);
-      case TileType.HQ:
-        return buildHq(tileSize);
       default:
         return null;
     }
@@ -127,8 +157,6 @@ export class Terrain {
         return tileSize * 0.06;
       case TileType.TREE:
       case TileType.COVER:
-        return 0;
-      case TileType.HQ:
         return 0;
       default:
         return tileSize / 2;

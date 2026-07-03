@@ -11,6 +11,7 @@ const SEND_HZ = 60;
  *   ArrowUp / ArrowDown      hull forward / back
  *   ArrowLeft / ArrowRight   turn hull left / right
  *   Q / E                    turret aim up / down
+ *   F                        hold to lock onto the nearest visible enemy (aim assist)
  *   Space                    shoot
  */
 export class InputController {
@@ -49,6 +50,7 @@ export class InputController {
       turnRight: has('ArrowRight'),
       aimUp: has('KeyQ'),
       aimDown: has('KeyE'),
+      lockTarget: has('KeyF'),
     };
   }
 
@@ -80,5 +82,5 @@ export class InputController {
 }
 
 const RELEVANT = new Set([
-  'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyQ', 'KeyE', 'Space',
+  'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyQ', 'KeyE', 'Space', 'KeyF',
 ]);

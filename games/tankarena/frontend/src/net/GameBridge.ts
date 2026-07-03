@@ -71,6 +71,9 @@ export class GameBridge {
   /** Live key state sampled on the render thread. */
   inputReader: (() => InputState | null) | null = null;
 
+  /** Synchronous per-event hook for the render loop (explosions/sfx). Set by SceneRoot. */
+  onRenderEvent: ((event: IGameEvent) => void) | null = null;
+
   constructor(roomId: string, playerName: string) {
     this.client = new GameClient(roomId, playerName, {
       onConnected: () => this.patchUi({ connected: true }),
@@ -140,6 +143,8 @@ export class GameBridge {
   }
 
   private onEvent(event: IGameEvent): void {
+    // Notify the render loop first so it can spawn effects at live mesh positions.
+    this.onRenderEvent?.(event);
     // Keep a short rolling buffer for the kill feed / HUD.
     const events = [...this.ui.events, event].slice(-16);
     this.patchUi({ events });

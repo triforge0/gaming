@@ -41,6 +41,15 @@ public final class PositionComponent implements Component {
         return z;
     }
 
+    /** Ground-plane position before the current tick's move (set by {@link #savePrevious()}). */
+    public float previousX() {
+        return previousX;
+    }
+
+    public float previousY() {
+        return previousY;
+    }
+
     public Vec3 asVec3() {
         return new Vec3(x, y, z);
     }

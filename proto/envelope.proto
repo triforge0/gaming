@@ -244,6 +244,7 @@ message InputCommand {
   bool turnRight = 9;   // rotate hull yaw right
   bool aimUp = 10;      // raise turret pitch
   bool aimDown = 11;    // lower turret pitch
+  bool lockTarget = 12; // hold to auto-steer the hull toward the nearest visible enemy
 }
 
 // ── Lobby & match flow ─────────────────────────────────────────────

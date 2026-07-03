@@ -107,7 +107,6 @@ function GameView({ bridge }: { bridge: GameBridge }) {
   return (
     <div className="ta-app ta-game">
       <div ref={canvasHost} className="ta-canvas" />
-      <div className="ta-vignette" aria-hidden />
       {ui && <GameUi bridge={bridge} ui={ui} />}
       <StatusChip ui={ui} tick={tick} entityCount={entityCount} />
       <MoveDebugPanel />

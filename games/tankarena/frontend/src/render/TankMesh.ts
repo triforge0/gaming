@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { yawToThreeRotationY } from './coords';
+import { NameLabel } from './NameLabel';
 
 /** Match {@link MovementSystem} TURN_RATE / PITCH_RATE on the server. */
 const TURN_RATE_RAD_S = Math.PI / 2;
@@ -165,6 +166,7 @@ export class TankMesh {
   private readonly turret: THREE.Group;
   private readonly teamMaterials: THREE.MeshStandardMaterial[];
   private readonly selfRing: THREE.Mesh;
+  private readonly nameLabel: NameLabel;
 
   private targetPos = new THREE.Vector3();
   private targetYawRotation = 0;
@@ -199,6 +201,13 @@ export class TankMesh {
     this.selfRing.position.y = 0.8;
     this.selfRing.visible = isSelf;
     this.group.add(this.selfRing);
+
+    this.nameLabel = new NameLabel();
+    this.group.add(this.nameLabel.sprite);
+  }
+
+  setName(name: string, color: number): void {
+    this.nameLabel.set(name, color);
   }
 
   setSelf(isSelf: boolean): void {
@@ -311,6 +320,7 @@ export class TankMesh {
   }
 
   dispose(): void {
+    this.nameLabel.dispose();
     const disposedMats = new Set<THREE.Material>();
     const shared = new Set<THREE.Material>([TRACK, RUBBER, GUN_METAL, DARK]);
     this.group.traverse((obj) => {

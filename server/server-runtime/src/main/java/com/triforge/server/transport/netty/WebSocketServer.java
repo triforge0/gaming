@@ -6,6 +6,7 @@ import com.triforge.server.transport.discovery.DiscoveryService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -54,6 +55,10 @@ public final class WebSocketServer {
         bootstrap.group(bossGroup, workerGroup)
          .channel(NioServerSocketChannel.class)
          .handler(new LoggingHandler(LogLevel.INFO))
+         // Disable Nagle: the game loop flushes a small delta packet every tick (60 Hz);
+         // coalescing them with delayed-ACK batches updates into ~40 ms bursts that read as
+         // movement stutter. Real-time streams want each packet on the wire immediately.
+         .childOption(ChannelOption.TCP_NODELAY, true)
          .childHandler(new ChannelInitializer<SocketChannel>() {
              @Override
              protected void initChannel(SocketChannel ch) {

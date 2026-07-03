@@ -1,9 +1,10 @@
 import * as THREE from 'three';
-import { IEntity, toNum } from '@triforge/shared-ui';
+import { GameEventType, IEntity, IGameEvent, Team, toNum } from '@triforge/shared-ui';
 import { GameBridge } from '../net/GameBridge';
 import { Terrain } from './Terrain';
 import { TankMesh } from './TankMesh';
 import { BulletMesh } from './BulletMesh';
+import { ExplosionEffect } from './ExplosionEffect';
 import { setFromServer, teamColor } from './coords';
 import {
   aimInputAxis,
@@ -34,6 +35,14 @@ export class SceneRoot {
 
   private readonly tanks = new Map<number, TankMesh>();
   private readonly bullets = new Map<number, BulletMesh>();
+  private readonly explosions: ExplosionEffect[] = [];
+  /** Entity ids awaiting a blast, drained each frame while their meshes still exist. */
+  private readonly pendingBlasts: number[] = [];
+  /** Floating diamond that hovers over the nearest visible enemy (target indicator). */
+  private readonly targetMarker = new THREE.Mesh(
+    new THREE.OctahedronGeometry(6),
+    new THREE.MeshBasicMaterial({ color: 0xffd166, transparent: true, opacity: 0.9 }),
+  );
 
   private mapBuilt = false;
   private running = false;
@@ -54,7 +63,8 @@ export class SceneRoot {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.scene.background = new THREE.Color(0x0d1018);
-    this.scene.fog = new THREE.Fog(0x0d1018, 350, 1500);
+    // No distance fog: the arena spans >1000 world units, so fog hazed active gameplay and
+    // made the far side of the map hard to read. Keep the whole board clearly visible.
 
     this.camera = new THREE.PerspectiveCamera(CAM_FOV, 1, 1, 4000);
     this.camera.position.set(0, 300, 300);
@@ -73,11 +83,26 @@ export class SceneRoot {
     sun.shadow.camera.top = shadowSpan;
     sun.shadow.camera.bottom = -shadowSpan;
     sun.shadow.bias = -0.0004;
-    this.scene.add(ambient, hemi, sun, this.terrain.group);
+    this.targetMarker.visible = false;
+    this.targetMarker.renderOrder = 9;
+    this.scene.add(ambient, hemi, sun, this.terrain.group, this.targetMarker);
 
     this.host.appendChild(this.renderer.domElement);
     this.resize();
     window.addEventListener('resize', this.resize);
+
+    this.bridge.onRenderEvent = (event) => this.onGameEvent(event);
+  }
+
+  /** Queue a destruction blast for the render loop when an opponent takes a fatal hit. */
+  private onGameEvent(event: IGameEvent): void {
+    if (event.type !== GameEventType.PLAYER_DEATH && event.type !== GameEventType.PLAYER_HIT) {
+      return;
+    }
+    const entityId = toNum(event.entityId);
+    if (entityId > 0) {
+      this.pendingBlasts.push(entityId);
+    }
   }
 
   start(): void {
@@ -97,11 +122,84 @@ export class SceneRoot {
     this.lastTime = now;
 
     this.ensureMap();
+    this.drainBlasts();
     this.syncEntities(dtMs);
+    this.updateExplosions(dtMs);
+    this.updateTargetMarker(now);
     this.updateCamera();
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(this.frame);
   };
+
+  /** Spawn queued blasts at the doomed tanks' current positions before they despawn. */
+  private drainBlasts(): void {
+    for (const entityId of this.pendingBlasts) {
+      const mesh = this.tanks.get(entityId);
+      if (mesh) {
+        this.scratch.copy(mesh.position);
+      } else {
+        const entity = this.bridge.world.entities.get(entityId);
+        const pos = entity?.position;
+        if (!pos) continue;
+        setFromServer(this.scratch, pos.x ?? 0, pos.y ?? 0, pos.z ?? 0);
+      }
+      this.spawnExplosion(this.scratch);
+    }
+    this.pendingBlasts.length = 0;
+  }
+
+  private spawnExplosion(pos: THREE.Vector3): void {
+    const blast = new ExplosionEffect();
+    blast.group.position.set(pos.x, pos.y + 8, pos.z);
+    this.scene.add(blast.group);
+    this.explosions.push(blast);
+  }
+
+  /** Hovers the target diamond over the nearest visible enemy tank (hidden when none). */
+  private updateTargetMarker(nowMs: number): void {
+    const selfId = this.bridge.world.selfEntityId;
+    const self = this.tanks.get(selfId);
+    if (!self) {
+      this.targetMarker.visible = false;
+      return;
+    }
+    const selfTeam = this.bridge.world.entities.get(selfId)?.player?.team ?? Team.TEAM_NONE;
+
+    let nearest: TankMesh | null = null;
+    let nearestSq = Infinity;
+    for (const [id, mesh] of this.tanks) {
+      if (id === selfId) continue;
+      const team = this.bridge.world.entities.get(id)?.player?.team ?? Team.TEAM_NONE;
+      if (team === selfTeam && selfTeam !== Team.TEAM_NONE) continue; // skip allies
+      const dx = mesh.position.x - self.position.x;
+      const dz = mesh.position.z - self.position.z;
+      const distSq = dx * dx + dz * dz;
+      if (distSq < nearestSq) {
+        nearestSq = distSq;
+        nearest = mesh;
+      }
+    }
+
+    if (!nearest) {
+      this.targetMarker.visible = false;
+      return;
+    }
+    const bob = Math.sin(nowMs * 0.005) * 3;
+    this.targetMarker.position.set(nearest.position.x, nearest.position.y + 34 + bob, nearest.position.z);
+    this.targetMarker.rotation.y = nowMs * 0.002;
+    this.targetMarker.visible = true;
+  }
+
+  private updateExplosions(dtMs: number): void {
+    for (let i = this.explosions.length - 1; i >= 0; i--) {
+      const blast = this.explosions[i];
+      if (!blast.update(dtMs)) {
+        this.scene.remove(blast.group);
+        blast.dispose();
+        this.explosions.splice(i, 1);
+      }
+    }
+  }
 
   private ensureMap(): void {
     const map = this.bridge.world.map;
@@ -199,15 +297,20 @@ export class SceneRoot {
     const pitch = entity.orientation?.pitch ?? 0;
     const isSelf = this.isSelf(id, entity);
 
+    const color = teamColor(entity.player?.team);
+    const playerName = entity.player?.name ?? 'Pilot';
+
     let mesh = this.tanks.get(id);
     if (!mesh) {
-      mesh = new TankMesh(teamColor(entity.player?.team), isSelf);
+      mesh = new TankMesh(color, isSelf);
+      mesh.setName(playerName, color);
       mesh.snapTo(this.scratch, yaw, pitch);
       this.scene.add(mesh.group);
       this.tanks.set(id, mesh);
       return;
     }
-    mesh.setColor(teamColor(entity.player?.team));
+    mesh.setColor(color);
+    mesh.setName(playerName, color);
     mesh.setSelf(isSelf);
     mesh.setTarget(this.scratch, yaw, pitch);
   }
@@ -269,7 +372,14 @@ export class SceneRoot {
   dispose(): void {
     this.stop();
     window.removeEventListener('resize', this.resize);
+    if (this.bridge.onRenderEvent) {
+      this.bridge.onRenderEvent = null;
+    }
     for (const mesh of this.tanks.values()) mesh.dispose();
+    for (const blast of this.explosions) blast.dispose();
+    this.explosions.length = 0;
+    this.targetMarker.geometry.dispose();
+    (this.targetMarker.material as THREE.Material).dispose();
     this.terrain.dispose();
     this.renderer.dispose();
     if (this.renderer.domElement.parentElement === this.host) {

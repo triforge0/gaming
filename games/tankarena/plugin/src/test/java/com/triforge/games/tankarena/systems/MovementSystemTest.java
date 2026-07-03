@@ -13,6 +13,7 @@ import com.triforge.engine.ecs.EntityManager;
 import com.triforge.engine.ecs.SystemScheduler;
 import com.triforge.games.tankarena.map.GameMap;
 import com.triforge.games.tankarena.map.TileType;
+import com.triforge.games.tankarena.match.Team;
 import com.triforge.games.tankarena.world.WorldBounds;
 import com.triforge.protocol.proto.Direction;
 import com.triforge.protocol.proto.InputCommand;
@@ -179,6 +180,61 @@ public final class MovementSystemTest {
         PositionComponent position = componentManager.get(tank, PositionComponent.class);
         // Horizontal move blocked by the cliff; tank stays put.
         assertEquals(5f, position.x(), 0.001f);
+    }
+
+    @Test
+    void lockTargetSteersHullTowardNearestEnemy() {
+        EcsWorld world = new EcsWorld();
+        EntityManager entityManager = world.entityManager();
+        ComponentManager componentManager = world.componentManager();
+        MovementSystem system = new MovementSystem();
+
+        // Shooter faces east (yaw 0); a live enemy sits due north → desired yaw = -PI/2.
+        Entity shooter = TankEntityFactory.tank(entityManager, componentManager)
+                .at(400f, 300f).direction(Direction.RIGHT)
+                .player(1L, "Red", 3, Team.RED).withInput().build();
+        TankEntityFactory.tank(entityManager, componentManager)
+                .at(400f, 200f).direction(Direction.UP)
+                .player(2L, "Blue", 3, Team.BLUE).build();
+
+        InputComponent input = componentManager.get(shooter, InputComponent.class);
+        input.apply(InputCommand.newBuilder().setLockTarget(true).build());
+        OrientationComponent orientation = componentManager.get(shooter, OrientationComponent.class);
+
+        // One tick: rotates a little toward the enemy (yaw goes negative, toward -PI/2).
+        system.update(1, entityManager, componentManager);
+        assertTrue(orientation.yaw() < 0f && orientation.yaw() > (float) (-Math.PI / 2),
+                "should begin steering toward the enemy, yaw=" + orientation.yaw());
+
+        // Held long enough, it converges to facing the enemy.
+        for (int tick = 0; tick < 120; tick++) {
+            system.update(tick, entityManager, componentManager);
+        }
+        assertEquals((float) (-Math.PI / 2), orientation.yaw(), 0.05f);
+    }
+
+    @Test
+    void lockTargetIgnoresTeammates() {
+        EcsWorld world = new EcsWorld();
+        EntityManager entityManager = world.entityManager();
+        ComponentManager componentManager = world.componentManager();
+        MovementSystem system = new MovementSystem();
+
+        // Only a same-team tank is nearby → nothing lockable, hull must not auto-rotate.
+        Entity shooter = TankEntityFactory.tank(entityManager, componentManager)
+                .at(400f, 300f).direction(Direction.RIGHT)
+                .player(1L, "Red", 3, Team.RED).withInput().build();
+        TankEntityFactory.tank(entityManager, componentManager)
+                .at(400f, 200f).direction(Direction.UP)
+                .player(2L, "AlsoRed", 3, Team.RED).build();
+
+        InputComponent input = componentManager.get(shooter, InputComponent.class);
+        input.apply(InputCommand.newBuilder().setLockTarget(true).build());
+
+        system.update(1, entityManager, componentManager);
+
+        OrientationComponent orientation = componentManager.get(shooter, OrientationComponent.class);
+        assertEquals(0f, orientation.yaw(), 0.001f, "must not lock onto a teammate");
     }
 
     private PositionComponent runSingleTick(Direction moveDirection, float startX, float startY) {

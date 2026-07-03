@@ -43,8 +43,11 @@ public final class CollisionSystemTest {
         ComponentManager componentManager = world.componentManager();
         SystemScheduler scheduler = createScheduler(map, new AtomicReference<>());
 
+        // Start in the empty cell left of the brick (tile 1,2 → centre x=48) and drive right
+        // into it. The tank should approach the wall and stop, never penetrating the brick
+        // (whose left edge sits at world x=64).
         Entity tank = TankEntityFactory.tank(entityManager, componentManager)
-                .at(80f, 80f)
+                .at(48f, 80f)
                 .direction(Direction.RIGHT)
                 .withInput()
                 .build();
@@ -52,10 +55,14 @@ public final class CollisionSystemTest {
         InputComponent input = componentManager.get(tank, InputComponent.class);
         input.apply(InputCommand.newBuilder().setMoveRight(true).build());
 
-        scheduler.update(1, entityManager, componentManager);
+        for (int tick = 0; tick < 20; tick++) {
+            scheduler.update(tick, entityManager, componentManager);
+        }
 
         PositionComponent position = componentManager.get(tank, PositionComponent.class);
-        assertEquals(80f, position.x(), 0.001f);
+        assertTrue(position.x() > 48f, "tank should advance toward the wall");
+        assertTrue(position.x() + 12f <= 64.001f,
+                "tank must not penetrate the brick, x=" + position.x());
     }
 
     @Test

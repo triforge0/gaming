@@ -28,9 +28,39 @@ public final class MapCollisionSystem implements System {
             if (tank == null || position == null) {
                 continue;
             }
-            if (CollisionDetector.tankOverlapsSolidTile(gameMap, mapConfig, position.x(), position.y())) {
-                position.revertToPrevious();
-            }
+            resolve(position);
         }
+    }
+
+    /**
+     * Resolves a tank whose attempted move lands on a solid tile. Instead of cancelling the
+     * whole move (which dead-stops tanks against walls and jams them in tight gaps), we keep
+     * whichever single axis is clear so the hull slides along the obstacle. If the tank was
+     * already embedded before the move — e.g. wedged in a one-tile slot with no clear axis —
+     * we let it move freely so the player can drive back out rather than being trapped
+     * reverting to an equally-blocked cell.
+     */
+    private void resolve(PositionComponent position) {
+        float x = position.x();
+        float y = position.y();
+        if (!blocked(x, y)) {
+            return;
+        }
+
+        float px = position.previousX();
+        float py = position.previousY();
+
+        if (!blocked(x, py)) {
+            position.set(x, py);
+        } else if (!blocked(px, y)) {
+            position.set(px, y);
+        } else if (!blocked(px, py)) {
+            position.revertToPrevious();
+        }
+        // else: already embedded before this move — leave the new position so it can escape.
+    }
+
+    private boolean blocked(float x, float y) {
+        return CollisionDetector.tankOverlapsSolidTile(gameMap, mapConfig, x, y);
     }
 }

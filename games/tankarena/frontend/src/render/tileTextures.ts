@@ -131,24 +131,28 @@ function drawWall(ctx: CanvasRenderingContext2D, size: number): void {
 }
 
 function drawHq(ctx: CanvasRenderingContext2D, size: number): void {
-  ctx.fillStyle = '#c8a830';
+  ctx.fillStyle = '#d4b038';
   ctx.fillRect(0, 0, size, size);
   ctx.fillStyle = '#9a7820';
-  ctx.fillRect(0, size * 0.72, size, size * 0.28);
-  const cols = 3;
-  const rows = 2;
+  ctx.fillRect(0, size * 0.78, size, size * 0.22);
+  const cols = 4;
+  const rows = 3;
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const x = 16 + c * 36;
-      const y = 18 + r * 34;
-      ctx.fillStyle = '#2a3540';
-      ctx.fillRect(x, y, 22, 24);
-      ctx.fillStyle = 'rgba(120,180,220,0.45)';
-      ctx.fillRect(x + 3, y + 3, 16, 18);
+      const x = 8 + c * 28;
+      const y = 10 + r * 26;
+      ctx.fillStyle = '#1a2430';
+      ctx.fillRect(x, y, 18, 20);
+      ctx.fillStyle = 'rgba(120,180,220,0.55)';
+      ctx.fillRect(x + 2, y + 2, 14, 14);
     }
   }
   ctx.fillStyle = '#8a2020';
-  ctx.fillRect(size * 0.42, 4, size * 0.16, size * 0.12);
+  ctx.fillRect(size * 0.38, 2, size * 0.24, size * 0.14);
+  ctx.fillStyle = '#ffe08a';
+  ctx.beginPath();
+  ctx.arc(size * 0.5, size * 0.42, size * 0.12, 0, Math.PI * 2);
+  ctx.fill();
 }
 
 const DRAWERS: Partial<Record<number, DrawFn>> = {

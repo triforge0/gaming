@@ -691,6 +691,34 @@
   background: rgba(255, 255, 255, 0.03);
 }
 
+.ta-rename {
+  margin-bottom: 14px;
+  padding: 14px;
+  border-radius: var(--ta-radius-sm);
+  border: 1px solid var(--ta-border);
+  background: rgba(255, 255, 255, 0.03);
+  pointer-events: auto;
+}
+
+.ta-rename-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.ta-rename-row .ta-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.ta-rename-row .ta-btn {
+  flex: 0 0 auto;
+  width: auto;
+  margin-top: 0;
+  padding: 10px 14px;
+  white-space: nowrap;
+}
+
 .ta-setup-title {
   margin: 0 0 10px;
   font-size: 12px;

@@ -17,6 +17,7 @@ public final class InputComponent implements Component {
     private boolean turnRight;
     private boolean aimUp;
     private boolean aimDown;
+    private boolean lockTarget;
 
     public void apply(InputCommand command) {
         moveUp = command.getMoveUp();
@@ -30,6 +31,7 @@ public final class InputComponent implements Component {
         turnRight = command.getTurnRight();
         aimUp = command.getAimUp();
         aimDown = command.getAimDown();
+        lockTarget = command.getLockTarget();
     }
 
     public boolean moveForward() {
@@ -54,6 +56,11 @@ public final class InputComponent implements Component {
 
     public boolean aimDown() {
         return aimDown;
+    }
+
+    /** Hold to auto-steer the hull toward the nearest visible enemy (aim assist). */
+    public boolean lockTarget() {
+        return lockTarget;
     }
 
     /** True when any legacy 4-way key is pressed (Phaser client during the parity window). */

@@ -7520,6 +7520,7 @@ export const com = $root.com = (() => {
                      * @property {boolean|null} [turnRight] InputCommand turnRight
                      * @property {boolean|null} [aimUp] InputCommand aimUp
                      * @property {boolean|null} [aimDown] InputCommand aimDown
+                     * @property {boolean|null} [lockTarget] InputCommand lockTarget
                      */
 
                     /**
@@ -7626,6 +7627,14 @@ export const com = $root.com = (() => {
                     InputCommand.prototype.aimDown = false;
 
                     /**
+                     * InputCommand lockTarget.
+                     * @member {boolean} lockTarget
+                     * @memberof com.triforge.protocol.proto.InputCommand
+                     * @instance
+                     */
+                    InputCommand.prototype.lockTarget = false;
+
+                    /**
                      * Creates a new InputCommand instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.InputCommand
@@ -7675,6 +7684,8 @@ export const com = $root.com = (() => {
                             writer.uint32(/* id 10, wireType 0 =*/80).bool(message.aimUp);
                         if (message.aimDown != null && Object.hasOwnProperty.call(message, "aimDown"))
                             writer.uint32(/* id 11, wireType 0 =*/88).bool(message.aimDown);
+                        if (message.lockTarget != null && Object.hasOwnProperty.call(message, "lockTarget"))
+                            writer.uint32(/* id 12, wireType 0 =*/96).bool(message.lockTarget);
                         return writer;
                     };
 
@@ -7759,6 +7770,10 @@ export const com = $root.com = (() => {
                                     message.aimDown = reader.bool();
                                     break;
                                 }
+                            case 12: {
+                                    message.lockTarget = reader.bool();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7, long);
                                 break;
@@ -7831,6 +7846,9 @@ export const com = $root.com = (() => {
                         if (message.aimDown != null && Object.hasOwnProperty.call(message, "aimDown"))
                             if (typeof message.aimDown !== "boolean")
                                 return "aimDown: boolean expected";
+                        if (message.lockTarget != null && Object.hasOwnProperty.call(message, "lockTarget"))
+                            if (typeof message.lockTarget !== "boolean")
+                                return "lockTarget: boolean expected";
                         return null;
                     };
 
@@ -7874,6 +7892,8 @@ export const com = $root.com = (() => {
                             message.aimUp = Boolean(object.aimUp);
                         if (object.aimDown != null)
                             message.aimDown = Boolean(object.aimDown);
+                        if (object.lockTarget != null)
+                            message.lockTarget = Boolean(object.lockTarget);
                         return message;
                     };
 
@@ -7906,6 +7926,7 @@ export const com = $root.com = (() => {
                             object.turnRight = false;
                             object.aimUp = false;
                             object.aimDown = false;
+                            object.lockTarget = false;
                         }
                         if (message.moveUp != null && Object.hasOwnProperty.call(message, "moveUp"))
                             object.moveUp = message.moveUp;
@@ -7929,6 +7950,8 @@ export const com = $root.com = (() => {
                             object.aimUp = message.aimUp;
                         if (message.aimDown != null && Object.hasOwnProperty.call(message, "aimDown"))
                             object.aimDown = message.aimDown;
+                        if (message.lockTarget != null && Object.hasOwnProperty.call(message, "lockTarget"))
+                            object.lockTarget = message.lockTarget;
                         return object;
                     };
 

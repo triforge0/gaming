@@ -17,6 +17,13 @@ public final class CollisionDetector {
     public static final float BULLET_RADIUS = 4f;
     /** Half the tank's vertical extent; used to gate collisions by elevation in 3D. */
     public static final float TANK_HALF_HEIGHT = WorldBounds.TANK_HALF_SIZE;
+    /**
+     * Half-extent used for tank-vs-tile overlap. Slightly tighter than {@link
+     * WorldBounds#TANK_HALF_SIZE} (which also drives bullet/tank spacing) so the hull matches
+     * its visual footprint and can actually fit through the map's one-tile-wide gaps instead
+     * of clipping a neighbouring block and jamming.
+     */
+    public static final float TANK_TILE_HALF = 12f;
 
     private CollisionDetector() {
     }
@@ -26,7 +33,7 @@ public final class CollisionDetector {
     }
 
     public static boolean tankOverlapsSolidTile(GameMap map, MapConfig config, float centerX, float centerY) {
-        float half = WorldBounds.TANK_HALF_SIZE;
+        float half = TANK_TILE_HALF;
         int minTileX = map.worldToTileX(centerX - half);
         int maxTileX = map.worldToTileX(centerX + half);
         int minTileY = map.worldToTileY(centerY - half);

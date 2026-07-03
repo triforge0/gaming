@@ -80,6 +80,7 @@ export interface InputState {
   turnRight?: boolean;
   aimUp?: boolean;
   aimDown?: boolean;
+  lockTarget?: boolean;
 }
 
 const SCHEMA_VERSION = '1.0.0';
@@ -204,6 +205,7 @@ export class GameClient {
           turnRight: input.turnRight ?? false,
           aimUp: input.aimUp ?? false,
           aimDown: input.aimDown ?? false,
+          lockTarget: input.lockTarget ?? false,
         }),
       }),
     );

@@ -2504,6 +2504,9 @@ export namespace com {
 
                     /** InputCommand aimDown */
                     aimDown?: (boolean|null);
+
+                    /** InputCommand lockTarget */
+                    lockTarget?: (boolean|null);
                 }
 
                 /** Represents an InputCommand. */
@@ -2547,6 +2550,9 @@ export namespace com {
 
                     /** InputCommand aimDown. */
                     public aimDown: boolean;
+
+                    /** InputCommand lockTarget. */
+                    public lockTarget: boolean;
 
                     /**
                      * Creates a new InputCommand instance using the specified properties.

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   GameEventType,
   IGameEvent,
@@ -43,6 +43,21 @@ const TEAM_COLOR: Record<number, string> = {
   [Team.TEAM_BLUE]: '#4d9dff',
 };
 
+const MAX_NAME_LENGTH = 24;
+
+function resolvePlayerName(bridge: GameBridge, playerId: number): string {
+  if (playerId <= 0) return 'Unknown';
+  for (const entity of bridge.world.entities.values()) {
+    if (entity.player && toNum(entity.player.playerId) === playerId) {
+      return entity.player.name?.trim() || 'Pilot';
+    }
+  }
+  const lobbyPlayer = bridge.snapshotUi().lobby?.players?.find(
+    (p) => toNum(p.playerId) === playerId,
+  );
+  return lobbyPlayer?.displayName?.trim() || `Pilot #${playerId}`;
+}
+
 export function GameUi({ bridge, ui }: { bridge: GameBridge; ui: UiState }) {
   const inLobby = ui.phase === MatchPhase.LOBBY;
   const inMatch = ui.phase === MatchPhase.PLAYING || ui.phase === MatchPhase.COUNTDOWN;
@@ -74,9 +89,11 @@ function LobbyPanel({ bridge, ui }: { bridge: GameBridge; ui: UiState }) {
         <p className="ta-panel-eyebrow">Waiting room</p>
         <h2 className="ta-panel-title">{roomName}</h2>
         <p className="ta-panel-sub">
-          {players.length} pilot{players.length === 1 ? '' : 's'} · pick a team and ready up
+          {players.length} pilot{players.length === 1 ? '' : 's'} · set your callsign, pick a team and ready up
         </p>
       </header>
+
+      <RenameControls bridge={bridge} self={self} />
 
       <ul className="ta-player-list">
         {players.length === 0 && (
@@ -153,6 +170,57 @@ function LobbyPanel({ bridge, ui }: { bridge: GameBridge; ui: UiState }) {
           </button>
         )}
       </div>
+    </div>
+  );
+}
+
+function RenameControls({
+  bridge,
+  self,
+}: {
+  bridge: GameBridge;
+  self: ILobbyPlayer | undefined;
+}) {
+  const [draft, setDraft] = useState(self?.displayName ?? 'Pilot');
+
+  useEffect(() => {
+    if (self?.displayName) {
+      setDraft(self.displayName);
+    }
+  }, [self?.displayName]);
+
+  const applyName = () => {
+    const trimmed = draft.trim();
+    if (!trimmed || trimmed.length > MAX_NAME_LENGTH) return;
+    bridge.client.setName(trimmed);
+  };
+
+  return (
+    <div className="ta-rename">
+      <label className="ta-field-label">
+        Callsign
+        <div className="ta-rename-row">
+          <input
+            className="ta-input"
+            value={draft}
+            maxLength={MAX_NAME_LENGTH}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') applyName();
+            }}
+            placeholder="Pilot"
+            autoComplete="off"
+          />
+          <button
+            type="button"
+            className="ta-btn ta-btn--ghost"
+            onClick={applyName}
+            disabled={!draft.trim()}
+          >
+            Set name
+          </button>
+        </div>
+      </label>
     </div>
   );
 }
@@ -237,10 +305,12 @@ function KillFeed({ events, bridge }: { events: IGameEvent[]; bridge: GameBridge
       {deaths.map((e, i) => {
         const victim = toNum(e.playerId);
         const killer = toNum(e.killerPlayerId);
+        const victimName = resolvePlayerName(bridge, victim);
+        const killerName = killer > 0 ? resolvePlayerName(bridge, killer) : null;
         const mine = killer === selfId || victim === selfId;
         return (
           <div key={`${victim}-${i}`} className={`ta-killfeed-entry${mine ? ' ta-killfeed-entry--mine' : ''}`}>
-            {killer > 0 ? `Pilot #${killer}` : '☠'} eliminated #{victim}
+            {killerName ? `${killerName} eliminated ${victimName}` : `☠ ${victimName} was eliminated`}
           </div>
         );
       })}
@@ -254,6 +324,7 @@ function ControlsHint() {
       <span><span className="ta-kbd">↑↓</span> move</span>
       <span><span className="ta-kbd">←→</span> turn</span>
       <span><span className="ta-kbd">Q</span><span className="ta-kbd">E</span> aim</span>
+      <span><span className="ta-kbd">F</span> lock</span>
       <span><span className="ta-kbd">Space</span> fire</span>
     </div>
   );
