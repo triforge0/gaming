@@ -12,6 +12,7 @@ import {
   InputState,
   ITreasureQuestMessage,
   MatchPhase,
+  ChatOverlay,
   TileType,
   toNum,
 } from '@triforge/shared-ui';
@@ -213,7 +214,8 @@ export default class GameScene extends Phaser.Scene {
     if (
       this.phase !== MatchPhase.PLAYING ||
       this.quizOverlay.isOpen() ||
-      this.duelOverlay.isOpen()
+      this.duelOverlay.isOpen() ||
+      ChatOverlay.isInputFocused()
     ) {
       return;
     }
@@ -234,6 +236,7 @@ export default class GameScene extends Phaser.Scene {
       this.duelOverlay.isOpen() ||
       this.awaitingQuizResult ||
       this.awaitingDuelResult ||
+      ChatOverlay.isInputFocused() ||
       !Phaser.Input.Keyboard.JustDown(this.interactKey)
     ) {
       return;

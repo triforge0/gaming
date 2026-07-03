@@ -12,4 +12,11 @@ public interface RoomSessionAccess {
     void unregister(long playerId);
 
     boolean isConnected(long playerId);
+
+    default void setDisplayName(long playerId, String name) {
+    }
+
+    default String displayNameOf(long playerId) {
+        return "Player-" + playerId;
+    }
 }

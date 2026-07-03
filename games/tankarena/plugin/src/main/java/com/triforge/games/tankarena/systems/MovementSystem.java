@@ -26,8 +26,10 @@ import com.triforge.protocol.proto.Direction;
  */
 public final class MovementSystem implements System {
     private static final float FIXED_DELTA_SECONDS = 1f / GameLoop.TPS;
-    private static final float TURN_RATE = (float) Math.toRadians(180.0); // rad/sec
-    private static final float PITCH_RATE = (float) Math.toRadians(90.0);  // rad/sec
+    /** Hull yaw — ~90°/s (was 180°/s; full turn in ~4 s). */
+    private static final float TURN_RATE = (float) Math.toRadians(90.0);
+    /** Turret pitch — ~45°/s (was 90°/s). */
+    private static final float PITCH_RATE = (float) Math.toRadians(45.0);
 
     private final GameMap map;
 

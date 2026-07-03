@@ -1,4 +1,4 @@
-import { InputState, MatchPhase } from '@triforge/shared-ui';
+import { InputState, MatchPhase, ChatOverlay } from '@triforge/shared-ui';
 import { GameBridge } from '../net/GameBridge';
 
 const SEND_HZ = 60;
@@ -62,6 +62,9 @@ export class InputController {
   };
 
   private onKeyDown = (e: KeyboardEvent): void => {
+    if (ChatOverlay.isInputFocused()) {
+      return;
+    }
     if (RELEVANT.has(e.code)) {
       e.preventDefault();
       this.pressed.add(e.code);
@@ -69,6 +72,9 @@ export class InputController {
   };
 
   private onKeyUp = (e: KeyboardEvent): void => {
+    if (ChatOverlay.isInputFocused()) {
+      return;
+    }
     this.pressed.delete(e.code);
   };
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { MatchPhase } from '@triforge/shared-ui';
+import { ChatOverlay, MatchPhase } from '@triforge/shared-ui';
 import { GameBridge } from './net/GameBridge';
 import { SceneRoot } from './render/SceneRoot';
 import { InputController } from './input/InputController';
@@ -88,6 +88,11 @@ function GameView({ bridge }: { bridge: GameBridge }) {
       input.stop();
       scene.dispose();
     };
+  }, [bridge]);
+
+  useEffect(() => {
+    const overlay = new ChatOverlay(bridge.client, document.body);
+    return () => overlay.destroy();
   }, [bridge]);
 
   useEffect(() => {

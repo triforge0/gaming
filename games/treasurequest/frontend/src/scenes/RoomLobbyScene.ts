@@ -4,6 +4,7 @@ import {
   ILobbyPlayer,
   IRoomLobbySnapshot,
   MatchPhase,
+  ChatOverlay,
   toNum,
 } from '@triforge/shared-ui';
 
@@ -24,6 +25,7 @@ export default class RoomLobbyScene extends Phaser.Scene {
   private readyButton?: HTMLButtonElement;
   private startButton?: HTMLButtonElement;
   private lobby?: IRoomLobbySnapshot;
+  private chatOverlay?: ChatOverlay;
 
   constructor() {
     super({ key: 'RoomLobbyScene' });
@@ -59,6 +61,13 @@ export default class RoomLobbyScene extends Phaser.Scene {
       );
     this.registry.set('client', this.client);
     this.registry.set('connection', this.connection);
+
+    if (!this.registry.get('chatOverlay')) {
+      this.chatOverlay = new ChatOverlay(this.client, document.body);
+      this.registry.set('chatOverlay', this.chatOverlay);
+    } else {
+      this.chatOverlay = this.registry.get('chatOverlay') as ChatOverlay | undefined;
+    }
 
     this.client.handlers = {
       onConnected: () => this.syncStatusForPhase(this.lobby?.phase ?? MatchPhase.LOBBY),
@@ -115,6 +124,15 @@ export default class RoomLobbyScene extends Phaser.Scene {
   shutdown(): void {
     this.panel?.remove();
     this.panel = undefined;
+  }
+
+  /** Tear down room-scoped UI when returning to the LAN picker. */
+  static destroyRoomUi(registry: Phaser.Data.DataManager): void {
+    const overlay = registry.get('chatOverlay') as ChatOverlay | undefined;
+    overlay?.destroy();
+    registry.remove('chatOverlay');
+    registry.remove('client');
+    registry.remove('connected');
   }
 
   private toGame(): void {

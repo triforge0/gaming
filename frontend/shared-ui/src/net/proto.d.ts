@@ -186,6 +186,12 @@ export namespace com {
 
                     /** GameMessage lobbyCommandRejected */
                     lobbyCommandRejected?: (com.triforge.protocol.proto.ILobbyCommandRejected|null);
+
+                    /** GameMessage chatCommand */
+                    chatCommand?: (com.triforge.protocol.proto.IChatCommand|null);
+
+                    /** GameMessage chatMessage */
+                    chatMessage?: (com.triforge.protocol.proto.IChatMessage|null);
                 }
 
                 /** Represents a GameMessage. */
@@ -236,8 +242,14 @@ export namespace com {
                     /** GameMessage lobbyCommandRejected. */
                     public lobbyCommandRejected?: (com.triforge.protocol.proto.ILobbyCommandRejected|null);
 
+                    /** GameMessage chatCommand. */
+                    public chatCommand?: (com.triforge.protocol.proto.IChatCommand|null);
+
+                    /** GameMessage chatMessage. */
+                    public chatMessage?: (com.triforge.protocol.proto.IChatMessage|null);
+
                     /** GameMessage content. */
-                    public content?: ("joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected");
+                    public content?: ("joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage");
 
                     /**
                      * Creates a new GameMessage instance using the specified properties.
@@ -311,6 +323,218 @@ export namespace com {
 
                     /**
                      * Gets the default type url for GameMessage
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a ChatCommand. */
+                interface IChatCommand {
+
+                    /** ChatCommand text */
+                    text?: (string|null);
+                }
+
+                /** Represents a ChatCommand. */
+                class ChatCommand implements IChatCommand {
+
+                    /**
+                     * Constructs a new ChatCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IChatCommand);
+
+                    /** ChatCommand text. */
+                    public text: string;
+
+                    /**
+                     * Creates a new ChatCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ChatCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IChatCommand): com.triforge.protocol.proto.ChatCommand;
+
+                    /**
+                     * Encodes the specified ChatCommand message. Does not implicitly {@link com.triforge.protocol.proto.ChatCommand.verify|verify} messages.
+                     * @param message ChatCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IChatCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified ChatCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.ChatCommand.verify|verify} messages.
+                     * @param message ChatCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IChatCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ChatCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns ChatCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.ChatCommand;
+
+                    /**
+                     * Decodes a ChatCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns ChatCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.ChatCommand;
+
+                    /**
+                     * Verifies a ChatCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a ChatCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns ChatCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.ChatCommand;
+
+                    /**
+                     * Creates a plain object from a ChatCommand message. Also converts values to other types if specified.
+                     * @param message ChatCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.ChatCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this ChatCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for ChatCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a ChatMessage. */
+                interface IChatMessage {
+
+                    /** ChatMessage senderPlayerId */
+                    senderPlayerId?: (number|Long|null);
+
+                    /** ChatMessage senderName */
+                    senderName?: (string|null);
+
+                    /** ChatMessage text */
+                    text?: (string|null);
+
+                    /** ChatMessage tick */
+                    tick?: (number|Long|null);
+                }
+
+                /** Represents a ChatMessage. */
+                class ChatMessage implements IChatMessage {
+
+                    /**
+                     * Constructs a new ChatMessage.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IChatMessage);
+
+                    /** ChatMessage senderPlayerId. */
+                    public senderPlayerId: (number|Long);
+
+                    /** ChatMessage senderName. */
+                    public senderName: string;
+
+                    /** ChatMessage text. */
+                    public text: string;
+
+                    /** ChatMessage tick. */
+                    public tick: (number|Long);
+
+                    /**
+                     * Creates a new ChatMessage instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ChatMessage instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IChatMessage): com.triforge.protocol.proto.ChatMessage;
+
+                    /**
+                     * Encodes the specified ChatMessage message. Does not implicitly {@link com.triforge.protocol.proto.ChatMessage.verify|verify} messages.
+                     * @param message ChatMessage message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified ChatMessage message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.ChatMessage.verify|verify} messages.
+                     * @param message ChatMessage message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ChatMessage message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns ChatMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.ChatMessage;
+
+                    /**
+                     * Decodes a ChatMessage message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns ChatMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.ChatMessage;
+
+                    /**
+                     * Verifies a ChatMessage message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a ChatMessage message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns ChatMessage
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.ChatMessage;
+
+                    /**
+                     * Creates a plain object from a ChatMessage message. Also converts values to other types if specified.
+                     * @param message ChatMessage
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.ChatMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this ChatMessage to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for ChatMessage
                      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                      * @returns The default type url
                      */

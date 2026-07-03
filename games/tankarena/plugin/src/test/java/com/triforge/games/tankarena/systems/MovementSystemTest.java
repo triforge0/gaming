@@ -101,8 +101,8 @@ public final class MovementSystemTest {
 
         OrientationComponent orientation = componentManager.get(tank, OrientationComponent.class);
         PositionComponent position = componentManager.get(tank, PositionComponent.class);
-        // 180°/s * (1/60)s = 3° turned right → yaw slightly positive (toward +Y/DOWN).
-        assertEquals(Math.toRadians(3.0), orientation.yaw(), 1e-4);
+        // 90°/s * (1/60)s = 1.5° turned right → yaw slightly positive (toward +Y/DOWN).
+        assertEquals(Math.toRadians(1.5), orientation.yaw(), 1e-4);
         // Moved forward along the new yaw: mostly +X, a touch +Y.
         assertTrue(position.x() > 400f);
         assertTrue(position.y() > 300f);

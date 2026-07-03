@@ -42,19 +42,31 @@ message ChatMessage {
 
 `GameMessage.oneof content` gains:
 ```
-ChatCommand chatCommand = 13;
-ChatMessage chatMessage = 14;
+ChatCommand chatCommand = 14;
+ChatMessage chatMessage = 15;
 ```
-(Field numbers 13/14 are the next free tags after `tq = 12`.)
+(Tags 1–13 are already in use — the last occupied is `LobbyCommandRejected
+lobbyCommandRejected = 13`, so 14/15 are the next free tags.)
 
 ### State ownership & authority rules
 - **Sender identity is authoritative and server-stamped.** The client sends only `text`.
   The server resolves `senderPlayerId` from the channel attribute (`PLAYER_ID_KEY`) and
   `senderName` from the session layer. Client-supplied names are never trusted.
-- **Display name source:** `RoomSessionManager` gains a `playerId → displayName` map,
-  populated at join time and updated when a player runs `SetNameAction`. This keeps chat
-  independent of any game plugin (no coupling to lobby snapshot internals). Fallback name
-  `"Player <id>"` if unknown.
+- **Display name source:** names are currently **plugin-owned**. `GameRoom.handleJoinRequest`
+  forwards the *raw* requested name straight to `game.handleJoinRequest`; the plugin
+  (`TankArenaGame`) does the trimming/validation/fallback and holds the authoritative name in
+  its `matchController` / `LobbyPlayer.displayName()`. Renames arrive as
+  `LobbyCommand{SetName}` and are applied *inside the plugin*
+  (`case SETNAME -> matchController.setDisplayName(...)`) — there is no application-layer
+  `SetNameAction`. To keep chat plugin-independent **without duplicating (and drifting from)
+  the plugin's resolution logic**, add a small seam on the interface the plugin already uses
+  for sessions: `RoomSessionAccess` gains `setDisplayName(playerId, name)` +
+  `displayNameOf(id)`. The plugin calls `host().sessions().setDisplayName(...)` right after
+  its existing `host().sessions().register(...)` at join, and again in its `SETNAME` handler.
+  `RoomSessionManager` (the impl) records those into a `playerId → displayName` map. Fallback name **`"Player-<id>"`
+  (hyphen — matching the plugin's existing `"Player-" + playerId` fallback in
+  `TankArenaGame`)** if unknown, so chat and the lobby never show two different names for the
+  same player.
 - **Sanitization is server-side.** Trim, reject blank, cap length (e.g. 200 chars,
   truncate rather than drop), and enforce a simple per-player rate limit (e.g. ≤ 5 msg /
   2 s) — dropped silently. Clients are dumb; they never format authoritative content.
@@ -77,7 +89,10 @@ routes: `chatService.handle(playerId, text)`. Collaborators, all in `server-runt
 ### Broadcast surface — reuse the existing generic method, do NOT add per-type methods
 `RoomBroadcastAccess` **already** exposes `void broadcast(GameMessage)`. `RoomChatService`
 builds `GameMessage{chatMessage}` and calls that. **No `broadcastChat` / `broadcastNotice` /
-`broadcastAnnouncement` added** — the interface stays flat as new interaction types arrive.
+`broadcastAnnouncement` added.** (The interface already carries ~9 per-type
+`broadcast*` methods — `broadcastLobbySnapshot`, `broadcastGameEvent`, etc. — so it is not
+flat today; the point is simply that chat adds **zero** new ones and rides the generic path,
+so new interaction types don't keep widening it.)
 
 ### Message flow (mirrors existing lobby-command path)
 1. Client `GameClient.sendChat(text)` → `GameMessage{chatCommand}` over WS.
@@ -123,12 +138,12 @@ Add `ChatCommand` and `ChatMessage` to `proto/envelope.proto` and wire both into
 
 #### Acceptance Criteria
 - [ ] `ChatCommand{text}` and `ChatMessage{senderPlayerId, senderName, text, tick}` exist.
-- [ ] `GameMessage.content` includes `chatCommand = 13` and `chatMessage = 14`.
+- [ ] `GameMessage.content` includes `chatCommand = 14` and `chatMessage = 15`.
 - [ ] `mvn -pl protocol install` regenerates Java classes successfully.
 - [ ] `npm run proto` in `frontend/shared-ui` regenerates `proto.js`/`proto.d.ts` with the
       new messages.
 
-> **Contract-locking note:** only the **oneof tags 13/14** are permanent-on-the-wire and
+> **Contract-locking note:** only the **oneof tags 14/15** are permanent-on-the-wire and
 > must not change later. Adding scalar fields *inside* `ChatMessage` afterwards (e.g.
 > `messageId = 5`, `serverUnixMillis = 6`) is **non-breaking** in proto3 — that is why the
 > Phase-2 fields are safely deferred without wire debt. `tick` stays for now as a coarse
@@ -156,25 +171,33 @@ Add `ChatCommand` and `ChatMessage` to `proto/envelope.proto` and wire both into
 
 #### Description
 Track authoritative display names per player in `RoomSessionManager` so chat can stamp a
-trusted `senderName` without depending on any game plugin.
+trusted `senderName` without duplicating the plugin's name-resolution logic. Names are
+plugin-owned today (see Architecture › Display name source): the plugin resolves them and
+must **report** the resolved name to the application layer through a new
+`RoomSessionAccess.setDisplayName(playerId, name)` method (the plugin already talks to
+`host().sessions()`), rather than the app layer re-deriving them.
 
 #### Acceptance Criteria
-- [ ] `RoomSessionManager` stores `playerId → displayName` and exposes `displayNameOf(id)`
-      with a `"Player <id>"` fallback.
-- [ ] Name is recorded at join (from the resolved join name) and updated on `SetNameAction`.
+- [ ] `RoomSessionAccess` gains `setDisplayName(long playerId, String name)` and
+      `displayNameOf(long playerId)`.
+- [ ] `TankArenaGame` calls `host().sessions().setDisplayName(...)` at join (with the
+      resolved `displayName`) and in its `SETNAME` handler (with the new name).
+- [ ] `RoomSessionManager` stores `playerId → displayName`, `displayNameOf(id)` returns a
+      `"Player-<id>"` fallback (matching the plugin's existing fallback).
 - [ ] Name entry removed on `unregister`.
 
 #### Verification
-- [ ] Unit test: register → `displayNameOf` returns name; after rename returns new name;
-      after unregister returns fallback.
+- [ ] Unit test: `setDisplayName` → `displayNameOf` returns name; a second `setDisplayName`
+      (rename) returns the new name; after unregister returns the `"Player-<id>"` fallback.
 - [ ] `mvn -pl server/server-runtime test` passes.
 
 #### Dependencies
 - Task 1 (uses no proto, but keeps ordering simple; can start in parallel)
 
 #### Files
-- `server/server-runtime/src/main/java/com/triforge/server/application/room/RoomSessionManager.java`
-- `server/server-runtime/src/main/java/com/triforge/server/application/room/GameRoom.java` (hook join/rename)
+- `engine/engine-api/src/main/java/com/triforge/engine/room/RoomSessionAccess.java` (new methods)
+- `server/server-runtime/src/main/java/com/triforge/server/application/room/RoomSessionManager.java` (impl)
+- `games/tankarena/plugin/src/main/java/com/triforge/games/tankarena/TankArenaGame.java` (report name at join + SETNAME)
 - `server/server-runtime/src/test/java/.../RoomSessionManagerTest.java` (new)
 
 #### Scope
@@ -196,10 +219,17 @@ broadcast out.
       → truncates to 200 chars → resolves name from `RoomSessionManager` → `history.append`
       → builds `GameMessage{chatMessage}` → `broadcaster.broadcast(msg)`.
 - [ ] `RoomChatService.announce(String text)` emits a system line (`senderPlayerId = 0`).
+- [ ] `ChatMessage.tick` is stamped from the current loop tick. The service does not read the
+      tick out of band — `GameRoom` supplies it (mirroring how other broadcasters take `tick`
+      as a param, e.g. `broadcastFullSnapshot(game, tick)`), e.g. via a `LongSupplier`
+      injected at construction.
 - [ ] `ChatRateLimiter.allow(long playerId)` enforces ≤ 5 msg / 2 s; over-limit dropped.
 - [ ] `ChatHistory` interface + `NoOpChatHistory` default wired into the service (no persist).
 - [ ] `GameRoom.handleChatCommand(playerId, text)` is a one-line delegate to `chatService`.
 - [ ] `GameRoom` calls `chatService.announce(...)` on player join, leave, and match start.
+      The join announcement fires **after** the display name is registered via
+      `sessions().setDisplayName(...)` (Task 2), so the join line resolves the real name and
+      not the `"Player-<id>"` fallback.
 - [ ] `CommandDispatcher` handles `CHATCOMMAND`, requiring non-null `PLAYER_ID_KEY`,
       enqueuing onto the room loop.
 - [ ] Works regardless of match phase (no phase gate).
@@ -235,7 +265,7 @@ broadcast out.
 - [ ] `mvn clean test` passes for all backend modules.
 - [ ] Backend chat pipe verified end-to-end by test (send → broadcast → receive).
 - [ ] No `games.*` imports leaked into `GameRoom`; chat logic lives in `RoomChatService`.
-- [ ] Oneof tags 13/14 locked; Phase-2 scalar fields remain safely addable (non-breaking).
+- [ ] Oneof tags 14/15 locked; Phase-2 scalar fields remain safely addable (non-breaking).
 
 ---
 
@@ -274,8 +304,9 @@ rewrite of snapshot/lobby handlers). Re-export the new proto types.
 
 #### Description
 A minimal, framework-agnostic chat widget in `shared-ui`: a scrollable message list + a
-text input with send-on-Enter, wired to a `GameClient`. Rendered as a DOM overlay so it
-works over both Phaser games without engine-specific code.
+text input with send-on-Enter, wired to a `GameClient`. Rendered as a plain DOM overlay
+(vanilla, no React/Phaser dependency) so it drops onto **both** host frameworks —
+Tank Arena (React + Three.js) and TreasureQuest (Phaser) — without engine-specific code.
 
 #### Acceptance Criteria
 - [ ] `ChatOverlay` mounts to a container, subscribes via `client.onChat(...)` and stores
@@ -283,7 +314,9 @@ works over both Phaser games without engine-specific code.
       and sends on Enter via `client.sendChat`.
 - [ ] Trims input, ignores empty sends, caps rendered history (e.g. last 100 lines).
 - [ ] System messages (`senderPlayerId === 0`) render distinctly.
-- [ ] Does not steal game keyboard input while typing (input focus isolation).
+- [ ] Does not steal game keyboard input while typing (focus isolation) — for TreasureQuest
+      this means not feeding Phaser's keyboard plugin; for Tank Arena, not driving the
+      Three.js input handlers. Verify in both.
 
 #### Verification
 - [ ] `cd frontend/shared-ui && npm run build` succeeds.
@@ -304,11 +337,14 @@ works over both Phaser games without engine-specific code.
 ### Task 6: Mount chat in game frontends (integration slice)
 
 #### Description
-Mount `ChatOverlay` in **both** the Tank Arena and TreasureQuest frontends, in both lobby
-and match/play scenes, using the existing shared `GameClient` instance.
+Mount `ChatOverlay` in **both** the Tank Arena and TreasureQuest frontends, visible during
+both the lobby and the in-match views, using the existing shared `GameClient` instance.
+Mounting differs per host: in Tank Arena (React) mount once at a top-level component so it
+survives view changes; in TreasureQuest (Phaser) attach the overlay to the game container
+independent of the active scene.
 
 #### Acceptance Criteria
-- [ ] Chat visible + functional in the lobby scene and the match scene, in **both** games.
+- [ ] Chat visible + functional during the lobby and the in-match view, in **both** games.
 - [ ] Uses the registry-shared `GameClient` (no second WS connection).
 - [ ] Overlay's `client.onChat(...)` subscription is independent of scene handler swaps and
       is unsubscribed on teardown.
@@ -322,8 +358,8 @@ and match/play scenes, using the existing shared `GameClient` instance.
 - Task 5
 
 #### Files
-- `games/tankarena/frontend/src/**` (lobby + match scene mount points)
-- `games/treasurequest/frontend/src/**` (if in scope)
+- `games/tankarena/frontend/src/**` (React top-level mount, above lobby/match views)
+- `games/treasurequest/frontend/src/**` (Phaser game-container mount, scene-independent)
 
 #### Scope
 - M
@@ -349,10 +385,11 @@ and match/play scenes, using the existing shared `GameClient` instance.
 - **No history for late joiners:** intentional; the `ChatHistory`/`NoOpChatHistory` seam
   ships now so a `RingBufferHistory` + `JoinResponse` replay drops in later with no service
   changes.
-- **Proto tag churn:** only oneof tags 13/14 are permanent; must not change. Adding scalar
+- **Proto tag churn:** only oneof tags 14/15 are permanent; must not change. Adding scalar
   fields inside `ChatMessage` later is non-breaking (Phase 2). Locked in Task 1.
-- **Keyboard capture:** Phaser input vs. HTML input focus can conflict; overlay must
-  release/capture keys correctly (Task 5).
+- **Keyboard capture:** the two hosts capture input differently — TreasureQuest via Phaser's
+  keyboard plugin, Tank Arena via Three.js/React input handlers. The HTML input overlay must
+  release/capture keys correctly against **both** (Task 5).
 
 ## Phase 2 (deferred — safe to add later, no wire debt)
 

@@ -315,6 +315,7 @@ public final class TreasureQuestGame implements Game {
 
         lobby.addPlayer(playerId, displayName, isHost);
         host().sessions().register(playerId, channel);
+        host().sessions().setDisplayName(playerId, displayName);
 
         RoomLobbySnapshot snapshot = toLobbySnapshot(host());
         JoinResponse response = host().broadcaster()
@@ -322,6 +323,7 @@ public final class TreasureQuestGame implements Game {
                 .build();
         host().broadcaster().sendJoinResponse(channel, response);
         host().broadcaster().broadcastLobbySnapshot(host(), this);
+        host().notifyPlayerJoined(playerId);
 
         logger.info("Player '{}' joined TreasureQuest room '{}' as playerId={} (host={})",
                 displayName, host().roomId(), playerId, isHost);
@@ -362,6 +364,10 @@ public final class TreasureQuestGame implements Game {
         };
 
         if (applied) {
+            if (command.getActionCase() == LobbyCommand.ActionCase.SETNAME) {
+                lobby.player(playerId)
+                        .ifPresent(player -> host().sessions().setDisplayName(playerId, player.displayName()));
+            }
             host().broadcaster().broadcastLobbySnapshot(host(), this);
             if (lobby.canStartMatch(matchPhase.phase()) && lobby.playerCount() >= 2 && lobby.allReady()) {
                 beginCountdown();
@@ -480,6 +486,7 @@ public final class TreasureQuestGame implements Game {
         host().broadcaster().broadcastGameEvent(lifecycleEvent(GameEventType.MATCH_STARTED));
         host().broadcaster().broadcastMatchPhaseUpdate(matchPhase, this);
         host().broadcaster().broadcastFullSnapshot(this, host().currentTick());
+        host().notifyMatchStarted();
         deltaService.syncBaseline(this);
         refreshLeaderboardIfChanged();
         logger.info("TreasureQuest match started in room '{}' ({} players)",

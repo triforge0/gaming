@@ -12,4 +12,12 @@ public interface RoomHost {
     RoomSessionAccess sessions();
 
     RoomBroadcastAccess broadcaster();
+
+    /** Called by the game plugin after join once the display name is registered. */
+    default void notifyPlayerJoined(long playerId) {
+    }
+
+    /** Called by the game plugin when an in-room match begins. */
+    default void notifyMatchStarted() {
+    }
 }

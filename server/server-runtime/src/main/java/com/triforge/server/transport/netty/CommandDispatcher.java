@@ -2,6 +2,7 @@ package com.triforge.server.transport.netty;
 
 import com.triforge.server.application.room.GameRoom;
 import com.triforge.server.application.room.RoomRegistry;
+import com.triforge.protocol.proto.ChatCommand;
 import com.triforge.protocol.proto.GameMessage;
 import com.triforge.protocol.proto.InputCommand;
 import com.triforge.protocol.proto.JoinRequest;
@@ -77,6 +78,16 @@ public final class CommandDispatcher extends SimpleChannelInboundHandler<Message
                     return;
                 }
                 room.enqueueCommand(() -> room.queueTreasureQuestMessage(tqPlayerId, gameMsg.getTq()));
+                break;
+
+            case CHATCOMMAND:
+                Long chatPlayerId = ctx.channel().attr(GameRoom.PLAYER_ID_KEY).get();
+                if (chatPlayerId == null) {
+                    logger.warn("Received chat command from channel without playerId in room '{}'", roomId);
+                    return;
+                }
+                ChatCommand chatCommand = gameMsg.getChatCommand();
+                room.enqueueCommand(() -> room.handleChatCommand(chatPlayerId, chatCommand.getText()));
                 break;
 
             default:

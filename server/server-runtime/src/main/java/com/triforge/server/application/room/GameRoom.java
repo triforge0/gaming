@@ -15,6 +15,7 @@ import com.triforge.protocol.proto.LobbyCommand;
 import com.triforge.engine.room.RoomBroadcastAccess;
 import com.triforge.engine.room.RoomHost;
 import com.triforge.engine.room.RoomSessionAccess;
+import com.triforge.server.application.room.chat.RoomChatService;
 import com.triforge.engine.sync.DeltaService;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
@@ -47,6 +48,7 @@ public final class GameRoom implements AutoCloseable, RoomHost {
     private final RoomSessionManager sessionManager;
     private final Game game;
     private final RoomBroadcaster broadcaster;
+    private final RoomChatService chatService;
 
     public static Builder builder(String roomId) {
         return new Builder(roomId);
@@ -95,6 +97,7 @@ public final class GameRoom implements AutoCloseable, RoomHost {
                 this::currentTick,
                 game
         );
+        this.chatService = new RoomChatService(broadcaster, sessionManager, this::currentTick);
     }
 
     public static final class Builder {
@@ -275,7 +278,23 @@ public final class GameRoom implements AutoCloseable, RoomHost {
     }
 
     public void handleLeaveRequest(long playerId) {
+        String name = sessionManager.displayNameOf(playerId);
         game.handleLeaveRequest(playerId);
+        chatService.announce(name + " left the room");
+    }
+
+    @Override
+    public void notifyPlayerJoined(long playerId) {
+        chatService.announce(sessionManager.displayNameOf(playerId) + " joined the room");
+    }
+
+    @Override
+    public void notifyMatchStarted() {
+        chatService.announce("Match started");
+    }
+
+    public void handleChatCommand(long playerId, String text) {
+        chatService.handle(playerId, text);
     }
 
     public void handleLobbyCommand(long playerId, LobbyCommand command) {

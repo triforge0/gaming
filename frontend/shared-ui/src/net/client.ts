@@ -23,6 +23,8 @@ export const DuelSubmit = proto.DuelSubmit;
 export const EncounterState = proto.EncounterState;
 export const ItemType = proto.ItemType;
 export const ItemUse = proto.ItemUse;
+export const ChatCommand = proto.ChatCommand;
+export const ChatMessage = proto.ChatMessage;
 
 export type IEntity = com.triforge.protocol.proto.IEntityProto;
 export type IOrientation = com.triforge.protocol.proto.IOrientationComponentProto;
@@ -60,6 +62,8 @@ export type TeamValue = com.triforge.protocol.proto.Team;
 export type SpawnRegionValue = com.triforge.protocol.proto.SpawnRegion;
 export type LobbyRejectReasonValue = com.triforge.protocol.proto.LobbyRejectReason;
 export type ILobbyCommandRejected = com.triforge.protocol.proto.ILobbyCommandRejected;
+export type IChatCommand = com.triforge.protocol.proto.IChatCommand;
+export type IChatMessage = com.triforge.protocol.proto.IChatMessage;
 
 export interface InputState {
   // Legacy 2D 4-way input (Phaser client).
@@ -144,6 +148,8 @@ export class GameClient {
   lastLeaderboard: ILeaderboard | null = null;
   lastInventory: IInventoryItemProto[] = [];
 
+  private chatListeners = new Set<(msg: IChatMessage) => void>();
+
   /** TPS used for quiz countdown estimates (matches server GameLoop). */
   readonly serverTps = 60;
 
@@ -157,6 +163,15 @@ export class GameClient {
   }
 
   connect(): void {
+    if (this.ws) {
+      const state = this.ws.readyState;
+      if (state === WebSocket.OPEN || state === WebSocket.CONNECTING) {
+        return;
+      }
+      this.ws.close();
+      this.ws = undefined;
+    }
+
     const ws = new WebSocket(wsUrl(this.connection));
     ws.binaryType = 'arraybuffer';
     ws.onopen = () => {
@@ -216,6 +231,18 @@ export class GameClient {
 
   startMatch(): void {
     this.sendLobby(LobbyCommand.create({ startMatch: {} }));
+  }
+
+  sendChat(text: string): void {
+    this.send(GameMessage.create({ chatCommand: ChatCommand.create({ text }) }));
+  }
+
+  /** Multi-listener chat subscription; survives scene handler swaps. */
+  onChat(fn: (msg: IChatMessage) => void): () => void {
+    this.chatListeners.add(fn);
+    return () => {
+      this.chatListeners.delete(fn);
+    };
   }
 
   sendInteract(checkpointId = ''): void {
@@ -283,6 +310,7 @@ export class GameClient {
   close(): void {
     this.ws?.close();
     this.ws = undefined;
+    this.chatListeners.clear();
   }
 
   private sendLobby(command: com.triforge.protocol.proto.ILobbyCommand): void {
@@ -366,6 +394,10 @@ export class GameClient {
         this.lastInventory = gameMessage.tq.inventoryUpdate.items;
       }
       this.handlers.onTreasureQuestMessage?.(gameMessage.tq);
+    } else if (gameMessage.chatMessage) {
+      for (const listener of this.chatListeners) {
+        listener(gameMessage.chatMessage);
+      }
     }
   }
 

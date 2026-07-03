@@ -34,7 +34,22 @@ message GameMessage {
     MapSnapshot mapSnapshot = 11;
     TreasureQuestMessage tq = 12;
     LobbyCommandRejected lobbyCommandRejected = 13;
+    ChatCommand chatCommand = 14;
+    ChatMessage chatMessage = 15;
   }
+}
+
+// client → server: a chat message the player wants to send
+message ChatCommand {
+  string text = 1;
+}
+
+// server → all clients in room: an authoritative, stamped chat line
+message ChatMessage {
+  uint64 senderPlayerId = 1;  // 0 = system/server message
+  string senderName = 2;
+  string text = 3;
+  uint64 tick = 4;
 }
 
 message JoinRequest {

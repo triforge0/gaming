@@ -15,9 +15,10 @@ import {
   yawErrorDeg,
 } from '../debug/moveDebug';
 
-const CAM_DISTANCE = 120;
-const CAM_HEIGHT = 85;
-const CAM_LERP = 0.08;
+const CAM_DISTANCE = 200;
+const CAM_HEIGHT = 115;
+const CAM_LERP = 0.05;
+const CAM_FOV = 68;
 
 /**
  * Owns the Three.js scene and the requestAnimationFrame loop. Every frame it reconciles the
@@ -55,7 +56,7 @@ export class SceneRoot {
     this.scene.background = new THREE.Color(0x0d1018);
     this.scene.fog = new THREE.Fog(0x0d1018, 350, 1500);
 
-    this.camera = new THREE.PerspectiveCamera(60, 1, 1, 4000);
+    this.camera = new THREE.PerspectiveCamera(CAM_FOV, 1, 1, 4000);
     this.camera.position.set(0, 300, 300);
 
     const ambient = new THREE.AmbientLight(0xb8c4e0, 0.45);

@@ -269,6 +269,7 @@ public final class TankArenaGame implements Game {
             matchController.setHostPlayerId(playerId);
         }
         host().sessions().register(playerId, channel);
+        host().sessions().setDisplayName(playerId, displayName);
         JoinResponse response = host().broadcaster().joinResponseBuilder(
                 playerId,
                 this,
@@ -276,6 +277,7 @@ public final class TankArenaGame implements Game {
         ).build();
         host().broadcaster().sendJoinResponse(channel, response);
         host().broadcaster().broadcastLobbySnapshot(host(), this);
+        host().notifyPlayerJoined(playerId);
         logger.info("Player '{}' joined lobby of room '{}' as playerId={} (host={})",
                 displayName, host().roomId(), playerId, isHost);
     }
@@ -316,6 +318,9 @@ public final class TankArenaGame implements Game {
         };
 
         if (outcome.applied()) {
+            if (command.getActionCase() == LobbyCommand.ActionCase.SETNAME) {
+                host().sessions().setDisplayName(playerId, matchController.player(playerId).displayName());
+            }
             if (command.getActionCase() == LobbyCommand.ActionCase.SETTEAMSETUP
                     || command.getActionCase() == LobbyCommand.ActionCase.SETSPAWN) {
                 applyConfiguredHeadquarters();
@@ -375,6 +380,7 @@ public final class TankArenaGame implements Game {
         host().broadcaster().broadcastGameEvent(matchLifecycleEvent(GameEventType.MATCH_STARTED));
         host().broadcaster().broadcastMatchPhaseUpdate(matchController, this);
         host().broadcaster().broadcastFullSnapshot(this, host().currentTick());
+        host().notifyMatchStarted();
         deltaService.syncBaseline(this);
         logger.info("Match started in room '{}' ({} players)", host().roomId(), matchController.playerCount());
     }

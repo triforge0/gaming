@@ -8,6 +8,7 @@ import {
   isHostOffline,
   SelectedRoom,
 } from '@triforge/shared-ui';
+import RoomLobbyScene from './RoomLobbyScene';
 
 const QUEST_PLUGIN_ID = 'treasurequest';
 const QUEST_ONLY = location.pathname.includes('/games/treasurequest');
@@ -40,6 +41,8 @@ export default class LobbyScene extends Phaser.Scene {
   }
 
   create(): void {
+    RoomLobbyScene.destroyRoomUi(this.registry);
+
     this.add
       .text(400, 40, 'Treasure Quest — LAN Lobby', {
         fontSize: '28px',

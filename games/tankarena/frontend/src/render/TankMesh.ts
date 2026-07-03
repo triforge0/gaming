@@ -2,12 +2,12 @@ import * as THREE from 'three';
 import { yawToThreeRotationY } from './coords';
 
 /** Match {@link MovementSystem} TURN_RATE / PITCH_RATE on the server. */
-const TURN_RATE_RAD_S = Math.PI;
-const PITCH_RATE_RAD_S = Math.PI / 2;
+const TURN_RATE_RAD_S = Math.PI / 2;
+const PITCH_RATE_RAD_S = Math.PI / 4;
 const POS_INTERP_MS = 80;
 const ROT_INTERP_MS = 28;
-const ROT_INTERP_TURN_MS = 28;
-const ROT_INTERP_IDLE_MS = 16;
+const ROT_INTERP_TURN_MS = 42;
+const ROT_INTERP_IDLE_MS = 20;
 const SERVER_TICK_SEC = 1 / 60;
 const MIN_PITCH = (-20 * Math.PI) / 180;
 const MAX_PITCH = (60 * Math.PI) / 180;

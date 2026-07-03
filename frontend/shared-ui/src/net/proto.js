@@ -501,6 +501,8 @@ export const com = $root.com = (() => {
                      * @property {com.triforge.protocol.proto.IMapSnapshot|null} [mapSnapshot] GameMessage mapSnapshot
                      * @property {com.triforge.protocol.proto.ITreasureQuestMessage|null} [tq] GameMessage tq
                      * @property {com.triforge.protocol.proto.ILobbyCommandRejected|null} [lobbyCommandRejected] GameMessage lobbyCommandRejected
+                     * @property {com.triforge.protocol.proto.IChatCommand|null} [chatCommand] GameMessage chatCommand
+                     * @property {com.triforge.protocol.proto.IChatMessage|null} [chatMessage] GameMessage chatMessage
                      */
 
                     /**
@@ -622,17 +624,33 @@ export const com = $root.com = (() => {
                      */
                     GameMessage.prototype.lobbyCommandRejected = null;
 
+                    /**
+                     * GameMessage chatCommand.
+                     * @member {com.triforge.protocol.proto.IChatCommand|null|undefined} chatCommand
+                     * @memberof com.triforge.protocol.proto.GameMessage
+                     * @instance
+                     */
+                    GameMessage.prototype.chatCommand = null;
+
+                    /**
+                     * GameMessage chatMessage.
+                     * @member {com.triforge.protocol.proto.IChatMessage|null|undefined} chatMessage
+                     * @memberof com.triforge.protocol.proto.GameMessage
+                     * @instance
+                     */
+                    GameMessage.prototype.chatMessage = null;
+
                     // OneOf field names bound to virtual getters and setters
                     let $oneOfFields;
 
                     /**
                      * GameMessage content.
-                     * @member {"joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|undefined} content
+                     * @member {"joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|undefined} content
                      * @memberof com.triforge.protocol.proto.GameMessage
                      * @instance
                      */
                     Object.defineProperty(GameMessage.prototype, "content", {
-                        get: $util.oneOfGetter($oneOfFields = ["joinRequest", "joinResponse", "fullSnapshot", "deltaSnapshot", "inputCommand", "gameEvent", "lobbyCommand", "roomLobbySnapshot", "matchPhaseUpdate", "matchResult", "mapSnapshot", "tq", "lobbyCommandRejected"]),
+                        get: $util.oneOfGetter($oneOfFields = ["joinRequest", "joinResponse", "fullSnapshot", "deltaSnapshot", "inputCommand", "gameEvent", "lobbyCommand", "roomLobbySnapshot", "matchPhaseUpdate", "matchResult", "mapSnapshot", "tq", "lobbyCommandRejected", "chatCommand", "chatMessage"]),
                         set: $util.oneOfSetter($oneOfFields)
                     });
 
@@ -690,6 +708,10 @@ export const com = $root.com = (() => {
                             $root.com.triforge.protocol.proto.TreasureQuestMessage.encode(message.tq, writer.uint32(/* id 12, wireType 2 =*/98).fork(), q + 1).ldelim();
                         if (message.lobbyCommandRejected != null && Object.hasOwnProperty.call(message, "lobbyCommandRejected"))
                             $root.com.triforge.protocol.proto.LobbyCommandRejected.encode(message.lobbyCommandRejected, writer.uint32(/* id 13, wireType 2 =*/106).fork(), q + 1).ldelim();
+                        if (message.chatCommand != null && Object.hasOwnProperty.call(message, "chatCommand"))
+                            $root.com.triforge.protocol.proto.ChatCommand.encode(message.chatCommand, writer.uint32(/* id 14, wireType 2 =*/114).fork(), q + 1).ldelim();
+                        if (message.chatMessage != null && Object.hasOwnProperty.call(message, "chatMessage"))
+                            $root.com.triforge.protocol.proto.ChatMessage.encode(message.chatMessage, writer.uint32(/* id 15, wireType 2 =*/122).fork(), q + 1).ldelim();
                         return writer;
                     };
 
@@ -780,6 +802,14 @@ export const com = $root.com = (() => {
                                 }
                             case 13: {
                                     message.lobbyCommandRejected = $root.com.triforge.protocol.proto.LobbyCommandRejected.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 14: {
+                                    message.chatCommand = $root.com.triforge.protocol.proto.ChatCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 15: {
+                                    message.chatMessage = $root.com.triforge.protocol.proto.ChatMessage.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 }
                             default:
@@ -950,6 +980,26 @@ export const com = $root.com = (() => {
                                     return "lobbyCommandRejected." + error;
                             }
                         }
+                        if (message.chatCommand != null && Object.hasOwnProperty.call(message, "chatCommand")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.ChatCommand.verify(message.chatCommand, long + 1);
+                                if (error)
+                                    return "chatCommand." + error;
+                            }
+                        }
+                        if (message.chatMessage != null && Object.hasOwnProperty.call(message, "chatMessage")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.ChatMessage.verify(message.chatMessage, long + 1);
+                                if (error)
+                                    return "chatMessage." + error;
+                            }
+                        }
                         return null;
                     };
 
@@ -1036,6 +1086,16 @@ export const com = $root.com = (() => {
                                 throw TypeError(".com.triforge.protocol.proto.GameMessage.lobbyCommandRejected: object expected");
                             message.lobbyCommandRejected = $root.com.triforge.protocol.proto.LobbyCommandRejected.fromObject(object.lobbyCommandRejected, long + 1);
                         }
+                        if (object.chatCommand != null) {
+                            if (!$util.isObject(object.chatCommand))
+                                throw TypeError(".com.triforge.protocol.proto.GameMessage.chatCommand: object expected");
+                            message.chatCommand = $root.com.triforge.protocol.proto.ChatCommand.fromObject(object.chatCommand, long + 1);
+                        }
+                        if (object.chatMessage != null) {
+                            if (!$util.isObject(object.chatMessage))
+                                throw TypeError(".com.triforge.protocol.proto.GameMessage.chatMessage: object expected");
+                            message.chatMessage = $root.com.triforge.protocol.proto.ChatMessage.fromObject(object.chatMessage, long + 1);
+                        }
                         return message;
                     };
 
@@ -1121,6 +1181,16 @@ export const com = $root.com = (() => {
                             if (options.oneofs)
                                 object.content = "lobbyCommandRejected";
                         }
+                        if (message.chatCommand != null && Object.hasOwnProperty.call(message, "chatCommand")) {
+                            object.chatCommand = $root.com.triforge.protocol.proto.ChatCommand.toObject(message.chatCommand, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "chatCommand";
+                        }
+                        if (message.chatMessage != null && Object.hasOwnProperty.call(message, "chatMessage")) {
+                            object.chatMessage = $root.com.triforge.protocol.proto.ChatMessage.toObject(message.chatMessage, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "chatMessage";
+                        }
                         return object;
                     };
 
@@ -1151,6 +1221,562 @@ export const com = $root.com = (() => {
                     };
 
                     return GameMessage;
+                })();
+
+                proto.ChatCommand = (function() {
+
+                    /**
+                     * Properties of a ChatCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IChatCommand
+                     * @property {string|null} [text] ChatCommand text
+                     */
+
+                    /**
+                     * Constructs a new ChatCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a ChatCommand.
+                     * @implements IChatCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IChatCommand=} [properties] Properties to set
+                     */
+                    function ChatCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * ChatCommand text.
+                     * @member {string} text
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @instance
+                     */
+                    ChatCommand.prototype.text = "";
+
+                    /**
+                     * Creates a new ChatCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IChatCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.ChatCommand} ChatCommand instance
+                     */
+                    ChatCommand.create = function create(properties) {
+                        return new ChatCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified ChatCommand message. Does not implicitly {@link com.triforge.protocol.proto.ChatCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IChatCommand} message ChatCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ChatCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.text);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified ChatCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.ChatCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IChatCommand} message ChatCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ChatCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a ChatCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.ChatCommand} ChatCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ChatCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.ChatCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.text = reader.string();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a ChatCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.ChatCommand} ChatCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ChatCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a ChatCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    ChatCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            if (!$util.isString(message.text))
+                                return "text: string expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a ChatCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.ChatCommand} ChatCommand
+                     */
+                    ChatCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.ChatCommand)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.ChatCommand: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.ChatCommand();
+                        if (object.text != null)
+                            message.text = String(object.text);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a ChatCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.ChatCommand} message ChatCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    ChatCommand.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults)
+                            object.text = "";
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            object.text = message.text;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this ChatCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    ChatCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for ChatCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.ChatCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    ChatCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.ChatCommand";
+                    };
+
+                    return ChatCommand;
+                })();
+
+                proto.ChatMessage = (function() {
+
+                    /**
+                     * Properties of a ChatMessage.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IChatMessage
+                     * @property {number|Long|null} [senderPlayerId] ChatMessage senderPlayerId
+                     * @property {string|null} [senderName] ChatMessage senderName
+                     * @property {string|null} [text] ChatMessage text
+                     * @property {number|Long|null} [tick] ChatMessage tick
+                     */
+
+                    /**
+                     * Constructs a new ChatMessage.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a ChatMessage.
+                     * @implements IChatMessage
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IChatMessage=} [properties] Properties to set
+                     */
+                    function ChatMessage(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * ChatMessage senderPlayerId.
+                     * @member {number|Long} senderPlayerId
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @instance
+                     */
+                    ChatMessage.prototype.senderPlayerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * ChatMessage senderName.
+                     * @member {string} senderName
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @instance
+                     */
+                    ChatMessage.prototype.senderName = "";
+
+                    /**
+                     * ChatMessage text.
+                     * @member {string} text
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @instance
+                     */
+                    ChatMessage.prototype.text = "";
+
+                    /**
+                     * ChatMessage tick.
+                     * @member {number|Long} tick
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @instance
+                     */
+                    ChatMessage.prototype.tick = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * Creates a new ChatMessage instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.IChatMessage=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.ChatMessage} ChatMessage instance
+                     */
+                    ChatMessage.create = function create(properties) {
+                        return new ChatMessage(properties);
+                    };
+
+                    /**
+                     * Encodes the specified ChatMessage message. Does not implicitly {@link com.triforge.protocol.proto.ChatMessage.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.IChatMessage} message ChatMessage message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ChatMessage.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.senderPlayerId != null && Object.hasOwnProperty.call(message, "senderPlayerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.senderPlayerId);
+                        if (message.senderName != null && Object.hasOwnProperty.call(message, "senderName"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.senderName);
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.text);
+                        if (message.tick != null && Object.hasOwnProperty.call(message, "tick"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.tick);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified ChatMessage message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.ChatMessage.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.IChatMessage} message ChatMessage message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    ChatMessage.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a ChatMessage message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.ChatMessage} ChatMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ChatMessage.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.ChatMessage();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.senderPlayerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.senderName = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    message.text = reader.string();
+                                    break;
+                                }
+                            case 4: {
+                                    message.tick = reader.uint64();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a ChatMessage message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.ChatMessage} ChatMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    ChatMessage.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a ChatMessage message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    ChatMessage.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.senderPlayerId != null && Object.hasOwnProperty.call(message, "senderPlayerId"))
+                            if (!$util.isInteger(message.senderPlayerId) && !(message.senderPlayerId && $util.isInteger(message.senderPlayerId.low) && $util.isInteger(message.senderPlayerId.high)))
+                                return "senderPlayerId: integer|Long expected";
+                        if (message.senderName != null && Object.hasOwnProperty.call(message, "senderName"))
+                            if (!$util.isString(message.senderName))
+                                return "senderName: string expected";
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            if (!$util.isString(message.text))
+                                return "text: string expected";
+                        if (message.tick != null && Object.hasOwnProperty.call(message, "tick"))
+                            if (!$util.isInteger(message.tick) && !(message.tick && $util.isInteger(message.tick.low) && $util.isInteger(message.tick.high)))
+                                return "tick: integer|Long expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a ChatMessage message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.ChatMessage} ChatMessage
+                     */
+                    ChatMessage.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.ChatMessage)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.ChatMessage: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.ChatMessage();
+                        if (object.senderPlayerId != null)
+                            if ($util.Long)
+                                message.senderPlayerId = $util.Long.fromValue(object.senderPlayerId, true);
+                            else if (typeof object.senderPlayerId === "string")
+                                message.senderPlayerId = parseInt(object.senderPlayerId, 10);
+                            else if (typeof object.senderPlayerId === "number")
+                                message.senderPlayerId = object.senderPlayerId;
+                            else if (typeof object.senderPlayerId === "object")
+                                message.senderPlayerId = new $util.LongBits(object.senderPlayerId.low >>> 0, object.senderPlayerId.high >>> 0).toNumber(true);
+                        if (object.senderName != null)
+                            message.senderName = String(object.senderName);
+                        if (object.text != null)
+                            message.text = String(object.text);
+                        if (object.tick != null)
+                            if ($util.Long)
+                                message.tick = $util.Long.fromValue(object.tick, true);
+                            else if (typeof object.tick === "string")
+                                message.tick = parseInt(object.tick, 10);
+                            else if (typeof object.tick === "number")
+                                message.tick = object.tick;
+                            else if (typeof object.tick === "object")
+                                message.tick = new $util.LongBits(object.tick.low >>> 0, object.tick.high >>> 0).toNumber(true);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a ChatMessage message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.ChatMessage} message ChatMessage
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    ChatMessage.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.senderPlayerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.senderPlayerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.senderName = "";
+                            object.text = "";
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.tick = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.tick = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                        }
+                        if (message.senderPlayerId != null && Object.hasOwnProperty.call(message, "senderPlayerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.senderPlayerId = typeof message.senderPlayerId === "number" ? BigInt(message.senderPlayerId) : $util.Long.fromBits(message.senderPlayerId.low >>> 0, message.senderPlayerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.senderPlayerId === "number")
+                                object.senderPlayerId = options.longs === String ? String(message.senderPlayerId) : message.senderPlayerId;
+                            else
+                                object.senderPlayerId = options.longs === String ? $util.Long.prototype.toString.call(message.senderPlayerId) : options.longs === Number ? new $util.LongBits(message.senderPlayerId.low >>> 0, message.senderPlayerId.high >>> 0).toNumber(true) : message.senderPlayerId;
+                        if (message.senderName != null && Object.hasOwnProperty.call(message, "senderName"))
+                            object.senderName = message.senderName;
+                        if (message.text != null && Object.hasOwnProperty.call(message, "text"))
+                            object.text = message.text;
+                        if (message.tick != null && Object.hasOwnProperty.call(message, "tick"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.tick = typeof message.tick === "number" ? BigInt(message.tick) : $util.Long.fromBits(message.tick.low >>> 0, message.tick.high >>> 0, true).toBigInt();
+                            else if (typeof message.tick === "number")
+                                object.tick = options.longs === String ? String(message.tick) : message.tick;
+                            else
+                                object.tick = options.longs === String ? $util.Long.prototype.toString.call(message.tick) : options.longs === Number ? new $util.LongBits(message.tick.low >>> 0, message.tick.high >>> 0).toNumber(true) : message.tick;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this ChatMessage to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    ChatMessage.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for ChatMessage
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.ChatMessage
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    ChatMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.ChatMessage";
+                    };
+
+                    return ChatMessage;
                 })();
 
                 proto.JoinRequest = (function() {

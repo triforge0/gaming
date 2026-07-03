@@ -20,6 +20,7 @@ public final class RoomSessionManager implements RoomSessionAccess {
 
     private final String roomId;
     private final Map<Long, Channel> clientSessions = new ConcurrentHashMap<>();
+    private final Map<Long, String> displayNames = new ConcurrentHashMap<>();
     private final AtomicLong playerIds = new AtomicLong(1L);
 
     public RoomSessionManager(String roomId) {
@@ -39,6 +40,7 @@ public final class RoomSessionManager implements RoomSessionAccess {
 
     public void unregister(long playerId) {
         Channel channel = clientSessions.remove(playerId);
+        displayNames.remove(playerId);
         if (channel != null) {
             channel.attr(PLAYER_ID_KEY).set(null);
             channel.attr(ROOM_ID_KEY).set(null);
@@ -47,6 +49,19 @@ public final class RoomSessionManager implements RoomSessionAccess {
 
     public boolean isConnected(long playerId) {
         return clientSessions.containsKey(playerId);
+    }
+
+    @Override
+    public void setDisplayName(long playerId, String name) {
+        if (name == null || name.isBlank()) {
+            return;
+        }
+        displayNames.put(playerId, name.trim());
+    }
+
+    @Override
+    public String displayNameOf(long playerId) {
+        return displayNames.getOrDefault(playerId, "Player-" + playerId);
     }
 
     public boolean hasClients() {
