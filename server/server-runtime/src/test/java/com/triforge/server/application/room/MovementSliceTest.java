@@ -102,7 +102,9 @@ public final class MovementSliceTest {
         for (int i = 0; i < 200; i++) {
             Boolean matched = pollOnRoomThread(room, () -> {
                 PositionComponent position = room.componentManager().get(tank, PositionComponent.class);
-                return position != null && Math.abs(position.y() - expectedY) < 0.001f;
+                // Held input keeps the tank moving every tick, so an exact-position check
+                // races the loop: assert it moved at least one tick's distance instead.
+                return position != null && position.y() <= expectedY + 0.001f;
             });
             if (Boolean.TRUE.equals(matched)) {
                 return true;
@@ -116,7 +118,8 @@ public final class MovementSliceTest {
         for (int i = 0; i < 200; i++) {
             Boolean matched = pollOnRoomThread(room, () -> {
                 PositionComponent position = room.componentManager().get(tank, PositionComponent.class);
-                return position != null && Math.abs(position.x() - expectedX) < 0.001f;
+                // See waitUntilY: assert at-least-one-tick movement, not an exact position.
+                return position != null && position.x() <= expectedX + 0.001f;
             });
             if (Boolean.TRUE.equals(matched)) {
                 return true;
