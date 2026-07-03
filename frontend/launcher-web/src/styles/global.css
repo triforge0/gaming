@@ -1,0 +1,27 @@
+:root {
+  color-scheme: dark;
+  --bg-0: #0a0c14;
+  --bg-1: #10131f;
+  --bg-2: #131a2e;
+  --line: #2a3150;
+  --line-soft: #1c2138;
+  --text: #eef0ff;
+  --text-dim: #9aa3c7;
+  --text-faint: #6b7394;
+  --brand-a: #6c8cff;
+  --brand-b: #9f6cff;
+  --live: #7ee29b;
+  --accent: var(--brand-a);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg-0);
+}
