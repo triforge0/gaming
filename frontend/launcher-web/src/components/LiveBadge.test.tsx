@@ -16,5 +16,6 @@ describe('LiveBadge', () => {
   it('hiển thị số phòng và người chơi', () => {
     render(<LiveBadge stats={{ rooms: 2, players: 5 }} />);
     expect(screen.getByText('● 2 phòng · 5 người')).toBeInTheDocument();
+    expect(screen.getByText('● 2 phòng · 5 người')).toHaveClass('live-badge');
   });
 });
