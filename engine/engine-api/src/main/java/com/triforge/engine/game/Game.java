@@ -9,6 +9,7 @@ import com.triforge.engine.match.MatchPhase;
 import com.triforge.engine.snapshot.EntitySnapshotWriter;
 import com.triforge.engine.sync.DeltaService;
 import com.triforge.engine.sync.InterestFilter;
+import com.triforge.protocol.proto.GameMessage;
 import com.triforge.protocol.proto.InputCommand;
 import com.triforge.protocol.proto.LobbyCommand;
 import com.triforge.protocol.proto.MapSnapshot;
@@ -35,6 +36,14 @@ public interface Game extends RoomBroadcastView {
     void handleLobbyCommand(long playerId, LobbyCommand command);
 
     void queueInputCommand(long playerId, InputCommand input);
+
+    /**
+     * Plugin-specific wire traffic (game-owned {@code GameMessage} oneof arms, e.g.
+     * {@code oaq}). Runs on the room thread. Default: ignore — games without custom
+     * messages need no override.
+     */
+    default void handleGameMessage(long playerId, GameMessage message) {
+    }
 
     EntityManager entityManager();
 

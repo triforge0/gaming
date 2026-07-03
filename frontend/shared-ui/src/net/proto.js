@@ -503,6 +503,7 @@ export const com = $root.com = (() => {
                      * @property {com.triforge.protocol.proto.ILobbyCommandRejected|null} [lobbyCommandRejected] GameMessage lobbyCommandRejected
                      * @property {com.triforge.protocol.proto.IChatCommand|null} [chatCommand] GameMessage chatCommand
                      * @property {com.triforge.protocol.proto.IChatMessage|null} [chatMessage] GameMessage chatMessage
+                     * @property {com.triforge.protocol.proto.IOAnQuanMessage|null} [oaq] GameMessage oaq
                      */
 
                     /**
@@ -640,17 +641,25 @@ export const com = $root.com = (() => {
                      */
                     GameMessage.prototype.chatMessage = null;
 
+                    /**
+                     * GameMessage oaq.
+                     * @member {com.triforge.protocol.proto.IOAnQuanMessage|null|undefined} oaq
+                     * @memberof com.triforge.protocol.proto.GameMessage
+                     * @instance
+                     */
+                    GameMessage.prototype.oaq = null;
+
                     // OneOf field names bound to virtual getters and setters
                     let $oneOfFields;
 
                     /**
                      * GameMessage content.
-                     * @member {"joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|undefined} content
+                     * @member {"joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|"oaq"|undefined} content
                      * @memberof com.triforge.protocol.proto.GameMessage
                      * @instance
                      */
                     Object.defineProperty(GameMessage.prototype, "content", {
-                        get: $util.oneOfGetter($oneOfFields = ["joinRequest", "joinResponse", "fullSnapshot", "deltaSnapshot", "inputCommand", "gameEvent", "lobbyCommand", "roomLobbySnapshot", "matchPhaseUpdate", "matchResult", "mapSnapshot", "tq", "lobbyCommandRejected", "chatCommand", "chatMessage"]),
+                        get: $util.oneOfGetter($oneOfFields = ["joinRequest", "joinResponse", "fullSnapshot", "deltaSnapshot", "inputCommand", "gameEvent", "lobbyCommand", "roomLobbySnapshot", "matchPhaseUpdate", "matchResult", "mapSnapshot", "tq", "lobbyCommandRejected", "chatCommand", "chatMessage", "oaq"]),
                         set: $util.oneOfSetter($oneOfFields)
                     });
 
@@ -712,6 +721,8 @@ export const com = $root.com = (() => {
                             $root.com.triforge.protocol.proto.ChatCommand.encode(message.chatCommand, writer.uint32(/* id 14, wireType 2 =*/114).fork(), q + 1).ldelim();
                         if (message.chatMessage != null && Object.hasOwnProperty.call(message, "chatMessage"))
                             $root.com.triforge.protocol.proto.ChatMessage.encode(message.chatMessage, writer.uint32(/* id 15, wireType 2 =*/122).fork(), q + 1).ldelim();
+                        if (message.oaq != null && Object.hasOwnProperty.call(message, "oaq"))
+                            $root.com.triforge.protocol.proto.OAnQuanMessage.encode(message.oaq, writer.uint32(/* id 16, wireType 2 =*/130).fork(), q + 1).ldelim();
                         return writer;
                     };
 
@@ -810,6 +821,10 @@ export const com = $root.com = (() => {
                                 }
                             case 15: {
                                     message.chatMessage = $root.com.triforge.protocol.proto.ChatMessage.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 16: {
+                                    message.oaq = $root.com.triforge.protocol.proto.OAnQuanMessage.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 }
                             default:
@@ -1000,6 +1015,16 @@ export const com = $root.com = (() => {
                                     return "chatMessage." + error;
                             }
                         }
+                        if (message.oaq != null && Object.hasOwnProperty.call(message, "oaq")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.OAnQuanMessage.verify(message.oaq, long + 1);
+                                if (error)
+                                    return "oaq." + error;
+                            }
+                        }
                         return null;
                     };
 
@@ -1096,6 +1121,11 @@ export const com = $root.com = (() => {
                                 throw TypeError(".com.triforge.protocol.proto.GameMessage.chatMessage: object expected");
                             message.chatMessage = $root.com.triforge.protocol.proto.ChatMessage.fromObject(object.chatMessage, long + 1);
                         }
+                        if (object.oaq != null) {
+                            if (!$util.isObject(object.oaq))
+                                throw TypeError(".com.triforge.protocol.proto.GameMessage.oaq: object expected");
+                            message.oaq = $root.com.triforge.protocol.proto.OAnQuanMessage.fromObject(object.oaq, long + 1);
+                        }
                         return message;
                     };
 
@@ -1190,6 +1220,11 @@ export const com = $root.com = (() => {
                             object.chatMessage = $root.com.triforge.protocol.proto.ChatMessage.toObject(message.chatMessage, options, q + 1);
                             if (options.oneofs)
                                 object.content = "chatMessage";
+                        }
+                        if (message.oaq != null && Object.hasOwnProperty.call(message, "oaq")) {
+                            object.oaq = $root.com.triforge.protocol.proto.OAnQuanMessage.toObject(message.oaq, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "oaq";
                         }
                         return object;
                     };
@@ -19935,6 +19970,2425 @@ export const com = $root.com = (() => {
                     };
 
                     return TreasureQuestMessage;
+                })();
+
+                /**
+                 * OAQDirection enum.
+                 * @name com.triforge.protocol.proto.OAQDirection
+                 * @enum {number}
+                 * @property {number} OAQ_DIR_UNSPECIFIED=0 OAQ_DIR_UNSPECIFIED value
+                 * @property {number} OAQ_CLOCKWISE=1 OAQ_CLOCKWISE value
+                 * @property {number} OAQ_COUNTER_CLOCKWISE=2 OAQ_COUNTER_CLOCKWISE value
+                 */
+                proto.OAQDirection = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "OAQ_DIR_UNSPECIFIED"] = 0;
+                    values[valuesById[1] = "OAQ_CLOCKWISE"] = 1;
+                    values[valuesById[2] = "OAQ_COUNTER_CLOCKWISE"] = 2;
+                    return values;
+                })();
+
+                /**
+                 * OAQStepType enum.
+                 * @name com.triforge.protocol.proto.OAQStepType
+                 * @enum {number}
+                 * @property {number} OAQ_STEP_UNSPECIFIED=0 OAQ_STEP_UNSPECIFIED value
+                 * @property {number} OAQ_PICKUP=1 OAQ_PICKUP value
+                 * @property {number} OAQ_SOW=2 OAQ_SOW value
+                 * @property {number} OAQ_CAPTURE=3 OAQ_CAPTURE value
+                 * @property {number} OAQ_BORROW=4 OAQ_BORROW value
+                 * @property {number} OAQ_SWEEP=5 OAQ_SWEEP value
+                 */
+                proto.OAQStepType = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "OAQ_STEP_UNSPECIFIED"] = 0;
+                    values[valuesById[1] = "OAQ_PICKUP"] = 1;
+                    values[valuesById[2] = "OAQ_SOW"] = 2;
+                    values[valuesById[3] = "OAQ_CAPTURE"] = 3;
+                    values[valuesById[4] = "OAQ_BORROW"] = 4;
+                    values[valuesById[5] = "OAQ_SWEEP"] = 5;
+                    return values;
+                })();
+
+                proto.OAQMoveCommand = (function() {
+
+                    /**
+                     * Properties of a OAQMoveCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IOAQMoveCommand
+                     * @property {number|null} [pitIndex] OAQMoveCommand pitIndex
+                     * @property {com.triforge.protocol.proto.OAQDirection|null} [direction] OAQMoveCommand direction
+                     */
+
+                    /**
+                     * Constructs a new OAQMoveCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a OAQMoveCommand.
+                     * @implements IOAQMoveCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IOAQMoveCommand=} [properties] Properties to set
+                     */
+                    function OAQMoveCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * OAQMoveCommand pitIndex.
+                     * @member {number} pitIndex
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @instance
+                     */
+                    OAQMoveCommand.prototype.pitIndex = 0;
+
+                    /**
+                     * OAQMoveCommand direction.
+                     * @member {com.triforge.protocol.proto.OAQDirection} direction
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @instance
+                     */
+                    OAQMoveCommand.prototype.direction = 0;
+
+                    /**
+                     * Creates a new OAQMoveCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQMoveCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.OAQMoveCommand} OAQMoveCommand instance
+                     */
+                    OAQMoveCommand.create = function create(properties) {
+                        return new OAQMoveCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified OAQMoveCommand message. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQMoveCommand} message OAQMoveCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQMoveCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.pitIndex != null && Object.hasOwnProperty.call(message, "pitIndex"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.pitIndex);
+                        if (message.direction != null && Object.hasOwnProperty.call(message, "direction"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.direction);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified OAQMoveCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQMoveCommand} message OAQMoveCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQMoveCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a OAQMoveCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.OAQMoveCommand} OAQMoveCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQMoveCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.OAQMoveCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.pitIndex = reader.uint32();
+                                    break;
+                                }
+                            case 2: {
+                                    message.direction = reader.int32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a OAQMoveCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.OAQMoveCommand} OAQMoveCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQMoveCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a OAQMoveCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    OAQMoveCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.pitIndex != null && Object.hasOwnProperty.call(message, "pitIndex"))
+                            if (!$util.isInteger(message.pitIndex))
+                                return "pitIndex: integer expected";
+                        if (message.direction != null && Object.hasOwnProperty.call(message, "direction"))
+                            switch (message.direction) {
+                            default:
+                                return "direction: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                                break;
+                            }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a OAQMoveCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.OAQMoveCommand} OAQMoveCommand
+                     */
+                    OAQMoveCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.OAQMoveCommand)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.OAQMoveCommand: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.OAQMoveCommand();
+                        if (object.pitIndex != null)
+                            message.pitIndex = object.pitIndex >>> 0;
+                        switch (object.direction) {
+                        default:
+                            if (typeof object.direction === "number") {
+                                message.direction = object.direction;
+                                break;
+                            }
+                            break;
+                        case "OAQ_DIR_UNSPECIFIED":
+                        case 0:
+                            message.direction = 0;
+                            break;
+                        case "OAQ_CLOCKWISE":
+                        case 1:
+                            message.direction = 1;
+                            break;
+                        case "OAQ_COUNTER_CLOCKWISE":
+                        case 2:
+                            message.direction = 2;
+                            break;
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a OAQMoveCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.OAQMoveCommand} message OAQMoveCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    OAQMoveCommand.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.pitIndex = 0;
+                            object.direction = options.enums === String ? "OAQ_DIR_UNSPECIFIED" : 0;
+                        }
+                        if (message.pitIndex != null && Object.hasOwnProperty.call(message, "pitIndex"))
+                            object.pitIndex = message.pitIndex;
+                        if (message.direction != null && Object.hasOwnProperty.call(message, "direction"))
+                            object.direction = options.enums === String ? $root.com.triforge.protocol.proto.OAQDirection[message.direction] === undefined ? message.direction : $root.com.triforge.protocol.proto.OAQDirection[message.direction] : message.direction;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this OAQMoveCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    OAQMoveCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for OAQMoveCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.OAQMoveCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    OAQMoveCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.OAQMoveCommand";
+                    };
+
+                    return OAQMoveCommand;
+                })();
+
+                proto.OAQMoveRejected = (function() {
+
+                    /**
+                     * Properties of a OAQMoveRejected.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IOAQMoveRejected
+                     * @property {number|null} [pitIndex] OAQMoveRejected pitIndex
+                     * @property {com.triforge.protocol.proto.OAQDirection|null} [direction] OAQMoveRejected direction
+                     * @property {string|null} [reason] OAQMoveRejected reason
+                     */
+
+                    /**
+                     * Constructs a new OAQMoveRejected.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a OAQMoveRejected.
+                     * @implements IOAQMoveRejected
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IOAQMoveRejected=} [properties] Properties to set
+                     */
+                    function OAQMoveRejected(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * OAQMoveRejected pitIndex.
+                     * @member {number} pitIndex
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @instance
+                     */
+                    OAQMoveRejected.prototype.pitIndex = 0;
+
+                    /**
+                     * OAQMoveRejected direction.
+                     * @member {com.triforge.protocol.proto.OAQDirection} direction
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @instance
+                     */
+                    OAQMoveRejected.prototype.direction = 0;
+
+                    /**
+                     * OAQMoveRejected reason.
+                     * @member {string} reason
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @instance
+                     */
+                    OAQMoveRejected.prototype.reason = "";
+
+                    /**
+                     * Creates a new OAQMoveRejected instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQMoveRejected=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.OAQMoveRejected} OAQMoveRejected instance
+                     */
+                    OAQMoveRejected.create = function create(properties) {
+                        return new OAQMoveRejected(properties);
+                    };
+
+                    /**
+                     * Encodes the specified OAQMoveRejected message. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveRejected.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQMoveRejected} message OAQMoveRejected message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQMoveRejected.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.pitIndex != null && Object.hasOwnProperty.call(message, "pitIndex"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.pitIndex);
+                        if (message.direction != null && Object.hasOwnProperty.call(message, "direction"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.direction);
+                        if (message.reason != null && Object.hasOwnProperty.call(message, "reason"))
+                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.reason);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified OAQMoveRejected message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveRejected.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQMoveRejected} message OAQMoveRejected message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQMoveRejected.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a OAQMoveRejected message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.OAQMoveRejected} OAQMoveRejected
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQMoveRejected.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.OAQMoveRejected();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.pitIndex = reader.uint32();
+                                    break;
+                                }
+                            case 2: {
+                                    message.direction = reader.int32();
+                                    break;
+                                }
+                            case 3: {
+                                    message.reason = reader.string();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a OAQMoveRejected message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.OAQMoveRejected} OAQMoveRejected
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQMoveRejected.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a OAQMoveRejected message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    OAQMoveRejected.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.pitIndex != null && Object.hasOwnProperty.call(message, "pitIndex"))
+                            if (!$util.isInteger(message.pitIndex))
+                                return "pitIndex: integer expected";
+                        if (message.direction != null && Object.hasOwnProperty.call(message, "direction"))
+                            switch (message.direction) {
+                            default:
+                                return "direction: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                                break;
+                            }
+                        if (message.reason != null && Object.hasOwnProperty.call(message, "reason"))
+                            if (!$util.isString(message.reason))
+                                return "reason: string expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a OAQMoveRejected message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.OAQMoveRejected} OAQMoveRejected
+                     */
+                    OAQMoveRejected.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.OAQMoveRejected)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.OAQMoveRejected: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.OAQMoveRejected();
+                        if (object.pitIndex != null)
+                            message.pitIndex = object.pitIndex >>> 0;
+                        switch (object.direction) {
+                        default:
+                            if (typeof object.direction === "number") {
+                                message.direction = object.direction;
+                                break;
+                            }
+                            break;
+                        case "OAQ_DIR_UNSPECIFIED":
+                        case 0:
+                            message.direction = 0;
+                            break;
+                        case "OAQ_CLOCKWISE":
+                        case 1:
+                            message.direction = 1;
+                            break;
+                        case "OAQ_COUNTER_CLOCKWISE":
+                        case 2:
+                            message.direction = 2;
+                            break;
+                        }
+                        if (object.reason != null)
+                            message.reason = String(object.reason);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a OAQMoveRejected message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @static
+                     * @param {com.triforge.protocol.proto.OAQMoveRejected} message OAQMoveRejected
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    OAQMoveRejected.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.pitIndex = 0;
+                            object.direction = options.enums === String ? "OAQ_DIR_UNSPECIFIED" : 0;
+                            object.reason = "";
+                        }
+                        if (message.pitIndex != null && Object.hasOwnProperty.call(message, "pitIndex"))
+                            object.pitIndex = message.pitIndex;
+                        if (message.direction != null && Object.hasOwnProperty.call(message, "direction"))
+                            object.direction = options.enums === String ? $root.com.triforge.protocol.proto.OAQDirection[message.direction] === undefined ? message.direction : $root.com.triforge.protocol.proto.OAQDirection[message.direction] : message.direction;
+                        if (message.reason != null && Object.hasOwnProperty.call(message, "reason"))
+                            object.reason = message.reason;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this OAQMoveRejected to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    OAQMoveRejected.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for OAQMoveRejected
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.OAQMoveRejected
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    OAQMoveRejected.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.OAQMoveRejected";
+                    };
+
+                    return OAQMoveRejected;
+                })();
+
+                proto.OAQScore = (function() {
+
+                    /**
+                     * Properties of a OAQScore.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IOAQScore
+                     * @property {number|Long|null} [playerId] OAQScore playerId
+                     * @property {number|null} [seat] OAQScore seat
+                     * @property {number|null} [capturedDan] OAQScore capturedDan
+                     * @property {number|null} [capturedQuan] OAQScore capturedQuan
+                     * @property {number|null} [points] OAQScore points
+                     */
+
+                    /**
+                     * Constructs a new OAQScore.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a OAQScore.
+                     * @implements IOAQScore
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IOAQScore=} [properties] Properties to set
+                     */
+                    function OAQScore(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * OAQScore playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @instance
+                     */
+                    OAQScore.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * OAQScore seat.
+                     * @member {number} seat
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @instance
+                     */
+                    OAQScore.prototype.seat = 0;
+
+                    /**
+                     * OAQScore capturedDan.
+                     * @member {number} capturedDan
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @instance
+                     */
+                    OAQScore.prototype.capturedDan = 0;
+
+                    /**
+                     * OAQScore capturedQuan.
+                     * @member {number} capturedQuan
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @instance
+                     */
+                    OAQScore.prototype.capturedQuan = 0;
+
+                    /**
+                     * OAQScore points.
+                     * @member {number} points
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @instance
+                     */
+                    OAQScore.prototype.points = 0;
+
+                    /**
+                     * Creates a new OAQScore instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQScore=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.OAQScore} OAQScore instance
+                     */
+                    OAQScore.create = function create(properties) {
+                        return new OAQScore(properties);
+                    };
+
+                    /**
+                     * Encodes the specified OAQScore message. Does not implicitly {@link com.triforge.protocol.proto.OAQScore.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQScore} message OAQScore message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQScore.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.playerId);
+                        if (message.seat != null && Object.hasOwnProperty.call(message, "seat"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.seat);
+                        if (message.capturedDan != null && Object.hasOwnProperty.call(message, "capturedDan"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).sint32(message.capturedDan);
+                        if (message.capturedQuan != null && Object.hasOwnProperty.call(message, "capturedQuan"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.capturedQuan);
+                        if (message.points != null && Object.hasOwnProperty.call(message, "points"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).sint32(message.points);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified OAQScore message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQScore.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQScore} message OAQScore message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQScore.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a OAQScore message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.OAQScore} OAQScore
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQScore.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.OAQScore();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.seat = reader.uint32();
+                                    break;
+                                }
+                            case 3: {
+                                    message.capturedDan = reader.sint32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.capturedQuan = reader.uint32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.points = reader.sint32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a OAQScore message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.OAQScore} OAQScore
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQScore.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a OAQScore message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    OAQScore.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        if (message.seat != null && Object.hasOwnProperty.call(message, "seat"))
+                            if (!$util.isInteger(message.seat))
+                                return "seat: integer expected";
+                        if (message.capturedDan != null && Object.hasOwnProperty.call(message, "capturedDan"))
+                            if (!$util.isInteger(message.capturedDan))
+                                return "capturedDan: integer expected";
+                        if (message.capturedQuan != null && Object.hasOwnProperty.call(message, "capturedQuan"))
+                            if (!$util.isInteger(message.capturedQuan))
+                                return "capturedQuan: integer expected";
+                        if (message.points != null && Object.hasOwnProperty.call(message, "points"))
+                            if (!$util.isInteger(message.points))
+                                return "points: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a OAQScore message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.OAQScore} OAQScore
+                     */
+                    OAQScore.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.OAQScore)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.OAQScore: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.OAQScore();
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        if (object.seat != null)
+                            message.seat = object.seat >>> 0;
+                        if (object.capturedDan != null)
+                            message.capturedDan = object.capturedDan | 0;
+                        if (object.capturedQuan != null)
+                            message.capturedQuan = object.capturedQuan >>> 0;
+                        if (object.points != null)
+                            message.points = object.points | 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a OAQScore message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @static
+                     * @param {com.triforge.protocol.proto.OAQScore} message OAQScore
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    OAQScore.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.seat = 0;
+                            object.capturedDan = 0;
+                            object.capturedQuan = 0;
+                            object.points = 0;
+                        }
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        if (message.seat != null && Object.hasOwnProperty.call(message, "seat"))
+                            object.seat = message.seat;
+                        if (message.capturedDan != null && Object.hasOwnProperty.call(message, "capturedDan"))
+                            object.capturedDan = message.capturedDan;
+                        if (message.capturedQuan != null && Object.hasOwnProperty.call(message, "capturedQuan"))
+                            object.capturedQuan = message.capturedQuan;
+                        if (message.points != null && Object.hasOwnProperty.call(message, "points"))
+                            object.points = message.points;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this OAQScore to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    OAQScore.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for OAQScore
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.OAQScore
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    OAQScore.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.OAQScore";
+                    };
+
+                    return OAQScore;
+                })();
+
+                proto.OAQBoardState = (function() {
+
+                    /**
+                     * Properties of a OAQBoardState.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IOAQBoardState
+                     * @property {Array.<number>|null} [pitStones] OAQBoardState pitStones
+                     * @property {Array.<number>|null} [quanPieces] OAQBoardState quanPieces
+                     * @property {number|Long|null} [currentPlayerId] OAQBoardState currentPlayerId
+                     * @property {Array.<com.triforge.protocol.proto.IOAQScore>|null} [scores] OAQBoardState scores
+                     * @property {number|null} [turnTicksRemaining] OAQBoardState turnTicksRemaining
+                     * @property {boolean|null} [gameOver] OAQBoardState gameOver
+                     * @property {number|Long|null} [winnerPlayerId] OAQBoardState winnerPlayerId
+                     */
+
+                    /**
+                     * Constructs a new OAQBoardState.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a OAQBoardState.
+                     * @implements IOAQBoardState
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IOAQBoardState=} [properties] Properties to set
+                     */
+                    function OAQBoardState(properties) {
+                        this.pitStones = [];
+                        this.quanPieces = [];
+                        this.scores = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * OAQBoardState pitStones.
+                     * @member {Array.<number>} pitStones
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @instance
+                     */
+                    OAQBoardState.prototype.pitStones = $util.emptyArray;
+
+                    /**
+                     * OAQBoardState quanPieces.
+                     * @member {Array.<number>} quanPieces
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @instance
+                     */
+                    OAQBoardState.prototype.quanPieces = $util.emptyArray;
+
+                    /**
+                     * OAQBoardState currentPlayerId.
+                     * @member {number|Long} currentPlayerId
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @instance
+                     */
+                    OAQBoardState.prototype.currentPlayerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * OAQBoardState scores.
+                     * @member {Array.<com.triforge.protocol.proto.IOAQScore>} scores
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @instance
+                     */
+                    OAQBoardState.prototype.scores = $util.emptyArray;
+
+                    /**
+                     * OAQBoardState turnTicksRemaining.
+                     * @member {number} turnTicksRemaining
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @instance
+                     */
+                    OAQBoardState.prototype.turnTicksRemaining = 0;
+
+                    /**
+                     * OAQBoardState gameOver.
+                     * @member {boolean} gameOver
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @instance
+                     */
+                    OAQBoardState.prototype.gameOver = false;
+
+                    /**
+                     * OAQBoardState winnerPlayerId.
+                     * @member {number|Long} winnerPlayerId
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @instance
+                     */
+                    OAQBoardState.prototype.winnerPlayerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * Creates a new OAQBoardState instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQBoardState=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.OAQBoardState} OAQBoardState instance
+                     */
+                    OAQBoardState.create = function create(properties) {
+                        return new OAQBoardState(properties);
+                    };
+
+                    /**
+                     * Encodes the specified OAQBoardState message. Does not implicitly {@link com.triforge.protocol.proto.OAQBoardState.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQBoardState} message OAQBoardState message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQBoardState.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.pitStones != null && message.pitStones.length) {
+                            writer.uint32(/* id 1, wireType 2 =*/10).fork();
+                            for (let i = 0; i < message.pitStones.length; ++i)
+                                writer.uint32(message.pitStones[i]);
+                            writer.ldelim();
+                        }
+                        if (message.quanPieces != null && message.quanPieces.length) {
+                            writer.uint32(/* id 2, wireType 2 =*/18).fork();
+                            for (let i = 0; i < message.quanPieces.length; ++i)
+                                writer.uint32(message.quanPieces[i]);
+                            writer.ldelim();
+                        }
+                        if (message.currentPlayerId != null && Object.hasOwnProperty.call(message, "currentPlayerId"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.currentPlayerId);
+                        if (message.scores != null && message.scores.length)
+                            for (let i = 0; i < message.scores.length; ++i)
+                                $root.com.triforge.protocol.proto.OAQScore.encode(message.scores[i], writer.uint32(/* id 4, wireType 2 =*/34).fork(), q + 1).ldelim();
+                        if (message.turnTicksRemaining != null && Object.hasOwnProperty.call(message, "turnTicksRemaining"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.turnTicksRemaining);
+                        if (message.gameOver != null && Object.hasOwnProperty.call(message, "gameOver"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).bool(message.gameOver);
+                        if (message.winnerPlayerId != null && Object.hasOwnProperty.call(message, "winnerPlayerId"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).uint64(message.winnerPlayerId);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified OAQBoardState message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQBoardState.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQBoardState} message OAQBoardState message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQBoardState.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a OAQBoardState message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.OAQBoardState} OAQBoardState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQBoardState.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.OAQBoardState();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    if (!(message.pitStones && message.pitStones.length))
+                                        message.pitStones = [];
+                                    if ((tag & 7) === 2) {
+                                        let end2 = reader.uint32() + reader.pos;
+                                        while (reader.pos < end2)
+                                            message.pitStones.push(reader.uint32());
+                                    } else
+                                        message.pitStones.push(reader.uint32());
+                                    break;
+                                }
+                            case 2: {
+                                    if (!(message.quanPieces && message.quanPieces.length))
+                                        message.quanPieces = [];
+                                    if ((tag & 7) === 2) {
+                                        let end2 = reader.uint32() + reader.pos;
+                                        while (reader.pos < end2)
+                                            message.quanPieces.push(reader.uint32());
+                                    } else
+                                        message.quanPieces.push(reader.uint32());
+                                    break;
+                                }
+                            case 3: {
+                                    message.currentPlayerId = reader.uint64();
+                                    break;
+                                }
+                            case 4: {
+                                    if (!(message.scores && message.scores.length))
+                                        message.scores = [];
+                                    message.scores.push($root.com.triforge.protocol.proto.OAQScore.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            case 5: {
+                                    message.turnTicksRemaining = reader.uint32();
+                                    break;
+                                }
+                            case 6: {
+                                    message.gameOver = reader.bool();
+                                    break;
+                                }
+                            case 7: {
+                                    message.winnerPlayerId = reader.uint64();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a OAQBoardState message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.OAQBoardState} OAQBoardState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQBoardState.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a OAQBoardState message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    OAQBoardState.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.pitStones != null && Object.hasOwnProperty.call(message, "pitStones")) {
+                            if (!Array.isArray(message.pitStones))
+                                return "pitStones: array expected";
+                            for (let i = 0; i < message.pitStones.length; ++i)
+                                if (!$util.isInteger(message.pitStones[i]))
+                                    return "pitStones: integer[] expected";
+                        }
+                        if (message.quanPieces != null && Object.hasOwnProperty.call(message, "quanPieces")) {
+                            if (!Array.isArray(message.quanPieces))
+                                return "quanPieces: array expected";
+                            for (let i = 0; i < message.quanPieces.length; ++i)
+                                if (!$util.isInteger(message.quanPieces[i]))
+                                    return "quanPieces: integer[] expected";
+                        }
+                        if (message.currentPlayerId != null && Object.hasOwnProperty.call(message, "currentPlayerId"))
+                            if (!$util.isInteger(message.currentPlayerId) && !(message.currentPlayerId && $util.isInteger(message.currentPlayerId.low) && $util.isInteger(message.currentPlayerId.high)))
+                                return "currentPlayerId: integer|Long expected";
+                        if (message.scores != null && Object.hasOwnProperty.call(message, "scores")) {
+                            if (!Array.isArray(message.scores))
+                                return "scores: array expected";
+                            for (let i = 0; i < message.scores.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.OAQScore.verify(message.scores[i], long + 1);
+                                if (error)
+                                    return "scores." + error;
+                            }
+                        }
+                        if (message.turnTicksRemaining != null && Object.hasOwnProperty.call(message, "turnTicksRemaining"))
+                            if (!$util.isInteger(message.turnTicksRemaining))
+                                return "turnTicksRemaining: integer expected";
+                        if (message.gameOver != null && Object.hasOwnProperty.call(message, "gameOver"))
+                            if (typeof message.gameOver !== "boolean")
+                                return "gameOver: boolean expected";
+                        if (message.winnerPlayerId != null && Object.hasOwnProperty.call(message, "winnerPlayerId"))
+                            if (!$util.isInteger(message.winnerPlayerId) && !(message.winnerPlayerId && $util.isInteger(message.winnerPlayerId.low) && $util.isInteger(message.winnerPlayerId.high)))
+                                return "winnerPlayerId: integer|Long expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a OAQBoardState message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.OAQBoardState} OAQBoardState
+                     */
+                    OAQBoardState.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.OAQBoardState)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.OAQBoardState: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.OAQBoardState();
+                        if (object.pitStones) {
+                            if (!Array.isArray(object.pitStones))
+                                throw TypeError(".com.triforge.protocol.proto.OAQBoardState.pitStones: array expected");
+                            message.pitStones = [];
+                            for (let i = 0; i < object.pitStones.length; ++i)
+                                message.pitStones[i] = object.pitStones[i] >>> 0;
+                        }
+                        if (object.quanPieces) {
+                            if (!Array.isArray(object.quanPieces))
+                                throw TypeError(".com.triforge.protocol.proto.OAQBoardState.quanPieces: array expected");
+                            message.quanPieces = [];
+                            for (let i = 0; i < object.quanPieces.length; ++i)
+                                message.quanPieces[i] = object.quanPieces[i] >>> 0;
+                        }
+                        if (object.currentPlayerId != null)
+                            if ($util.Long)
+                                message.currentPlayerId = $util.Long.fromValue(object.currentPlayerId, true);
+                            else if (typeof object.currentPlayerId === "string")
+                                message.currentPlayerId = parseInt(object.currentPlayerId, 10);
+                            else if (typeof object.currentPlayerId === "number")
+                                message.currentPlayerId = object.currentPlayerId;
+                            else if (typeof object.currentPlayerId === "object")
+                                message.currentPlayerId = new $util.LongBits(object.currentPlayerId.low >>> 0, object.currentPlayerId.high >>> 0).toNumber(true);
+                        if (object.scores) {
+                            if (!Array.isArray(object.scores))
+                                throw TypeError(".com.triforge.protocol.proto.OAQBoardState.scores: array expected");
+                            message.scores = [];
+                            for (let i = 0; i < object.scores.length; ++i) {
+                                if (!$util.isObject(object.scores[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.OAQBoardState.scores: object expected");
+                                message.scores[i] = $root.com.triforge.protocol.proto.OAQScore.fromObject(object.scores[i], long + 1);
+                            }
+                        }
+                        if (object.turnTicksRemaining != null)
+                            message.turnTicksRemaining = object.turnTicksRemaining >>> 0;
+                        if (object.gameOver != null)
+                            message.gameOver = Boolean(object.gameOver);
+                        if (object.winnerPlayerId != null)
+                            if ($util.Long)
+                                message.winnerPlayerId = $util.Long.fromValue(object.winnerPlayerId, true);
+                            else if (typeof object.winnerPlayerId === "string")
+                                message.winnerPlayerId = parseInt(object.winnerPlayerId, 10);
+                            else if (typeof object.winnerPlayerId === "number")
+                                message.winnerPlayerId = object.winnerPlayerId;
+                            else if (typeof object.winnerPlayerId === "object")
+                                message.winnerPlayerId = new $util.LongBits(object.winnerPlayerId.low >>> 0, object.winnerPlayerId.high >>> 0).toNumber(true);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a OAQBoardState message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @static
+                     * @param {com.triforge.protocol.proto.OAQBoardState} message OAQBoardState
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    OAQBoardState.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults) {
+                            object.pitStones = [];
+                            object.quanPieces = [];
+                            object.scores = [];
+                        }
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.currentPlayerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.currentPlayerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.turnTicksRemaining = 0;
+                            object.gameOver = false;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.winnerPlayerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.winnerPlayerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                        }
+                        if (message.pitStones && message.pitStones.length) {
+                            object.pitStones = [];
+                            for (let j = 0; j < message.pitStones.length; ++j)
+                                object.pitStones[j] = message.pitStones[j];
+                        }
+                        if (message.quanPieces && message.quanPieces.length) {
+                            object.quanPieces = [];
+                            for (let j = 0; j < message.quanPieces.length; ++j)
+                                object.quanPieces[j] = message.quanPieces[j];
+                        }
+                        if (message.currentPlayerId != null && Object.hasOwnProperty.call(message, "currentPlayerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.currentPlayerId = typeof message.currentPlayerId === "number" ? BigInt(message.currentPlayerId) : $util.Long.fromBits(message.currentPlayerId.low >>> 0, message.currentPlayerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.currentPlayerId === "number")
+                                object.currentPlayerId = options.longs === String ? String(message.currentPlayerId) : message.currentPlayerId;
+                            else
+                                object.currentPlayerId = options.longs === String ? $util.Long.prototype.toString.call(message.currentPlayerId) : options.longs === Number ? new $util.LongBits(message.currentPlayerId.low >>> 0, message.currentPlayerId.high >>> 0).toNumber(true) : message.currentPlayerId;
+                        if (message.scores && message.scores.length) {
+                            object.scores = [];
+                            for (let j = 0; j < message.scores.length; ++j)
+                                object.scores[j] = $root.com.triforge.protocol.proto.OAQScore.toObject(message.scores[j], options, q + 1);
+                        }
+                        if (message.turnTicksRemaining != null && Object.hasOwnProperty.call(message, "turnTicksRemaining"))
+                            object.turnTicksRemaining = message.turnTicksRemaining;
+                        if (message.gameOver != null && Object.hasOwnProperty.call(message, "gameOver"))
+                            object.gameOver = message.gameOver;
+                        if (message.winnerPlayerId != null && Object.hasOwnProperty.call(message, "winnerPlayerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.winnerPlayerId = typeof message.winnerPlayerId === "number" ? BigInt(message.winnerPlayerId) : $util.Long.fromBits(message.winnerPlayerId.low >>> 0, message.winnerPlayerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.winnerPlayerId === "number")
+                                object.winnerPlayerId = options.longs === String ? String(message.winnerPlayerId) : message.winnerPlayerId;
+                            else
+                                object.winnerPlayerId = options.longs === String ? $util.Long.prototype.toString.call(message.winnerPlayerId) : options.longs === Number ? new $util.LongBits(message.winnerPlayerId.low >>> 0, message.winnerPlayerId.high >>> 0).toNumber(true) : message.winnerPlayerId;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this OAQBoardState to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    OAQBoardState.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for OAQBoardState
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.OAQBoardState
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    OAQBoardState.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.OAQBoardState";
+                    };
+
+                    return OAQBoardState;
+                })();
+
+                proto.OAQStep = (function() {
+
+                    /**
+                     * Properties of a OAQStep.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IOAQStep
+                     * @property {com.triforge.protocol.proto.OAQStepType|null} [type] OAQStep type
+                     * @property {number|null} [pitIndex] OAQStep pitIndex
+                     * @property {number|null} [stones] OAQStep stones
+                     * @property {number|null} [quanPieces] OAQStep quanPieces
+                     * @property {number|null} [toSeat] OAQStep toSeat
+                     */
+
+                    /**
+                     * Constructs a new OAQStep.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a OAQStep.
+                     * @implements IOAQStep
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IOAQStep=} [properties] Properties to set
+                     */
+                    function OAQStep(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * OAQStep type.
+                     * @member {com.triforge.protocol.proto.OAQStepType} type
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @instance
+                     */
+                    OAQStep.prototype.type = 0;
+
+                    /**
+                     * OAQStep pitIndex.
+                     * @member {number} pitIndex
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @instance
+                     */
+                    OAQStep.prototype.pitIndex = 0;
+
+                    /**
+                     * OAQStep stones.
+                     * @member {number} stones
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @instance
+                     */
+                    OAQStep.prototype.stones = 0;
+
+                    /**
+                     * OAQStep quanPieces.
+                     * @member {number} quanPieces
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @instance
+                     */
+                    OAQStep.prototype.quanPieces = 0;
+
+                    /**
+                     * OAQStep toSeat.
+                     * @member {number} toSeat
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @instance
+                     */
+                    OAQStep.prototype.toSeat = 0;
+
+                    /**
+                     * Creates a new OAQStep instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQStep=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.OAQStep} OAQStep instance
+                     */
+                    OAQStep.create = function create(properties) {
+                        return new OAQStep(properties);
+                    };
+
+                    /**
+                     * Encodes the specified OAQStep message. Does not implicitly {@link com.triforge.protocol.proto.OAQStep.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQStep} message OAQStep message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQStep.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
+                        if (message.pitIndex != null && Object.hasOwnProperty.call(message, "pitIndex"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.pitIndex);
+                        if (message.stones != null && Object.hasOwnProperty.call(message, "stones"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.stones);
+                        if (message.quanPieces != null && Object.hasOwnProperty.call(message, "quanPieces"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.quanPieces);
+                        if (message.toSeat != null && Object.hasOwnProperty.call(message, "toSeat"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.toSeat);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified OAQStep message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQStep.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQStep} message OAQStep message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQStep.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a OAQStep message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.OAQStep} OAQStep
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQStep.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.OAQStep();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.type = reader.int32();
+                                    break;
+                                }
+                            case 2: {
+                                    message.pitIndex = reader.uint32();
+                                    break;
+                                }
+                            case 3: {
+                                    message.stones = reader.uint32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.quanPieces = reader.uint32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.toSeat = reader.uint32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a OAQStep message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.OAQStep} OAQStep
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQStep.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a OAQStep message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    OAQStep.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+                            switch (message.type) {
+                            default:
+                                return "type: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                                break;
+                            }
+                        if (message.pitIndex != null && Object.hasOwnProperty.call(message, "pitIndex"))
+                            if (!$util.isInteger(message.pitIndex))
+                                return "pitIndex: integer expected";
+                        if (message.stones != null && Object.hasOwnProperty.call(message, "stones"))
+                            if (!$util.isInteger(message.stones))
+                                return "stones: integer expected";
+                        if (message.quanPieces != null && Object.hasOwnProperty.call(message, "quanPieces"))
+                            if (!$util.isInteger(message.quanPieces))
+                                return "quanPieces: integer expected";
+                        if (message.toSeat != null && Object.hasOwnProperty.call(message, "toSeat"))
+                            if (!$util.isInteger(message.toSeat))
+                                return "toSeat: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a OAQStep message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.OAQStep} OAQStep
+                     */
+                    OAQStep.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.OAQStep)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.OAQStep: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.OAQStep();
+                        switch (object.type) {
+                        default:
+                            if (typeof object.type === "number") {
+                                message.type = object.type;
+                                break;
+                            }
+                            break;
+                        case "OAQ_STEP_UNSPECIFIED":
+                        case 0:
+                            message.type = 0;
+                            break;
+                        case "OAQ_PICKUP":
+                        case 1:
+                            message.type = 1;
+                            break;
+                        case "OAQ_SOW":
+                        case 2:
+                            message.type = 2;
+                            break;
+                        case "OAQ_CAPTURE":
+                        case 3:
+                            message.type = 3;
+                            break;
+                        case "OAQ_BORROW":
+                        case 4:
+                            message.type = 4;
+                            break;
+                        case "OAQ_SWEEP":
+                        case 5:
+                            message.type = 5;
+                            break;
+                        }
+                        if (object.pitIndex != null)
+                            message.pitIndex = object.pitIndex >>> 0;
+                        if (object.stones != null)
+                            message.stones = object.stones >>> 0;
+                        if (object.quanPieces != null)
+                            message.quanPieces = object.quanPieces >>> 0;
+                        if (object.toSeat != null)
+                            message.toSeat = object.toSeat >>> 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a OAQStep message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @static
+                     * @param {com.triforge.protocol.proto.OAQStep} message OAQStep
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    OAQStep.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.type = options.enums === String ? "OAQ_STEP_UNSPECIFIED" : 0;
+                            object.pitIndex = 0;
+                            object.stones = 0;
+                            object.quanPieces = 0;
+                            object.toSeat = 0;
+                        }
+                        if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+                            object.type = options.enums === String ? $root.com.triforge.protocol.proto.OAQStepType[message.type] === undefined ? message.type : $root.com.triforge.protocol.proto.OAQStepType[message.type] : message.type;
+                        if (message.pitIndex != null && Object.hasOwnProperty.call(message, "pitIndex"))
+                            object.pitIndex = message.pitIndex;
+                        if (message.stones != null && Object.hasOwnProperty.call(message, "stones"))
+                            object.stones = message.stones;
+                        if (message.quanPieces != null && Object.hasOwnProperty.call(message, "quanPieces"))
+                            object.quanPieces = message.quanPieces;
+                        if (message.toSeat != null && Object.hasOwnProperty.call(message, "toSeat"))
+                            object.toSeat = message.toSeat;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this OAQStep to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    OAQStep.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for OAQStep
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.OAQStep
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    OAQStep.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.OAQStep";
+                    };
+
+                    return OAQStep;
+                })();
+
+                proto.OAQMoveResult = (function() {
+
+                    /**
+                     * Properties of a OAQMoveResult.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IOAQMoveResult
+                     * @property {number|Long|null} [playerId] OAQMoveResult playerId
+                     * @property {Array.<com.triforge.protocol.proto.IOAQStep>|null} [steps] OAQMoveResult steps
+                     */
+
+                    /**
+                     * Constructs a new OAQMoveResult.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a OAQMoveResult.
+                     * @implements IOAQMoveResult
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IOAQMoveResult=} [properties] Properties to set
+                     */
+                    function OAQMoveResult(properties) {
+                        this.steps = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * OAQMoveResult playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @instance
+                     */
+                    OAQMoveResult.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * OAQMoveResult steps.
+                     * @member {Array.<com.triforge.protocol.proto.IOAQStep>} steps
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @instance
+                     */
+                    OAQMoveResult.prototype.steps = $util.emptyArray;
+
+                    /**
+                     * Creates a new OAQMoveResult instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQMoveResult=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.OAQMoveResult} OAQMoveResult instance
+                     */
+                    OAQMoveResult.create = function create(properties) {
+                        return new OAQMoveResult(properties);
+                    };
+
+                    /**
+                     * Encodes the specified OAQMoveResult message. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveResult.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQMoveResult} message OAQMoveResult message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQMoveResult.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.playerId);
+                        if (message.steps != null && message.steps.length)
+                            for (let i = 0; i < message.steps.length; ++i)
+                                $root.com.triforge.protocol.proto.OAQStep.encode(message.steps[i], writer.uint32(/* id 2, wireType 2 =*/18).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified OAQMoveResult message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAQMoveResult.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAQMoveResult} message OAQMoveResult message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAQMoveResult.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a OAQMoveResult message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.OAQMoveResult} OAQMoveResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQMoveResult.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.OAQMoveResult();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    if (!(message.steps && message.steps.length))
+                                        message.steps = [];
+                                    message.steps.push($root.com.triforge.protocol.proto.OAQStep.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a OAQMoveResult message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.OAQMoveResult} OAQMoveResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAQMoveResult.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a OAQMoveResult message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    OAQMoveResult.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        if (message.steps != null && Object.hasOwnProperty.call(message, "steps")) {
+                            if (!Array.isArray(message.steps))
+                                return "steps: array expected";
+                            for (let i = 0; i < message.steps.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.OAQStep.verify(message.steps[i], long + 1);
+                                if (error)
+                                    return "steps." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a OAQMoveResult message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.OAQMoveResult} OAQMoveResult
+                     */
+                    OAQMoveResult.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.OAQMoveResult)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.OAQMoveResult: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.OAQMoveResult();
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        if (object.steps) {
+                            if (!Array.isArray(object.steps))
+                                throw TypeError(".com.triforge.protocol.proto.OAQMoveResult.steps: array expected");
+                            message.steps = [];
+                            for (let i = 0; i < object.steps.length; ++i) {
+                                if (!$util.isObject(object.steps[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.OAQMoveResult.steps: object expected");
+                                message.steps[i] = $root.com.triforge.protocol.proto.OAQStep.fromObject(object.steps[i], long + 1);
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a OAQMoveResult message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.OAQMoveResult} message OAQMoveResult
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    OAQMoveResult.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.steps = [];
+                        if (options.defaults)
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        if (message.steps && message.steps.length) {
+                            object.steps = [];
+                            for (let j = 0; j < message.steps.length; ++j)
+                                object.steps[j] = $root.com.triforge.protocol.proto.OAQStep.toObject(message.steps[j], options, q + 1);
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this OAQMoveResult to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    OAQMoveResult.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for OAQMoveResult
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.OAQMoveResult
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    OAQMoveResult.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.OAQMoveResult";
+                    };
+
+                    return OAQMoveResult;
+                })();
+
+                proto.OAnQuanMessage = (function() {
+
+                    /**
+                     * Properties of a OAnQuanMessage.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IOAnQuanMessage
+                     * @property {com.triforge.protocol.proto.IOAQMoveCommand|null} [move] OAnQuanMessage move
+                     * @property {com.triforge.protocol.proto.IOAQBoardState|null} [board] OAnQuanMessage board
+                     * @property {com.triforge.protocol.proto.IOAQMoveResult|null} [moveResult] OAnQuanMessage moveResult
+                     * @property {com.triforge.protocol.proto.IOAQMoveRejected|null} [moveRejected] OAnQuanMessage moveRejected
+                     */
+
+                    /**
+                     * Constructs a new OAnQuanMessage.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a OAnQuanMessage.
+                     * @implements IOAnQuanMessage
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IOAnQuanMessage=} [properties] Properties to set
+                     */
+                    function OAnQuanMessage(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * OAnQuanMessage move.
+                     * @member {com.triforge.protocol.proto.IOAQMoveCommand|null|undefined} move
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @instance
+                     */
+                    OAnQuanMessage.prototype.move = null;
+
+                    /**
+                     * OAnQuanMessage board.
+                     * @member {com.triforge.protocol.proto.IOAQBoardState|null|undefined} board
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @instance
+                     */
+                    OAnQuanMessage.prototype.board = null;
+
+                    /**
+                     * OAnQuanMessage moveResult.
+                     * @member {com.triforge.protocol.proto.IOAQMoveResult|null|undefined} moveResult
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @instance
+                     */
+                    OAnQuanMessage.prototype.moveResult = null;
+
+                    /**
+                     * OAnQuanMessage moveRejected.
+                     * @member {com.triforge.protocol.proto.IOAQMoveRejected|null|undefined} moveRejected
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @instance
+                     */
+                    OAnQuanMessage.prototype.moveRejected = null;
+
+                    // OneOf field names bound to virtual getters and setters
+                    let $oneOfFields;
+
+                    /**
+                     * OAnQuanMessage content.
+                     * @member {"move"|"board"|"moveResult"|"moveRejected"|undefined} content
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @instance
+                     */
+                    Object.defineProperty(OAnQuanMessage.prototype, "content", {
+                        get: $util.oneOfGetter($oneOfFields = ["move", "board", "moveResult", "moveRejected"]),
+                        set: $util.oneOfSetter($oneOfFields)
+                    });
+
+                    /**
+                     * Creates a new OAnQuanMessage instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAnQuanMessage=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.OAnQuanMessage} OAnQuanMessage instance
+                     */
+                    OAnQuanMessage.create = function create(properties) {
+                        return new OAnQuanMessage(properties);
+                    };
+
+                    /**
+                     * Encodes the specified OAnQuanMessage message. Does not implicitly {@link com.triforge.protocol.proto.OAnQuanMessage.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAnQuanMessage} message OAnQuanMessage message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAnQuanMessage.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.move != null && Object.hasOwnProperty.call(message, "move"))
+                            $root.com.triforge.protocol.proto.OAQMoveCommand.encode(message.move, writer.uint32(/* id 1, wireType 2 =*/10).fork(), q + 1).ldelim();
+                        if (message.board != null && Object.hasOwnProperty.call(message, "board"))
+                            $root.com.triforge.protocol.proto.OAQBoardState.encode(message.board, writer.uint32(/* id 2, wireType 2 =*/18).fork(), q + 1).ldelim();
+                        if (message.moveResult != null && Object.hasOwnProperty.call(message, "moveResult"))
+                            $root.com.triforge.protocol.proto.OAQMoveResult.encode(message.moveResult, writer.uint32(/* id 3, wireType 2 =*/26).fork(), q + 1).ldelim();
+                        if (message.moveRejected != null && Object.hasOwnProperty.call(message, "moveRejected"))
+                            $root.com.triforge.protocol.proto.OAQMoveRejected.encode(message.moveRejected, writer.uint32(/* id 4, wireType 2 =*/34).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified OAnQuanMessage message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.OAnQuanMessage.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.IOAnQuanMessage} message OAnQuanMessage message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    OAnQuanMessage.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a OAnQuanMessage message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.OAnQuanMessage} OAnQuanMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAnQuanMessage.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.OAnQuanMessage();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.move = $root.com.triforge.protocol.proto.OAQMoveCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 2: {
+                                    message.board = $root.com.triforge.protocol.proto.OAQBoardState.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 3: {
+                                    message.moveResult = $root.com.triforge.protocol.proto.OAQMoveResult.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 4: {
+                                    message.moveRejected = $root.com.triforge.protocol.proto.OAQMoveRejected.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a OAnQuanMessage message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.OAnQuanMessage} OAnQuanMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    OAnQuanMessage.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a OAnQuanMessage message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    OAnQuanMessage.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        let properties = {};
+                        if (message.move != null && Object.hasOwnProperty.call(message, "move")) {
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.OAQMoveCommand.verify(message.move, long + 1);
+                                if (error)
+                                    return "move." + error;
+                            }
+                        }
+                        if (message.board != null && Object.hasOwnProperty.call(message, "board")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.OAQBoardState.verify(message.board, long + 1);
+                                if (error)
+                                    return "board." + error;
+                            }
+                        }
+                        if (message.moveResult != null && Object.hasOwnProperty.call(message, "moveResult")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.OAQMoveResult.verify(message.moveResult, long + 1);
+                                if (error)
+                                    return "moveResult." + error;
+                            }
+                        }
+                        if (message.moveRejected != null && Object.hasOwnProperty.call(message, "moveRejected")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.OAQMoveRejected.verify(message.moveRejected, long + 1);
+                                if (error)
+                                    return "moveRejected." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a OAnQuanMessage message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.OAnQuanMessage} OAnQuanMessage
+                     */
+                    OAnQuanMessage.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.OAnQuanMessage)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.OAnQuanMessage: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.OAnQuanMessage();
+                        if (object.move != null) {
+                            if (!$util.isObject(object.move))
+                                throw TypeError(".com.triforge.protocol.proto.OAnQuanMessage.move: object expected");
+                            message.move = $root.com.triforge.protocol.proto.OAQMoveCommand.fromObject(object.move, long + 1);
+                        }
+                        if (object.board != null) {
+                            if (!$util.isObject(object.board))
+                                throw TypeError(".com.triforge.protocol.proto.OAnQuanMessage.board: object expected");
+                            message.board = $root.com.triforge.protocol.proto.OAQBoardState.fromObject(object.board, long + 1);
+                        }
+                        if (object.moveResult != null) {
+                            if (!$util.isObject(object.moveResult))
+                                throw TypeError(".com.triforge.protocol.proto.OAnQuanMessage.moveResult: object expected");
+                            message.moveResult = $root.com.triforge.protocol.proto.OAQMoveResult.fromObject(object.moveResult, long + 1);
+                        }
+                        if (object.moveRejected != null) {
+                            if (!$util.isObject(object.moveRejected))
+                                throw TypeError(".com.triforge.protocol.proto.OAnQuanMessage.moveRejected: object expected");
+                            message.moveRejected = $root.com.triforge.protocol.proto.OAQMoveRejected.fromObject(object.moveRejected, long + 1);
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a OAnQuanMessage message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.OAnQuanMessage} message OAnQuanMessage
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    OAnQuanMessage.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (message.move != null && Object.hasOwnProperty.call(message, "move")) {
+                            object.move = $root.com.triforge.protocol.proto.OAQMoveCommand.toObject(message.move, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "move";
+                        }
+                        if (message.board != null && Object.hasOwnProperty.call(message, "board")) {
+                            object.board = $root.com.triforge.protocol.proto.OAQBoardState.toObject(message.board, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "board";
+                        }
+                        if (message.moveResult != null && Object.hasOwnProperty.call(message, "moveResult")) {
+                            object.moveResult = $root.com.triforge.protocol.proto.OAQMoveResult.toObject(message.moveResult, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "moveResult";
+                        }
+                        if (message.moveRejected != null && Object.hasOwnProperty.call(message, "moveRejected")) {
+                            object.moveRejected = $root.com.triforge.protocol.proto.OAQMoveRejected.toObject(message.moveRejected, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "moveRejected";
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this OAnQuanMessage to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    OAnQuanMessage.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for OAnQuanMessage
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.OAnQuanMessage
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    OAnQuanMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.OAnQuanMessage";
+                    };
+
+                    return OAnQuanMessage;
                 })();
 
                 return proto;

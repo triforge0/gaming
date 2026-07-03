@@ -36,6 +36,7 @@ message GameMessage {
     LobbyCommandRejected lobbyCommandRejected = 13;
     ChatCommand chatCommand = 14;
     ChatMessage chatMessage = 15;
+    OAnQuanMessage oaq = 16;
   }
 }
 
@@ -543,5 +544,80 @@ message TreasureQuestMessage {
     Leaderboard leaderboard = 13;
     ExpeditionComplete expeditionComplete = 14;
     PlayerStateUpdate playerStateUpdate = 15;
+  }
+}
+
+// ── Ô ăn quan (Vietnamese mancala) — plan-005 ──────────────────────
+// Turn-based 2-player board game. The wire is 3D-agnostic: clients derive
+// all rendering/animation from circular pit indices and the move trace.
+
+enum OAQDirection {
+  OAQ_DIR_UNSPECIFIED = 0;
+  OAQ_CLOCKWISE = 1;         // increasing pit index (mod 12)
+  OAQ_COUNTER_CLOCKWISE = 2; // decreasing pit index (mod 12)
+}
+
+enum OAQStepType {
+  OAQ_STEP_UNSPECIFIED = 0;
+  OAQ_PICKUP = 1;   // lift all stones from pitIndex into the mover's hand
+  OAQ_SOW = 2;      // drop one stone from hand into pitIndex
+  OAQ_CAPTURE = 3;  // pitIndex emptied into seat toSeat's tray (stones dân + quanPieces)
+  OAQ_BORROW = 4;   // one stone moves from seat toSeat's tray into pitIndex (vay quân)
+  OAQ_SWEEP = 5;    // endgame: pitIndex emptied into seat toSeat's tray (hết quan tàn dân)
+}
+
+// client → server: play (pitIndex, direction). Server validates and resolves.
+message OAQMoveCommand {
+  uint32 pitIndex = 1;
+  OAQDirection direction = 2;
+}
+
+// server → sender only: the move was not applied.
+message OAQMoveRejected {
+  uint32 pitIndex = 1;
+  OAQDirection direction = 2;
+  string reason = 3;
+}
+
+message OAQScore {
+  uint64 playerId = 1;
+  uint32 seat = 2;          // 0 owns pits 0-4, 1 owns pits 6-10
+  sint32 capturedDan = 3;   // may go negative under borrow debt
+  uint32 capturedQuan = 4;
+  sint32 points = 5;        // capturedDan + quanValue * capturedQuan
+}
+
+// server → all: authoritative board. Always wins over any in-flight animation.
+message OAQBoardState {
+  // 12 circular pits: 0-4 seat-0 dân row, 5 quan pit, 6-10 seat-1 dân row, 11 quan pit.
+  repeated uint32 pitStones = 1;   // dân stones per pit (quan pits hold dân too)
+  repeated uint32 quanPieces = 2;  // 2 entries: quan pieces remaining in pit 5, pit 11
+  uint64 currentPlayerId = 3;
+  repeated OAQScore scores = 4;
+  uint32 turnTicksRemaining = 5;
+  bool gameOver = 6;
+  uint64 winnerPlayerId = 7;       // 0 = draw or not over
+}
+
+// server → all: ordered resolution trace of one applied move, for client animation.
+message OAQStep {
+  OAQStepType type = 1;
+  uint32 pitIndex = 2;
+  uint32 stones = 3;      // dân count involved (PICKUP total, SOW 1, CAPTURE/SWEEP dân)
+  uint32 quanPieces = 4;  // quan pieces involved (CAPTURE/SWEEP from a quan pit)
+  uint32 toSeat = 5;      // destination tray seat for CAPTURE/SWEEP; source tray for BORROW
+}
+
+message OAQMoveResult {
+  uint64 playerId = 1;    // mover (server auto-move uses the current player's id)
+  repeated OAQStep steps = 2;
+}
+
+message OAnQuanMessage {
+  oneof content {
+    OAQMoveCommand move = 1;
+    OAQBoardState board = 2;
+    OAQMoveResult moveResult = 3;
+    OAQMoveRejected moveRejected = 4;
   }
 }

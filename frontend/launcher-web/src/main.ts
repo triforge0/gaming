@@ -18,6 +18,12 @@ const GAMES: GameEntry[] = [
     description: 'Educational expedition — quiz checkpoints, branching paths, shared treasure.',
     path: '/games/treasurequest/',
   },
+  {
+    id: 'oanquan',
+    title: 'Ô ăn quan',
+    description: 'Vietnamese mancala — 2-player turn-based board game on a 3D board.',
+    path: '/games/oanquan/',
+  },
 ];
 
 function renderGames(): void {
