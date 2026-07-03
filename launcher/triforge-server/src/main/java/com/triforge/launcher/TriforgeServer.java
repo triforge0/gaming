@@ -41,8 +41,15 @@ public final class TriforgeServer {
         roomRegistry.ensureRoom("main", "Main Arena");
         roomRegistry.ensureRoom("quest", "Treasure Quest", "treasurequest");
 
+        boolean udpDiscoveryEnabled = discoveryConfig.enabled();
+        if (!udpDiscoveryEnabled) {
+            logger.info("UDP discovery disabled ({}=false)", DiscoveryConfig.ENABLED_PROPERTY);
+        }
+
         try (UdpDiscoveryListener discoveryListener = new UdpDiscoveryListener(discoveryConfig.bindAddress())) {
-            discoveryListener.start();
+            if (udpDiscoveryEnabled) {
+                discoveryListener.start();
+            }
 
             DiscoveryService discoveryService = new DiscoveryService(
                     roomRegistry,
@@ -53,7 +60,9 @@ public final class TriforgeServer {
             );
 
             try (UdpAdvertiser udpAdvertiser = new UdpAdvertiser(discoveryService)) {
-                udpAdvertiser.start();
+                if (udpDiscoveryEnabled) {
+                    udpAdvertiser.start();
+                }
 
                 WebSocketServer server = new WebSocketServer(port, roomRegistry, discoveryService);
 
