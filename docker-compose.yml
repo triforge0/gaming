@@ -1,0 +1,15 @@
+services:
+  triforge-server:
+    image: ghcr.io/triforge0/gaming:latest
+    pull_policy: always
+    container_name: triforge-server
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # VPS deployments have no real LAN to broadcast on, so UDP discovery is
+      # off by default (see Dockerfile). Flip to "true" only if this container
+      # runs with network_mode: host on a LAN host.
+      SERVER_UDPDISCOVERY: "false"
+      # Optional: override the default room's game plugin (e.g. "demo").
+      # TRIFORGE_GAME_PLUGINID: "tankarena"
