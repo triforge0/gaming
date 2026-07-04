@@ -95,7 +95,7 @@ export function Particles({ skin }: { skin: SkinPreset }) {
   });
 
   return (
-    <points ref={points}>
+    <points ref={points} frustumCulled={false}>
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[data.positions, 3]} />
         <bufferAttribute attach="attributes-color" args={[data.colors, 3]} />

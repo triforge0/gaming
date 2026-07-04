@@ -73,7 +73,11 @@ export const useGame = create<GameStore>((set, get) => ({
   undoStack: [],
 
   boot() {
-    const persisted = loadState();
+    let persisted = loadState();
+    if (persisted.currentGame && isWon(persisted.currentGame.puzzle, persisted.currentGame.entries)) {
+      persisted = { ...persisted, currentGame: null };
+      persistNow(persisted);
+    }
     set({
       persisted,
       status: persisted.currentGame ? 'playing' : 'menu',
@@ -249,7 +253,14 @@ export const useGame = create<GameStore>((set, get) => ({
   },
 
   backToMenu() {
-    set({ status: 'menu', winSummary: null, selected: null });
+    const { persisted } = get();
+    if (persisted.currentGame && isWon(persisted.currentGame.puzzle, persisted.currentGame.entries)) {
+      const next = { ...persisted, currentGame: null };
+      persistNow(next);
+      set({ status: 'menu', winSummary: null, selected: null, persisted: next });
+    } else {
+      set({ status: 'menu', winSummary: null, selected: null });
+    }
   },
 
   autoSolve() {
@@ -301,7 +312,6 @@ function finishWin(set: Set, get: Get): void {
   for (const id of newAchievements) achievements[id] = now.toISOString();
   const nextPersisted: PersistedState = {
     ...persisted,
-    currentGame: null,
     stats,
     achievements,
     skins: { ...persisted.skins, unlocked: [...persisted.skins.unlocked, ...newSkins] },

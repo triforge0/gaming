@@ -83,7 +83,7 @@ describe('store', () => {
     expect(s.status).toBe('won');
     expect(s.winSummary!.score).toBeGreaterThan(0);
     expect(s.persisted.stats.completedTotal).toBe(1);
-    expect(s.persisted.currentGame).toBeNull();
+    expect(s.persisted.currentGame).not.toBeNull();
     expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!).stats.completedTotal).toBe(1);
   });
 });
