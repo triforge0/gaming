@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useGame } from '../state/store';
 import { SKINS } from '../skins';
 import { CubeRig } from './CubeRig';
+import { Effects } from './Effects';
+import { Particles } from './Particles';
 
 const IDLE_DELAY_MS = 5000;
 
@@ -40,6 +42,8 @@ export function GameCanvas() {
       <pointLight position={[6, -6, -6]} color={skin.lightTints[3]} intensity={40} />
       <directionalLight position={[4, 10, 4]} intensity={0.8} castShadow shadow-mapSize={[1024, 1024]} />
       <CubeRig skin={skin} idle={idle && status === 'playing'} />
+      <Particles skin={skin} />
+      <Effects />
       <OrbitControls enablePan={false} minDistance={6} maxDistance={14} enableDamping onStart={poke} />
     </Canvas>
   );
