@@ -25,6 +25,7 @@
         <tankarena.frontend.dir>${project.basedir}/../../games/tankarena/frontend</tankarena.frontend.dir>
         <treasurequest.frontend.dir>${project.basedir}/../../games/treasurequest/frontend</treasurequest.frontend.dir>
         <oanquan.frontend.dir>${project.basedir}/../../games/oanquan/frontend</oanquan.frontend.dir>
+        <bugminer.frontend.dir>${project.basedir}/../../games/bugminer/frontend</bugminer.frontend.dir>
         <sudokucube.frontend.dir>${project.basedir}/../../games/sudokucube/frontend</sudokucube.frontend.dir>
     </properties>
 
@@ -53,6 +54,11 @@
         <dependency>
             <groupId>com.triforge</groupId>
             <artifactId>oanquan-game</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
+            <artifactId>bugminer-game</artifactId>
         </dependency>
 
     </dependencies>
@@ -168,6 +174,18 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>bugminer-npm-ci</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${bugminer.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>oanquan-npm-build</id>
                         <phase>prepare-package</phase>
                         <goals>
@@ -175,6 +193,18 @@
                         </goals>
                         <configuration>
                             <workingDirectory>${oanquan.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>bugminer-npm-build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${bugminer.frontend.dir}</workingDirectory>
                             <installDirectory>${shared.ui.dir}</installDirectory>
                             <arguments>run build</arguments>
                         </configuration>
@@ -303,6 +333,23 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>copy-prebuilt-bugminer-assets</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/bugminer</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${bugminer.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-prebuilt-sudokucube-assets</id>
                         <phase>process-resources</phase>
                         <goals>
@@ -382,6 +429,23 @@
                             <resources>
                                 <resource>
                                     <directory>${oanquan.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-bugminer-assets</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/bugminer</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${bugminer.frontend.dir}/dist</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>

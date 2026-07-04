@@ -195,6 +195,9 @@ export namespace com {
 
                     /** GameMessage oaq */
                     oaq?: (com.triforge.protocol.proto.IOAnQuanMessage|null);
+
+                    /** GameMessage bugminer */
+                    bugminer?: (com.triforge.protocol.proto.IBugMinerMessage|null);
                 }
 
                 /** Represents a GameMessage. */
@@ -254,8 +257,11 @@ export namespace com {
                     /** GameMessage oaq. */
                     public oaq?: (com.triforge.protocol.proto.IOAnQuanMessage|null);
 
+                    /** GameMessage bugminer. */
+                    public bugminer?: (com.triforge.protocol.proto.IBugMinerMessage|null);
+
                     /** GameMessage content. */
-                    public content?: ("joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|"oaq");
+                    public content?: ("joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|"oaq"|"bugminer");
 
                     /**
                      * Creates a new GameMessage instance using the specified properties.
@@ -7562,6 +7568,1245 @@ export namespace com {
 
                     /**
                      * Gets the default type url for OAnQuanMessage
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** BugMinerItemType enum. */
+                enum BugMinerItemType {
+                    BM_ITEM_NONE = 0,
+                    BM_ITEM_GOLD = 1,
+                    BM_ITEM_BIG_GOLD = 2,
+                    BM_ITEM_DIAMOND = 3,
+                    BM_ITEM_ROCK = 4,
+                    BM_ITEM_MYSTERY_BAG = 5,
+                    BM_ITEM_POISON = 6
+                }
+
+                /** BugMinerHookState enum. */
+                enum BugMinerHookState {
+                    BM_HOOK_RETRACTED = 0,
+                    BM_HOOK_SWINGING = 1,
+                    BM_HOOK_EXTENDING = 2,
+                    BM_HOOK_RETRACTING = 3
+                }
+
+                /** Properties of a BugMinerPlacedItem. */
+                interface IBugMinerPlacedItem {
+
+                    /** BugMinerPlacedItem id */
+                    id?: (string|null);
+
+                    /** BugMinerPlacedItem type */
+                    type?: (com.triforge.protocol.proto.BugMinerItemType|null);
+
+                    /** BugMinerPlacedItem x */
+                    x?: (number|null);
+
+                    /** BugMinerPlacedItem y */
+                    y?: (number|null);
+
+                    /** BugMinerPlacedItem collected */
+                    collected?: (boolean|null);
+                }
+
+                /** Represents a BugMinerPlacedItem. */
+                class BugMinerPlacedItem implements IBugMinerPlacedItem {
+
+                    /**
+                     * Constructs a new BugMinerPlacedItem.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBugMinerPlacedItem);
+
+                    /** BugMinerPlacedItem id. */
+                    public id: string;
+
+                    /** BugMinerPlacedItem type. */
+                    public type: com.triforge.protocol.proto.BugMinerItemType;
+
+                    /** BugMinerPlacedItem x. */
+                    public x: number;
+
+                    /** BugMinerPlacedItem y. */
+                    public y: number;
+
+                    /** BugMinerPlacedItem collected. */
+                    public collected: boolean;
+
+                    /**
+                     * Creates a new BugMinerPlacedItem instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BugMinerPlacedItem instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBugMinerPlacedItem): com.triforge.protocol.proto.BugMinerPlacedItem;
+
+                    /**
+                     * Encodes the specified BugMinerPlacedItem message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerPlacedItem.verify|verify} messages.
+                     * @param message BugMinerPlacedItem message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBugMinerPlacedItem, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BugMinerPlacedItem message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerPlacedItem.verify|verify} messages.
+                     * @param message BugMinerPlacedItem message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBugMinerPlacedItem, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BugMinerPlacedItem message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BugMinerPlacedItem
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BugMinerPlacedItem;
+
+                    /**
+                     * Decodes a BugMinerPlacedItem message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BugMinerPlacedItem
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BugMinerPlacedItem;
+
+                    /**
+                     * Verifies a BugMinerPlacedItem message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BugMinerPlacedItem message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BugMinerPlacedItem
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BugMinerPlacedItem;
+
+                    /**
+                     * Creates a plain object from a BugMinerPlacedItem message. Also converts values to other types if specified.
+                     * @param message BugMinerPlacedItem
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BugMinerPlacedItem, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BugMinerPlacedItem to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BugMinerPlacedItem
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BugMinerHookData. */
+                interface IBugMinerHookData {
+
+                    /** BugMinerHookData angle */
+                    angle?: (number|null);
+
+                    /** BugMinerHookData length */
+                    length?: (number|null);
+
+                    /** BugMinerHookData state */
+                    state?: (com.triforge.protocol.proto.BugMinerHookState|null);
+
+                    /** BugMinerHookData attachedItemId */
+                    attachedItemId?: (string|null);
+
+                    /** BugMinerHookData swingDirection */
+                    swingDirection?: (number|null);
+                }
+
+                /** Represents a BugMinerHookData. */
+                class BugMinerHookData implements IBugMinerHookData {
+
+                    /**
+                     * Constructs a new BugMinerHookData.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBugMinerHookData);
+
+                    /** BugMinerHookData angle. */
+                    public angle: number;
+
+                    /** BugMinerHookData length. */
+                    public length: number;
+
+                    /** BugMinerHookData state. */
+                    public state: com.triforge.protocol.proto.BugMinerHookState;
+
+                    /** BugMinerHookData attachedItemId. */
+                    public attachedItemId: string;
+
+                    /** BugMinerHookData swingDirection. */
+                    public swingDirection: number;
+
+                    /**
+                     * Creates a new BugMinerHookData instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BugMinerHookData instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBugMinerHookData): com.triforge.protocol.proto.BugMinerHookData;
+
+                    /**
+                     * Encodes the specified BugMinerHookData message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerHookData.verify|verify} messages.
+                     * @param message BugMinerHookData message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBugMinerHookData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BugMinerHookData message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerHookData.verify|verify} messages.
+                     * @param message BugMinerHookData message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBugMinerHookData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BugMinerHookData message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BugMinerHookData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BugMinerHookData;
+
+                    /**
+                     * Decodes a BugMinerHookData message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BugMinerHookData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BugMinerHookData;
+
+                    /**
+                     * Verifies a BugMinerHookData message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BugMinerHookData message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BugMinerHookData
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BugMinerHookData;
+
+                    /**
+                     * Creates a plain object from a BugMinerHookData message. Also converts values to other types if specified.
+                     * @param message BugMinerHookData
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BugMinerHookData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BugMinerHookData to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BugMinerHookData
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BugMinerChallengeState. */
+                interface IBugMinerChallengeState {
+
+                    /** BugMinerChallengeState designerId */
+                    designerId?: (number|Long|null);
+
+                    /** BugMinerChallengeState playerId */
+                    playerId?: (number|Long|null);
+
+                    /** BugMinerChallengeState levelId */
+                    levelId?: (string|null);
+
+                    /** BugMinerChallengeState timeLimit */
+                    timeLimit?: (number|null);
+
+                    /** BugMinerChallengeState timeRemaining */
+                    timeRemaining?: (number|null);
+
+                    /** BugMinerChallengeState targetScore */
+                    targetScore?: (number|null);
+
+                    /** BugMinerChallengeState score */
+                    score?: (number|null);
+
+                    /** BugMinerChallengeState items */
+                    items?: (com.triforge.protocol.proto.IBugMinerPlacedItem[]|null);
+
+                    /** BugMinerChallengeState hook */
+                    hook?: (com.triforge.protocol.proto.IBugMinerHookData|null);
+
+                    /** BugMinerChallengeState setupLocked */
+                    setupLocked?: (boolean|null);
+
+                    /** BugMinerChallengeState finished */
+                    finished?: (boolean|null);
+
+                    /** BugMinerChallengeState endReason */
+                    endReason?: (string|null);
+                }
+
+                /** Represents a BugMinerChallengeState. */
+                class BugMinerChallengeState implements IBugMinerChallengeState {
+
+                    /**
+                     * Constructs a new BugMinerChallengeState.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBugMinerChallengeState);
+
+                    /** BugMinerChallengeState designerId. */
+                    public designerId: (number|Long);
+
+                    /** BugMinerChallengeState playerId. */
+                    public playerId: (number|Long);
+
+                    /** BugMinerChallengeState levelId. */
+                    public levelId: string;
+
+                    /** BugMinerChallengeState timeLimit. */
+                    public timeLimit: number;
+
+                    /** BugMinerChallengeState timeRemaining. */
+                    public timeRemaining: number;
+
+                    /** BugMinerChallengeState targetScore. */
+                    public targetScore: number;
+
+                    /** BugMinerChallengeState score. */
+                    public score: number;
+
+                    /** BugMinerChallengeState items. */
+                    public items: com.triforge.protocol.proto.IBugMinerPlacedItem[];
+
+                    /** BugMinerChallengeState hook. */
+                    public hook?: (com.triforge.protocol.proto.IBugMinerHookData|null);
+
+                    /** BugMinerChallengeState setupLocked. */
+                    public setupLocked: boolean;
+
+                    /** BugMinerChallengeState finished. */
+                    public finished: boolean;
+
+                    /** BugMinerChallengeState endReason. */
+                    public endReason: string;
+
+                    /**
+                     * Creates a new BugMinerChallengeState instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BugMinerChallengeState instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBugMinerChallengeState): com.triforge.protocol.proto.BugMinerChallengeState;
+
+                    /**
+                     * Encodes the specified BugMinerChallengeState message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerChallengeState.verify|verify} messages.
+                     * @param message BugMinerChallengeState message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBugMinerChallengeState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BugMinerChallengeState message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerChallengeState.verify|verify} messages.
+                     * @param message BugMinerChallengeState message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBugMinerChallengeState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BugMinerChallengeState message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BugMinerChallengeState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BugMinerChallengeState;
+
+                    /**
+                     * Decodes a BugMinerChallengeState message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BugMinerChallengeState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BugMinerChallengeState;
+
+                    /**
+                     * Verifies a BugMinerChallengeState message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BugMinerChallengeState message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BugMinerChallengeState
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BugMinerChallengeState;
+
+                    /**
+                     * Creates a plain object from a BugMinerChallengeState message. Also converts values to other types if specified.
+                     * @param message BugMinerChallengeState
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BugMinerChallengeState, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BugMinerChallengeState to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BugMinerChallengeState
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BugMinerBoardState. */
+                interface IBugMinerBoardState {
+
+                    /** BugMinerBoardState forPlayerA */
+                    forPlayerA?: (com.triforge.protocol.proto.IBugMinerChallengeState|null);
+
+                    /** BugMinerBoardState forPlayerB */
+                    forPlayerB?: (com.triforge.protocol.proto.IBugMinerChallengeState|null);
+                }
+
+                /** Represents a BugMinerBoardState. */
+                class BugMinerBoardState implements IBugMinerBoardState {
+
+                    /**
+                     * Constructs a new BugMinerBoardState.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBugMinerBoardState);
+
+                    /** BugMinerBoardState forPlayerA. */
+                    public forPlayerA?: (com.triforge.protocol.proto.IBugMinerChallengeState|null);
+
+                    /** BugMinerBoardState forPlayerB. */
+                    public forPlayerB?: (com.triforge.protocol.proto.IBugMinerChallengeState|null);
+
+                    /**
+                     * Creates a new BugMinerBoardState instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BugMinerBoardState instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBugMinerBoardState): com.triforge.protocol.proto.BugMinerBoardState;
+
+                    /**
+                     * Encodes the specified BugMinerBoardState message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerBoardState.verify|verify} messages.
+                     * @param message BugMinerBoardState message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBugMinerBoardState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BugMinerBoardState message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerBoardState.verify|verify} messages.
+                     * @param message BugMinerBoardState message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBugMinerBoardState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BugMinerBoardState message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BugMinerBoardState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BugMinerBoardState;
+
+                    /**
+                     * Decodes a BugMinerBoardState message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BugMinerBoardState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BugMinerBoardState;
+
+                    /**
+                     * Verifies a BugMinerBoardState message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BugMinerBoardState message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BugMinerBoardState
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BugMinerBoardState;
+
+                    /**
+                     * Creates a plain object from a BugMinerBoardState message. Also converts values to other types if specified.
+                     * @param message BugMinerBoardState
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BugMinerBoardState, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BugMinerBoardState to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BugMinerBoardState
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BMSetLevelCommand. */
+                interface IBMSetLevelCommand {
+
+                    /** BMSetLevelCommand levelId */
+                    levelId?: (string|null);
+                }
+
+                /** Represents a BMSetLevelCommand. */
+                class BMSetLevelCommand implements IBMSetLevelCommand {
+
+                    /**
+                     * Constructs a new BMSetLevelCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBMSetLevelCommand);
+
+                    /** BMSetLevelCommand levelId. */
+                    public levelId: string;
+
+                    /**
+                     * Creates a new BMSetLevelCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BMSetLevelCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBMSetLevelCommand): com.triforge.protocol.proto.BMSetLevelCommand;
+
+                    /**
+                     * Encodes the specified BMSetLevelCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMSetLevelCommand.verify|verify} messages.
+                     * @param message BMSetLevelCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBMSetLevelCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BMSetLevelCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMSetLevelCommand.verify|verify} messages.
+                     * @param message BMSetLevelCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBMSetLevelCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BMSetLevelCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BMSetLevelCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BMSetLevelCommand;
+
+                    /**
+                     * Decodes a BMSetLevelCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BMSetLevelCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BMSetLevelCommand;
+
+                    /**
+                     * Verifies a BMSetLevelCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BMSetLevelCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BMSetLevelCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BMSetLevelCommand;
+
+                    /**
+                     * Creates a plain object from a BMSetLevelCommand message. Also converts values to other types if specified.
+                     * @param message BMSetLevelCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BMSetLevelCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BMSetLevelCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BMSetLevelCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BMSetTimeLimitCommand. */
+                interface IBMSetTimeLimitCommand {
+
+                    /** BMSetTimeLimitCommand timeLimit */
+                    timeLimit?: (number|null);
+                }
+
+                /** Represents a BMSetTimeLimitCommand. */
+                class BMSetTimeLimitCommand implements IBMSetTimeLimitCommand {
+
+                    /**
+                     * Constructs a new BMSetTimeLimitCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBMSetTimeLimitCommand);
+
+                    /** BMSetTimeLimitCommand timeLimit. */
+                    public timeLimit: number;
+
+                    /**
+                     * Creates a new BMSetTimeLimitCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BMSetTimeLimitCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBMSetTimeLimitCommand): com.triforge.protocol.proto.BMSetTimeLimitCommand;
+
+                    /**
+                     * Encodes the specified BMSetTimeLimitCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMSetTimeLimitCommand.verify|verify} messages.
+                     * @param message BMSetTimeLimitCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBMSetTimeLimitCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BMSetTimeLimitCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMSetTimeLimitCommand.verify|verify} messages.
+                     * @param message BMSetTimeLimitCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBMSetTimeLimitCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BMSetTimeLimitCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BMSetTimeLimitCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BMSetTimeLimitCommand;
+
+                    /**
+                     * Decodes a BMSetTimeLimitCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BMSetTimeLimitCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BMSetTimeLimitCommand;
+
+                    /**
+                     * Verifies a BMSetTimeLimitCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BMSetTimeLimitCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BMSetTimeLimitCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BMSetTimeLimitCommand;
+
+                    /**
+                     * Creates a plain object from a BMSetTimeLimitCommand message. Also converts values to other types if specified.
+                     * @param message BMSetTimeLimitCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BMSetTimeLimitCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BMSetTimeLimitCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BMSetTimeLimitCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BMPlaceItemCommand. */
+                interface IBMPlaceItemCommand {
+
+                    /** BMPlaceItemCommand itemId */
+                    itemId?: (string|null);
+
+                    /** BMPlaceItemCommand x */
+                    x?: (number|null);
+
+                    /** BMPlaceItemCommand y */
+                    y?: (number|null);
+                }
+
+                /** Represents a BMPlaceItemCommand. */
+                class BMPlaceItemCommand implements IBMPlaceItemCommand {
+
+                    /**
+                     * Constructs a new BMPlaceItemCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBMPlaceItemCommand);
+
+                    /** BMPlaceItemCommand itemId. */
+                    public itemId: string;
+
+                    /** BMPlaceItemCommand x. */
+                    public x: number;
+
+                    /** BMPlaceItemCommand y. */
+                    public y: number;
+
+                    /**
+                     * Creates a new BMPlaceItemCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BMPlaceItemCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBMPlaceItemCommand): com.triforge.protocol.proto.BMPlaceItemCommand;
+
+                    /**
+                     * Encodes the specified BMPlaceItemCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMPlaceItemCommand.verify|verify} messages.
+                     * @param message BMPlaceItemCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBMPlaceItemCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BMPlaceItemCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMPlaceItemCommand.verify|verify} messages.
+                     * @param message BMPlaceItemCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBMPlaceItemCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BMPlaceItemCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BMPlaceItemCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BMPlaceItemCommand;
+
+                    /**
+                     * Decodes a BMPlaceItemCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BMPlaceItemCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BMPlaceItemCommand;
+
+                    /**
+                     * Verifies a BMPlaceItemCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BMPlaceItemCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BMPlaceItemCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BMPlaceItemCommand;
+
+                    /**
+                     * Creates a plain object from a BMPlaceItemCommand message. Also converts values to other types if specified.
+                     * @param message BMPlaceItemCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BMPlaceItemCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BMPlaceItemCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BMPlaceItemCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BMAutoArrangeCommand. */
+                interface IBMAutoArrangeCommand {
+                }
+
+                /** Represents a BMAutoArrangeCommand. */
+                class BMAutoArrangeCommand implements IBMAutoArrangeCommand {
+
+                    /**
+                     * Constructs a new BMAutoArrangeCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBMAutoArrangeCommand);
+
+                    /**
+                     * Creates a new BMAutoArrangeCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BMAutoArrangeCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBMAutoArrangeCommand): com.triforge.protocol.proto.BMAutoArrangeCommand;
+
+                    /**
+                     * Encodes the specified BMAutoArrangeCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMAutoArrangeCommand.verify|verify} messages.
+                     * @param message BMAutoArrangeCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBMAutoArrangeCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BMAutoArrangeCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMAutoArrangeCommand.verify|verify} messages.
+                     * @param message BMAutoArrangeCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBMAutoArrangeCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BMAutoArrangeCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BMAutoArrangeCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BMAutoArrangeCommand;
+
+                    /**
+                     * Decodes a BMAutoArrangeCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BMAutoArrangeCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BMAutoArrangeCommand;
+
+                    /**
+                     * Verifies a BMAutoArrangeCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BMAutoArrangeCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BMAutoArrangeCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BMAutoArrangeCommand;
+
+                    /**
+                     * Creates a plain object from a BMAutoArrangeCommand message. Also converts values to other types if specified.
+                     * @param message BMAutoArrangeCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BMAutoArrangeCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BMAutoArrangeCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BMAutoArrangeCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BMLockMapCommand. */
+                interface IBMLockMapCommand {
+                }
+
+                /** Represents a BMLockMapCommand. */
+                class BMLockMapCommand implements IBMLockMapCommand {
+
+                    /**
+                     * Constructs a new BMLockMapCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBMLockMapCommand);
+
+                    /**
+                     * Creates a new BMLockMapCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BMLockMapCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBMLockMapCommand): com.triforge.protocol.proto.BMLockMapCommand;
+
+                    /**
+                     * Encodes the specified BMLockMapCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMLockMapCommand.verify|verify} messages.
+                     * @param message BMLockMapCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBMLockMapCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BMLockMapCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMLockMapCommand.verify|verify} messages.
+                     * @param message BMLockMapCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBMLockMapCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BMLockMapCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BMLockMapCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BMLockMapCommand;
+
+                    /**
+                     * Decodes a BMLockMapCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BMLockMapCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BMLockMapCommand;
+
+                    /**
+                     * Verifies a BMLockMapCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BMLockMapCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BMLockMapCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BMLockMapCommand;
+
+                    /**
+                     * Creates a plain object from a BMLockMapCommand message. Also converts values to other types if specified.
+                     * @param message BMLockMapCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BMLockMapCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BMLockMapCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BMLockMapCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BMFireHookCommand. */
+                interface IBMFireHookCommand {
+                }
+
+                /** Represents a BMFireHookCommand. */
+                class BMFireHookCommand implements IBMFireHookCommand {
+
+                    /**
+                     * Constructs a new BMFireHookCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBMFireHookCommand);
+
+                    /**
+                     * Creates a new BMFireHookCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BMFireHookCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBMFireHookCommand): com.triforge.protocol.proto.BMFireHookCommand;
+
+                    /**
+                     * Encodes the specified BMFireHookCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMFireHookCommand.verify|verify} messages.
+                     * @param message BMFireHookCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBMFireHookCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BMFireHookCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMFireHookCommand.verify|verify} messages.
+                     * @param message BMFireHookCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBMFireHookCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BMFireHookCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BMFireHookCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BMFireHookCommand;
+
+                    /**
+                     * Decodes a BMFireHookCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BMFireHookCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BMFireHookCommand;
+
+                    /**
+                     * Verifies a BMFireHookCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BMFireHookCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BMFireHookCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BMFireHookCommand;
+
+                    /**
+                     * Creates a plain object from a BMFireHookCommand message. Also converts values to other types if specified.
+                     * @param message BMFireHookCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BMFireHookCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BMFireHookCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BMFireHookCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BugMinerMessage. */
+                interface IBugMinerMessage {
+
+                    /** BugMinerMessage setLevel */
+                    setLevel?: (com.triforge.protocol.proto.IBMSetLevelCommand|null);
+
+                    /** BugMinerMessage setTimeLimit */
+                    setTimeLimit?: (com.triforge.protocol.proto.IBMSetTimeLimitCommand|null);
+
+                    /** BugMinerMessage placeItem */
+                    placeItem?: (com.triforge.protocol.proto.IBMPlaceItemCommand|null);
+
+                    /** BugMinerMessage autoArrange */
+                    autoArrange?: (com.triforge.protocol.proto.IBMAutoArrangeCommand|null);
+
+                    /** BugMinerMessage lockMap */
+                    lockMap?: (com.triforge.protocol.proto.IBMLockMapCommand|null);
+
+                    /** BugMinerMessage fireHook */
+                    fireHook?: (com.triforge.protocol.proto.IBMFireHookCommand|null);
+
+                    /** BugMinerMessage board */
+                    board?: (com.triforge.protocol.proto.IBugMinerBoardState|null);
+                }
+
+                /** Represents a BugMinerMessage. */
+                class BugMinerMessage implements IBugMinerMessage {
+
+                    /**
+                     * Constructs a new BugMinerMessage.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBugMinerMessage);
+
+                    /** BugMinerMessage setLevel. */
+                    public setLevel?: (com.triforge.protocol.proto.IBMSetLevelCommand|null);
+
+                    /** BugMinerMessage setTimeLimit. */
+                    public setTimeLimit?: (com.triforge.protocol.proto.IBMSetTimeLimitCommand|null);
+
+                    /** BugMinerMessage placeItem. */
+                    public placeItem?: (com.triforge.protocol.proto.IBMPlaceItemCommand|null);
+
+                    /** BugMinerMessage autoArrange. */
+                    public autoArrange?: (com.triforge.protocol.proto.IBMAutoArrangeCommand|null);
+
+                    /** BugMinerMessage lockMap. */
+                    public lockMap?: (com.triforge.protocol.proto.IBMLockMapCommand|null);
+
+                    /** BugMinerMessage fireHook. */
+                    public fireHook?: (com.triforge.protocol.proto.IBMFireHookCommand|null);
+
+                    /** BugMinerMessage board. */
+                    public board?: (com.triforge.protocol.proto.IBugMinerBoardState|null);
+
+                    /** BugMinerMessage content. */
+                    public content?: ("setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board");
+
+                    /**
+                     * Creates a new BugMinerMessage instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BugMinerMessage instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBugMinerMessage): com.triforge.protocol.proto.BugMinerMessage;
+
+                    /**
+                     * Encodes the specified BugMinerMessage message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerMessage.verify|verify} messages.
+                     * @param message BugMinerMessage message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBugMinerMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BugMinerMessage message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerMessage.verify|verify} messages.
+                     * @param message BugMinerMessage message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBugMinerMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BugMinerMessage message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BugMinerMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BugMinerMessage;
+
+                    /**
+                     * Decodes a BugMinerMessage message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BugMinerMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BugMinerMessage;
+
+                    /**
+                     * Verifies a BugMinerMessage message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BugMinerMessage message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BugMinerMessage
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BugMinerMessage;
+
+                    /**
+                     * Creates a plain object from a BugMinerMessage message. Also converts values to other types if specified.
+                     * @param message BugMinerMessage
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BugMinerMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BugMinerMessage to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BugMinerMessage
                      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                      * @returns The default type url
                      */

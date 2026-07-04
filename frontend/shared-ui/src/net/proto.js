@@ -504,6 +504,7 @@ export const com = $root.com = (() => {
                      * @property {com.triforge.protocol.proto.IChatCommand|null} [chatCommand] GameMessage chatCommand
                      * @property {com.triforge.protocol.proto.IChatMessage|null} [chatMessage] GameMessage chatMessage
                      * @property {com.triforge.protocol.proto.IOAnQuanMessage|null} [oaq] GameMessage oaq
+                     * @property {com.triforge.protocol.proto.IBugMinerMessage|null} [bugminer] GameMessage bugminer
                      */
 
                     /**
@@ -649,17 +650,25 @@ export const com = $root.com = (() => {
                      */
                     GameMessage.prototype.oaq = null;
 
+                    /**
+                     * GameMessage bugminer.
+                     * @member {com.triforge.protocol.proto.IBugMinerMessage|null|undefined} bugminer
+                     * @memberof com.triforge.protocol.proto.GameMessage
+                     * @instance
+                     */
+                    GameMessage.prototype.bugminer = null;
+
                     // OneOf field names bound to virtual getters and setters
                     let $oneOfFields;
 
                     /**
                      * GameMessage content.
-                     * @member {"joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|"oaq"|undefined} content
+                     * @member {"joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|"oaq"|"bugminer"|undefined} content
                      * @memberof com.triforge.protocol.proto.GameMessage
                      * @instance
                      */
                     Object.defineProperty(GameMessage.prototype, "content", {
-                        get: $util.oneOfGetter($oneOfFields = ["joinRequest", "joinResponse", "fullSnapshot", "deltaSnapshot", "inputCommand", "gameEvent", "lobbyCommand", "roomLobbySnapshot", "matchPhaseUpdate", "matchResult", "mapSnapshot", "tq", "lobbyCommandRejected", "chatCommand", "chatMessage", "oaq"]),
+                        get: $util.oneOfGetter($oneOfFields = ["joinRequest", "joinResponse", "fullSnapshot", "deltaSnapshot", "inputCommand", "gameEvent", "lobbyCommand", "roomLobbySnapshot", "matchPhaseUpdate", "matchResult", "mapSnapshot", "tq", "lobbyCommandRejected", "chatCommand", "chatMessage", "oaq", "bugminer"]),
                         set: $util.oneOfSetter($oneOfFields)
                     });
 
@@ -723,6 +732,8 @@ export const com = $root.com = (() => {
                             $root.com.triforge.protocol.proto.ChatMessage.encode(message.chatMessage, writer.uint32(/* id 15, wireType 2 =*/122).fork(), q + 1).ldelim();
                         if (message.oaq != null && Object.hasOwnProperty.call(message, "oaq"))
                             $root.com.triforge.protocol.proto.OAnQuanMessage.encode(message.oaq, writer.uint32(/* id 16, wireType 2 =*/130).fork(), q + 1).ldelim();
+                        if (message.bugminer != null && Object.hasOwnProperty.call(message, "bugminer"))
+                            $root.com.triforge.protocol.proto.BugMinerMessage.encode(message.bugminer, writer.uint32(/* id 17, wireType 2 =*/138).fork(), q + 1).ldelim();
                         return writer;
                     };
 
@@ -825,6 +836,10 @@ export const com = $root.com = (() => {
                                 }
                             case 16: {
                                     message.oaq = $root.com.triforge.protocol.proto.OAnQuanMessage.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 17: {
+                                    message.bugminer = $root.com.triforge.protocol.proto.BugMinerMessage.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 }
                             default:
@@ -1025,6 +1040,16 @@ export const com = $root.com = (() => {
                                     return "oaq." + error;
                             }
                         }
+                        if (message.bugminer != null && Object.hasOwnProperty.call(message, "bugminer")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BugMinerMessage.verify(message.bugminer, long + 1);
+                                if (error)
+                                    return "bugminer." + error;
+                            }
+                        }
                         return null;
                     };
 
@@ -1126,6 +1151,11 @@ export const com = $root.com = (() => {
                                 throw TypeError(".com.triforge.protocol.proto.GameMessage.oaq: object expected");
                             message.oaq = $root.com.triforge.protocol.proto.OAnQuanMessage.fromObject(object.oaq, long + 1);
                         }
+                        if (object.bugminer != null) {
+                            if (!$util.isObject(object.bugminer))
+                                throw TypeError(".com.triforge.protocol.proto.GameMessage.bugminer: object expected");
+                            message.bugminer = $root.com.triforge.protocol.proto.BugMinerMessage.fromObject(object.bugminer, long + 1);
+                        }
                         return message;
                     };
 
@@ -1225,6 +1255,11 @@ export const com = $root.com = (() => {
                             object.oaq = $root.com.triforge.protocol.proto.OAnQuanMessage.toObject(message.oaq, options, q + 1);
                             if (options.oneofs)
                                 object.content = "oaq";
+                        }
+                        if (message.bugminer != null && Object.hasOwnProperty.call(message, "bugminer")) {
+                            object.bugminer = $root.com.triforge.protocol.proto.BugMinerMessage.toObject(message.bugminer, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "bugminer";
                         }
                         return object;
                     };
@@ -22389,6 +22424,3318 @@ export const com = $root.com = (() => {
                     };
 
                     return OAnQuanMessage;
+                })();
+
+                /**
+                 * BugMinerItemType enum.
+                 * @name com.triforge.protocol.proto.BugMinerItemType
+                 * @enum {number}
+                 * @property {number} BM_ITEM_NONE=0 BM_ITEM_NONE value
+                 * @property {number} BM_ITEM_GOLD=1 BM_ITEM_GOLD value
+                 * @property {number} BM_ITEM_BIG_GOLD=2 BM_ITEM_BIG_GOLD value
+                 * @property {number} BM_ITEM_DIAMOND=3 BM_ITEM_DIAMOND value
+                 * @property {number} BM_ITEM_ROCK=4 BM_ITEM_ROCK value
+                 * @property {number} BM_ITEM_MYSTERY_BAG=5 BM_ITEM_MYSTERY_BAG value
+                 * @property {number} BM_ITEM_POISON=6 BM_ITEM_POISON value
+                 */
+                proto.BugMinerItemType = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "BM_ITEM_NONE"] = 0;
+                    values[valuesById[1] = "BM_ITEM_GOLD"] = 1;
+                    values[valuesById[2] = "BM_ITEM_BIG_GOLD"] = 2;
+                    values[valuesById[3] = "BM_ITEM_DIAMOND"] = 3;
+                    values[valuesById[4] = "BM_ITEM_ROCK"] = 4;
+                    values[valuesById[5] = "BM_ITEM_MYSTERY_BAG"] = 5;
+                    values[valuesById[6] = "BM_ITEM_POISON"] = 6;
+                    return values;
+                })();
+
+                /**
+                 * BugMinerHookState enum.
+                 * @name com.triforge.protocol.proto.BugMinerHookState
+                 * @enum {number}
+                 * @property {number} BM_HOOK_RETRACTED=0 BM_HOOK_RETRACTED value
+                 * @property {number} BM_HOOK_SWINGING=1 BM_HOOK_SWINGING value
+                 * @property {number} BM_HOOK_EXTENDING=2 BM_HOOK_EXTENDING value
+                 * @property {number} BM_HOOK_RETRACTING=3 BM_HOOK_RETRACTING value
+                 */
+                proto.BugMinerHookState = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "BM_HOOK_RETRACTED"] = 0;
+                    values[valuesById[1] = "BM_HOOK_SWINGING"] = 1;
+                    values[valuesById[2] = "BM_HOOK_EXTENDING"] = 2;
+                    values[valuesById[3] = "BM_HOOK_RETRACTING"] = 3;
+                    return values;
+                })();
+
+                proto.BugMinerPlacedItem = (function() {
+
+                    /**
+                     * Properties of a BugMinerPlacedItem.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBugMinerPlacedItem
+                     * @property {string|null} [id] BugMinerPlacedItem id
+                     * @property {com.triforge.protocol.proto.BugMinerItemType|null} [type] BugMinerPlacedItem type
+                     * @property {number|null} [x] BugMinerPlacedItem x
+                     * @property {number|null} [y] BugMinerPlacedItem y
+                     * @property {boolean|null} [collected] BugMinerPlacedItem collected
+                     */
+
+                    /**
+                     * Constructs a new BugMinerPlacedItem.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BugMinerPlacedItem.
+                     * @implements IBugMinerPlacedItem
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBugMinerPlacedItem=} [properties] Properties to set
+                     */
+                    function BugMinerPlacedItem(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * BugMinerPlacedItem id.
+                     * @member {string} id
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @instance
+                     */
+                    BugMinerPlacedItem.prototype.id = "";
+
+                    /**
+                     * BugMinerPlacedItem type.
+                     * @member {com.triforge.protocol.proto.BugMinerItemType} type
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @instance
+                     */
+                    BugMinerPlacedItem.prototype.type = 0;
+
+                    /**
+                     * BugMinerPlacedItem x.
+                     * @member {number} x
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @instance
+                     */
+                    BugMinerPlacedItem.prototype.x = 0;
+
+                    /**
+                     * BugMinerPlacedItem y.
+                     * @member {number} y
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @instance
+                     */
+                    BugMinerPlacedItem.prototype.y = 0;
+
+                    /**
+                     * BugMinerPlacedItem collected.
+                     * @member {boolean} collected
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @instance
+                     */
+                    BugMinerPlacedItem.prototype.collected = false;
+
+                    /**
+                     * Creates a new BugMinerPlacedItem instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerPlacedItem=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BugMinerPlacedItem} BugMinerPlacedItem instance
+                     */
+                    BugMinerPlacedItem.create = function create(properties) {
+                        return new BugMinerPlacedItem(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerPlacedItem message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerPlacedItem.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerPlacedItem} message BugMinerPlacedItem message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerPlacedItem.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+                        if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.type);
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            writer.uint32(/* id 3, wireType 5 =*/29).float(message.x);
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            writer.uint32(/* id 4, wireType 5 =*/37).float(message.y);
+                        if (message.collected != null && Object.hasOwnProperty.call(message, "collected"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).bool(message.collected);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerPlacedItem message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerPlacedItem.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerPlacedItem} message BugMinerPlacedItem message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerPlacedItem.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BugMinerPlacedItem message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BugMinerPlacedItem} BugMinerPlacedItem
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerPlacedItem.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BugMinerPlacedItem();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.id = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.type = reader.int32();
+                                    break;
+                                }
+                            case 3: {
+                                    message.x = reader.float();
+                                    break;
+                                }
+                            case 4: {
+                                    message.y = reader.float();
+                                    break;
+                                }
+                            case 5: {
+                                    message.collected = reader.bool();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BugMinerPlacedItem message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BugMinerPlacedItem} BugMinerPlacedItem
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerPlacedItem.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BugMinerPlacedItem message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BugMinerPlacedItem.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                            if (!$util.isString(message.id))
+                                return "id: string expected";
+                        if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+                            switch (message.type) {
+                            default:
+                                return "type: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                            case 6:
+                                break;
+                            }
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            if (typeof message.x !== "number")
+                                return "x: number expected";
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            if (typeof message.y !== "number")
+                                return "y: number expected";
+                        if (message.collected != null && Object.hasOwnProperty.call(message, "collected"))
+                            if (typeof message.collected !== "boolean")
+                                return "collected: boolean expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BugMinerPlacedItem message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BugMinerPlacedItem} BugMinerPlacedItem
+                     */
+                    BugMinerPlacedItem.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BugMinerPlacedItem)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.BugMinerPlacedItem: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.BugMinerPlacedItem();
+                        if (object.id != null)
+                            message.id = String(object.id);
+                        switch (object.type) {
+                        default:
+                            if (typeof object.type === "number") {
+                                message.type = object.type;
+                                break;
+                            }
+                            break;
+                        case "BM_ITEM_NONE":
+                        case 0:
+                            message.type = 0;
+                            break;
+                        case "BM_ITEM_GOLD":
+                        case 1:
+                            message.type = 1;
+                            break;
+                        case "BM_ITEM_BIG_GOLD":
+                        case 2:
+                            message.type = 2;
+                            break;
+                        case "BM_ITEM_DIAMOND":
+                        case 3:
+                            message.type = 3;
+                            break;
+                        case "BM_ITEM_ROCK":
+                        case 4:
+                            message.type = 4;
+                            break;
+                        case "BM_ITEM_MYSTERY_BAG":
+                        case 5:
+                            message.type = 5;
+                            break;
+                        case "BM_ITEM_POISON":
+                        case 6:
+                            message.type = 6;
+                            break;
+                        }
+                        if (object.x != null)
+                            message.x = Number(object.x);
+                        if (object.y != null)
+                            message.y = Number(object.y);
+                        if (object.collected != null)
+                            message.collected = Boolean(object.collected);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a BugMinerPlacedItem message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @static
+                     * @param {com.triforge.protocol.proto.BugMinerPlacedItem} message BugMinerPlacedItem
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BugMinerPlacedItem.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.id = "";
+                            object.type = options.enums === String ? "BM_ITEM_NONE" : 0;
+                            object.x = 0;
+                            object.y = 0;
+                            object.collected = false;
+                        }
+                        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                            object.id = message.id;
+                        if (message.type != null && Object.hasOwnProperty.call(message, "type"))
+                            object.type = options.enums === String ? $root.com.triforge.protocol.proto.BugMinerItemType[message.type] === undefined ? message.type : $root.com.triforge.protocol.proto.BugMinerItemType[message.type] : message.type;
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
+                        if (message.collected != null && Object.hasOwnProperty.call(message, "collected"))
+                            object.collected = message.collected;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this BugMinerPlacedItem to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BugMinerPlacedItem.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BugMinerPlacedItem
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BugMinerPlacedItem.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BugMinerPlacedItem";
+                    };
+
+                    return BugMinerPlacedItem;
+                })();
+
+                proto.BugMinerHookData = (function() {
+
+                    /**
+                     * Properties of a BugMinerHookData.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBugMinerHookData
+                     * @property {number|null} [angle] BugMinerHookData angle
+                     * @property {number|null} [length] BugMinerHookData length
+                     * @property {com.triforge.protocol.proto.BugMinerHookState|null} [state] BugMinerHookData state
+                     * @property {string|null} [attachedItemId] BugMinerHookData attachedItemId
+                     * @property {number|null} [swingDirection] BugMinerHookData swingDirection
+                     */
+
+                    /**
+                     * Constructs a new BugMinerHookData.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BugMinerHookData.
+                     * @implements IBugMinerHookData
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBugMinerHookData=} [properties] Properties to set
+                     */
+                    function BugMinerHookData(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * BugMinerHookData angle.
+                     * @member {number} angle
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @instance
+                     */
+                    BugMinerHookData.prototype.angle = 0;
+
+                    /**
+                     * BugMinerHookData length.
+                     * @member {number} length
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @instance
+                     */
+                    BugMinerHookData.prototype.length = 0;
+
+                    /**
+                     * BugMinerHookData state.
+                     * @member {com.triforge.protocol.proto.BugMinerHookState} state
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @instance
+                     */
+                    BugMinerHookData.prototype.state = 0;
+
+                    /**
+                     * BugMinerHookData attachedItemId.
+                     * @member {string} attachedItemId
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @instance
+                     */
+                    BugMinerHookData.prototype.attachedItemId = "";
+
+                    /**
+                     * BugMinerHookData swingDirection.
+                     * @member {number} swingDirection
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @instance
+                     */
+                    BugMinerHookData.prototype.swingDirection = 0;
+
+                    /**
+                     * Creates a new BugMinerHookData instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerHookData=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BugMinerHookData} BugMinerHookData instance
+                     */
+                    BugMinerHookData.create = function create(properties) {
+                        return new BugMinerHookData(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerHookData message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerHookData.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerHookData} message BugMinerHookData message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerHookData.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.angle != null && Object.hasOwnProperty.call(message, "angle"))
+                            writer.uint32(/* id 1, wireType 5 =*/13).float(message.angle);
+                        if (message.length != null && Object.hasOwnProperty.call(message, "length"))
+                            writer.uint32(/* id 2, wireType 5 =*/21).float(message.length);
+                        if (message.state != null && Object.hasOwnProperty.call(message, "state"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.state);
+                        if (message.attachedItemId != null && Object.hasOwnProperty.call(message, "attachedItemId"))
+                            writer.uint32(/* id 4, wireType 2 =*/34).string(message.attachedItemId);
+                        if (message.swingDirection != null && Object.hasOwnProperty.call(message, "swingDirection"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.swingDirection);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerHookData message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerHookData.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerHookData} message BugMinerHookData message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerHookData.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BugMinerHookData message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BugMinerHookData} BugMinerHookData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerHookData.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BugMinerHookData();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.angle = reader.float();
+                                    break;
+                                }
+                            case 2: {
+                                    message.length = reader.float();
+                                    break;
+                                }
+                            case 3: {
+                                    message.state = reader.int32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.attachedItemId = reader.string();
+                                    break;
+                                }
+                            case 5: {
+                                    message.swingDirection = reader.int32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BugMinerHookData message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BugMinerHookData} BugMinerHookData
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerHookData.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BugMinerHookData message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BugMinerHookData.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.angle != null && Object.hasOwnProperty.call(message, "angle"))
+                            if (typeof message.angle !== "number")
+                                return "angle: number expected";
+                        if (message.length != null && Object.hasOwnProperty.call(message, "length"))
+                            if (typeof message.length !== "number")
+                                return "length: number expected";
+                        if (message.state != null && Object.hasOwnProperty.call(message, "state"))
+                            switch (message.state) {
+                            default:
+                                return "state: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                                break;
+                            }
+                        if (message.attachedItemId != null && Object.hasOwnProperty.call(message, "attachedItemId"))
+                            if (!$util.isString(message.attachedItemId))
+                                return "attachedItemId: string expected";
+                        if (message.swingDirection != null && Object.hasOwnProperty.call(message, "swingDirection"))
+                            if (!$util.isInteger(message.swingDirection))
+                                return "swingDirection: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BugMinerHookData message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BugMinerHookData} BugMinerHookData
+                     */
+                    BugMinerHookData.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BugMinerHookData)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.BugMinerHookData: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.BugMinerHookData();
+                        if (object.angle != null)
+                            message.angle = Number(object.angle);
+                        if (object.length != null)
+                            message.length = Number(object.length);
+                        switch (object.state) {
+                        default:
+                            if (typeof object.state === "number") {
+                                message.state = object.state;
+                                break;
+                            }
+                            break;
+                        case "BM_HOOK_RETRACTED":
+                        case 0:
+                            message.state = 0;
+                            break;
+                        case "BM_HOOK_SWINGING":
+                        case 1:
+                            message.state = 1;
+                            break;
+                        case "BM_HOOK_EXTENDING":
+                        case 2:
+                            message.state = 2;
+                            break;
+                        case "BM_HOOK_RETRACTING":
+                        case 3:
+                            message.state = 3;
+                            break;
+                        }
+                        if (object.attachedItemId != null)
+                            message.attachedItemId = String(object.attachedItemId);
+                        if (object.swingDirection != null)
+                            message.swingDirection = object.swingDirection | 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a BugMinerHookData message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @static
+                     * @param {com.triforge.protocol.proto.BugMinerHookData} message BugMinerHookData
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BugMinerHookData.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.angle = 0;
+                            object.length = 0;
+                            object.state = options.enums === String ? "BM_HOOK_RETRACTED" : 0;
+                            object.attachedItemId = "";
+                            object.swingDirection = 0;
+                        }
+                        if (message.angle != null && Object.hasOwnProperty.call(message, "angle"))
+                            object.angle = options.json && !isFinite(message.angle) ? String(message.angle) : message.angle;
+                        if (message.length != null && Object.hasOwnProperty.call(message, "length"))
+                            object.length = options.json && !isFinite(message.length) ? String(message.length) : message.length;
+                        if (message.state != null && Object.hasOwnProperty.call(message, "state"))
+                            object.state = options.enums === String ? $root.com.triforge.protocol.proto.BugMinerHookState[message.state] === undefined ? message.state : $root.com.triforge.protocol.proto.BugMinerHookState[message.state] : message.state;
+                        if (message.attachedItemId != null && Object.hasOwnProperty.call(message, "attachedItemId"))
+                            object.attachedItemId = message.attachedItemId;
+                        if (message.swingDirection != null && Object.hasOwnProperty.call(message, "swingDirection"))
+                            object.swingDirection = message.swingDirection;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this BugMinerHookData to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BugMinerHookData.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BugMinerHookData
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BugMinerHookData
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BugMinerHookData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BugMinerHookData";
+                    };
+
+                    return BugMinerHookData;
+                })();
+
+                proto.BugMinerChallengeState = (function() {
+
+                    /**
+                     * Properties of a BugMinerChallengeState.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBugMinerChallengeState
+                     * @property {number|Long|null} [designerId] BugMinerChallengeState designerId
+                     * @property {number|Long|null} [playerId] BugMinerChallengeState playerId
+                     * @property {string|null} [levelId] BugMinerChallengeState levelId
+                     * @property {number|null} [timeLimit] BugMinerChallengeState timeLimit
+                     * @property {number|null} [timeRemaining] BugMinerChallengeState timeRemaining
+                     * @property {number|null} [targetScore] BugMinerChallengeState targetScore
+                     * @property {number|null} [score] BugMinerChallengeState score
+                     * @property {Array.<com.triforge.protocol.proto.IBugMinerPlacedItem>|null} [items] BugMinerChallengeState items
+                     * @property {com.triforge.protocol.proto.IBugMinerHookData|null} [hook] BugMinerChallengeState hook
+                     * @property {boolean|null} [setupLocked] BugMinerChallengeState setupLocked
+                     * @property {boolean|null} [finished] BugMinerChallengeState finished
+                     * @property {string|null} [endReason] BugMinerChallengeState endReason
+                     */
+
+                    /**
+                     * Constructs a new BugMinerChallengeState.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BugMinerChallengeState.
+                     * @implements IBugMinerChallengeState
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBugMinerChallengeState=} [properties] Properties to set
+                     */
+                    function BugMinerChallengeState(properties) {
+                        this.items = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * BugMinerChallengeState designerId.
+                     * @member {number|Long} designerId
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.designerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * BugMinerChallengeState playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * BugMinerChallengeState levelId.
+                     * @member {string} levelId
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.levelId = "";
+
+                    /**
+                     * BugMinerChallengeState timeLimit.
+                     * @member {number} timeLimit
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.timeLimit = 0;
+
+                    /**
+                     * BugMinerChallengeState timeRemaining.
+                     * @member {number} timeRemaining
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.timeRemaining = 0;
+
+                    /**
+                     * BugMinerChallengeState targetScore.
+                     * @member {number} targetScore
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.targetScore = 0;
+
+                    /**
+                     * BugMinerChallengeState score.
+                     * @member {number} score
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.score = 0;
+
+                    /**
+                     * BugMinerChallengeState items.
+                     * @member {Array.<com.triforge.protocol.proto.IBugMinerPlacedItem>} items
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.items = $util.emptyArray;
+
+                    /**
+                     * BugMinerChallengeState hook.
+                     * @member {com.triforge.protocol.proto.IBugMinerHookData|null|undefined} hook
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.hook = null;
+
+                    /**
+                     * BugMinerChallengeState setupLocked.
+                     * @member {boolean} setupLocked
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.setupLocked = false;
+
+                    /**
+                     * BugMinerChallengeState finished.
+                     * @member {boolean} finished
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.finished = false;
+
+                    /**
+                     * BugMinerChallengeState endReason.
+                     * @member {string} endReason
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.endReason = "";
+
+                    /**
+                     * Creates a new BugMinerChallengeState instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerChallengeState=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BugMinerChallengeState} BugMinerChallengeState instance
+                     */
+                    BugMinerChallengeState.create = function create(properties) {
+                        return new BugMinerChallengeState(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerChallengeState message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerChallengeState.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerChallengeState} message BugMinerChallengeState message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerChallengeState.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.designerId != null && Object.hasOwnProperty.call(message, "designerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.designerId);
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.playerId);
+                        if (message.levelId != null && Object.hasOwnProperty.call(message, "levelId"))
+                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.levelId);
+                        if (message.timeLimit != null && Object.hasOwnProperty.call(message, "timeLimit"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.timeLimit);
+                        if (message.timeRemaining != null && Object.hasOwnProperty.call(message, "timeRemaining"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.timeRemaining);
+                        if (message.targetScore != null && Object.hasOwnProperty.call(message, "targetScore"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.targetScore);
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.score);
+                        if (message.items != null && message.items.length)
+                            for (let i = 0; i < message.items.length; ++i)
+                                $root.com.triforge.protocol.proto.BugMinerPlacedItem.encode(message.items[i], writer.uint32(/* id 8, wireType 2 =*/66).fork(), q + 1).ldelim();
+                        if (message.hook != null && Object.hasOwnProperty.call(message, "hook"))
+                            $root.com.triforge.protocol.proto.BugMinerHookData.encode(message.hook, writer.uint32(/* id 9, wireType 2 =*/74).fork(), q + 1).ldelim();
+                        if (message.setupLocked != null && Object.hasOwnProperty.call(message, "setupLocked"))
+                            writer.uint32(/* id 10, wireType 0 =*/80).bool(message.setupLocked);
+                        if (message.finished != null && Object.hasOwnProperty.call(message, "finished"))
+                            writer.uint32(/* id 11, wireType 0 =*/88).bool(message.finished);
+                        if (message.endReason != null && Object.hasOwnProperty.call(message, "endReason"))
+                            writer.uint32(/* id 12, wireType 2 =*/98).string(message.endReason);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerChallengeState message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerChallengeState.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerChallengeState} message BugMinerChallengeState message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerChallengeState.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BugMinerChallengeState message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BugMinerChallengeState} BugMinerChallengeState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerChallengeState.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BugMinerChallengeState();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.designerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            case 3: {
+                                    message.levelId = reader.string();
+                                    break;
+                                }
+                            case 4: {
+                                    message.timeLimit = reader.uint32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.timeRemaining = reader.uint32();
+                                    break;
+                                }
+                            case 6: {
+                                    message.targetScore = reader.uint32();
+                                    break;
+                                }
+                            case 7: {
+                                    message.score = reader.uint32();
+                                    break;
+                                }
+                            case 8: {
+                                    if (!(message.items && message.items.length))
+                                        message.items = [];
+                                    message.items.push($root.com.triforge.protocol.proto.BugMinerPlacedItem.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            case 9: {
+                                    message.hook = $root.com.triforge.protocol.proto.BugMinerHookData.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 10: {
+                                    message.setupLocked = reader.bool();
+                                    break;
+                                }
+                            case 11: {
+                                    message.finished = reader.bool();
+                                    break;
+                                }
+                            case 12: {
+                                    message.endReason = reader.string();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BugMinerChallengeState message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BugMinerChallengeState} BugMinerChallengeState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerChallengeState.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BugMinerChallengeState message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BugMinerChallengeState.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.designerId != null && Object.hasOwnProperty.call(message, "designerId"))
+                            if (!$util.isInteger(message.designerId) && !(message.designerId && $util.isInteger(message.designerId.low) && $util.isInteger(message.designerId.high)))
+                                return "designerId: integer|Long expected";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        if (message.levelId != null && Object.hasOwnProperty.call(message, "levelId"))
+                            if (!$util.isString(message.levelId))
+                                return "levelId: string expected";
+                        if (message.timeLimit != null && Object.hasOwnProperty.call(message, "timeLimit"))
+                            if (!$util.isInteger(message.timeLimit))
+                                return "timeLimit: integer expected";
+                        if (message.timeRemaining != null && Object.hasOwnProperty.call(message, "timeRemaining"))
+                            if (!$util.isInteger(message.timeRemaining))
+                                return "timeRemaining: integer expected";
+                        if (message.targetScore != null && Object.hasOwnProperty.call(message, "targetScore"))
+                            if (!$util.isInteger(message.targetScore))
+                                return "targetScore: integer expected";
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            if (!$util.isInteger(message.score))
+                                return "score: integer expected";
+                        if (message.items != null && Object.hasOwnProperty.call(message, "items")) {
+                            if (!Array.isArray(message.items))
+                                return "items: array expected";
+                            for (let i = 0; i < message.items.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.BugMinerPlacedItem.verify(message.items[i], long + 1);
+                                if (error)
+                                    return "items." + error;
+                            }
+                        }
+                        if (message.hook != null && Object.hasOwnProperty.call(message, "hook")) {
+                            let error = $root.com.triforge.protocol.proto.BugMinerHookData.verify(message.hook, long + 1);
+                            if (error)
+                                return "hook." + error;
+                        }
+                        if (message.setupLocked != null && Object.hasOwnProperty.call(message, "setupLocked"))
+                            if (typeof message.setupLocked !== "boolean")
+                                return "setupLocked: boolean expected";
+                        if (message.finished != null && Object.hasOwnProperty.call(message, "finished"))
+                            if (typeof message.finished !== "boolean")
+                                return "finished: boolean expected";
+                        if (message.endReason != null && Object.hasOwnProperty.call(message, "endReason"))
+                            if (!$util.isString(message.endReason))
+                                return "endReason: string expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BugMinerChallengeState message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BugMinerChallengeState} BugMinerChallengeState
+                     */
+                    BugMinerChallengeState.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BugMinerChallengeState)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.BugMinerChallengeState: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.BugMinerChallengeState();
+                        if (object.designerId != null)
+                            if ($util.Long)
+                                message.designerId = $util.Long.fromValue(object.designerId, true);
+                            else if (typeof object.designerId === "string")
+                                message.designerId = parseInt(object.designerId, 10);
+                            else if (typeof object.designerId === "number")
+                                message.designerId = object.designerId;
+                            else if (typeof object.designerId === "object")
+                                message.designerId = new $util.LongBits(object.designerId.low >>> 0, object.designerId.high >>> 0).toNumber(true);
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        if (object.levelId != null)
+                            message.levelId = String(object.levelId);
+                        if (object.timeLimit != null)
+                            message.timeLimit = object.timeLimit >>> 0;
+                        if (object.timeRemaining != null)
+                            message.timeRemaining = object.timeRemaining >>> 0;
+                        if (object.targetScore != null)
+                            message.targetScore = object.targetScore >>> 0;
+                        if (object.score != null)
+                            message.score = object.score >>> 0;
+                        if (object.items) {
+                            if (!Array.isArray(object.items))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerChallengeState.items: array expected");
+                            message.items = [];
+                            for (let i = 0; i < object.items.length; ++i) {
+                                if (!$util.isObject(object.items[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.BugMinerChallengeState.items: object expected");
+                                message.items[i] = $root.com.triforge.protocol.proto.BugMinerPlacedItem.fromObject(object.items[i], long + 1);
+                            }
+                        }
+                        if (object.hook != null) {
+                            if (!$util.isObject(object.hook))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerChallengeState.hook: object expected");
+                            message.hook = $root.com.triforge.protocol.proto.BugMinerHookData.fromObject(object.hook, long + 1);
+                        }
+                        if (object.setupLocked != null)
+                            message.setupLocked = Boolean(object.setupLocked);
+                        if (object.finished != null)
+                            message.finished = Boolean(object.finished);
+                        if (object.endReason != null)
+                            message.endReason = String(object.endReason);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a BugMinerChallengeState message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @static
+                     * @param {com.triforge.protocol.proto.BugMinerChallengeState} message BugMinerChallengeState
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BugMinerChallengeState.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.items = [];
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.designerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.designerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.levelId = "";
+                            object.timeLimit = 0;
+                            object.timeRemaining = 0;
+                            object.targetScore = 0;
+                            object.score = 0;
+                            object.hook = null;
+                            object.setupLocked = false;
+                            object.finished = false;
+                            object.endReason = "";
+                        }
+                        if (message.designerId != null && Object.hasOwnProperty.call(message, "designerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.designerId = typeof message.designerId === "number" ? BigInt(message.designerId) : $util.Long.fromBits(message.designerId.low >>> 0, message.designerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.designerId === "number")
+                                object.designerId = options.longs === String ? String(message.designerId) : message.designerId;
+                            else
+                                object.designerId = options.longs === String ? $util.Long.prototype.toString.call(message.designerId) : options.longs === Number ? new $util.LongBits(message.designerId.low >>> 0, message.designerId.high >>> 0).toNumber(true) : message.designerId;
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        if (message.levelId != null && Object.hasOwnProperty.call(message, "levelId"))
+                            object.levelId = message.levelId;
+                        if (message.timeLimit != null && Object.hasOwnProperty.call(message, "timeLimit"))
+                            object.timeLimit = message.timeLimit;
+                        if (message.timeRemaining != null && Object.hasOwnProperty.call(message, "timeRemaining"))
+                            object.timeRemaining = message.timeRemaining;
+                        if (message.targetScore != null && Object.hasOwnProperty.call(message, "targetScore"))
+                            object.targetScore = message.targetScore;
+                        if (message.score != null && Object.hasOwnProperty.call(message, "score"))
+                            object.score = message.score;
+                        if (message.items && message.items.length) {
+                            object.items = [];
+                            for (let j = 0; j < message.items.length; ++j)
+                                object.items[j] = $root.com.triforge.protocol.proto.BugMinerPlacedItem.toObject(message.items[j], options, q + 1);
+                        }
+                        if (message.hook != null && Object.hasOwnProperty.call(message, "hook"))
+                            object.hook = $root.com.triforge.protocol.proto.BugMinerHookData.toObject(message.hook, options, q + 1);
+                        if (message.setupLocked != null && Object.hasOwnProperty.call(message, "setupLocked"))
+                            object.setupLocked = message.setupLocked;
+                        if (message.finished != null && Object.hasOwnProperty.call(message, "finished"))
+                            object.finished = message.finished;
+                        if (message.endReason != null && Object.hasOwnProperty.call(message, "endReason"))
+                            object.endReason = message.endReason;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this BugMinerChallengeState to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BugMinerChallengeState.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BugMinerChallengeState
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BugMinerChallengeState.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BugMinerChallengeState";
+                    };
+
+                    return BugMinerChallengeState;
+                })();
+
+                proto.BugMinerBoardState = (function() {
+
+                    /**
+                     * Properties of a BugMinerBoardState.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBugMinerBoardState
+                     * @property {com.triforge.protocol.proto.IBugMinerChallengeState|null} [forPlayerA] BugMinerBoardState forPlayerA
+                     * @property {com.triforge.protocol.proto.IBugMinerChallengeState|null} [forPlayerB] BugMinerBoardState forPlayerB
+                     */
+
+                    /**
+                     * Constructs a new BugMinerBoardState.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BugMinerBoardState.
+                     * @implements IBugMinerBoardState
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBugMinerBoardState=} [properties] Properties to set
+                     */
+                    function BugMinerBoardState(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * BugMinerBoardState forPlayerA.
+                     * @member {com.triforge.protocol.proto.IBugMinerChallengeState|null|undefined} forPlayerA
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @instance
+                     */
+                    BugMinerBoardState.prototype.forPlayerA = null;
+
+                    /**
+                     * BugMinerBoardState forPlayerB.
+                     * @member {com.triforge.protocol.proto.IBugMinerChallengeState|null|undefined} forPlayerB
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @instance
+                     */
+                    BugMinerBoardState.prototype.forPlayerB = null;
+
+                    /**
+                     * Creates a new BugMinerBoardState instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerBoardState=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BugMinerBoardState} BugMinerBoardState instance
+                     */
+                    BugMinerBoardState.create = function create(properties) {
+                        return new BugMinerBoardState(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerBoardState message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerBoardState.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerBoardState} message BugMinerBoardState message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerBoardState.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.forPlayerA != null && Object.hasOwnProperty.call(message, "forPlayerA"))
+                            $root.com.triforge.protocol.proto.BugMinerChallengeState.encode(message.forPlayerA, writer.uint32(/* id 1, wireType 2 =*/10).fork(), q + 1).ldelim();
+                        if (message.forPlayerB != null && Object.hasOwnProperty.call(message, "forPlayerB"))
+                            $root.com.triforge.protocol.proto.BugMinerChallengeState.encode(message.forPlayerB, writer.uint32(/* id 2, wireType 2 =*/18).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerBoardState message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerBoardState.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerBoardState} message BugMinerBoardState message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerBoardState.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BugMinerBoardState message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BugMinerBoardState} BugMinerBoardState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerBoardState.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BugMinerBoardState();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.forPlayerA = $root.com.triforge.protocol.proto.BugMinerChallengeState.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 2: {
+                                    message.forPlayerB = $root.com.triforge.protocol.proto.BugMinerChallengeState.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BugMinerBoardState message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BugMinerBoardState} BugMinerBoardState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerBoardState.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BugMinerBoardState message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BugMinerBoardState.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.forPlayerA != null && Object.hasOwnProperty.call(message, "forPlayerA")) {
+                            let error = $root.com.triforge.protocol.proto.BugMinerChallengeState.verify(message.forPlayerA, long + 1);
+                            if (error)
+                                return "forPlayerA." + error;
+                        }
+                        if (message.forPlayerB != null && Object.hasOwnProperty.call(message, "forPlayerB")) {
+                            let error = $root.com.triforge.protocol.proto.BugMinerChallengeState.verify(message.forPlayerB, long + 1);
+                            if (error)
+                                return "forPlayerB." + error;
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BugMinerBoardState message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BugMinerBoardState} BugMinerBoardState
+                     */
+                    BugMinerBoardState.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BugMinerBoardState)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.BugMinerBoardState: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.BugMinerBoardState();
+                        if (object.forPlayerA != null) {
+                            if (!$util.isObject(object.forPlayerA))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerBoardState.forPlayerA: object expected");
+                            message.forPlayerA = $root.com.triforge.protocol.proto.BugMinerChallengeState.fromObject(object.forPlayerA, long + 1);
+                        }
+                        if (object.forPlayerB != null) {
+                            if (!$util.isObject(object.forPlayerB))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerBoardState.forPlayerB: object expected");
+                            message.forPlayerB = $root.com.triforge.protocol.proto.BugMinerChallengeState.fromObject(object.forPlayerB, long + 1);
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a BugMinerBoardState message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @static
+                     * @param {com.triforge.protocol.proto.BugMinerBoardState} message BugMinerBoardState
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BugMinerBoardState.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.forPlayerA = null;
+                            object.forPlayerB = null;
+                        }
+                        if (message.forPlayerA != null && Object.hasOwnProperty.call(message, "forPlayerA"))
+                            object.forPlayerA = $root.com.triforge.protocol.proto.BugMinerChallengeState.toObject(message.forPlayerA, options, q + 1);
+                        if (message.forPlayerB != null && Object.hasOwnProperty.call(message, "forPlayerB"))
+                            object.forPlayerB = $root.com.triforge.protocol.proto.BugMinerChallengeState.toObject(message.forPlayerB, options, q + 1);
+                        return object;
+                    };
+
+                    /**
+                     * Converts this BugMinerBoardState to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BugMinerBoardState.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BugMinerBoardState
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BugMinerBoardState.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BugMinerBoardState";
+                    };
+
+                    return BugMinerBoardState;
+                })();
+
+                proto.BMSetLevelCommand = (function() {
+
+                    /**
+                     * Properties of a BMSetLevelCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBMSetLevelCommand
+                     * @property {string|null} [levelId] BMSetLevelCommand levelId
+                     */
+
+                    /**
+                     * Constructs a new BMSetLevelCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BMSetLevelCommand.
+                     * @implements IBMSetLevelCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBMSetLevelCommand=} [properties] Properties to set
+                     */
+                    function BMSetLevelCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * BMSetLevelCommand levelId.
+                     * @member {string} levelId
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @instance
+                     */
+                    BMSetLevelCommand.prototype.levelId = "";
+
+                    /**
+                     * Creates a new BMSetLevelCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMSetLevelCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BMSetLevelCommand} BMSetLevelCommand instance
+                     */
+                    BMSetLevelCommand.create = function create(properties) {
+                        return new BMSetLevelCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BMSetLevelCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMSetLevelCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMSetLevelCommand} message BMSetLevelCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMSetLevelCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.levelId != null && Object.hasOwnProperty.call(message, "levelId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.levelId);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BMSetLevelCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMSetLevelCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMSetLevelCommand} message BMSetLevelCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMSetLevelCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BMSetLevelCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BMSetLevelCommand} BMSetLevelCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMSetLevelCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BMSetLevelCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.levelId = reader.string();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BMSetLevelCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BMSetLevelCommand} BMSetLevelCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMSetLevelCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BMSetLevelCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BMSetLevelCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.levelId != null && Object.hasOwnProperty.call(message, "levelId"))
+                            if (!$util.isString(message.levelId))
+                                return "levelId: string expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BMSetLevelCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BMSetLevelCommand} BMSetLevelCommand
+                     */
+                    BMSetLevelCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BMSetLevelCommand)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.BMSetLevelCommand: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.BMSetLevelCommand();
+                        if (object.levelId != null)
+                            message.levelId = String(object.levelId);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a BMSetLevelCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.BMSetLevelCommand} message BMSetLevelCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BMSetLevelCommand.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults)
+                            object.levelId = "";
+                        if (message.levelId != null && Object.hasOwnProperty.call(message, "levelId"))
+                            object.levelId = message.levelId;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this BMSetLevelCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BMSetLevelCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BMSetLevelCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BMSetLevelCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BMSetLevelCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BMSetLevelCommand";
+                    };
+
+                    return BMSetLevelCommand;
+                })();
+
+                proto.BMSetTimeLimitCommand = (function() {
+
+                    /**
+                     * Properties of a BMSetTimeLimitCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBMSetTimeLimitCommand
+                     * @property {number|null} [timeLimit] BMSetTimeLimitCommand timeLimit
+                     */
+
+                    /**
+                     * Constructs a new BMSetTimeLimitCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BMSetTimeLimitCommand.
+                     * @implements IBMSetTimeLimitCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBMSetTimeLimitCommand=} [properties] Properties to set
+                     */
+                    function BMSetTimeLimitCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * BMSetTimeLimitCommand timeLimit.
+                     * @member {number} timeLimit
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @instance
+                     */
+                    BMSetTimeLimitCommand.prototype.timeLimit = 0;
+
+                    /**
+                     * Creates a new BMSetTimeLimitCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMSetTimeLimitCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BMSetTimeLimitCommand} BMSetTimeLimitCommand instance
+                     */
+                    BMSetTimeLimitCommand.create = function create(properties) {
+                        return new BMSetTimeLimitCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BMSetTimeLimitCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMSetTimeLimitCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMSetTimeLimitCommand} message BMSetTimeLimitCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMSetTimeLimitCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.timeLimit != null && Object.hasOwnProperty.call(message, "timeLimit"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.timeLimit);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BMSetTimeLimitCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMSetTimeLimitCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMSetTimeLimitCommand} message BMSetTimeLimitCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMSetTimeLimitCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BMSetTimeLimitCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BMSetTimeLimitCommand} BMSetTimeLimitCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMSetTimeLimitCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BMSetTimeLimitCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.timeLimit = reader.uint32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BMSetTimeLimitCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BMSetTimeLimitCommand} BMSetTimeLimitCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMSetTimeLimitCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BMSetTimeLimitCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BMSetTimeLimitCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.timeLimit != null && Object.hasOwnProperty.call(message, "timeLimit"))
+                            if (!$util.isInteger(message.timeLimit))
+                                return "timeLimit: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BMSetTimeLimitCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BMSetTimeLimitCommand} BMSetTimeLimitCommand
+                     */
+                    BMSetTimeLimitCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BMSetTimeLimitCommand)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.BMSetTimeLimitCommand: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.BMSetTimeLimitCommand();
+                        if (object.timeLimit != null)
+                            message.timeLimit = object.timeLimit >>> 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a BMSetTimeLimitCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.BMSetTimeLimitCommand} message BMSetTimeLimitCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BMSetTimeLimitCommand.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults)
+                            object.timeLimit = 0;
+                        if (message.timeLimit != null && Object.hasOwnProperty.call(message, "timeLimit"))
+                            object.timeLimit = message.timeLimit;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this BMSetTimeLimitCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BMSetTimeLimitCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BMSetTimeLimitCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BMSetTimeLimitCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BMSetTimeLimitCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BMSetTimeLimitCommand";
+                    };
+
+                    return BMSetTimeLimitCommand;
+                })();
+
+                proto.BMPlaceItemCommand = (function() {
+
+                    /**
+                     * Properties of a BMPlaceItemCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBMPlaceItemCommand
+                     * @property {string|null} [itemId] BMPlaceItemCommand itemId
+                     * @property {number|null} [x] BMPlaceItemCommand x
+                     * @property {number|null} [y] BMPlaceItemCommand y
+                     */
+
+                    /**
+                     * Constructs a new BMPlaceItemCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BMPlaceItemCommand.
+                     * @implements IBMPlaceItemCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBMPlaceItemCommand=} [properties] Properties to set
+                     */
+                    function BMPlaceItemCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * BMPlaceItemCommand itemId.
+                     * @member {string} itemId
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @instance
+                     */
+                    BMPlaceItemCommand.prototype.itemId = "";
+
+                    /**
+                     * BMPlaceItemCommand x.
+                     * @member {number} x
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @instance
+                     */
+                    BMPlaceItemCommand.prototype.x = 0;
+
+                    /**
+                     * BMPlaceItemCommand y.
+                     * @member {number} y
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @instance
+                     */
+                    BMPlaceItemCommand.prototype.y = 0;
+
+                    /**
+                     * Creates a new BMPlaceItemCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMPlaceItemCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BMPlaceItemCommand} BMPlaceItemCommand instance
+                     */
+                    BMPlaceItemCommand.create = function create(properties) {
+                        return new BMPlaceItemCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BMPlaceItemCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMPlaceItemCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMPlaceItemCommand} message BMPlaceItemCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMPlaceItemCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.itemId != null && Object.hasOwnProperty.call(message, "itemId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.itemId);
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            writer.uint32(/* id 2, wireType 5 =*/21).float(message.x);
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            writer.uint32(/* id 3, wireType 5 =*/29).float(message.y);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BMPlaceItemCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMPlaceItemCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMPlaceItemCommand} message BMPlaceItemCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMPlaceItemCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BMPlaceItemCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BMPlaceItemCommand} BMPlaceItemCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMPlaceItemCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BMPlaceItemCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.itemId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.x = reader.float();
+                                    break;
+                                }
+                            case 3: {
+                                    message.y = reader.float();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BMPlaceItemCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BMPlaceItemCommand} BMPlaceItemCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMPlaceItemCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BMPlaceItemCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BMPlaceItemCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.itemId != null && Object.hasOwnProperty.call(message, "itemId"))
+                            if (!$util.isString(message.itemId))
+                                return "itemId: string expected";
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            if (typeof message.x !== "number")
+                                return "x: number expected";
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            if (typeof message.y !== "number")
+                                return "y: number expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BMPlaceItemCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BMPlaceItemCommand} BMPlaceItemCommand
+                     */
+                    BMPlaceItemCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BMPlaceItemCommand)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.BMPlaceItemCommand: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.BMPlaceItemCommand();
+                        if (object.itemId != null)
+                            message.itemId = String(object.itemId);
+                        if (object.x != null)
+                            message.x = Number(object.x);
+                        if (object.y != null)
+                            message.y = Number(object.y);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a BMPlaceItemCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.BMPlaceItemCommand} message BMPlaceItemCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BMPlaceItemCommand.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.itemId = "";
+                            object.x = 0;
+                            object.y = 0;
+                        }
+                        if (message.itemId != null && Object.hasOwnProperty.call(message, "itemId"))
+                            object.itemId = message.itemId;
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this BMPlaceItemCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BMPlaceItemCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BMPlaceItemCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BMPlaceItemCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BMPlaceItemCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BMPlaceItemCommand";
+                    };
+
+                    return BMPlaceItemCommand;
+                })();
+
+                proto.BMAutoArrangeCommand = (function() {
+
+                    /**
+                     * Properties of a BMAutoArrangeCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBMAutoArrangeCommand
+                     */
+
+                    /**
+                     * Constructs a new BMAutoArrangeCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BMAutoArrangeCommand.
+                     * @implements IBMAutoArrangeCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBMAutoArrangeCommand=} [properties] Properties to set
+                     */
+                    function BMAutoArrangeCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Creates a new BMAutoArrangeCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BMAutoArrangeCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMAutoArrangeCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BMAutoArrangeCommand} BMAutoArrangeCommand instance
+                     */
+                    BMAutoArrangeCommand.create = function create(properties) {
+                        return new BMAutoArrangeCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BMAutoArrangeCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMAutoArrangeCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BMAutoArrangeCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMAutoArrangeCommand} message BMAutoArrangeCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMAutoArrangeCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BMAutoArrangeCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMAutoArrangeCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMAutoArrangeCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMAutoArrangeCommand} message BMAutoArrangeCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMAutoArrangeCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BMAutoArrangeCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BMAutoArrangeCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BMAutoArrangeCommand} BMAutoArrangeCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMAutoArrangeCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BMAutoArrangeCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BMAutoArrangeCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMAutoArrangeCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BMAutoArrangeCommand} BMAutoArrangeCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMAutoArrangeCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BMAutoArrangeCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BMAutoArrangeCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BMAutoArrangeCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BMAutoArrangeCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BMAutoArrangeCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BMAutoArrangeCommand} BMAutoArrangeCommand
+                     */
+                    BMAutoArrangeCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BMAutoArrangeCommand)
+                            return object;
+                        return new $root.com.triforge.protocol.proto.BMAutoArrangeCommand();
+                    };
+
+                    /**
+                     * Creates a plain object from a BMAutoArrangeCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BMAutoArrangeCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.BMAutoArrangeCommand} message BMAutoArrangeCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BMAutoArrangeCommand.toObject = function toObject() {
+                        return {};
+                    };
+
+                    /**
+                     * Converts this BMAutoArrangeCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BMAutoArrangeCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BMAutoArrangeCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BMAutoArrangeCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BMAutoArrangeCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BMAutoArrangeCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BMAutoArrangeCommand";
+                    };
+
+                    return BMAutoArrangeCommand;
+                })();
+
+                proto.BMLockMapCommand = (function() {
+
+                    /**
+                     * Properties of a BMLockMapCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBMLockMapCommand
+                     */
+
+                    /**
+                     * Constructs a new BMLockMapCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BMLockMapCommand.
+                     * @implements IBMLockMapCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBMLockMapCommand=} [properties] Properties to set
+                     */
+                    function BMLockMapCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Creates a new BMLockMapCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BMLockMapCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMLockMapCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BMLockMapCommand} BMLockMapCommand instance
+                     */
+                    BMLockMapCommand.create = function create(properties) {
+                        return new BMLockMapCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BMLockMapCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMLockMapCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BMLockMapCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMLockMapCommand} message BMLockMapCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMLockMapCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BMLockMapCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMLockMapCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMLockMapCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMLockMapCommand} message BMLockMapCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMLockMapCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BMLockMapCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BMLockMapCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BMLockMapCommand} BMLockMapCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMLockMapCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BMLockMapCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BMLockMapCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMLockMapCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BMLockMapCommand} BMLockMapCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMLockMapCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BMLockMapCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BMLockMapCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BMLockMapCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BMLockMapCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BMLockMapCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BMLockMapCommand} BMLockMapCommand
+                     */
+                    BMLockMapCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BMLockMapCommand)
+                            return object;
+                        return new $root.com.triforge.protocol.proto.BMLockMapCommand();
+                    };
+
+                    /**
+                     * Creates a plain object from a BMLockMapCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BMLockMapCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.BMLockMapCommand} message BMLockMapCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BMLockMapCommand.toObject = function toObject() {
+                        return {};
+                    };
+
+                    /**
+                     * Converts this BMLockMapCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BMLockMapCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BMLockMapCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BMLockMapCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BMLockMapCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BMLockMapCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BMLockMapCommand";
+                    };
+
+                    return BMLockMapCommand;
+                })();
+
+                proto.BMFireHookCommand = (function() {
+
+                    /**
+                     * Properties of a BMFireHookCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBMFireHookCommand
+                     */
+
+                    /**
+                     * Constructs a new BMFireHookCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BMFireHookCommand.
+                     * @implements IBMFireHookCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBMFireHookCommand=} [properties] Properties to set
+                     */
+                    function BMFireHookCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Creates a new BMFireHookCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BMFireHookCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMFireHookCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BMFireHookCommand} BMFireHookCommand instance
+                     */
+                    BMFireHookCommand.create = function create(properties) {
+                        return new BMFireHookCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BMFireHookCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMFireHookCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BMFireHookCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMFireHookCommand} message BMFireHookCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMFireHookCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BMFireHookCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMFireHookCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMFireHookCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMFireHookCommand} message BMFireHookCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMFireHookCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BMFireHookCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BMFireHookCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BMFireHookCommand} BMFireHookCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMFireHookCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BMFireHookCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BMFireHookCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMFireHookCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BMFireHookCommand} BMFireHookCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMFireHookCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BMFireHookCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BMFireHookCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BMFireHookCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BMFireHookCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BMFireHookCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BMFireHookCommand} BMFireHookCommand
+                     */
+                    BMFireHookCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BMFireHookCommand)
+                            return object;
+                        return new $root.com.triforge.protocol.proto.BMFireHookCommand();
+                    };
+
+                    /**
+                     * Creates a plain object from a BMFireHookCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BMFireHookCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.BMFireHookCommand} message BMFireHookCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BMFireHookCommand.toObject = function toObject() {
+                        return {};
+                    };
+
+                    /**
+                     * Converts this BMFireHookCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BMFireHookCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BMFireHookCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BMFireHookCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BMFireHookCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BMFireHookCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BMFireHookCommand";
+                    };
+
+                    return BMFireHookCommand;
+                })();
+
+                proto.BugMinerMessage = (function() {
+
+                    /**
+                     * Properties of a BugMinerMessage.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBugMinerMessage
+                     * @property {com.triforge.protocol.proto.IBMSetLevelCommand|null} [setLevel] BugMinerMessage setLevel
+                     * @property {com.triforge.protocol.proto.IBMSetTimeLimitCommand|null} [setTimeLimit] BugMinerMessage setTimeLimit
+                     * @property {com.triforge.protocol.proto.IBMPlaceItemCommand|null} [placeItem] BugMinerMessage placeItem
+                     * @property {com.triforge.protocol.proto.IBMAutoArrangeCommand|null} [autoArrange] BugMinerMessage autoArrange
+                     * @property {com.triforge.protocol.proto.IBMLockMapCommand|null} [lockMap] BugMinerMessage lockMap
+                     * @property {com.triforge.protocol.proto.IBMFireHookCommand|null} [fireHook] BugMinerMessage fireHook
+                     * @property {com.triforge.protocol.proto.IBugMinerBoardState|null} [board] BugMinerMessage board
+                     */
+
+                    /**
+                     * Constructs a new BugMinerMessage.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BugMinerMessage.
+                     * @implements IBugMinerMessage
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBugMinerMessage=} [properties] Properties to set
+                     */
+                    function BugMinerMessage(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * BugMinerMessage setLevel.
+                     * @member {com.triforge.protocol.proto.IBMSetLevelCommand|null|undefined} setLevel
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    BugMinerMessage.prototype.setLevel = null;
+
+                    /**
+                     * BugMinerMessage setTimeLimit.
+                     * @member {com.triforge.protocol.proto.IBMSetTimeLimitCommand|null|undefined} setTimeLimit
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    BugMinerMessage.prototype.setTimeLimit = null;
+
+                    /**
+                     * BugMinerMessage placeItem.
+                     * @member {com.triforge.protocol.proto.IBMPlaceItemCommand|null|undefined} placeItem
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    BugMinerMessage.prototype.placeItem = null;
+
+                    /**
+                     * BugMinerMessage autoArrange.
+                     * @member {com.triforge.protocol.proto.IBMAutoArrangeCommand|null|undefined} autoArrange
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    BugMinerMessage.prototype.autoArrange = null;
+
+                    /**
+                     * BugMinerMessage lockMap.
+                     * @member {com.triforge.protocol.proto.IBMLockMapCommand|null|undefined} lockMap
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    BugMinerMessage.prototype.lockMap = null;
+
+                    /**
+                     * BugMinerMessage fireHook.
+                     * @member {com.triforge.protocol.proto.IBMFireHookCommand|null|undefined} fireHook
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    BugMinerMessage.prototype.fireHook = null;
+
+                    /**
+                     * BugMinerMessage board.
+                     * @member {com.triforge.protocol.proto.IBugMinerBoardState|null|undefined} board
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    BugMinerMessage.prototype.board = null;
+
+                    // OneOf field names bound to virtual getters and setters
+                    let $oneOfFields;
+
+                    /**
+                     * BugMinerMessage content.
+                     * @member {"setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board"|undefined} content
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    Object.defineProperty(BugMinerMessage.prototype, "content", {
+                        get: $util.oneOfGetter($oneOfFields = ["setLevel", "setTimeLimit", "placeItem", "autoArrange", "lockMap", "fireHook", "board"]),
+                        set: $util.oneOfSetter($oneOfFields)
+                    });
+
+                    /**
+                     * Creates a new BugMinerMessage instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerMessage=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BugMinerMessage} BugMinerMessage instance
+                     */
+                    BugMinerMessage.create = function create(properties) {
+                        return new BugMinerMessage(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerMessage message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerMessage.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerMessage} message BugMinerMessage message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerMessage.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.setLevel != null && Object.hasOwnProperty.call(message, "setLevel"))
+                            $root.com.triforge.protocol.proto.BMSetLevelCommand.encode(message.setLevel, writer.uint32(/* id 1, wireType 2 =*/10).fork(), q + 1).ldelim();
+                        if (message.setTimeLimit != null && Object.hasOwnProperty.call(message, "setTimeLimit"))
+                            $root.com.triforge.protocol.proto.BMSetTimeLimitCommand.encode(message.setTimeLimit, writer.uint32(/* id 2, wireType 2 =*/18).fork(), q + 1).ldelim();
+                        if (message.placeItem != null && Object.hasOwnProperty.call(message, "placeItem"))
+                            $root.com.triforge.protocol.proto.BMPlaceItemCommand.encode(message.placeItem, writer.uint32(/* id 3, wireType 2 =*/26).fork(), q + 1).ldelim();
+                        if (message.autoArrange != null && Object.hasOwnProperty.call(message, "autoArrange"))
+                            $root.com.triforge.protocol.proto.BMAutoArrangeCommand.encode(message.autoArrange, writer.uint32(/* id 4, wireType 2 =*/34).fork(), q + 1).ldelim();
+                        if (message.lockMap != null && Object.hasOwnProperty.call(message, "lockMap"))
+                            $root.com.triforge.protocol.proto.BMLockMapCommand.encode(message.lockMap, writer.uint32(/* id 5, wireType 2 =*/42).fork(), q + 1).ldelim();
+                        if (message.fireHook != null && Object.hasOwnProperty.call(message, "fireHook"))
+                            $root.com.triforge.protocol.proto.BMFireHookCommand.encode(message.fireHook, writer.uint32(/* id 6, wireType 2 =*/50).fork(), q + 1).ldelim();
+                        if (message.board != null && Object.hasOwnProperty.call(message, "board"))
+                            $root.com.triforge.protocol.proto.BugMinerBoardState.encode(message.board, writer.uint32(/* id 7, wireType 2 =*/58).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerMessage message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerMessage.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerMessage} message BugMinerMessage message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerMessage.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BugMinerMessage message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BugMinerMessage} BugMinerMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerMessage.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BugMinerMessage();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.setLevel = $root.com.triforge.protocol.proto.BMSetLevelCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 2: {
+                                    message.setTimeLimit = $root.com.triforge.protocol.proto.BMSetTimeLimitCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 3: {
+                                    message.placeItem = $root.com.triforge.protocol.proto.BMPlaceItemCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 4: {
+                                    message.autoArrange = $root.com.triforge.protocol.proto.BMAutoArrangeCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 5: {
+                                    message.lockMap = $root.com.triforge.protocol.proto.BMLockMapCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 6: {
+                                    message.fireHook = $root.com.triforge.protocol.proto.BMFireHookCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 7: {
+                                    message.board = $root.com.triforge.protocol.proto.BugMinerBoardState.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BugMinerMessage message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BugMinerMessage} BugMinerMessage
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerMessage.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BugMinerMessage message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BugMinerMessage.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        let properties = {};
+                        if (message.setLevel != null && Object.hasOwnProperty.call(message, "setLevel")) {
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BMSetLevelCommand.verify(message.setLevel, long + 1);
+                                if (error)
+                                    return "setLevel." + error;
+                            }
+                        }
+                        if (message.setTimeLimit != null && Object.hasOwnProperty.call(message, "setTimeLimit")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BMSetTimeLimitCommand.verify(message.setTimeLimit, long + 1);
+                                if (error)
+                                    return "setTimeLimit." + error;
+                            }
+                        }
+                        if (message.placeItem != null && Object.hasOwnProperty.call(message, "placeItem")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BMPlaceItemCommand.verify(message.placeItem, long + 1);
+                                if (error)
+                                    return "placeItem." + error;
+                            }
+                        }
+                        if (message.autoArrange != null && Object.hasOwnProperty.call(message, "autoArrange")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BMAutoArrangeCommand.verify(message.autoArrange, long + 1);
+                                if (error)
+                                    return "autoArrange." + error;
+                            }
+                        }
+                        if (message.lockMap != null && Object.hasOwnProperty.call(message, "lockMap")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BMLockMapCommand.verify(message.lockMap, long + 1);
+                                if (error)
+                                    return "lockMap." + error;
+                            }
+                        }
+                        if (message.fireHook != null && Object.hasOwnProperty.call(message, "fireHook")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BMFireHookCommand.verify(message.fireHook, long + 1);
+                                if (error)
+                                    return "fireHook." + error;
+                            }
+                        }
+                        if (message.board != null && Object.hasOwnProperty.call(message, "board")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BugMinerBoardState.verify(message.board, long + 1);
+                                if (error)
+                                    return "board." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BugMinerMessage message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BugMinerMessage} BugMinerMessage
+                     */
+                    BugMinerMessage.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BugMinerMessage)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.BugMinerMessage: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.BugMinerMessage();
+                        if (object.setLevel != null) {
+                            if (!$util.isObject(object.setLevel))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.setLevel: object expected");
+                            message.setLevel = $root.com.triforge.protocol.proto.BMSetLevelCommand.fromObject(object.setLevel, long + 1);
+                        }
+                        if (object.setTimeLimit != null) {
+                            if (!$util.isObject(object.setTimeLimit))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.setTimeLimit: object expected");
+                            message.setTimeLimit = $root.com.triforge.protocol.proto.BMSetTimeLimitCommand.fromObject(object.setTimeLimit, long + 1);
+                        }
+                        if (object.placeItem != null) {
+                            if (!$util.isObject(object.placeItem))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.placeItem: object expected");
+                            message.placeItem = $root.com.triforge.protocol.proto.BMPlaceItemCommand.fromObject(object.placeItem, long + 1);
+                        }
+                        if (object.autoArrange != null) {
+                            if (!$util.isObject(object.autoArrange))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.autoArrange: object expected");
+                            message.autoArrange = $root.com.triforge.protocol.proto.BMAutoArrangeCommand.fromObject(object.autoArrange, long + 1);
+                        }
+                        if (object.lockMap != null) {
+                            if (!$util.isObject(object.lockMap))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.lockMap: object expected");
+                            message.lockMap = $root.com.triforge.protocol.proto.BMLockMapCommand.fromObject(object.lockMap, long + 1);
+                        }
+                        if (object.fireHook != null) {
+                            if (!$util.isObject(object.fireHook))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.fireHook: object expected");
+                            message.fireHook = $root.com.triforge.protocol.proto.BMFireHookCommand.fromObject(object.fireHook, long + 1);
+                        }
+                        if (object.board != null) {
+                            if (!$util.isObject(object.board))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.board: object expected");
+                            message.board = $root.com.triforge.protocol.proto.BugMinerBoardState.fromObject(object.board, long + 1);
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a BugMinerMessage message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @static
+                     * @param {com.triforge.protocol.proto.BugMinerMessage} message BugMinerMessage
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BugMinerMessage.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (message.setLevel != null && Object.hasOwnProperty.call(message, "setLevel")) {
+                            object.setLevel = $root.com.triforge.protocol.proto.BMSetLevelCommand.toObject(message.setLevel, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "setLevel";
+                        }
+                        if (message.setTimeLimit != null && Object.hasOwnProperty.call(message, "setTimeLimit")) {
+                            object.setTimeLimit = $root.com.triforge.protocol.proto.BMSetTimeLimitCommand.toObject(message.setTimeLimit, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "setTimeLimit";
+                        }
+                        if (message.placeItem != null && Object.hasOwnProperty.call(message, "placeItem")) {
+                            object.placeItem = $root.com.triforge.protocol.proto.BMPlaceItemCommand.toObject(message.placeItem, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "placeItem";
+                        }
+                        if (message.autoArrange != null && Object.hasOwnProperty.call(message, "autoArrange")) {
+                            object.autoArrange = $root.com.triforge.protocol.proto.BMAutoArrangeCommand.toObject(message.autoArrange, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "autoArrange";
+                        }
+                        if (message.lockMap != null && Object.hasOwnProperty.call(message, "lockMap")) {
+                            object.lockMap = $root.com.triforge.protocol.proto.BMLockMapCommand.toObject(message.lockMap, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "lockMap";
+                        }
+                        if (message.fireHook != null && Object.hasOwnProperty.call(message, "fireHook")) {
+                            object.fireHook = $root.com.triforge.protocol.proto.BMFireHookCommand.toObject(message.fireHook, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "fireHook";
+                        }
+                        if (message.board != null && Object.hasOwnProperty.call(message, "board")) {
+                            object.board = $root.com.triforge.protocol.proto.BugMinerBoardState.toObject(message.board, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "board";
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this BugMinerMessage to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BugMinerMessage.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BugMinerMessage
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BugMinerMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BugMinerMessage";
+                    };
+
+                    return BugMinerMessage;
                 })();
 
                 return proto;

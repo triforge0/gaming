@@ -37,6 +37,7 @@ message GameMessage {
     ChatCommand chatCommand = 14;
     ChatMessage chatMessage = 15;
     OAnQuanMessage oaq = 16;
+    BugMinerMessage bugminer = 17;
   }
 }
 
@@ -619,5 +620,84 @@ message OAnQuanMessage {
     OAQBoardState board = 2;
     OAQMoveResult moveResult = 3;
     OAQMoveRejected moveRejected = 4;
+  }
+}
+
+// ── BugMiner (Dual Challenge Game) ───────────────────────────────────
+
+enum BugMinerItemType {
+  BM_ITEM_NONE = 0;
+  BM_ITEM_GOLD = 1;
+  BM_ITEM_BIG_GOLD = 2;
+  BM_ITEM_DIAMOND = 3;
+  BM_ITEM_ROCK = 4;
+  BM_ITEM_MYSTERY_BAG = 5;
+  BM_ITEM_POISON = 6;
+}
+
+enum BugMinerHookState {
+  BM_HOOK_RETRACTED = 0;
+  BM_HOOK_SWINGING = 1;
+  BM_HOOK_EXTENDING = 2;
+  BM_HOOK_RETRACTING = 3;
+}
+
+message BugMinerPlacedItem {
+  string id = 1;
+  BugMinerItemType type = 2;
+  float x = 3;
+  float y = 4;
+  bool collected = 5;
+}
+
+message BugMinerHookData {
+  float angle = 1;
+  float length = 2;
+  BugMinerHookState state = 3;
+  string attachedItemId = 4;
+  int32 swingDirection = 5;
+}
+
+message BugMinerChallengeState {
+  uint64 designerId = 1;
+  uint64 playerId = 2;
+  string levelId = 3;
+  uint32 timeLimit = 4;
+  uint32 timeRemaining = 5;
+  uint32 targetScore = 6;
+  uint32 score = 7;
+  repeated BugMinerPlacedItem items = 8;
+  BugMinerHookData hook = 9;
+  bool setupLocked = 10;
+  bool finished = 11;
+  string endReason = 12;
+}
+
+message BugMinerBoardState {
+  BugMinerChallengeState forPlayerA = 1;
+  BugMinerChallengeState forPlayerB = 2;
+}
+
+// Client Commands
+message BMSetLevelCommand { string levelId = 1; }
+message BMSetTimeLimitCommand { uint32 timeLimit = 1; }
+message BMPlaceItemCommand {
+  string itemId = 1;
+  float x = 2;
+  float y = 3;
+}
+message BMAutoArrangeCommand {}
+message BMLockMapCommand {}
+message BMFireHookCommand {}
+
+message BugMinerMessage {
+  oneof content {
+    BMSetLevelCommand setLevel = 1;
+    BMSetTimeLimitCommand setTimeLimit = 2;
+    BMPlaceItemCommand placeItem = 3;
+    BMAutoArrangeCommand autoArrange = 4;
+    BMLockMapCommand lockMap = 5;
+    BMFireHookCommand fireHook = 6;
+    BugMinerBoardState board = 7;
   }
 }

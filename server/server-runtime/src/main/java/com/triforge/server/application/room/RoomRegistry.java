@@ -45,7 +45,17 @@ public final class RoomRegistry {
         if (existing != null) {
             return existing;
         }
-        return ensureRoom(roomId, formatRoomName(roomId));
+
+        String pluginId = defaultPluginId();
+        int delimiterIndex = roomId.indexOf(':');
+        if (delimiterIndex > 0) {
+            String prefix = roomId.substring(0, delimiterIndex);
+            if (GamePlugins.loadAll().stream().anyMatch(p -> p.id().equals(prefix))) {
+                pluginId = prefix;
+            }
+        }
+
+        return ensureRoom(roomId, formatRoomName(roomId), pluginId);
     }
 
     public GameRoom ensureRoom(String roomId, String roomName) {

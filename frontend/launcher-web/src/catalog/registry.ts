@@ -56,6 +56,7 @@ export const REGISTRY: CatalogEntry[] = [
     accent: '#ffcc00',
     pluginId: 'bugminer',
     authorTag: 'Made with love by Trang',
+    badge: 'NEW',
     Art: BugMinerArt,
   },
   {

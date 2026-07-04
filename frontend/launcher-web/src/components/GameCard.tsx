@@ -28,6 +28,7 @@ export function GameCard({ entry, stats }: { entry: CatalogEntry; stats?: Plugin
     <>
       <div className="card-art">
         <Art />
+        {entry.badge && <span className="card-badge">{entry.badge}</span>}
       </div>
       <div className="card-body">
         <div className="card-title-row">

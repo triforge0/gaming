@@ -16,6 +16,8 @@ export interface CatalogEntry {
   comingSoon?: boolean;
   /** Tên tác giả (VD: Made with love by xxx). */
   authorTag?: string;
+  /** Huy hiệu nổi bật (VD: "NEW", "HOT"). */
+  badge?: string;
   Art: ComponentType;
 }
 

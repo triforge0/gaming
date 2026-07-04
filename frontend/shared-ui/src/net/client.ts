@@ -128,9 +128,10 @@ export interface GameClientHandlers {
   onMatchPhaseUpdate?: (update: IMatchPhaseUpdate) => void;
   onMatchResult?: (result: IMatchResult) => void;
   onJoinRejected?: (lobby: IRoomLobbySnapshot | null) => void;
-  onLobbyCommandRejected?: (rejection: ILobbyCommandRejected) => void;
-  onTreasureQuestMessage?: (message: ITreasureQuestMessage) => void;
-  onOAnQuanMessage?: (message: IOAnQuanMessage) => void;
+  onLobbyCommandRejected?: (rejection: com.triforge.protocol.proto.ILobbyCommandRejected) => void;
+  onTreasureQuestMessage?: (message: com.triforge.protocol.proto.ITreasureQuestMessage) => void;
+  onOAnQuanMessage?: (message: com.triforge.protocol.proto.IOAnQuanMessage) => void;
+  onBugMinerMessage?: (message: com.triforge.protocol.proto.IBugMinerMessage) => void;
   onConnected?: () => void;
   onDisconnected?: () => void;
 }
@@ -342,6 +343,14 @@ export class GameClient {
     this.send(GameMessage.create({ lobbyCommand: command }));
   }
 
+  public sendTQMessage(message: com.triforge.protocol.proto.ITreasureQuestMessage): void {
+    this.send(GameMessage.create({ tq: message }));
+  }
+
+  public sendBugMinerMessage(message: com.triforge.protocol.proto.IBugMinerMessage): void {
+    this.send(GameMessage.create({ bugminer: message }));
+  }
+
   private sendTreasureQuest(message: com.triforge.protocol.proto.ITreasureQuestMessage): void {
     this.send(GameMessage.create({ tq: message }));
   }
@@ -419,9 +428,11 @@ export class GameClient {
         this.lastInventory = gameMessage.tq.inventoryUpdate.items;
       }
       this.handlers.onTreasureQuestMessage?.(gameMessage.tq);
-    } else if (gameMessage.oaq) {
-      this.handlers.onOAnQuanMessage?.(gameMessage.oaq);
-    } else if (gameMessage.chatMessage) {
+    } else if (gameMessage.oaq && this.handlers.onOAnQuanMessage) {
+        this.handlers.onOAnQuanMessage(gameMessage.oaq);
+      } else if (gameMessage.bugminer && this.handlers.onBugMinerMessage) {
+        this.handlers.onBugMinerMessage(gameMessage.bugminer);
+      } else if (gameMessage.chatMessage) {
       for (const listener of this.chatListeners) {
         listener(gameMessage.chatMessage);
       }

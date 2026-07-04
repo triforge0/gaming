@@ -42,6 +42,11 @@
 
         <dependency>
             <groupId>com.triforge</groupId>
+            <artifactId>bugminer-game</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
             <artifactId>protocol</artifactId>
         </dependency>
 
