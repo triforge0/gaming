@@ -12,16 +12,21 @@ function sessionId(): string {
   return id;
 }
 
+let presenceDisabled = false;
+
 /** Heartbeat presence — thất bại thì im lặng (server có thể không chạy khi dev). */
 export function startPresenceHeartbeat(appId = 'sudokucube', intervalMs = 25_000): () => void {
   async function beat(): Promise<void> {
-    if (document.hidden) return;
+    if (document.hidden || presenceDisabled) return;
     try {
-      await fetch(`/api/presence/${appId}`, {
+      const res = await fetch(`/api/presence/${appId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId: sessionId() }),
       });
+      if (res.status === 404 || res.status === 405) {
+        presenceDisabled = true;
+      }
     } catch {
       // server offline — bỏ qua
     }

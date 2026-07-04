@@ -59,7 +59,7 @@ export function GameCanvas({ onReady }: { onReady?: (resetCamera: () => void) =>
 
   return (
     <Canvas
-      dpr={[1, 2]}
+      dpr={[1, 1.5]}
       shadows
       camera={{ position: [6, 5, 7], fov: 40 }}
       style={{ background: skin.background }}
@@ -70,7 +70,7 @@ export function GameCanvas({ onReady }: { onReady?: (resetCamera: () => void) =>
       <pointLight position={[-6, 6, -6]} color={skin.lightTints[1]} intensity={40} />
       <pointLight position={[-6, -6, 6]} color={skin.lightTints[2]} intensity={40} />
       <pointLight position={[6, -6, -6]} color={skin.lightTints[3]} intensity={40} />
-      <directionalLight position={[4, 10, 4]} intensity={0.8} castShadow shadow-mapSize={[1024, 1024]} />
+      <directionalLight position={[4, 10, 4]} intensity={0.8} castShadow shadow-mapSize={[512, 512]} />
       <CubeRig skin={skin} idle={status === 'menu'} />
       <Particles skin={skin} />
       <Effects />
