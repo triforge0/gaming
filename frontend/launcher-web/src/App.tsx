@@ -25,7 +25,7 @@ export default function App() {
         <CatalogRow title="MINI APPS" entries={miniApps} status={status} />
       </main>
       <footer className="site-footer">
-        <p>Host chạy authoritative server — mở cùng Wi-Fi, không cần cài đặt.</p>
+        <p>Made with ❤️ just for fun, chill &amp; AI vibes by the HCM team.</p>
       </footer>
     </div>
   );
