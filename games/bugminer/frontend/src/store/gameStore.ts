@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { GameState, ItemType, PlayerRole, RoomSummary } from '../shared';
+import { DEFAULT_FAIR_MODE } from '../shared';
 
 export type Screen = 'home' | 'lobby' | 'setup' | 'game' | 'result';
 
@@ -43,8 +44,9 @@ interface GameStore {
 
 let collectionCounter = 0;
 
-function resolveScreen(state: GameState, currentScreen: Screen): Screen {
+function resolveScreen(state: GameState, currentScreen: Screen, inRoom: boolean): Screen {
   if (state.phase === 'lobby') {
+    if (inRoom) return 'lobby';
     if (currentScreen !== 'lobby' && currentScreen !== 'home') return 'lobby';
     return currentScreen;
   }
@@ -81,10 +83,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   setPlayer: (id, name, roomId, role) => set({ playerId: id, playerName: name, roomId, role }),
   setGameState: (state) => {
-    const { screen } = get();
-    const nextScreen = resolveScreen(state, screen);
+    const { screen, playerId, roomId } = get();
+    const normalized: GameState = {
+      ...state,
+      fairMode: {
+        ...DEFAULT_FAIR_MODE,
+        ...state.fairMode,
+        battle: state.fairMode?.battle ?? false,
+      },
+      battle: state.battle ?? null,
+    };
+    const inRoom = Boolean(playerId && roomId && normalized.roomId === roomId);
+    const nextScreen = resolveScreen(normalized, screen, inRoom);
     set({
-      gameState: state,
+      gameState: normalized,
       ...(nextScreen !== screen ? { screen: nextScreen } : {}),
     });
   },

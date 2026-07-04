@@ -679,6 +679,32 @@ message BugMinerChallengeState {
 message BugMinerBoardState {
   BugMinerChallengeState forPlayerA = 1;
   BugMinerChallengeState forPlayerB = 2;
+  BugMinerFairModeConfig fairMode = 3;
+  BugMinerBattleState battle = 4;
+}
+
+message BugMinerFairModeConfig {
+  bool enabled = 1;
+  bool battle = 2;
+  string levelId = 3;
+  uint32 timeLimit = 4;
+}
+
+message BugMinerBattleState {
+  string levelId = 1;
+  uint32 timeLimit = 2;
+  uint32 timeRemaining = 3;
+  uint32 targetScore = 4;
+  repeated BugMinerPlacedItem items = 5;
+  uint64 playerAId = 6;
+  uint64 playerBId = 7;
+  BugMinerHookData hookA = 8;
+  BugMinerHookData hookB = 9;
+  uint32 scoreA = 10;
+  uint32 scoreB = 11;
+  bool finished = 12;
+  uint64 winnerId = 13;
+  string endReason = 14;
 }
 
 // Client Commands
@@ -692,6 +718,12 @@ message BMPlaceItemCommand {
 message BMAutoArrangeCommand {}
 message BMLockMapCommand {}
 message BMFireHookCommand {}
+message BMConfigureFairModeCommand {
+  optional bool enabled = 1;
+  optional bool battle = 2;
+  optional string levelId = 3;
+  optional uint32 timeLimit = 4;
+}
 
 message BugMinerMessage {
   oneof content {
@@ -702,5 +734,6 @@ message BugMinerMessage {
     BMLockMapCommand lockMap = 5;
     BMFireHookCommand fireHook = 6;
     BugMinerBoardState board = 7;
+    BMConfigureFairModeCommand configureFairMode = 8;
   }
 }

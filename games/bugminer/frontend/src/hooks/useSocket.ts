@@ -1,7 +1,18 @@
 import { useEffect, useRef } from 'react';
 import { GameClient, MatchPhase, toNum } from '@triforge/shared-ui';
-import type { GameState, ItemType, PlayerRole, RoomSummary } from '../shared';
+import type { FairModeConfig, GameState, ItemType, PlayerRole, RoomSummary } from '../shared';
+import { DEFAULT_FAIR_MODE } from '../shared';
 import { useGameStore } from '../store/gameStore';
+
+function mapFairMode(proto?: { enabled?: boolean; battle?: boolean; levelId?: string; timeLimit?: number }): FairModeConfig {
+  if (!proto) return { ...DEFAULT_FAIR_MODE };
+  return {
+    enabled: proto.enabled ?? false,
+    battle: proto.battle ?? false,
+    levelId: proto.levelId || DEFAULT_FAIR_MODE.levelId,
+    timeLimit: proto.timeLimit ?? DEFAULT_FAIR_MODE.timeLimit,
+  };
+}
 
 export function useSocket() {
   const clientRef = useRef<GameClient | null>(null);
@@ -11,25 +22,22 @@ export function useSocket() {
       const res = await fetch('/api/lobby/rooms');
       if (res.ok) {
         const data = await res.json();
-        if (data && data.rooms) {
-          const bugminerRooms = data.rooms
-            .filter((r: any) => r.gamePluginId === 'bugminer')
-            .map((r: any) => {
+        if (data?.rooms) {
+          const bugminerRooms: RoomSummary[] = data.rooms
+            .filter((r: { gamePluginId?: string }) => r.gamePluginId === 'bugminer')
+            .map((r: { roomId: string; roomName?: string; playerCount?: number; maxPlayers?: number }) => {
               let parsedLevelId = 'easy-mine';
               const parts = r.roomId.split(':');
-              if (parts.length >= 3) {
-                parsedLevelId = parts[1];
-              }
-
+              if (parts.length >= 3) parsedLevelId = parts[1];
               return {
                 roomId: r.roomId,
-                name: r.roomName || 'BugMiner Room',
-                players: [], // Not provided by the summary API
                 playerCount: r.playerCount || 0,
                 maxPlayers: r.maxPlayers || 2,
-                hostName: 'Server', // Not provided by the summary API
-                state: 'waiting',
-                levelId: parsedLevelId
+                phase: 'lobby' as const,
+                levelId: parsedLevelId,
+                hostName: 'Server',
+                players: [],
+                fairMode: { ...DEFAULT_FAIR_MODE, levelId: parsedLevelId },
               };
             });
           useGameStore.getState().setAvailableRooms(bugminerRooms);
@@ -44,8 +52,7 @@ export function useSocket() {
 
   useEffect(() => {
     fetchRooms();
-    const intervalId = setInterval(fetchRooms, 5000); // Auto-refresh every 5s
-
+    const intervalId = setInterval(fetchRooms, 5000);
     return () => {
       clearInterval(intervalId);
       clientRef.current?.close();
@@ -54,9 +61,10 @@ export function useSocket() {
 
   const connectToGame = (roomId: string, playerName: string) => {
     if (clientRef.current) return;
-    
-    // Ensure roomId has the bugminer: prefix for the backend, unless it's the exact seeded room 'bugminer'
-    const fullRoomId = (roomId === 'bugminer' || roomId.startsWith('bugminer:')) ? roomId : `bugminer:easy-mine:${roomId}`;
+
+    const fullRoomId = roomId === 'bugminer' || roomId.startsWith('bugminer:')
+      ? roomId
+      : `bugminer:easy-mine:${roomId}`;
 
     const client = new GameClient(fullRoomId, playerName, {
       onDisconnected: () => {
@@ -64,146 +72,162 @@ export function useSocket() {
       },
       onLobbySnapshot: (snapshot) => {
         const { setPlayer, setScreen } = useGameStore.getState();
-        const me = snapshot.players?.find(p => toNum(p.playerId) === client.selfPlayerId);
+        const me = snapshot.players?.find((p) => toNum(p.playerId) === client.selfPlayerId);
         const isHost = me?.isHost ?? false;
-        
+
         setPlayer(
-          client.selfPlayerId.toString(), 
-          playerName, 
-          fullRoomId, 
-          (isHost ? 'host' : 'player') as any
+          client.selfPlayerId.toString(),
+          playerName,
+          fullRoomId,
+          (isHost ? 'host' : 'player') as PlayerRole,
         );
-        
-        // Update URL to include the room ID for easy sharing (without the prefix)
-        const shortRoomId = fullRoomId.startsWith('bugminer:') ? fullRoomId.substring(9) : fullRoomId;
+
+        const shortRoomId = fullRoomId.startsWith('bugminer:') ? fullRoomId.substring(fullRoomId.indexOf(':') + 1) : fullRoomId;
         const url = new URL(window.location.href);
         url.searchParams.set('room', shortRoomId);
         window.history.pushState({}, '', url);
-        
-        // Update GameState with lobby players
+
         const currentState = useGameStore.getState().gameState;
-        const host = snapshot.players?.find(p => p.isHost);
+        const host = snapshot.players?.find((p) => p.isHost);
         useGameStore.getState().setGameState({
           ...(currentState || {}),
+          roomId: fullRoomId,
           phase: snapshot.phase === MatchPhase.LOBBY ? 'lobby' : (currentState?.phase || 'lobby'),
           hostId: host ? toNum(host.playerId).toString() : '',
-          players: snapshot.players?.map(p => ({
+          fairMode: currentState?.fairMode ?? { ...DEFAULT_FAIR_MODE },
+          players: snapshot.players?.map((p) => ({
             id: toNum(p.playerId).toString(),
             name: p.displayName || '',
             role: null,
-            ready: p.ready || false
-          })) || []
-        } as any);
+            ready: p.ready || false,
+          })) || [],
+        } as GameState);
 
-        // MatchPhase mapping
-        if (snapshot.phase === MatchPhase.LOBBY) {
-           setScreen('lobby');
-        } else if (snapshot.phase === MatchPhase.PLAYING) {
-           setScreen('game');
-        }
+        if (snapshot.phase === MatchPhase.LOBBY) setScreen('lobby');
+        else if (snapshot.phase === MatchPhase.PLAYING) setScreen('game');
       },
       onMatchPhaseUpdate: (update) => {
         const { setScreen } = useGameStore.getState();
-        if (update.phase === MatchPhase.LOBBY) {
-           setScreen('lobby');
-        } else if (update.phase === MatchPhase.PLAYING) {
-           // We let the board state determine if it's setup or game
-        } else if (update.phase === MatchPhase.COUNTDOWN) {
-           setScreen('lobby'); // or a countdown screen
-        }
+        if (update.phase === MatchPhase.LOBBY) setScreen('lobby');
+        else if (update.phase === MatchPhase.COUNTDOWN) setScreen('lobby');
       },
       onBugMinerMessage: (message) => {
-        if (message.board) {
-          const current = useGameStore.getState();
-          const pA = message.board.forPlayerA;
-          const pB = message.board.forPlayerB;
-          
-          let phase: any = 'playing';
-          if (!pA?.setupLocked || !pB?.setupLocked) {
-             phase = 'dual_setup';
-          }
-          if (pA?.finished && pB?.finished) {
-             phase = 'finished';
-          }
+        if (!message.board) return;
+        const current = useGameStore.getState();
+        const pA = message.board.forPlayerA;
+        const pB = message.board.forPlayerB;
+        const fairMode = mapFairMode(message.board.fairMode);
 
-          const mapChallengeState = (c: any) => {
-             if (!c) return null;
-             
-             const itemTypeMap: Record<number, string> = {
-                1: 'gold', 2: 'bigGold', 3: 'diamond', 4: 'rock', 5: 'mysteryBag', 6: 'poison',
-                7: 'mouse', 8: 'pig', 9: 'strengthDrink'
-             };
-             
-             const hookStateMap: Record<number, string> = {
-                0: 'swinging', 1: 'swinging', 2: 'extending', 3: 'retracting'
-             };
+        let phase: GameState['phase'] = 'playing';
+        if (!pA?.setupLocked || !pB?.setupLocked) phase = 'dual_setup';
+        if (pA?.finished && pB?.finished) phase = 'finished';
 
-             return {
-                ...c,
-                designerId: String(toNum(c.designerId)),
-                playerId: String(toNum(c.playerId)),
-                items: c.items?.map((item: any) => ({
-                   id: item.id,
-                   type: itemTypeMap[item.type] || 'gold',
-                   position: { x: item.x || 0, y: item.y || 0 },
-                   collected: item.collected || false
-                })) || [],
-                hook: c.hook ? {
-                   ...c.hook,
-                   state: hookStateMap[c.hook.state] || 'swinging'
-                } : { angle: 0, length: 0, state: 'swinging', attachedItemId: null, swingDirection: 1 }
-             };
+        const itemTypeMap: Record<number, ItemType> = {
+          1: 'gold', 2: 'bigGold', 3: 'diamond', 4: 'rock', 5: 'mysteryBag', 6: 'poison',
+          7: 'mouse', 8: 'pig', 9: 'strengthDrink',
+        };
+        const hookStateMap: Record<number, 'swinging' | 'extending' | 'retracting'> = {
+          0: 'swinging', 1: 'swinging', 2: 'extending', 3: 'retracting',
+        };
+
+        const mapChallengeState = (c: typeof pA) => {
+          if (!c) return null;
+          return {
+            designerId: String(toNum(c.designerId)),
+            playerId: String(toNum(c.playerId)),
+            levelId: c.levelId || 'easy-mine',
+            timeLimit: c.timeLimit || 90,
+            timeRemaining: c.timeRemaining || 90,
+            targetScore: c.targetScore || 800,
+            score: c.score || 0,
+            items: c.items?.map((item) => ({
+              id: item.id,
+              type: itemTypeMap[item.type] || 'gold',
+              position: { x: item.x || 0, y: item.y || 0 },
+              collected: item.collected || false,
+            })) || [],
+            hook: c.hook ? {
+              angle: c.hook.angle,
+              length: c.hook.length,
+              state: hookStateMap[c.hook.state] || 'swinging',
+              attachedItemId: c.hook.attachedItemId || null,
+              swingDirection: (c.hook.swingDirection || 1) as 1 | -1,
+            } : { angle: 0, length: 0, state: 'swinging' as const, attachedItemId: null, swingDirection: 1 as const },
+            setupLocked: c.setupLocked || false,
+            finished: c.finished || false,
+            endReason: (c.endReason as GameState['endReason']) || null,
+            strengthBuffRemaining: 0,
           };
+        };
 
-          const newState: any = {
-             ...(current.gameState || {}),
-             phase,
-             challenges: {
-                forPlayerA: mapChallengeState(pA),
-                forPlayerB: mapChallengeState(pB)
-             }
-          };
-          current.setGameState(newState);
-        }
-      }
+        const newState: GameState = {
+          ...(current.gameState || {}),
+          roomId: fullRoomId,
+          phase,
+          fairMode,
+          battle: null,
+          challenges: {
+            forPlayerA: mapChallengeState(pA)!,
+            forPlayerB: mapChallengeState(pB)!,
+          },
+          hostId: current.gameState?.hostId || '',
+          players: current.gameState?.players || [],
+          winnerId: current.gameState?.winnerId ?? null,
+          endReason: current.gameState?.endReason ?? null,
+          countdown: current.gameState?.countdown ?? 0,
+        };
+        current.setGameState(newState);
+      },
     });
-    
+
     client.connect();
     clientRef.current = client;
+  };
+
+  const patchFairMode = (config: Partial<FairModeConfig>) => {
+    const gs = useGameStore.getState().gameState;
+    if (gs) {
+      useGameStore.getState().setGameState({
+        ...gs,
+        fairMode: { ...DEFAULT_FAIR_MODE, ...gs.fairMode, ...config },
+      });
+    }
   };
 
   return {
     emit: () => false,
     createRoom: (playerName: string, levelId: string) => {
       if (clientRef.current) return;
-      
-      const ADJECTIVES = ["LAZY", "CRAZY", "ANGRY", "HAPPY", "SLEEPY", "HUNGRY", "BUGGY", "SUPER", "FAST", "SLOW"];
-      const NOUNS = ["DEV", "QC", "BA", "PM", "CAT", "DOG", "DUCK", "BUG", "CODE", "SERVER"];
-      const randAdj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
-      const randNoun = NOUNS[Math.floor(Math.random() * NOUNS.length)];
-      const num = Math.floor(Math.random() * 100);
-      const id = `${randAdj}-${randNoun}-${num}`;
-      
-      const fullRoomId = `bugminer:${levelId}:${id}`;
-      connectToGame(fullRoomId, playerName);
+      const ADJECTIVES = ['LAZY', 'CRAZY', 'ANGRY', 'HAPPY', 'SLEEPY', 'HUNGRY', 'BUGGY', 'SUPER', 'FAST', 'SLOW'];
+      const NOUNS = ['DEV', 'QC', 'BA', 'PM', 'CAT', 'DOG', 'DUCK', 'BUG', 'CODE', 'SERVER'];
+      const id = `${ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)]}-${NOUNS[Math.floor(Math.random() * NOUNS.length)]}-${Math.floor(Math.random() * 100)}`;
+      connectToGame(`bugminer:${levelId}:${id}`, playerName);
     },
-    joinRoom: (roomId: string, playerName: string) => connectToGame(roomId, playerName),
+    joinRoom: (roomId: string, playerName: string) => {
+      const normalized = roomId.trim();
+      if (!normalized) return;
+      connectToGame(normalized.includes(':') ? normalized : normalized.toUpperCase(), playerName);
+    },
     startGame: () => clientRef.current?.startMatch(),
     setChallengeLevel: (levelId: string) => {
-       clientRef.current?.sendBugMinerMessage({ setLevel: { levelId } });
+      clientRef.current?.sendBugMinerMessage({ setLevel: { levelId } });
     },
     setChallengeTimeLimit: (timeLimit: number) => {
-       clientRef.current?.sendBugMinerMessage({ setTimeLimit: { timeLimit } });
+      clientRef.current?.sendBugMinerMessage({ setTimeLimit: { timeLimit } });
     },
     placeItem: (itemId: string, position: { x: number; y: number }) => {
-       clientRef.current?.sendBugMinerMessage({ placeItem: { itemId, x: position.x, y: position.y } });
+      clientRef.current?.sendBugMinerMessage({ placeItem: { itemId, x: position.x, y: position.y } });
     },
     lockMap: () => clientRef.current?.sendBugMinerMessage({ lockMap: {} }),
     autoArrange: () => clientRef.current?.sendBugMinerMessage({ autoArrange: {} }),
     fireHook: () => clientRef.current?.sendBugMinerMessage({ fireHook: {} }),
-    pause: (paused: boolean) => { /* not implemented in proto */ },
+    pause: (_paused: boolean) => { /* not implemented in proto */ },
     restart: () => { /* not implemented in proto */ },
     leave: () => clientRef.current?.close(),
     refreshRoomList: fetchRooms,
+    configureFairMode: (config: Partial<FairModeConfig>) => {
+      patchFairMode(config);
+      clientRef.current?.sendBugMinerMessage({ configureFairMode: config });
+    },
   };
 }

@@ -225,6 +225,9 @@ public class BugMinerGame implements Game {
         long p2 = pids.size() > 1 ? pids.get(1) : 0;
         
         board.init(p1, p2);
+        if (board.isFairModeActive()) {
+            board.beginFairMode(host().roomId());
+        }
         broadcastBoardState();
         
         logger.info("BugMiner match started in room '{}' ({} players)", host().roomId(), lobby.playerCount());
@@ -316,15 +319,28 @@ public class BugMinerGame implements Game {
         
         ChallengeInstance c;
         switch (bm.getContentCase()) {
+            case CONFIGUREFAIRMODE -> {
+                if (matchPhase.phase() != MatchPhase.LOBBY || !lobby.isHost(playerId)) break;
+                BMConfigureFairModeCommand cmd = bm.getConfigureFairMode();
+                board.fairMode().applyPartial(
+                        cmd.hasEnabled() ? cmd.getEnabled() : null,
+                        cmd.hasBattle() ? cmd.getBattle() : null,
+                        cmd.hasLevelId() ? cmd.getLevelId() : null,
+                        cmd.hasTimeLimit() ? cmd.getTimeLimit() : null);
+                broadcastBoardState();
+            }
             case SETLEVEL -> {
+                if (board.isFairModeActive()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.setLevel(bm.getSetLevel().getLevelId())) broadcastBoardState();
             }
             case SETTIMELIMIT -> {
+                if (board.isFairModeActive()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.setTimeLimit(bm.getSetTimeLimit().getTimeLimit())) broadcastBoardState();
             }
             case PLACEITEM -> {
+                if (board.isFairModeActive()) break;
                 c = board.getChallengeForPlayer(playerId);
                 // We need to parse ItemType here
                 BugMinerItemType type = BugMinerItemType.BM_ITEM_NONE;
@@ -336,10 +352,12 @@ public class BugMinerGame implements Game {
                 }
             }
             case AUTOARRANGE -> {
+                if (board.isFairModeActive()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.autoArrange(playerId)) broadcastBoardState();
             }
             case LOCKMAP -> {
+                if (board.isFairModeActive()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.lockSetup(playerId)) broadcastBoardState();
             }

@@ -1,73 +1,58 @@
 import { useState } from 'react';
-import { getLevelById, LEVELS } from '../shared';
+import { DEFAULT_FAIR_MODE, getLevelById, getRoomSetupMode, LEVELS } from '../shared';
 import { useGameStore } from '../store/gameStore';
 
 interface Props {
   socket: ReturnType<typeof import('../hooks/useSocket').useSocket>;
 }
 
-const STORAGE_KEY = 'triforge.bugminer.v1';
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+function roomModeLabel(fairMode = DEFAULT_FAIR_MODE): string {
+  const mode = getRoomSetupMode(fairMode);
+  if (mode === 'free') return '🎮 Free setup';
+  const level = getLevelById(fairMode.levelId);
+  if (mode === 'battle') {
+    return `⚔️ Battle · ${level.name} · ${formatTime(fairMode.timeLimit)} · Shared screen`;
+  }
+  return `⚖️ Fair · ${level.name} · ${formatTime(fairMode.timeLimit)}`;
+}
 
 export default function HomeScreen({ socket }: Props) {
-  const [name, setName] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed?.name) return parsed.name;
-      }
-    } catch (e) {
-      // ignore
-    }
-    const rand = Math.floor(Math.random() * 9000) + 1000;
-    return `Miner${rand}`;
-  });
-  
-  // Read initial room ID from URL param if available
-  const initialRoomId = new URLSearchParams(window.location.search).get('room') || '';
-  const [roomId, setRoomId] = useState(initialRoomId);
-  
+  const [name, setName] = useState('');
+  const [roomId, setRoomId] = useState('');
   const [levelId, setLevelId] = useState('easy-mine');
+  const [modeFilter, setModeFilter] = useState<'all' | 'free' | 'fair' | 'battle'>('all');
   const availableRooms = useGameStore((s) => s.availableRooms);
   const connected = useGameStore((s) => s.connected);
 
-  const saveName = (newName: string) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, name: newName }));
-    } catch (e) {
-      // ignore
-    }
-  };
-
   const handleCreate = () => {
     if (!name.trim()) return;
-    saveName(name.trim());
     useGameStore.setState({ playerName: name.trim() });
     socket.createRoom(name.trim(), levelId);
   };
 
   const handleJoin = (targetRoomId?: string) => {
     const id = (targetRoomId ?? roomId).trim().toUpperCase();
-    if (!name.trim() || !id) return;
-    saveName(name.trim());
+    if (!name.trim()) {
+      useGameStore.getState().setError('Nhập tên của bạn trước khi vào phòng.');
+      setTimeout(() => useGameStore.getState().setError(null), 4000);
+      return;
+    }
+    if (!id) return;
     useGameStore.setState({ playerName: name.trim() });
     socket.joinRoom(id, name.trim());
   };
 
-  const handleAutoJoin = () => {
-    if (!name.trim()) return;
-    saveName(name.trim());
-    useGameStore.setState({ playerName: name.trim() });
-    
-    // Find an open room that matches the currently selected levelId
-    const openRoom = availableRooms.find(r => r.playerCount < r.maxPlayers && r.levelId === levelId);
-    
-    if (openRoom) {
-      socket.joinRoom(openRoom.roomId, name.trim());
-    } else {
-      socket.createRoom(name.trim(), levelId);
-    }
-  };
+  const filteredRooms = availableRooms.filter((room) => {
+    const mode = getRoomSetupMode(room.fairMode ?? DEFAULT_FAIR_MODE);
+    if (modeFilter === 'all') return true;
+    return mode === modeFilter;
+  });
 
   return (
     <div className="home-screen">
@@ -102,15 +87,11 @@ export default function HomeScreen({ socket }: Props) {
             </div>
           </div>
 
-          <button type="button" className="btn btn-primary" onClick={handleCreate} style={{ width: '100%', marginBottom: '8px' }}>
+          <button type="button" className="btn btn-primary" onClick={handleCreate} style={{ width: '100%' }}>
             Tạo phòng mới
           </button>
-          
-          <button type="button" className="btn btn-secondary" onClick={handleAutoJoin} style={{ width: '100%' }}>
-            Chơi ngay (Auto Join)
-          </button>
 
-          <div className="home-join-row" style={{ marginTop: '16px' }}>
+          <div className="home-join-row">
             <input
               className="input-field"
               placeholder="Room ID..."
@@ -137,30 +118,65 @@ export default function HomeScreen({ socket }: Props) {
             </button>
           </div>
 
-          {availableRooms.length === 0 ? (
+          <div className="home-room-filters">
+            {(['all', 'free', 'fair', 'battle'] as const).map((f) => (
+              <button
+                key={f}
+                type="button"
+                className={`home-room-filter ${modeFilter === f ? 'active' : ''} ${f === 'battle' ? 'battle' : ''}`}
+                onClick={() => setModeFilter(f)}
+              >
+                {f === 'all' ? 'Tất cả' : f === 'free' ? '🎮 Free' : f === 'fair' ? '⚖️ Fair' : '⚔️ Battle'}
+              </button>
+            ))}
+          </div>
+
+          {connected && (
+            <p className="home-server-hint">
+              Server: <code>{window.location.origin}</code>
+              {' · '}
+              Máy khác phải mở <strong>cùng URL</strong> (không dùng localhost nếu không phải máy host).
+            </p>
+          )}
+
+          {filteredRooms.length === 0 ? (
             <p className="home-room-empty">
-              {connected ? 'Chưa có phòng trống. Tạo phòng mới hoặc chờ người khác.' : 'Đang kết nối server...'}
+              {connected
+                ? (availableRooms.length === 0
+                  ? 'Chưa có phòng trống. Tạo phòng mới hoặc chờ người khác.'
+                  : 'Không có phòng nào khớp bộ lọc.')
+                : 'Đang kết nối server...'}
             </p>
           ) : (
             <ul className="home-room-list">
-              {availableRooms.map((room) => {
-                const level = getLevelById(room.levelId);
+              {filteredRooms.map((room) => {
+                const fair = room.fairMode ?? DEFAULT_FAIR_MODE;
+                const setupMode = getRoomSetupMode(fair);
                 const slotsLeft = room.maxPlayers - room.playerCount;
                 return (
                   <li key={room.roomId} className="home-room-card">
-                    <div className="home-room-info">
-                      <span className="home-room-id">{room.roomId}</span>
-                      <span className="home-room-meta">{level.name}</span>
-                      <span className="home-room-meta">
-                        Host: {room.hostName} · {room.playerCount}/{room.maxPlayers} người
-                      </span>
-                    </div>
+                    <button
+                      type="button"
+                      className="home-room-card-main"
+                      onClick={() => handleJoin(room.roomId)}
+                      disabled={slotsLeft <= 0}
+                    >
+                      <div className="home-room-info">
+                        <span className="home-room-id">{room.roomId}</span>
+                        <span className={`home-room-mode ${setupMode}`}>
+                          {roomModeLabel(fair)}
+                        </span>
+                        <span className="home-room-meta">
+                          Host: {room.hostName} · {room.playerCount}/{room.maxPlayers} người
+                        </span>
+                      </div>
+                    </button>
                     <button
                       type="button"
                       className="btn btn-primary home-room-join"
                       onClick={() => handleJoin(room.roomId)}
-                      disabled={!name.trim() || slotsLeft <= 0}
-                      title={!name.trim() ? 'Nhập tên trước' : 'Vào phòng'}
+                      disabled={slotsLeft <= 0}
+                      title={slotsLeft <= 0 ? 'Phòng đầy' : 'Vào phòng'}
                     >
                       Vào ({slotsLeft} slot)
                     </button>

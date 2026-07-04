@@ -166,6 +166,40 @@ public class ChallengeInstance {
         setupLocked = true;
         return true;
     }
+
+    /** Fair mode: apply pre-built layout and skip manual setup. */
+    public void applyFairLayout(String levelId, int timeLimitSeconds, List<PlacedItem> layout) {
+        setLevel(levelId);
+        this.timeLimit = Math.max(30, Math.min(300, timeLimitSeconds));
+        this.timeRemaining = this.timeLimit;
+        items.clear();
+        for (PlacedItem src : layout) {
+            PlacedItem copy = new PlacedItem(src.id, src.type);
+            copy.x = src.x;
+            copy.y = src.y;
+            copy.collected = false;
+            copy.moving = src.moving;
+            copy.vx = src.vx;
+            copy.vy = src.vy;
+            items.add(copy);
+        }
+        setupLocked = true;
+    }
+
+    public List<PlacedItem> copyItemsLayout() {
+        List<PlacedItem> copies = new ArrayList<>();
+        for (PlacedItem item : items) {
+            PlacedItem copy = new PlacedItem(item.id, item.type);
+            copy.x = item.x;
+            copy.y = item.y;
+            copy.collected = item.collected;
+            copy.moving = item.moving;
+            copy.vx = item.vx;
+            copy.vy = item.vy;
+            copies.add(copy);
+        }
+        return copies;
+    }
     
     public boolean fireHook(long socketId) {
         if (socketId != playerId || finished) return false;

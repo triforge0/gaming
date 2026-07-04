@@ -2,6 +2,7 @@ import {
   LEVELS,
   TIME_LIMIT_MAX,
   TIME_LIMIT_MIN,
+  DEFAULT_FAIR_MODE,
   getChallengeDesignedBy,
   getChallengeForPlayer,
   getLevelById,
@@ -52,6 +53,9 @@ export default function SetupScreen({ socket }: Props) {
   const ui = getSetupUiState(myDesign, oppDesign);
   const opponentName = getOpponentName(gameState, playerId);
   const level = getLevelById(myDesign.levelId);
+  const fairMode = gameState.fairMode ?? DEFAULT_FAIR_MODE;
+  const fairActive = fairMode.enabled;
+  const fairLevel = fairActive ? getLevelById(fairMode.levelId) : null;
 
   const placeAt = (itemId: string, x: number, y: number) => {
     socket.placeItem(itemId, { x, y });
@@ -106,9 +110,15 @@ export default function SetupScreen({ socket }: Props) {
             ⏳ Đã lock — đang chờ {opponentName} hoàn tất setup...
           </div>
         )}
+        {fairActive && fairLevel && (
+          <div className="setup-fair-banner" role="status">
+            ⚖️ Fair mode — {fairLevel.name} · {formatTime(fairMode.timeLimit)} · Target {fairLevel.targetScore}
+            <span className="setup-fair-hint"> (Level &amp; time cố định — chỉ bố trí vật phẩm)</span>
+          </div>
+        )}
       </header>
 
-      {ui.canEdit && (
+      {ui.canEdit && !fairActive && (
         <div className="setup-toolbar">
           <span className="setup-toolbar-label">Level:</span>
           {LEVELS.map((l) => (
@@ -169,7 +179,11 @@ export default function SetupScreen({ socket }: Props) {
             onDragStart={handleDragStart}
           />
           <div className="setup-actions">
-            <p className="setup-hint">Kéo thả vật phẩm · 🪤 Bẫy chuột = đối thủ thua ngay</p>
+            <p className="setup-hint">
+              {fairActive
+                ? 'Fair mode: kéo thả hoặc Auto Arrange · 🪤 Bẫy chuột = thua · 🐭🐷 di chuyển · 🧃 Nước tăng lực'
+                : 'Kéo thả vật phẩm · Vàng/đá có kích thước khác nhau · 🐭🐷 di chuyển · 🧃 kéo nhanh hơn'}
+            </p>
             <div className="setup-action-btns">
               <button
                 type="button"
