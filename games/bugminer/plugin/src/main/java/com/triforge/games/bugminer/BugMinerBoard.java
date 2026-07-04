@@ -31,8 +31,8 @@ public class BugMinerBoard {
     }
     
     public ChallengeInstance getChallengeForPlayer(long playerId) {
-        if (challengeA != null && challengeA.designerId == playerId) return challengeB; // player is designer, so they interact with B's challenge
-        if (challengeB != null && challengeB.designerId == playerId) return challengeA;
+        if (challengeA != null && challengeA.designerId == playerId) return challengeA;
+        if (challengeB != null && challengeB.designerId == playerId) return challengeB;
         return null;
     }
     
