@@ -14,16 +14,24 @@ export function useSocket() {
         if (data && data.rooms) {
           const bugminerRooms = data.rooms
             .filter((r: any) => r.gamePluginId === 'bugminer')
-            .map((r: any) => ({
-              roomId: r.roomId,
-              name: r.roomName || 'BugMiner Room',
-              players: [], // Not provided by the summary API
-              playerCount: r.playerCount || 0,
-              maxPlayers: r.maxPlayers || 2,
-              hostName: 'Server', // Not provided by the summary API
-              state: 'waiting',
-              levelId: '1'
-            }));
+            .map((r: any) => {
+              let parsedLevelId = 'easy-mine';
+              const parts = r.roomId.split(':');
+              if (parts.length >= 3) {
+                parsedLevelId = parts[1];
+              }
+
+              return {
+                roomId: r.roomId,
+                name: r.roomName || 'BugMiner Room',
+                players: [], // Not provided by the summary API
+                playerCount: r.playerCount || 0,
+                maxPlayers: r.maxPlayers || 2,
+                hostName: 'Server', // Not provided by the summary API
+                state: 'waiting',
+                levelId: parsedLevelId
+              };
+            });
           useGameStore.getState().setAvailableRooms(bugminerRooms);
         }
       }
@@ -47,8 +55,8 @@ export function useSocket() {
   const connectToGame = (roomId: string, playerName: string) => {
     if (clientRef.current) return;
     
-    // Ensure roomId has the bugminer: prefix for the backend
-    const fullRoomId = roomId.startsWith('bugminer:') ? roomId : `bugminer:${roomId}`;
+    // Ensure roomId has the bugminer: prefix for the backend, unless it's the exact seeded room 'bugminer'
+    const fullRoomId = (roomId === 'bugminer' || roomId.startsWith('bugminer:')) ? roomId : `bugminer:easy-mine:${roomId}`;
 
     const client = new GameClient(fullRoomId, playerName, {
       onDisconnected: () => {
@@ -91,9 +99,10 @@ export function useSocket() {
   return {
     emit: () => false,
     createRoom: (playerName: string, levelId: string) => {
-      // Generate a random 4-character string
-      const randomId = Math.random().toString(36).substring(2, 6).toUpperCase();
-      connectToGame(randomId, playerName);
+      if (clientRef.current) return;
+      const id = Math.random().toString(36).substring(2, 6).toUpperCase();
+      const fullRoomId = `bugminer:${levelId}:${id}`;
+      connectToGame(fullRoomId, playerName);
     },
     joinRoom: (roomId: string, playerName: string) => connectToGame(roomId, playerName),
     startGame: () => clientRef.current?.startMatch(),

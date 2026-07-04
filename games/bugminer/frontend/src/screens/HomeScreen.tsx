@@ -36,7 +36,10 @@ export default function HomeScreen({ socket }: Props) {
     if (!name.trim()) return;
     localStorage.setItem('triforge.sudokucube.v1', name.trim());
     useGameStore.setState({ playerName: name.trim() });
-    const openRoom = availableRooms.find(r => r.playerCount < r.maxPlayers);
+    
+    // Find an open room that matches the currently selected levelId
+    const openRoom = availableRooms.find(r => r.playerCount < r.maxPlayers && r.levelId === levelId);
+    
     if (openRoom) {
       socket.joinRoom(openRoom.roomId, name.trim());
     } else {
