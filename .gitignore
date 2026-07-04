@@ -40,6 +40,7 @@ Thumbs.db
 # Local tooling
 .claude/
 .cursor/
+.worktrees/
 
 # Logs
 *.log
