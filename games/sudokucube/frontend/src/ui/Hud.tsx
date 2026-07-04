@@ -21,6 +21,7 @@ export function Hud({ onOpenDrawer }: { onOpenDrawer: () => void }) {
         <span>🧩 Mini Sudoku Cube</span>
         <span>
           ⭐ {score.toLocaleString('vi-VN')}
+          <button onClick={useGame.getState().togglePause} style={{ marginLeft: 10, background: 'none', border: 'none', fontSize: 16, cursor: 'pointer' }}>⏸️</button>
           <button onClick={onOpenDrawer} style={{ marginLeft: 10, background: 'none', border: 'none', fontSize: 16, cursor: 'pointer' }}>🎨</button>
         </span>
       </header>
