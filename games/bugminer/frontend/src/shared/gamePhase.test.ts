@@ -25,6 +25,16 @@ describe('resolveGamePhase', () => {
     expect(resolveGamePhase(fair, null, finished, finished)).toBe('finished');
   });
 
+  it('finishes immediately when one player hits target', () => {
+    const target = { setupLocked: true, finished: true, endReason: 'target' };
+    const playing = { setupLocked: true, finished: false, endReason: null };
+    expect(resolveGamePhase(DEFAULT_FAIR_MODE, null, target, playing)).toBe('finished');
+  });
+
+  it('finishes when winnerId is set on board', () => {
+    expect(resolveGamePhase(DEFAULT_FAIR_MODE, null, locked, locked, 0, false, '42')).toBe('finished');
+  });
+
   it('paused during active play', () => {
     const fair = { ...DEFAULT_FAIR_MODE, enabled: true };
     expect(resolveGamePhase(fair, null, locked, locked, 0, true)).toBe('paused');

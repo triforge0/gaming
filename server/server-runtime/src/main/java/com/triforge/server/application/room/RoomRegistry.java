@@ -2,6 +2,8 @@ package com.triforge.server.application.room;
 
 import com.triforge.engine.game.GamePlugin;
 import com.triforge.engine.game.GamePlugins;
+import com.triforge.protocol.proto.LobbyPlayer;
+import com.triforge.protocol.proto.RoomLobbySnapshot;
 
 import java.util.Collection;
 import java.util.List;
@@ -133,14 +135,35 @@ public final class RoomRegistry {
 
     private RoomSummary toSummary(String roomId, GameRoom room) {
         GamePlugin plugin = room.plugin();
+        String hostDisplayName = "";
+        try {
+            RoomLobbySnapshot snapshot = room.game().toLobbySnapshot(room);
+            for (LobbyPlayer player : snapshot.getPlayersList()) {
+                if (player.getIsHost()) {
+                    hostDisplayName = player.getDisplayName();
+                    break;
+                }
+            }
+        } catch (RuntimeException ignored) {
+            // Best-effort for lobby browser; room may still be starting.
+        }
+        int maxPlayers = maxPlayersFor(plugin.id());
         return new RoomSummary(
                 roomId,
                 roomNames.getOrDefault(roomId, formatRoomName(roomId)),
                 room.connectedClientCount(),
-                DEFAULT_MAX_PLAYERS,
+                maxPlayers,
                 plugin.id(),
-                plugin.displayName()
+                plugin.displayName(),
+                hostDisplayName
         );
+    }
+
+    private static int maxPlayersFor(String pluginId) {
+        if ("bugminer".equals(pluginId)) {
+            return 2;
+        }
+        return DEFAULT_MAX_PLAYERS;
     }
 
     private static String formatRoomName(String roomId) {
@@ -162,7 +185,18 @@ public final class RoomRegistry {
             int playerCount,
             int maxPlayers,
             String gamePluginId,
-            String gameDisplayName
+            String gameDisplayName,
+            String hostDisplayName
     ) {
+        public RoomSummary(
+                String roomId,
+                String roomName,
+                int playerCount,
+                int maxPlayers,
+                String gamePluginId,
+                String gameDisplayName
+        ) {
+            this(roomId, roomName, playerCount, maxPlayers, gamePluginId, gameDisplayName, "");
+        }
     }
 }

@@ -6,6 +6,17 @@ public record RoomSummary(
         int playerCount,
         int maxPlayers,
         String gamePluginId,
-        String gameDisplayName
+        String gameDisplayName,
+        String hostDisplayName
 ) {
+    public RoomSummary(
+            String roomId,
+            String roomName,
+            int playerCount,
+            int maxPlayers,
+            String gamePluginId,
+            String gameDisplayName
+    ) {
+        this(roomId, roomName, playerCount, maxPlayers, gamePluginId, gameDisplayName, "");
+    }
 }

@@ -68,6 +68,14 @@ public class BugMinerGame implements Game {
     public void handleJoinRequest(String requestedName, Channel channel) {
         Long existingPlayerId = lobby.getPlayerIdByName(requestedName);
         if (existingPlayerId != null) {
+            if (host().sessions().isConnected(existingPlayerId)) {
+                JoinResponse response = host().broadcaster()
+                        .rejectedJoinResponseBuilder(toLobbySnapshot(host()))
+                        .build();
+                host().broadcaster().sendJoinResponse(channel, response);
+                logger.info("Rejected duplicate name '{}' in room '{}'", requestedName, host().roomId());
+                return;
+            }
             host().sessions().register(existingPlayerId, channel);
             logger.info("Player '{}' reconnected as playerId={}", requestedName, existingPlayerId);
             
@@ -86,6 +94,15 @@ public class BugMinerGame implements Game {
                     .rejectedJoinResponseBuilder(toLobbySnapshot(host()))
                     .build();
             host().broadcaster().sendJoinResponse(channel, response);
+            return;
+        }
+
+        if (lobby.playerCount() >= BugMinerLobby.MAX_PLAYERS) {
+            JoinResponse response = host().broadcaster()
+                    .rejectedJoinResponseBuilder(toLobbySnapshot(host()))
+                    .build();
+            host().broadcaster().sendJoinResponse(channel, response);
+            logger.info("Rejected join for '{}' — room full ({})", requestedName, host().roomId());
             return;
         }
 
@@ -255,11 +272,13 @@ public class BugMinerGame implements Game {
             board.tick(1f / 60f, true);
             if (board.battleArena != null && board.battleArena.isFinished()) {
                 board.setMatchOutcome(board.battleArena.winnerId(), board.battleArena.toProto().getEndReason());
+                broadcastBoardState();
                 endMatch();
                 return;
             }
             if (checkChallengeWinConditions()) {
                 board.setMatchOutcome(board.resolveDualWinner(), board.resolveDualEndReason());
+                broadcastBoardState();
                 endMatch();
                 return;
             }
@@ -273,10 +292,8 @@ public class BugMinerGame implements Game {
         }
         ChallengeInstance a = board.challengeA;
         ChallengeInstance b = board.challengeB;
-        if (!a.isFinished() && !b.isFinished()) return false;
 
-        if ("target".equals(a.endReason())) return true;
-        if ("target".equals(b.endReason())) return true;
+        if ("target".equals(a.endReason()) || "target".equals(b.endReason())) return true;
         if ("poison".equals(a.endReason()) || "poison".equals(b.endReason())) return true;
         return a.isFinished() && b.isFinished();
     }
