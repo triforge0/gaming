@@ -5,7 +5,6 @@ import com.triforge.engine.game.GamePlugins;
 import com.triforge.engine.match.MatchPhase;
 import com.triforge.protocol.proto.GameMessage;
 import com.triforge.protocol.proto.LobbyCommand;
-import com.triforge.protocol.proto.SetReadyAction;
 import io.netty.channel.embedded.EmbeddedChannel;
 import org.junit.jupiter.api.Test;
 
@@ -15,16 +14,41 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 final class BugMinerGameTest {
 
     @Test
-    void joinReadyAndStartMatch() {
+    void twoPlayersJoinStaysInLobbyUntilHostStarts() {
         BugMinerGame game = new BugMinerGame();
         BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
         game.bind(host);
 
         game.handleJoinRequest("Alice", new EmbeddedChannel());
-        game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
-                .setSetReady(SetReadyAction.newBuilder().setReady(true))
+        game.handleJoinRequest("Bob", new EmbeddedChannel());
+
+        assertEquals(MatchPhase.LOBBY, game.matchPhase());
+    }
+
+    @Test
+    void nonHostCannotStartMatch() {
+        BugMinerGame game = new BugMinerGame();
+        BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+        game.bind(host);
+
+        game.handleJoinRequest("Alice", new EmbeddedChannel());
+        game.handleJoinRequest("Bob", new EmbeddedChannel());
+
+        game.handleLobbyCommand(2L, LobbyCommand.newBuilder()
+                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
                 .build());
 
+        assertEquals(MatchPhase.LOBBY, game.matchPhase());
+    }
+
+    @Test
+    void hostStartsMatchWithTwoPlayers() {
+        BugMinerGame game = new BugMinerGame();
+        BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+        game.bind(host);
+
+        game.handleJoinRequest("Alice", new EmbeddedChannel());
+        game.handleJoinRequest("Bob", new EmbeddedChannel());
         assertEquals(MatchPhase.LOBBY, game.matchPhase());
 
         game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
@@ -47,13 +71,10 @@ final class BugMinerGameTest {
         // 1. Two players join
         game.handleJoinRequest("Alice", new EmbeddedChannel()); // player 1
         game.handleJoinRequest("Bob", new EmbeddedChannel());   // player 2
+        assertEquals(MatchPhase.LOBBY, game.matchPhase());
 
-        // Mark ready
         game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
-                .setSetReady(SetReadyAction.newBuilder().setReady(true))
-                .build());
-        game.handleLobbyCommand(2L, LobbyCommand.newBuilder()
-                .setSetReady(SetReadyAction.newBuilder().setReady(true))
+                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
                 .build());
 
         // Fast forward countdown
@@ -129,12 +150,8 @@ final class BugMinerGameTest {
         game.handleJoinRequest("Alice", new EmbeddedChannel()); // 1L
         game.handleJoinRequest("Bob", new EmbeddedChannel());   // 2L
 
-        // Mark ready
         game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
-                .setSetReady(SetReadyAction.newBuilder().setReady(true))
-                .build());
-        game.handleLobbyCommand(2L, LobbyCommand.newBuilder()
-                .setSetReady(SetReadyAction.newBuilder().setReady(true))
+                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
                 .build());
 
         // Fast forward countdown
@@ -158,6 +175,7 @@ final class BugMinerGameTest {
 
         game.handleJoinRequest("Alice", new io.netty.channel.embedded.EmbeddedChannel());
         game.handleJoinRequest("Bob", new io.netty.channel.embedded.EmbeddedChannel());
+        assertEquals(com.triforge.engine.match.MatchPhase.LOBBY, game.matchPhase());
 
         game.handleGameMessage(1L, GameMessage.newBuilder()
                 .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
@@ -167,6 +185,10 @@ final class BugMinerGameTest {
                                 .setTimeLimit(90)
                                 .build())
                         .build())
+                .build());
+
+        game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
+                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
                 .build());
 
         while (game.matchPhase() == com.triforge.engine.match.MatchPhase.COUNTDOWN) {
@@ -183,6 +205,11 @@ final class BugMinerGameTest {
 
         game.handleJoinRequest("Alice", new io.netty.channel.embedded.EmbeddedChannel());
         game.handleJoinRequest("Bob", new io.netty.channel.embedded.EmbeddedChannel());
+        assertEquals(com.triforge.engine.match.MatchPhase.LOBBY, game.matchPhase());
+
+        game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
+                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
+                .build());
         assertEquals(com.triforge.engine.match.MatchPhase.COUNTDOWN, game.matchPhase());
 
         game.handleGameMessage(1L, GameMessage.newBuilder()

@@ -1,4 +1,4 @@
-import { LEVELS, TIME_LIMIT_MAX, TIME_LIMIT_MIN, DEFAULT_FAIR_MODE, getLevelById } from '../shared';
+import { LEVELS, TIME_LIMIT_MAX, TIME_LIMIT_MIN, DEFAULT_FAIR_MODE, getLevelById, formatJoinCode, formatRoomLevelLabel } from '../shared';
 import { useGameStore } from '../store/gameStore';
 
 interface Props {
@@ -25,8 +25,11 @@ export default function LobbyScreen({ socket }: Props) {
   const fairLevel = fairMode ? getLevelById(fairMode.levelId) : null;
   const setupMode = !fairMode.enabled ? 'free' : fairMode.battle ? 'battle' : 'fair';
 
+  const joinCode = roomId ? formatJoinCode(roomId) : '';
+  const levelLabel = roomId ? formatRoomLevelLabel(roomId) : null;
+
   const copyRoomId = () => {
-    if (roomId) navigator.clipboard.writeText(roomId);
+    if (joinCode) navigator.clipboard.writeText(joinCode);
   };
 
   const setSetupMode = (mode: 'free' | 'fair' | 'battle') => {
@@ -43,7 +46,12 @@ export default function LobbyScreen({ socket }: Props) {
         <div className="lobby-room-header">
           <div>
             <p style={{ color: 'var(--text-dim)', fontSize: '0.85rem' }}>Room ID</p>
-            <h2 className="lobby-room-id">{roomId}</h2>
+            <h2 className="lobby-room-id">{joinCode || '—'}</h2>
+            {levelLabel && (
+              <p style={{ color: 'var(--text-dim)', fontSize: '0.75rem', marginTop: 2 }}>
+                Level: {levelLabel}
+              </p>
+            )}
           </div>
           <button type="button" className="btn btn-secondary" onClick={copyRoomId} style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
             Copy ID
@@ -172,7 +180,7 @@ export default function LobbyScreen({ socket }: Props) {
               </button>
               {!canStart && (
                 <p style={{ textAlign: 'center', fontSize: '0.85rem', color: 'var(--accent)' }}>
-                  Cần 2 người chơi ({playerCount}/2). Mở tab thứ 2 → Join Room ID.
+                  Cần 2 người chơi ({playerCount}/2). Mở tab thứ 2 → nhập Room ID <strong>{joinCode}</strong>.
                 </p>
               )}
             </>

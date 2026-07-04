@@ -33,7 +33,7 @@ docker compose up --build -d
 
 - Frontend: Fair/Battle screens, shared logic + tests
 - Proto: `BMConfigureFairModeCommand`, `BugMinerFairModeConfig`, `BugMinerBattleState`
-- Java: `FairModeConfig`, fair mode auto-layout (battle mode Java: TODO)
+- Java: `FairModeConfig`, fair/battle mode, `BattleArena`
 
 ## Regression gate
 

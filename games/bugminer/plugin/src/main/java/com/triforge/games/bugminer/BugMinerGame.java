@@ -125,10 +125,6 @@ public class BugMinerGame implements Game {
 
         logger.info("Player '{}' joined bugminer room '{}' as playerId={} (host={})",
                 displayName, host().roomId(), playerId, isHost);
-
-        if (lobby.playerCount() >= 2 && matchPhase.phase() == MatchPhase.LOBBY) {
-            beginCountdown();
-        }
     }
 
     @Override
@@ -153,7 +149,8 @@ public class BugMinerGame implements Game {
             case SETNAME -> lobby.setDisplayName(playerId, command.getSetName().getDisplayName());
             case SETREADY -> lobby.setReady(playerId, command.getSetReady().getReady());
             case STARTMATCH -> {
-                if (lobby.isHost(playerId) && lobby.canStartMatch(matchPhase.phase())) {
+                if (lobby.isHost(playerId) && lobby.playerCount() >= BugMinerLobby.MAX_PLAYERS
+                        && matchPhase.phase() == MatchPhase.LOBBY) {
                     beginCountdown();
                 }
                 yield false;
@@ -163,9 +160,6 @@ public class BugMinerGame implements Game {
 
         if (applied) {
             host().broadcaster().broadcastLobbySnapshot(host(), this);
-            if (lobby.canStartMatch(matchPhase.phase()) && lobby.playerCount() >= 2 && lobby.allReady()) {
-                beginCountdown();
-            }
         }
     }
 

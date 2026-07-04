@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DEFAULT_FAIR_MODE, getLevelById, getRoomSetupMode, LEVELS } from '../shared';
+import { DEFAULT_FAIR_MODE, getLevelById, getRoomSetupMode, LEVELS, formatJoinCode } from '../shared';
 import { useGameStore } from '../store/gameStore';
 
 interface Props {
@@ -37,7 +37,7 @@ export default function HomeScreen({ socket }: Props) {
   };
 
   const handleJoin = (targetRoomId?: string) => {
-    const id = (targetRoomId ?? roomId).trim().toUpperCase();
+    const id = (targetRoomId ?? roomId).trim();
     if (!name.trim()) {
       useGameStore.getState().setError('Nhập tên của bạn trước khi vào phòng.');
       setTimeout(() => useGameStore.getState().setError(null), 4000);
@@ -96,7 +96,7 @@ export default function HomeScreen({ socket }: Props) {
               className="input-field"
               placeholder="Room ID..."
               value={roomId}
-              onChange={(e) => setRoomId(e.target.value.toUpperCase())}
+              onChange={(e) => setRoomId(e.target.value)}
               style={{ flex: 1, maxWidth: 'none' }}
             />
             <button type="button" className="btn btn-secondary" onClick={() => handleJoin()}>
@@ -162,7 +162,7 @@ export default function HomeScreen({ socket }: Props) {
                       disabled={slotsLeft <= 0}
                     >
                       <div className="home-room-info">
-                        <span className="home-room-id">{room.roomId}</span>
+                        <span className="home-room-id">{formatJoinCode(room.roomId)}</span>
                         <span className={`home-room-mode ${setupMode}`}>
                           {roomModeLabel(fair)}
                         </span>
