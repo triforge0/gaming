@@ -30,7 +30,8 @@ export function CellMesh({ index, skin, atlas }: Props) {
 
   const baseColor = useMemo(() => {
     const c = new THREE.Color(skin.cellColor);
-    const tint = new THREE.Color().setHSL(face / 6, 0.8, 0.5);
+    const faceIndex = ['U', 'D', 'F', 'B', 'L', 'R'].indexOf(face);
+    const tint = new THREE.Color().setHSL(faceIndex / 6, 0.8, 0.5);
     return c.lerp(tint, 0.12).getStyle();
   }, [skin.cellColor, face]);
 
