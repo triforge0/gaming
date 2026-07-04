@@ -170,9 +170,10 @@ public class ChallengeInstance {
 
     /** Fair mode: apply pre-built layout and skip manual setup. */
     public void applyFairLayout(String levelId, int timeLimitSeconds, List<PlacedItem> layout) {
-        setLevel(levelId);
+        this.levelId = levelId;
         this.timeLimit = Math.max(30, Math.min(300, timeLimitSeconds));
         this.timeRemaining = this.timeLimit;
+        this.targetScore = LevelCatalog.targetScore(levelId);
         items.clear();
         for (PlacedItem src : layout) {
             PlacedItem copy = new PlacedItem(src.id, src.type);

@@ -9,6 +9,22 @@ import static org.junit.jupiter.api.Assertions.*;
 final class BugMinerBoardTest {
 
     @Test
+    void fairModeSkipsManualSetupAndLocksBothMaps() {
+        BugMinerBoard board = new BugMinerBoard();
+        board.init(1L, 2L);
+        board.fairMode().enabled = true;
+        board.fairMode().battle = false;
+        board.fairMode().levelId = "easy-mine";
+        board.fairMode().timeLimit = 90;
+        board.beginFairMode("room-fair-1");
+
+        assertTrue(board.getState().getForPlayerA().getSetupLocked());
+        assertTrue(board.getState().getForPlayerB().getSetupLocked());
+        assertTrue(board.challengeA.copyItemsLayout().size() > 0);
+        assertTrue(board.challengeA.copyItemsLayout().stream().noneMatch(i -> i.x == 0 && i.y == 0));
+    }
+
+    @Test
     void fairModeGivesIdenticalMapsToBothPlayers() {
         BugMinerBoard board = new BugMinerBoard();
         board.init(1L, 2L);

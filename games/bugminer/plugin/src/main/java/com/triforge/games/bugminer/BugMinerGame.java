@@ -328,7 +328,8 @@ public class BugMinerGame implements Game {
         ChallengeInstance c;
         switch (bm.getContentCase()) {
             case CONFIGUREFAIRMODE -> {
-                if (matchPhase.phase() != MatchPhase.LOBBY || !lobby.isHost(playerId)) break;
+                if (!lobby.isHost(playerId)) break;
+                if (matchPhase.phase() != MatchPhase.LOBBY && matchPhase.phase() != MatchPhase.COUNTDOWN) break;
                 BMConfigureFairModeCommand cmd = bm.getConfigureFairMode();
                 board.fairMode().applyPartial(
                         cmd.hasEnabled() ? cmd.getEnabled() : null,

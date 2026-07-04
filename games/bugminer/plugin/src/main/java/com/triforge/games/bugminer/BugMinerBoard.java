@@ -35,10 +35,8 @@ public class BugMinerBoard {
         challengeA = new ChallengeInstance(playerB, playerA, fairMode.levelId);
         challengeB = new ChallengeInstance(playerA, playerB, fairMode.levelId);
         battleArena = null;
-        challengeA.setLevel(fairMode.levelId);
-        challengeA.setTimeLimit(fairMode.timeLimit);
-        challengeA.autoArrangeSeeded(challengeA.designerId, roomId.hashCode());
-        List<PlacedItem> layout = challengeA.copyItemsLayout();
+        List<PlacedItem> layout = FairLayoutBuilder.build(fairMode.levelId, roomId);
+        challengeA.applyFairLayout(fairMode.levelId, fairMode.timeLimit, layout);
         challengeB.applyFairLayout(fairMode.levelId, fairMode.timeLimit, layout);
     }
 

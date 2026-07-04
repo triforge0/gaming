@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { GameClient, MatchPhase, toNum } from '@triforge/shared-ui';
 import type { FairModeConfig, GameState, ItemType, PlayerRole, RoomSummary } from '../shared';
-import { DEFAULT_FAIR_MODE } from '../shared';
+import { DEFAULT_FAIR_MODE, resolveGamePhase } from '../shared';
 import { useGameStore } from '../store/gameStore';
 
 function mapFairMode(proto?: { enabled?: boolean | null; battle?: boolean | null; levelId?: string | null; timeLimit?: number | null } | null): FairModeConfig {
@@ -119,6 +119,24 @@ export function useSocket() {
         const fairMode = mapFairMode(message.board.fairMode);
         const battleProto = message.board.battle;
 
+        // Lobby sync: fair/battle settings before challenges exist
+        if (!pA && !pB && !battleProto) {
+          current.setGameState({
+            ...(current.gameState || {}),
+            roomId: fullRoomId,
+            fairMode,
+            hostId: current.gameState?.hostId || '',
+            players: current.gameState?.players || [],
+            phase: current.gameState?.phase ?? 'lobby',
+            challenges: current.gameState?.challenges,
+            battle: current.gameState?.battle ?? null,
+            winnerId: current.gameState?.winnerId ?? null,
+            endReason: current.gameState?.endReason ?? null,
+            countdown: current.gameState?.countdown ?? 0,
+          } as GameState);
+          return;
+        }
+
         const itemTypeMap: Record<number, ItemType> = {
           1: 'gold', 2: 'bigGold', 3: 'diamond', 4: 'rock', 5: 'mysteryBag', 6: 'poison',
           7: 'mouse', 8: 'pig', 9: 'strengthDrink',
@@ -153,7 +171,7 @@ export function useSocket() {
           score: 0,
           items: [],
           hook: { angle: 0, length: 0, state: 'swinging' as const, attachedItemId: null, swingDirection: 1 as const },
-          setupLocked: true,
+          setupLocked: false,
           finished: false,
           endReason: null,
           strengthBuffRemaining: 0,
@@ -206,14 +224,7 @@ export function useSocket() {
         const playerBId = battle?.playerBId
           || (pB ? String(toNum(pB.playerId)) : current.gameState?.players[1]?.id || '2');
 
-        let phase: GameState['phase'] = 'playing';
-        if (fairMode.battle && battle) {
-          phase = battle.finished ? 'finished' : 'playing';
-        } else if (!pA?.setupLocked || !pB?.setupLocked) {
-          phase = 'dual_setup';
-        } else if (pA?.finished && pB?.finished) {
-          phase = 'finished';
-        }
+        const phase = resolveGamePhase(fairMode, battle, pA, pB);
 
         const newState: GameState = {
           ...(current.gameState || {}),

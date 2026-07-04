@@ -6,6 +6,7 @@ export * from './challenges';
 export * from './setupUi';
 export * from './constants';
 export * from './fairMode';
+export * from './gamePhase';
 export * from './battleMap';
 export * from './battleArrange';
 export * from './placementMix';

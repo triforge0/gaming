@@ -3,6 +3,7 @@ package com.triforge.games.bugminer;
 import com.triforge.engine.game.Game;
 import com.triforge.engine.game.GamePlugins;
 import com.triforge.engine.match.MatchPhase;
+import com.triforge.protocol.proto.GameMessage;
 import com.triforge.protocol.proto.LobbyCommand;
 import com.triforge.protocol.proto.SetReadyAction;
 import io.netty.channel.embedded.EmbeddedChannel;
@@ -147,6 +148,58 @@ final class BugMinerGameTest {
 
         // Join request with name "Alice" should reconnect her and give same ID (1L)
         game.handleJoinRequest("Alice", new EmbeddedChannel());
+    }
+
+    @Test
+    void fairModeMatchStartsAfterLobbyConfiguration() {
+        BugMinerGame game = new BugMinerGame();
+        BugMinerRoomHost host = new BugMinerRoomHost("bugminer:easy-mine:FAIR");
+        game.bind(host);
+
+        game.handleJoinRequest("Alice", new io.netty.channel.embedded.EmbeddedChannel());
+        game.handleJoinRequest("Bob", new io.netty.channel.embedded.EmbeddedChannel());
+
+        game.handleGameMessage(1L, GameMessage.newBuilder()
+                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
+                        .setConfigureFairMode(com.triforge.protocol.proto.BMConfigureFairModeCommand.newBuilder()
+                                .setEnabled(true)
+                                .setLevelId("easy-mine")
+                                .setTimeLimit(90)
+                                .build())
+                        .build())
+                .build());
+
+        while (game.matchPhase() == com.triforge.engine.match.MatchPhase.COUNTDOWN) {
+            game.tickCountdownPhase();
+        }
+        assertEquals(com.triforge.engine.match.MatchPhase.PLAYING, game.matchPhase());
+    }
+
+    @Test
+    void configureFairModeAllowedDuringCountdown() {
+        BugMinerGame game = new BugMinerGame();
+        BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+        game.bind(host);
+
+        game.handleJoinRequest("Alice", new io.netty.channel.embedded.EmbeddedChannel());
+        game.handleJoinRequest("Bob", new io.netty.channel.embedded.EmbeddedChannel());
+        assertEquals(com.triforge.engine.match.MatchPhase.COUNTDOWN, game.matchPhase());
+
+        game.handleGameMessage(1L, GameMessage.newBuilder()
+                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
+                        .setConfigureFairMode(com.triforge.protocol.proto.BMConfigureFairModeCommand.newBuilder()
+                                .setEnabled(true)
+                                .setBattle(false)
+                                .setLevelId("rock-mine")
+                                .setTimeLimit(100)
+                                .build())
+                        .build())
+                .build());
+
+        while (game.matchPhase() == com.triforge.engine.match.MatchPhase.COUNTDOWN) {
+            game.tickCountdownPhase();
+        }
+        assertEquals(com.triforge.engine.match.MatchPhase.PLAYING, game.matchPhase());
     }
 
     @Test
