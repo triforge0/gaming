@@ -40,6 +40,12 @@ describe('resolveGamePhase', () => {
     expect(resolveGamePhase(fair, null, locked, locked, 0, true)).toBe('paused');
   });
 
+  it('battle mode waits for arena before finishing on stale winner', () => {
+    const battleMode = { ...DEFAULT_FAIR_MODE, enabled: true, battle: true };
+    expect(resolveGamePhase(battleMode, null, null, null, 0, false, '1')).toBe('playing');
+    expect(resolveGamePhase(battleMode, null, null, null, 3, false, '1')).toBe('countdown');
+  });
+
   it('battle mode uses shared arena state', () => {
     const battleMode = { ...DEFAULT_FAIR_MODE, enabled: true, battle: true };
     const battle = {

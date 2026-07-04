@@ -51,7 +51,7 @@ final class BugMinerLobby {
     }
 
     void addPlayer(long playerId, String displayName, boolean host) {
-        players.put(playerId, new Player(playerId, displayName, true, host));
+        players.put(playerId, new Player(playerId, displayName, false, host));
         if (host) {
             hostPlayerId = playerId;
         }
@@ -83,7 +83,7 @@ final class BugMinerLobby {
     }
 
     boolean canStartMatch(MatchPhase phase) {
-        return phase == MatchPhase.LOBBY && playerCount() >= MIN_PLAYERS && allReady();
+        return phase == MatchPhase.LOBBY && playerCount() >= MAX_PLAYERS;
     }
 
     void resetAllReady() {

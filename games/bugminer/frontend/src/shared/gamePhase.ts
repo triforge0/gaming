@@ -15,14 +15,15 @@ export function resolveGamePhase(
   paused = false,
   winnerId: string | null = null,
 ): GamePhase {
-  if (winnerId) return 'finished';
-
-  if (fairMode.battle && battle) {
+  if (fairMode.battle) {
+    if (!battle) return countdown > 0 ? 'countdown' : 'playing';
     if (battle.finished) return 'finished';
     if (countdown > 0) return 'countdown';
     if (paused) return 'paused';
     return 'playing';
   }
+
+  if (winnerId) return 'finished';
 
   const decisive = (c: ChallengePhaseInput | null | undefined) =>
     c?.finished && (c.endReason === 'target' || c.endReason === 'poison');

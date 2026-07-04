@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { GameClient, MatchPhase, toNum } from '@triforge/shared-ui';
 import type { FairModeConfig, GameState, ItemType, RoomSummary } from '../shared';
-import { DEFAULT_FAIR_MODE, resolveGamePhase } from '../shared';
+import { DEFAULT_FAIR_MODE, formatJoinCode, resolveBugMinerRoomId, resolveGamePhase } from '../shared';
+import { mergePlayingPhaseUpdate, resolveActiveWinner, shouldInterruptForLobbyPhase } from '../shared/boardStateSync';
 import { useGameStore } from '../store/gameStore';
 
 function mapFairMode(proto?: { enabled?: boolean | null; battle?: boolean | null; levelId?: string | null; timeLimit?: number | null } | null): FairModeConfig {
@@ -74,6 +75,28 @@ function isJoinableBugMinerRoom(r: {
   return (r.playerCount ?? 0) > 0;
 }
 
+function resolveHostId(
+  players: Array<{ playerId?: unknown; isHost?: boolean | null }> | null | undefined,
+): string {
+  const hostPlayer = players?.find((p) => p.isHost);
+  if (hostPlayer?.playerId != null) {
+    return String(toNum(hostPlayer.playerId as number));
+  }
+  const first = players?.[0];
+  return first?.playerId != null ? String(toNum(first.playerId as number)) : '';
+}
+
+function mapLobbyPlayers(
+  players: Array<{ playerId?: unknown; displayName?: string | null; ready?: boolean | null }> | null | undefined,
+) {
+  return players?.map((p) => ({
+    id: String(toNum(p.playerId as number)),
+    name: p.displayName || '',
+    role: null,
+    ready: p.ready || false,
+  })) ?? [];
+}
+
 function applyLobbySnapshot(
   snapshot: { players?: Array<{ playerId?: unknown; displayName?: string | null; isHost?: boolean | null; ready?: boolean | null }> | null; phase?: number | null },
   selfPlayerId: number,
@@ -81,8 +104,7 @@ function applyLobbySnapshot(
   playerName: string,
 ) {
   const { setPlayer, setGameState, setScreen } = useGameStore.getState();
-  const host = snapshot.players?.find((p) => p.isHost);
-  const hostId = host ? String(toNum(host.playerId as number)) : '';
+  const hostId = resolveHostId(snapshot.players);
   const prev = useGameStore.getState().gameState;
 
   setPlayer(
@@ -97,17 +119,12 @@ function applyLobbySnapshot(
     phase: snapshot.phase === MatchPhase.LOBBY ? 'lobby' : (prev?.phase ?? 'lobby'),
     hostId,
     fairMode: prev?.fairMode ?? { ...DEFAULT_FAIR_MODE },
-    players: snapshot.players?.map((p) => ({
-      id: String(toNum(p.playerId as number)),
-      name: p.displayName || '',
-      role: null,
-      ready: p.ready || false,
-    })) ?? [],
-    challenges: prev?.challenges,
-    battle: prev?.battle ?? null,
-    winnerId: prev?.winnerId ?? null,
-    endReason: prev?.endReason ?? null,
-    countdown: prev?.countdown ?? 0,
+    players: mapLobbyPlayers(snapshot.players),
+    challenges: snapshot.phase === MatchPhase.LOBBY ? undefined : prev?.challenges,
+    battle: snapshot.phase === MatchPhase.LOBBY ? null : (prev?.battle ?? null),
+    winnerId: snapshot.phase === MatchPhase.LOBBY ? null : (prev?.winnerId ?? null),
+    endReason: snapshot.phase === MatchPhase.LOBBY ? null : (prev?.endReason ?? null),
+    countdown: snapshot.phase === MatchPhase.LOBBY ? 0 : (prev?.countdown ?? 0),
   } as GameState);
 
   if (snapshot.phase === MatchPhase.LOBBY) setScreen('lobby');
@@ -179,20 +196,16 @@ export function useSocket() {
       error: null,
     });
 
-    const fullRoomId = roomId === 'bugminer' || roomId.startsWith('bugminer:')
-      ? roomId
-      : `bugminer:easy-mine:${roomId}`;
+    const fullRoomId = resolveBugMinerRoomId(roomId);
 
     const client = new GameClient(fullRoomId, playerName, {
       onDisconnected: () => {
         useGameStore.getState().setError('Mất kết nối server');
       },
       onLobbySnapshot: (snapshot) => {
-        const shortRoomId = fullRoomId.startsWith('bugminer:')
-          ? fullRoomId.substring(fullRoomId.indexOf(':') + 1)
-          : fullRoomId;
+        const joinCode = formatJoinCode(fullRoomId);
         const url = new URL(window.location.href);
-        url.searchParams.set('room', shortRoomId);
+        url.searchParams.set('room', joinCode);
         window.history.pushState({}, '', url);
 
         const name = useGameStore.getState().playerName || playerName;
@@ -205,14 +218,30 @@ export function useSocket() {
         useGameStore.getState().setScreen('home');
       },
       onMatchPhaseUpdate: (update) => {
-        const { setScreen, gameState } = useGameStore.getState();
-        if (update.phase === MatchPhase.ENDED && gameState?.phase === 'finished') {
+        const store = useGameStore.getState();
+        const { gameState } = store;
+
+        if (update.phase === MatchPhase.ENDED) {
           return;
         }
+
         if (update.phase === MatchPhase.LOBBY || update.phase === MatchPhase.COUNTDOWN) {
-          setScreen('lobby');
+          const wirePhase = update.phase === MatchPhase.LOBBY ? 'lobby' : 'countdown';
+          if (shouldInterruptForLobbyPhase(wirePhase, gameState?.phase)) {
+            store.setScreen('lobby');
+          }
+          return;
+        }
+
+        if (update.phase === MatchPhase.PLAYING && gameState) {
+          store.setGameState(mergePlayingPhaseUpdate({
+            ...gameState,
+            phase: gameState.phase,
+            winnerId: gameState.winnerId,
+            endReason: gameState.endReason,
+          }));
         } else if (update.phase === MatchPhase.PLAYING) {
-          setScreen('game');
+          store.setScreen('game');
         }
       },
       onBugMinerMessage: (message) => {
@@ -342,15 +371,20 @@ export function useSocket() {
           ? String(toNum(message.board.winnerId as number))
           : null;
         const boardEndReason = (message.board.matchEndReason as GameState['endReason']) || null;
+        const { winnerId: activeWinnerId, endReason: activeEndReason } = resolveActiveWinner(
+          battle,
+          boardWinnerId,
+          boardEndReason,
+        );
 
         const phase = resolveGamePhase(
           fairMode,
           battle,
-          toPhaseInput(pA),
-          toPhaseInput(pB),
+          fairMode.battle ? null : toPhaseInput(pA),
+          fairMode.battle ? null : toPhaseInput(pB),
           message.board.playCountdown ?? 0,
           message.board.paused ?? false,
-          boardWinnerId,
+          activeWinnerId,
         );
 
         handleBoardEvents(message.board.events, current.playerId);
@@ -361,14 +395,16 @@ export function useSocket() {
           phase,
           fairMode,
           battle,
-          challenges: {
-            forPlayerA: mapChallengeState(pA) ?? emptyChallenge(playerAId, playerBId),
-            forPlayerB: mapChallengeState(pB) ?? emptyChallenge(playerBId, playerAId),
-          },
+          challenges: fairMode.battle
+            ? undefined
+            : {
+                forPlayerA: mapChallengeState(pA) ?? emptyChallenge(playerAId, playerBId),
+                forPlayerB: mapChallengeState(pB) ?? emptyChallenge(playerBId, playerAId),
+              },
           hostId: current.gameState?.hostId || '',
           players: current.gameState?.players || [],
-          winnerId: battle?.winnerId ?? boardWinnerId ?? current.gameState?.winnerId ?? null,
-          endReason: battle?.endReason ?? boardEndReason ?? current.gameState?.endReason ?? null,
+          winnerId: activeWinnerId,
+          endReason: activeEndReason,
           countdown: message.board.playCountdown ?? 0,
         };
         current.setGameState(newState);
@@ -403,9 +439,9 @@ export function useSocket() {
       connectToGame(`bugminer:${levelId}:${id}`, playerName);
     },
     joinRoom: (roomId: string, playerName: string) => {
-      const normalized = roomId.trim();
-      if (!normalized) return;
-      connectToGame(normalized.includes(':') ? normalized : normalized.toUpperCase(), playerName);
+      const fullRoomId = resolveBugMinerRoomId(roomId);
+      if (!fullRoomId) return;
+      connectToGame(fullRoomId, playerName);
     },
     startGame: () => clientRef.current?.startMatch(),
     setChallengeLevel: (levelId: string) => {

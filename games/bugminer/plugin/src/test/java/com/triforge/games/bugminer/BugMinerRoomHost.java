@@ -5,22 +5,38 @@ import com.triforge.engine.match.MatchController;
 import com.triforge.engine.room.RoomBroadcastAccess;
 import com.triforge.engine.room.RoomHost;
 import com.triforge.engine.room.RoomSessionAccess;
+import com.triforge.protocol.proto.BugMinerBoardState;
 import com.triforge.protocol.proto.GameEvent;
+import com.triforge.protocol.proto.GameMessage;
 import com.triforge.protocol.proto.JoinResponse;
 import com.triforge.protocol.proto.RoomLobbySnapshot;
 import com.triforge.protocol.proto.TileChange;
 import io.netty.channel.Channel;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/** Minimal room host stub for unit tests. */
+/** Room host stub that records bugminer board broadcasts for assertions. */
 final class BugMinerRoomHost implements RoomHost {
 
     private final String roomId;
     private long nextPlayerId = 1L;
 
+    final List<BugMinerBoardState> boards = new ArrayList<>();
+
     BugMinerRoomHost(String roomId) {
         this.roomId = roomId;
+    }
+
+    BugMinerBoardState latestBoard() {
+        if (boards.isEmpty()) {
+            throw new IllegalStateException("no board broadcast yet");
+        }
+        return boards.get(boards.size() - 1);
+    }
+
+    void clearBoards() {
+        boards.clear();
     }
 
     @Override
@@ -69,11 +85,14 @@ final class BugMinerRoomHost implements RoomHost {
             }
 
             @Override
-            public void sendTo(long playerId, com.triforge.protocol.proto.GameMessage message) {
+            public void sendTo(long playerId, GameMessage message) {
             }
 
             @Override
-            public void broadcast(com.triforge.protocol.proto.GameMessage message) {
+            public void broadcast(GameMessage message) {
+                if (message.hasBugminer() && message.getBugminer().hasBoard()) {
+                    boards.add(message.getBugminer().getBoard());
+                }
             }
 
             @Override
