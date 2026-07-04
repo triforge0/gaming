@@ -26,14 +26,14 @@ public class BugMinerBoard {
     }
 
     public void beginFreeMode() {
-        challengeA = new ChallengeInstance(pB, pA, fairMode.levelId);
-        challengeB = new ChallengeInstance(pA, pB, fairMode.levelId);
+        challengeA = new ChallengeInstance(playerB, playerA, fairMode.levelId);
+        challengeB = new ChallengeInstance(playerA, playerB, fairMode.levelId);
         battleArena = null;
     }
 
     public void beginFairMode(String roomId) {
-        challengeA = new ChallengeInstance(pB, pA, fairMode.levelId);
-        challengeB = new ChallengeInstance(pA, pB, fairMode.levelId);
+        challengeA = new ChallengeInstance(playerB, playerA, fairMode.levelId);
+        challengeB = new ChallengeInstance(playerA, playerB, fairMode.levelId);
         battleArena = null;
         challengeA.setLevel(fairMode.levelId);
         challengeA.setTimeLimit(fairMode.timeLimit);

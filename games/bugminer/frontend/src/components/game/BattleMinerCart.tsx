@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { BATTLE_MINER_A, BATTLE_MINER_B, SURFACE_LINE_Y, MINE_VISUAL_WIDTH } from '../shared';
+import { BATTLE_MINER_A, BATTLE_MINER_B, SURFACE_LINE_Y, MINE_VISUAL_WIDTH } from '../../shared';
 import { gameYToWorldY, MINER_Y } from '../../constants/scene';
 
 function MinerAlcove({ x, flip = false }: { x: number; flip?: boolean }) {

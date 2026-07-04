@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { getLevelById } from '../shared';
-import type { BattleArenaState } from '../shared';
+import { getLevelById } from '../../shared';
+import type { BattleArenaState } from '../../shared';
 import BattleMineWorld from './BattleMineWorld';
 import SceneCamera from './SceneCamera';
 

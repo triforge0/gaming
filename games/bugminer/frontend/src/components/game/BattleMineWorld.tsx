@@ -9,7 +9,7 @@ import {
   MINE_WALL_X,
   type HookData,
   type PlacedItem,
-} from '../shared';
+} from '../../shared';
 import { gameYToWorldY, MINER_Y } from '../../constants/scene';
 import BattleHook from './BattleHook';
 import BattleMinerCart from './BattleMinerCart';

@@ -4,7 +4,7 @@ import type { FairModeConfig, GameState, ItemType, PlayerRole, RoomSummary } fro
 import { DEFAULT_FAIR_MODE } from '../shared';
 import { useGameStore } from '../store/gameStore';
 
-function mapFairMode(proto?: { enabled?: boolean; battle?: boolean; levelId?: string; timeLimit?: number }): FairModeConfig {
+function mapFairMode(proto?: { enabled?: boolean | null; battle?: boolean | null; levelId?: string | null; timeLimit?: number | null } | null): FairModeConfig {
   if (!proto) return { ...DEFAULT_FAIR_MODE };
   return {
     enabled: proto.enabled ?? false,
@@ -127,7 +127,7 @@ export function useSocket() {
           0: 'swinging', 1: 'swinging', 2: 'extending', 3: 'retracting',
         };
 
-        const mapHook = (hook?: { angle?: number; length?: number; state?: number; attachedItemId?: string; swingDirection?: number }) => ({
+        const mapHook = (hook?: { angle?: number | null; length?: number | null; state?: number | null; attachedItemId?: string | null; swingDirection?: number | null } | null) => ({
           angle: hook?.angle ?? 0,
           length: hook?.length ?? 0,
           state: hookStateMap[hook?.state ?? 0] || 'swinging',
@@ -135,7 +135,7 @@ export function useSocket() {
           swingDirection: (hook?.swingDirection || 1) as 1 | -1,
         });
 
-        const mapItems = (items?: Array<{ id?: string; type?: number; x?: number; y?: number; collected?: boolean }>) =>
+        const mapItems = (items?: Array<{ id?: string | null; type?: number | null; x?: number | null; y?: number | null; collected?: boolean | null }> | null) =>
           items?.map((item) => ({
             id: item.id || '',
             type: itemTypeMap[item.type ?? 0] || 'gold',

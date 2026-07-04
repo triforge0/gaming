@@ -1,5 +1,5 @@
-import type { BattleArenaState } from '../shared';
-import { getLevelById } from '../shared';
+import type { BattleArenaState } from '../../shared';
+import { getLevelById } from '../../shared';
 
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60);

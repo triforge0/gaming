@@ -1,7 +1,7 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import type { HookData } from '../shared';
+import type { HookData } from '../../shared';
 import { MINER_Y } from '../../constants/scene';
 
 interface Props {
