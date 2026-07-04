@@ -130,8 +130,8 @@ export function useSocket() {
              ...(current.gameState || {}),
              phase,
              challenges: {
-                forPlayerA: pA,
-                forPlayerB: pB
+                forPlayerA: pA ? { ...pA, designerId: String(toNum(pA.designerId)), playerId: String(toNum(pA.playerId)) } : null,
+                forPlayerB: pB ? { ...pB, designerId: String(toNum(pB.designerId)), playerId: String(toNum(pB.playerId)) } : null
              }
           };
           current.setGameState(newState);
@@ -147,7 +147,14 @@ export function useSocket() {
     emit: () => false,
     createRoom: (playerName: string, levelId: string) => {
       if (clientRef.current) return;
-      const id = Math.random().toString(36).substring(2, 6).toUpperCase();
+      
+      const ADJECTIVES = ["LAZY", "CRAZY", "ANGRY", "HAPPY", "SLEEPY", "HUNGRY", "BUGGY", "SUPER", "FAST", "SLOW"];
+      const NOUNS = ["DEV", "QC", "BA", "PM", "CAT", "DOG", "DUCK", "BUG", "CODE", "SERVER"];
+      const randAdj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
+      const randNoun = NOUNS[Math.floor(Math.random() * NOUNS.length)];
+      const num = Math.floor(Math.random() * 100);
+      const id = `${randAdj}-${randNoun}-${num}`;
+      
       const fullRoomId = `bugminer:${levelId}:${id}`;
       connectToGame(fullRoomId, playerName);
     },
