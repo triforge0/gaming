@@ -8,3 +8,37 @@ body {
   overflow: hidden;
 }
 .app-root { height: 100%; position: relative; }
+
+.overlay {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+  background: rgba(15, 23, 42, 0.85); z-index: 10; text-align: center; padding: 24px;
+}
+.hud-top {
+  position: absolute; top: 0; left: 0; right: 0; display: flex;
+  justify-content: space-between; padding: 14px 20px; font-weight: 600; z-index: 5;
+  pointer-events: none;
+}
+.hud-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0; display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between; gap: 10px;
+  padding: 12px 20px; z-index: 5; pointer-events: none;
+}
+.numpad { display: flex; gap: 8px; pointer-events: auto; }
+.num-btn {
+  width: 52px; height: 52px; font-size: 22px; font-weight: 700; border-radius: 12px;
+  border: 1px solid #334155; background: #1e293b; color: #e2e8f0; cursor: pointer;
+}
+.num-btn:active { transform: scale(0.94); }
+.tool-btn {
+  padding: 10px 16px; border-radius: 10px; border: 1px solid #334155;
+  background: #1e293b; color: #e2e8f0; font-size: 15px; cursor: pointer;
+}
+.tool-btn:disabled { opacity: 0.4; cursor: default; }
+.hud-tools { display: flex; gap: 8px; pointer-events: auto; }
+.hud-meta { display: flex; gap: 14px; align-items: center; color: #94a3b8; }
+.difficulty { text-transform: capitalize; }
+.menu-screen h1 { font-size: 28px; }
+.difficulty-buttons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.generating { color: #94a3b8; animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.4; } }
