@@ -2,13 +2,9 @@
 import { DIFFICULTIES } from '../core/generator';
 import { computeScore } from '../core/scoring';
 import { useGame } from '../state/store';
+import { fmtTime } from './format';
 
-function fmtTime(ms: number): string {
-  const s = Math.floor(ms / 1000);
-  return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
-}
-
-export function Hud() {
+export function Hud({ onOpenDrawer }: { onOpenDrawer: () => void }) {
   const game = useGame((s) => s.persisted.currentGame);
   const status = useGame((s) => s.status);
   const fill = useGame((s) => s.fill);
@@ -23,7 +19,10 @@ export function Hud() {
     <>
       <header className="hud-top">
         <span>🧩 Mini Sudoku Cube</span>
-        <span>⭐ {score.toLocaleString('vi-VN')}</span>
+        <span>
+          ⭐ {score.toLocaleString('vi-VN')}
+          <button onClick={onOpenDrawer} style={{ marginLeft: 10, background: 'none', border: 'none', fontSize: 16, cursor: 'pointer' }}>🎨</button>
+        </span>
       </header>
       <footer className="hud-bottom">
         <div className="numpad">

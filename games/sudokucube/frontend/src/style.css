@@ -42,3 +42,42 @@ body {
 .difficulty-buttons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
 .generating { color: #94a3b8; animation: pulse 1.2s ease-in-out infinite; }
 @keyframes pulse { 50% { opacity: 0.4; } }
+
+.drawer {
+  position: absolute; top: 0; right: 0; bottom: 0; width: min(320px, 85vw);
+  background: #0b1120ee; border-left: 1px solid #1e293b; z-index: 20;
+  padding: 16px; overflow-y: auto;
+}
+.drawer-head { display: flex; justify-content: space-between; margin-bottom: 12px; }
+.drawer-head nav { display: flex; gap: 6px; }
+.drawer-head button {
+  background: none; border: none; color: #94a3b8; font-size: 15px; cursor: pointer; padding: 6px 8px;
+}
+.drawer-head button.active { color: #e2e8f0; border-bottom: 2px solid #3b82f6; }
+.drawer-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.skin-row, .badge-row {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 12px; border-radius: 10px; border: 1px solid #1e293b;
+  background: #0f172a; color: #e2e8f0; font-size: 15px;
+}
+.skin-row { cursor: pointer; }
+.skin-row:disabled { opacity: 0.45; cursor: default; }
+.skin-row.active { border-color: #3b82f6; }
+.badge-row { opacity: 0.5; }
+.badge-row.earned { opacity: 1; }
+.skin-row small, .badge-row small { color: #64748b; }
+.setting-row { display: flex; gap: 8px; align-items: center; }
+.setting-note { color: #64748b; font-size: 14px; }
+.win-score { font-size: 24px; font-weight: 700; }
+.win-badges { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.badge-chip {
+  background: #1e293b; border: 1px solid #3b82f6; border-radius: 999px;
+  padding: 6px 12px; font-size: 14px;
+}
+.toasts { position: absolute; top: 60px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 30; pointer-events: none; }
+.toast {
+  background: #1e293b; border: 1px solid #3b82f6; border-radius: 10px;
+  padding: 10px 14px; animation: slide-in 0.3s ease;
+}
+@keyframes slide-in { from { transform: translateX(40px); opacity: 0; } }
+.hud-top button { pointer-events: auto; }
