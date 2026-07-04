@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import tableBackground from '../assets/table-background.jpg';
 
 /**
  * Board geometry layout. `pitWorldPosition` is the single source of truth for where a
@@ -7,19 +8,33 @@ import * as THREE from 'three';
  *
  * Circular order: 0-4 seat 0's dân row (+z side, left→right in +x), 5 quan pit (+x end),
  * 6-10 seat 1's dân row (−z side, +x→−x), 11 quan pit (−x end).
+ *
+ * The board itself is not modeled: the photographic table background (which contains a
+ * carved board) is laid on a ground plane, and the constants below are calibrated to its
+ * pixels so pits land exactly in the photo's hollows. Calibration (1536×1024 image):
+ * dan pit centers x = 390..1010 step 155, rows y = 370/575, quan centers x = 197/1188;
+ * world scale 119.23 px/unit, world origin at pixel (700, 472.5).
  */
 
 export const PIT_COUNT = 12;
 export const QUAN_PIT_A = 5;
 export const QUAN_PIT_B = 11;
 
-export const BOARD_TOP_Y = 0.3;
+export const BOARD_TOP_Y = 0.05;
 export const DAN_PIT_RADIUS = 0.5;
 export const QUAN_PIT_RADIUS = 0.68;
 
-const ROW_Z = 1.0;
+const ROW_Z = 0.86;
 const ROW_SPACING = 1.3;
-const QUAN_X = 3.6;
+const QUAN_X = 4.15;
+
+const PX_PER_UNIT = 119.23;
+const IMAGE_W = 1536 / PX_PER_UNIT;
+const IMAGE_H = 1024 / PX_PER_UNIT;
+// image center (768,512) relative to the world origin pixel (700,472.5)
+const IMAGE_OFFSET_X = (768 - 700) / PX_PER_UNIT;
+const IMAGE_OFFSET_Z = (512 - 472.5) / PX_PER_UNIT;
+const PAPER_COLOR = 0xc9a76e;
 
 export function isQuanPit(pit: number): boolean {
   return pit === QUAN_PIT_A || pit === QUAN_PIT_B;
@@ -61,34 +76,54 @@ export interface BoardMeshes {
 export function buildBoard(): BoardMeshes {
   const group = new THREE.Group();
 
-  const slabMaterial = new THREE.MeshStandardMaterial({ color: 0x8a5a2b, roughness: 0.85 });
-  const slab = new THREE.Mesh(new THREE.BoxGeometry(9.2, 0.3, 3.4), slabMaterial);
-  slab.position.y = BOARD_TOP_Y - 0.15;
-  slab.receiveShadow = true;
-  group.add(slab);
-
-  const ground = new THREE.Mesh(
-    new THREE.CylinderGeometry(9, 9, 0.1, 48),
-    new THREE.MeshStandardMaterial({ color: 0x2c2117, roughness: 1 }),
+  // Photographic tabletop (board included) — unlit so the photo shows exactly as-is.
+  const texture = new THREE.TextureLoader().load(tableBackground);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+  const photo = new THREE.Mesh(
+    new THREE.PlaneGeometry(IMAGE_W, IMAGE_H),
+    new THREE.MeshBasicMaterial({ map: texture }),
   );
-  ground.position.y = -0.1;
-  ground.receiveShadow = true;
-  group.add(ground);
+  photo.rotation.x = -Math.PI / 2;
+  photo.position.set(IMAGE_OFFSET_X, 0, IMAGE_OFFSET_Z);
+  group.add(photo);
 
-  const pitMaterial = new THREE.MeshStandardMaterial({ color: 0x6e4520, roughness: 0.9 });
-  const quanMaterial = new THREE.MeshStandardMaterial({ color: 0x5c3617, roughness: 0.9 });
+  // Plain paper underlay in case the viewport aspect shows past the photo's edges.
+  const underlay = new THREE.Mesh(
+    new THREE.PlaneGeometry(80, 80),
+    new THREE.MeshBasicMaterial({ color: PAPER_COLOR }),
+  );
+  underlay.rotation.x = -Math.PI / 2;
+  underlay.position.y = -0.02;
+  group.add(underlay);
 
+  // Invisible shadow catcher just above the photo so stones anchor visually.
+  const shadowCatcher = new THREE.Mesh(
+    new THREE.PlaneGeometry(IMAGE_W, IMAGE_H),
+    new THREE.ShadowMaterial({ opacity: 0.28 }),
+  );
+  shadowCatcher.rotation.x = -Math.PI / 2;
+  shadowCatcher.position.set(IMAGE_OFFSET_X, 0.005, IMAGE_OFFSET_Z);
+  shadowCatcher.receiveShadow = true;
+  group.add(shadowCatcher);
+
+  // Pits are pick targets only: invisible until hovered/selected, when GameCanvas
+  // raises their opacity into a soft golden glow over the photo's hollows.
   const pitMeshes: THREE.Mesh[] = [];
   for (let pit = 0; pit < PIT_COUNT; pit++) {
     const radius = isQuanPit(pit) ? QUAN_PIT_RADIUS : DAN_PIT_RADIUS;
     const mesh = new THREE.Mesh(
-      new THREE.CylinderGeometry(radius, radius * 0.82, 0.12, 28),
-      (isQuanPit(pit) ? quanMaterial : pitMaterial).clone(),
+      new THREE.CylinderGeometry(radius + 0.04, radius + 0.04, 0.1, 28),
+      new THREE.MeshBasicMaterial({
+        color: 0xffd77a,
+        transparent: true,
+        opacity: 0,
+        depthWrite: false,
+      }),
     );
     const pos = pitWorldPosition(pit);
-    mesh.position.set(pos.x, BOARD_TOP_Y - 0.05, pos.z);
+    mesh.position.set(pos.x, 0.01, pos.z);
     mesh.userData.pitIndex = pit;
-    mesh.receiveShadow = true;
     group.add(mesh);
     pitMeshes.push(mesh);
   }

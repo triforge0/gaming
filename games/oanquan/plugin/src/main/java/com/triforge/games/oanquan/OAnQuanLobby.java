@@ -87,6 +87,10 @@ final class OAnQuanLobby {
         players.replaceAll((id, player) -> player.withReady(false));
     }
 
+    void setAllReady() {
+        players.replaceAll((id, player) -> player.withReady(true));
+    }
+
     RoomLobbySnapshot toSnapshot(String roomId, String roomName, MatchPhase phase, boolean canStart) {
         List<LobbyPlayer> protoPlayers = new ArrayList<>(players.size());
         for (Player player : players.values()) {

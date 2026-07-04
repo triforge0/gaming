@@ -1,10 +1,11 @@
 import * as THREE from 'three';
-import { GameEventType, IEntity, IGameEvent, Team, toNum } from '@triforge/shared-ui';
+import { GameEventType, IEntity, IGameEvent, IMapSnapshot, MatchPhase, Team, toNum } from '@triforge/shared-ui';
 import { GameBridge } from '../net/GameBridge';
 import { Terrain } from './Terrain';
 import { TankMesh } from './TankMesh';
 import { BulletMesh } from './BulletMesh';
 import { ExplosionEffect } from './ExplosionEffect';
+import { HqFireEffect } from './HqFireEffect';
 import { setFromServer, teamColor } from './coords';
 import {
   aimInputAxis,
@@ -36,6 +37,8 @@ export class SceneRoot {
   private readonly tanks = new Map<number, TankMesh>();
   private readonly bullets = new Map<number, BulletMesh>();
   private readonly explosions: ExplosionEffect[] = [];
+  /** One blaze per headquarters, intensifying as the base loses HP. */
+  private readonly fires: { team: number; maxHp: number; effect: HqFireEffect }[] = [];
   /** Entity ids awaiting a blast, drained each frame while their meshes still exist. */
   private readonly pendingBlasts: number[] = [];
   /** Floating diamond that hovers over the nearest visible enemy (target indicator). */
@@ -44,7 +47,8 @@ export class SceneRoot {
     new THREE.MeshBasicMaterial({ color: 0xffd166, transparent: true, opacity: 0.9 }),
   );
 
-  private mapBuilt = false;
+  /** Last map snapshot the terrain was built from; a fresh snapshot object triggers a rebuild. */
+  private builtMap: IMapSnapshot | null = null;
   private running = false;
   private lastTime = 0;
   private readonly scratch = new THREE.Vector3();
@@ -96,6 +100,11 @@ export class SceneRoot {
 
   /** Queue a destruction blast for the render loop when an opponent takes a fatal hit. */
   private onGameEvent(event: IGameEvent): void {
+    if (event.type === GameEventType.HQ_DAMAGED || event.type === GameEventType.HQ_DESTROYED) {
+      const team = toNum(event.team);
+      this.fires.find((fire) => fire.team === team)?.effect.flare();
+      return;
+    }
     if (event.type !== GameEventType.PLAYER_DEATH && event.type !== GameEventType.PLAYER_HIT) {
       return;
     }
@@ -125,6 +134,7 @@ export class SceneRoot {
     this.drainBlasts();
     this.syncEntities(dtMs);
     this.updateExplosions(dtMs);
+    this.updateFires(dtMs);
     this.updateTargetMarker(now);
     this.updateCamera();
     this.renderer.render(this.scene, this.camera);
@@ -203,9 +213,47 @@ export class SceneRoot {
 
   private ensureMap(): void {
     const map = this.bridge.world.map;
-    if (map && !this.mapBuilt) {
+    // Rebuild whenever a new snapshot arrives — headquarters are added after lobby setup,
+    // so the initial (HQ-less) map is later replaced by one carrying the bases.
+    if (map && map !== this.builtMap) {
       this.terrain.build(map);
-      this.mapBuilt = true;
+      this.builtMap = map;
+      this.rebuildFires();
+    }
+  }
+
+  /** Re-attaches a fire effect to each headquarters after the terrain is (re)built. */
+  private rebuildFires(): void {
+    for (const fire of this.fires) {
+      this.scene.remove(fire.effect.group);
+      fire.effect.dispose();
+    }
+    this.fires.length = 0;
+    for (const hq of this.terrain.headquarters) {
+      const effect = new HqFireEffect(hq.span);
+      effect.group.position.copy(hq.center);
+      this.scene.add(effect.group);
+      this.fires.push({ team: hq.team, maxHp: hq.maxHp, effect });
+    }
+  }
+
+  /** Drives each base's blaze from its remaining HP: more damage → bigger fire. */
+  private updateFires(dtMs: number): void {
+    if (this.fires.length === 0) return;
+    const ui = this.bridge.snapshotUi();
+    const inMatch = ui.phase === MatchPhase.PLAYING || ui.phase === MatchPhase.ENDED;
+    const p = ui.phaseUpdate;
+    for (const fire of this.fires) {
+      let damage = 0;
+      if (inMatch && p) {
+        const hp =
+          fire.team === Team.TEAM_RED ? toNum(p.redHqHp)
+          : fire.team === Team.TEAM_BLUE ? toNum(p.blueHqHp)
+          : fire.maxHp;
+        damage = fire.maxHp > 0 ? 1 - hp / fire.maxHp : 0;
+      }
+      fire.effect.setDamage(damage);
+      fire.effect.update(dtMs);
     }
   }
 
@@ -378,6 +426,8 @@ export class SceneRoot {
     for (const mesh of this.tanks.values()) mesh.dispose();
     for (const blast of this.explosions) blast.dispose();
     this.explosions.length = 0;
+    for (const fire of this.fires) fire.effect.dispose();
+    this.fires.length = 0;
     this.targetMarker.geometry.dispose();
     (this.targetMarker.material as THREE.Material).dispose();
     this.terrain.dispose();

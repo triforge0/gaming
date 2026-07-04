@@ -3,12 +3,22 @@ import { IMapSnapshot, TileType, toNum } from '@triforge/shared-ui';
 import { TileTextures } from './tileTextures';
 import { buildCover, buildHq, buildSolidBlock, buildTree, buildWater } from './propMeshes';
 
+/** Where a headquarters sits in the world, so callers can attach effects (e.g. fire) to it. */
+export interface HqPlacement {
+  team: number;
+  center: THREE.Vector3;
+  span: number;
+  maxHp: number;
+}
+
 /**
  * Builds the static world from a map snapshot: a heightfield ground mesh (vertices sampled
  * at tile centres) plus textured blocks or prop meshes per tile type.
  */
 export class Terrain {
   readonly group = new THREE.Group();
+  /** Populated on each {@link build}; the world placement of every headquarters. */
+  readonly headquarters: HqPlacement[] = [];
 
   build(map: IMapSnapshot): void {
     this.dispose();
@@ -59,6 +69,13 @@ export class Terrain {
       const obj = buildHq(tileSize, footprintW, footprintH, team);
       obj.position.set(cx, base, cz);
       group.add(obj);
+
+      this.headquarters.push({
+        team,
+        center: new THREE.Vector3(cx, base, cz),
+        span: tileSize * Math.max(footprintW, footprintH),
+        maxHp: toNum(hq.maxHp) || 1,
+      });
     }
     return group;
   }
@@ -170,5 +187,6 @@ export class Terrain {
       }
     });
     this.group.clear();
+    this.headquarters.length = 0;
   }
 }

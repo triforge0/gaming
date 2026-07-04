@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /** Tile-space rectangle for a team's headquarters (eagle/base). */
 public final class HeadquartersDefinition {
-    public static final int DEFAULT_MAX_HP = 5;
+    public static final int DEFAULT_MAX_HP = 12;
 
     private final Team team;
     private final int minTileX;
