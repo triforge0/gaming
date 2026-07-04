@@ -48,6 +48,7 @@ export function App() {
 
   const clientRef = useRef<GameClient | null>(null);
   const canvasApiRef = useRef<GameCanvasApi | null>(null);
+  const boardRef = useRef<IOAQBoardState | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout>>();
 
   const showToast = useCallback((text: string) => {
@@ -84,10 +85,17 @@ export function App() {
         if ((snapshot.phase ?? MatchPhase.LOBBY) === MatchPhase.LOBBY) {
           setScreen('lobby');
           setBoard(null);
+          boardRef.current = null;
+        }
+      },
+      onMatchPhaseUpdate: (update) => {
+        if ((update.phase ?? MatchPhase.LOBBY) === MatchPhase.COUNTDOWN) {
+          setScreen('lobby');
         }
       },
       onOAnQuanMessage: (message) => {
         if (message.board) {
+          boardRef.current = message.board;
           setBoard(message.board);
           setTimerSeconds(Math.ceil((message.board.turnTicksRemaining ?? 0) / SERVER_TPS));
           setScreen('playing');
@@ -122,10 +130,9 @@ export function App() {
 
   const onCanvasReady = useCallback((api: GameCanvasApi) => {
     canvasApiRef.current = api;
-    if (board) {
-      api.pushBoard(board);
+    if (boardRef.current) {
+      api.pushBoard(boardRef.current);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (screen === 'join') {
@@ -152,28 +159,31 @@ export function App() {
 
   if (screen === 'lobby') {
     const players = lobby?.players ?? [];
-    const me = players.find((p) => toNum(p.playerId) === selfId);
-    const ready = me?.ready ?? false;
+    const phase = lobby?.phase ?? MatchPhase.LOBBY;
+    const roomReady = players.length >= 2;
+    const starting = phase === MatchPhase.COUNTDOWN;
+    const statusText = starting
+      ? 'Đang khởi tạo bàn cờ…'
+      : roomReady
+        ? 'Đủ 2 người — sẵn sàng bắt đầu'
+        : 'Đang chờ người chơi thứ hai';
     return (
       <div className="overlay center">
         <div className="panel">
           <h1>Ô ăn quan</h1>
-          <p className="muted">Cần đúng 2 người chơi. Sẵn sàng để bắt đầu.</p>
+          <p className="muted">{statusText}</p>
           <ul className="players">
             {players.map((p) => (
               <li key={toNum(p.playerId)}>
                 {p.displayName}
                 {p.isHost ? ' 👑' : ''}
-                <span className={p.ready ? 'ready' : 'waiting'}>
-                  {p.ready ? 'sẵn sàng' : 'đang chờ'}
+                <span className={roomReady ? 'ready' : 'waiting'}>
+                  {p.isHost ? 'chủ phòng · đi trước' : roomReady ? 'sẵn sàng' : 'đang chờ'}
                 </span>
               </li>
             ))}
             {players.length < 2 && <li className="muted">… đang chờ người chơi thứ hai</li>}
           </ul>
-          <button onClick={() => clientRef.current?.setReady(!ready)}>
-            {ready ? 'Bỏ sẵn sàng' : 'Sẵn sàng'}
-          </button>
         </div>
       </div>
     );
@@ -205,7 +215,7 @@ export function App() {
       {board && !board.gameOver && (
         <div className="hud bottom">
           <span className={myTurn ? 'turn mine' : 'turn'}>
-            {myTurn ? 'Lượt của bạn — chọn ô rồi chọn hướng rải' : `Lượt của ${playerName(currentId)}`}
+            {myTurn ? 'Lượt của bạn — kéo hướng rải, chọn ô kế bên, hoặc bấm mũi tên' : `Lượt của ${playerName(currentId)}`}
           </span>
           <span className={`timer ${timerSeconds <= 5 ? 'urgent' : ''}`}>⏱ {timerSeconds}s</span>
         </div>

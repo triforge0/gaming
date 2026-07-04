@@ -19,6 +19,8 @@ public final class GameMap {
     private final float[] heights;
     private final Map<SpawnRegion, SpawnRegionDefinition> spawnRegions;
     private final List<HeadquartersDefinition> headquarters;
+    /** Tiles converted to protective BRICK walls per team, tracked so they revert cleanly. */
+    private final Map<Team, List<int[]>> hqWallTiles = new EnumMap<>(Team.class);
 
     public static Builder builder() {
         return new Builder();
@@ -171,6 +173,7 @@ public final class GameMap {
                 }
             }
         }
+        clearHeadquartersWalls(hq.team());
     }
 
     private void paintHeadquartersTiles(HeadquartersDefinition hq) {
@@ -179,6 +182,41 @@ public final class GameMap {
                 if (inBounds(tileX, tileY)) {
                     tiles[index(tileX, tileY)] = TileType.HQ;
                 }
+            }
+        }
+        paintHeadquartersWalls(hq);
+    }
+
+    /**
+     * Rings the HQ footprint with a one-tile layer of BRICK cover, converting only EMPTY tiles
+     * so existing terrain is preserved. The painted cells are recorded so they revert exactly.
+     */
+    private void paintHeadquartersWalls(HeadquartersDefinition hq) {
+        List<int[]> painted = new ArrayList<>();
+        for (int tileY = hq.minTileY() - 1; tileY <= hq.maxTileY() + 1; tileY++) {
+            for (int tileX = hq.minTileX() - 1; tileX <= hq.maxTileX() + 1; tileX++) {
+                if (hq.contains(tileX, tileY) || !inBounds(tileX, tileY)) {
+                    continue;
+                }
+                int idx = index(tileX, tileY);
+                if (tiles[idx] == TileType.EMPTY) {
+                    tiles[idx] = TileType.BRICK;
+                    painted.add(new int[]{tileX, tileY});
+                }
+            }
+        }
+        hqWallTiles.put(hq.team(), painted);
+    }
+
+    /** Reverts the protective BRICK walls painted for a team back to EMPTY. */
+    private void clearHeadquartersWalls(Team team) {
+        List<int[]> painted = hqWallTiles.remove(team);
+        if (painted == null) {
+            return;
+        }
+        for (int[] cell : painted) {
+            if (inBounds(cell[0], cell[1]) && tiles[index(cell[0], cell[1])] == TileType.BRICK) {
+                tiles[index(cell[0], cell[1])] = TileType.EMPTY;
             }
         }
     }

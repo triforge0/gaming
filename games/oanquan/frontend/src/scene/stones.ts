@@ -23,6 +23,8 @@ export interface VisualBoard {
   trayQuan: [number, number];
   handStones: number;
   handPit: number;
+  /** 0–1 lift during pickup animation; 1 = resting hand height. */
+  handLift: number;
 }
 
 export function visualFromBoard(pitStones: number[], quanPieces: number[], scores: Array<{ capturedDan: number; capturedQuan: number }>): VisualBoard {
@@ -36,6 +38,7 @@ export function visualFromBoard(pitStones: number[], quanPieces: number[], score
     trayQuan: [scores[0]?.capturedQuan ?? 0, scores[1]?.capturedQuan ?? 0],
     handStones: 0,
     handPit: -1,
+    handLift: 1,
   };
 }
 
@@ -105,7 +108,9 @@ export class StoneField {
       }
       for (let piece = 0; piece < state.quanPieces[pit]; piece++) {
         if (quan >= MAX_QUAN_INSTANCES) break;
-        this.dummy.position.set(base.x, base.y + 0.16, base.z + piece * 0.1);
+        // Nudge the tall quan sphere toward the board center: the near-top-down
+        // camera projects it outward, off the photo pit's hollow, otherwise.
+        this.dummy.position.set(base.x - Math.sign(base.x) * 0.2, base.y + 0.1, base.z + piece * 0.1);
         this.dummy.updateMatrix();
         this.quanMesh.setMatrixAt(quan++, this.dummy.matrix);
       }
@@ -130,10 +135,11 @@ export class StoneField {
     // Lifted hand stones float in a small cluster above the source pit.
     if (state.handStones > 0 && state.handPit >= 0) {
       const base = pitWorldPosition(state.handPit);
+      const lift = 0.35 + 0.75 * (state.handLift ?? 1);
       const shown = Math.min(state.handStones, 20);
       for (let slot = 0; slot < shown; slot++) {
         const off = seededOffset(14, slot);
-        placeDan(base.x + off.dx * 0.6, base.y + 1.1 + off.dy * 0.6, base.z + off.dz * 0.6);
+        placeDan(base.x + off.dx * 0.6, base.y + lift + off.dy * 0.6, base.z + off.dz * 0.6);
       }
     }
 

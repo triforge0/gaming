@@ -46,6 +46,43 @@ final class GameMapTest {
     }
 
     @Test
+    void placingHeadquartersPaintsBrickWallRingAroundIt() {
+        GameMap map = emptyMap(6, 6);
+        // A pre-existing wall inside the ring must be preserved, not overwritten.
+        map.setTile(1, 1, TileType.STEEL);
+
+        map.replaceTeamHeadquarters(HeadquartersDefinition.rect(Team.RED, 2, 2, 1, 1));
+
+        assertEquals(TileType.HQ, map.tileAt(2, 2));
+        assertEquals(TileType.STEEL, map.tileAt(1, 1)); // untouched
+        assertEquals(TileType.BRICK, map.tileAt(3, 2)); // ring cell
+        assertEquals(TileType.BRICK, map.tileAt(2, 3)); // ring cell
+        assertEquals(TileType.BRICK, map.tileAt(1, 2)); // ring cell
+    }
+
+    @Test
+    void clearingHeadquartersRevertsPaintedWallsButKeepsExistingTerrain() {
+        GameMap map = emptyMap(6, 6);
+        map.setTile(1, 1, TileType.STEEL);
+        map.replaceTeamHeadquarters(HeadquartersDefinition.rect(Team.RED, 2, 2, 1, 1));
+
+        map.clearTeamHeadquarters(Team.RED);
+
+        assertEquals(TileType.EMPTY, map.tileAt(2, 2)); // HQ tile cleared
+        assertEquals(TileType.EMPTY, map.tileAt(3, 2)); // painted wall reverted
+        assertEquals(TileType.STEEL, map.tileAt(1, 1)); // pre-existing terrain kept
+        assertTrue(map.headquarters().isEmpty());
+    }
+
+    private static GameMap emptyMap(int width, int height) {
+        TileType[] tiles = new TileType[width * height];
+        for (int i = 0; i < tiles.length; i++) {
+            tiles[i] = TileType.EMPTY;
+        }
+        return GameMap.builder(width, height).tileSize(32).tiles(tiles).build();
+    }
+
+    @Test
     void builderRejectsMismatchedTileArrayLength() {
         assertThrows(IllegalArgumentException.class, () ->
                 GameMap.builder(2, 2).tileSize(16).tiles(new TileType[3]).build());

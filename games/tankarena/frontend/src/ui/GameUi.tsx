@@ -12,7 +12,7 @@ import {
 } from '@triforge/shared-ui';
 import { GameBridge, UiState } from '../net/GameBridge';
 
-const HQ_MAX_HP = 5;
+const HQ_MAX_HP = 12;
 
 const TEAM_REGIONS: Record<number, { value: number; label: string }[]> = {
   [Team.TEAM_RED]: [

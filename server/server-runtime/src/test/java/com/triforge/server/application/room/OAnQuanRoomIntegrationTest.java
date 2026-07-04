@@ -50,8 +50,6 @@ final class OAnQuanRoomIntegrationTest {
         JoinResponse rejected = readLastJoinResponse(chi);
         assertEquals(0L, rejected.getPlayerId());
 
-        room.handleLobbyCommand(1L, ready());
-        room.handleLobbyCommand(2L, ready());
         int guard = 0;
         while (room.matchPhase() == MatchPhase.COUNTDOWN && guard++ < 10_000) {
             room.tickCountdownPhase();

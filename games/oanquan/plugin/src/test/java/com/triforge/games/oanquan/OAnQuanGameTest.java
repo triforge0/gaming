@@ -49,10 +49,8 @@ class OAnQuanGameTest {
     }
 
     private void startTwoPlayerMatch() {
-        join("An");   // playerId 1 → seat 0
-        join("Binh"); // playerId 2 → seat 1
-        ready(1L);
-        ready(2L);
+        join("An");   // playerId 1 → seat 0 (host, moves first)
+        join("Binh"); // playerId 2 → seat 1 — auto-ready and countdown
         tickUntilPlaying();
     }
 
@@ -77,16 +75,22 @@ class OAnQuanGameTest {
     }
 
     @Test
-    void matchStartsOnlyWithTwoReadyPlayers() {
+    void matchDoesNotStartWithOnlyOnePlayer() {
         join("An");
-        ready(1L);
         for (int tick = 0; tick < 300; tick++) {
             game.onTick(tick);
         }
         assertThat(game.matchPhase()).isEqualTo(MatchPhase.LOBBY);
+    }
+
+    @Test
+    void matchStartsAutomaticallyWhenSecondPlayerJoins() {
+        join("An");
+        assertThat(game.matchPhase()).isEqualTo(MatchPhase.LOBBY);
 
         join("Binh");
-        ready(2L);
+        assertThat(game.matchPhase()).isEqualTo(MatchPhase.COUNTDOWN);
+
         tickUntilPlaying();
     }
 
@@ -94,8 +98,6 @@ class OAnQuanGameTest {
     void leaveDuringCountdownReturnsToLobby() {
         join("An");
         join("Binh");
-        ready(1L);
-        ready(2L);
         assertThat(game.matchPhase()).isEqualTo(MatchPhase.COUNTDOWN);
 
         game.handleLeaveRequest(2L);

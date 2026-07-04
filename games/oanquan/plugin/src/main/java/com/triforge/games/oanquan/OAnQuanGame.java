@@ -131,6 +131,11 @@ public final class OAnQuanGame implements Game {
 
         logger.info("Player '{}' joined oanquan room '{}' as playerId={} (host={})",
                 displayName, host().roomId(), playerId, isHost);
+
+        if (lobby.isFull() && matchPhase.phase() == MatchPhase.LOBBY) {
+            lobby.setAllReady();
+            beginCountdown();
+        }
     }
 
     @Override
