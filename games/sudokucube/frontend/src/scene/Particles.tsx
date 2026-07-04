@@ -22,7 +22,7 @@ const CONFETTI_COLORS = [
 export function Particles({ skin }: { skin: SkinPreset }) {
   const points = useRef<THREE.Points>(null);
   const data = useMemo(() => ({
-    positions: new Float32Array(COUNT * 3),
+    positions: new Float32Array(COUNT * 3).fill(-100),
     velocities: new Float32Array(COUNT * 3),
     colors: new Float32Array(COUNT * 3),
     life: new Float32Array(COUNT).fill(0),
