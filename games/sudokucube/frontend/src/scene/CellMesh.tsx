@@ -28,7 +28,13 @@ export function CellMesh({ index, skin, atlas }: Props) {
   const correct = value !== null && value === puzzle.solution[index];
   const style: NumberStyle = given ? 'given' : correct ? 'correct' : 'wrong';
 
-  const color = locked ? skin.lockA : selected ? skin.select : skin.cellColor;
+  const baseColor = useMemo(() => {
+    const c = new THREE.Color(skin.cellColor);
+    const tint = new THREE.Color().setHSL(face / 6, 0.8, 0.5);
+    return c.lerp(tint, 0.12).getStyle();
+  }, [skin.cellColor, face]);
+
+  const color = locked ? skin.lockA : selected ? skin.select : baseColor;
 
   const fx = useGame((s) => (s.cellFx?.index === index ? s.cellFx : null));
   const reduced = useReducedMotion();
