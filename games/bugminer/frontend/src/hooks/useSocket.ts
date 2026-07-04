@@ -15,10 +15,10 @@ function mapFairMode(proto?: { enabled?: boolean | null; battle?: boolean | null
 }
 
 function hasChallengeProto(
-  c?: { designerId?: number | null; playerId?: number | null } | null,
+  c?: { designerId?: unknown; playerId?: unknown } | null,
 ): boolean {
   if (!c) return false;
-  return toNum(c.designerId) > 0 || toNum(c.playerId) > 0;
+  return toNum(c.designerId as number) > 0 || toNum(c.playerId as number) > 0;
 }
 
 export function useSocket() {
@@ -234,7 +234,15 @@ export function useSocket() {
         const playerBId = battle?.playerBId
           || (pB ? String(toNum(pB.playerId)) : current.gameState?.players[1]?.id || '2');
 
-        const phase = resolveGamePhase(fairMode, battle, pA, pB);
+        const toPhaseInput = (c: typeof pA) => {
+          if (!hasChallengeProto(c)) return null;
+          return {
+            setupLocked: c?.setupLocked ?? false,
+            finished: c?.finished ?? false,
+          };
+        };
+
+        const phase = resolveGamePhase(fairMode, battle, toPhaseInput(pA), toPhaseInput(pB));
 
         const newState: GameState = {
           ...(current.gameState || {}),
