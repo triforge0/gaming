@@ -11,6 +11,10 @@ COPY games games
 COPY launcher launcher
 COPY frontend frontend
 
+# Declare the build arg and set it as env for Vite compilation during Maven package
+ARG VITE_MIXPANEL_TOKEN
+ENV VITE_MIXPANEL_TOKEN=$VITE_MIXPANEL_TOKEN
+
 RUN mvn -B -pl launcher/triforge-server -am clean package -DskipTests
 
 # --- runtime stage: slim JRE, only the fat JAR ---

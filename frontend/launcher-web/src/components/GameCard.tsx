@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import type { CatalogEntry, Category, PluginLiveStats } from '../catalog/types';
 import { LiveBadge } from './LiveBadge';
+import { trackEvent } from '../lib/mixpanel';
 
 export const CATEGORY_LABELS: Record<Category, string> = {
   game: 'Game',
@@ -12,6 +13,16 @@ export const CATEGORY_LABELS: Record<Category, string> = {
 export function GameCard({ entry, stats }: { entry: CatalogEntry; stats?: PluginLiveStats }) {
   const Art = entry.Art;
   const style = { '--accent': entry.accent } as CSSProperties;
+
+  const handlePlayClick = () => {
+    trackEvent('Game Clicked', {
+      gameId: entry.id,
+      gameTitle: entry.title,
+      category: entry.category,
+      path: entry.path,
+      source: 'card',
+    }, { transport: 'sendBeacon' });
+  };
 
   const body = (
     <>
@@ -41,7 +52,7 @@ export function GameCard({ entry, stats }: { entry: CatalogEntry; stats?: Plugin
     );
   }
   return (
-    <a className="game-card" href={entry.path} style={style}>
+    <a className="game-card" href={entry.path} style={style} onClick={handlePlayClick}>
       {body}
     </a>
   );
