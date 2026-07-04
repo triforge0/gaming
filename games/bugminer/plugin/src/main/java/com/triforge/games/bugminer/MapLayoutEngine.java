@@ -7,7 +7,7 @@ import java.util.List;
 
 /** Placement validation and fair/battle map generation (mirrors shared placement + fair/battle map). */
 final class MapLayoutEngine {
-    private static final float ITEM_GAP = 8f;
+    private static final float ITEM_GAP = 2f;
 
     private MapLayoutEngine() {}
 
@@ -39,7 +39,7 @@ final class MapLayoutEngine {
                 return copyLayout(items);
             }
         }
-        return FairLayoutBuilder.build(levelId, roomSeed);
+        return new ChallengeInstance(1, 2, levelId).copyItemsLayout();
     }
 
     static List<PlacedItem> buildBattleLayout(String levelId, String roomSeed) {
@@ -51,7 +51,7 @@ final class MapLayoutEngine {
                 return copyLayout(items);
             }
         }
-        return BattleLayoutBuilder.build(levelId, roomSeed);
+        return new ChallengeInstance(1, 2, levelId).copyItemsLayout();
     }
 
     private static boolean arrangeFairInPlace(List<PlacedItem> items, SeededRng rng) {
@@ -69,12 +69,16 @@ final class MapLayoutEngine {
         List<Vec2> anchors = new ArrayList<>();
         List<Vec2> deepCandidates = deepJackpotCandidates();
         for (PlacedItem jackpot : jackpots) {
-            if (!tryCandidates(jackpot, deepCandidates, items)) return false;
+            if (!tryCandidates(jackpot, deepCandidates, items)) {
+                System.out.println("Failed to place jackpot: " + jackpot.type);
+                return false;
+            }
             anchors.add(new Vec2(jackpot.x, jackpot.y));
         }
 
-        guards.sort((a, b) -> Float.compare(rng.next(), rng.next()));
+        shuffle(guards, rng);
         placeGuardsNearAnchors(guards, anchors, items, rng);
+        rest.addAll(guards);
 
         return placeInterleaved(rest, items, rng, 0);
     }
@@ -98,6 +102,15 @@ final class MapLayoutEngine {
             }
         }
         return placeInterleaved(rest, items, rng, 3);
+    }
+
+    private static <T> void shuffle(List<T> list, SeededRng rng) {
+        for (int i = list.size() - 1; i > 0; i--) {
+            int j = (int) (rng.next() * (i + 1));
+            T temp = list.get(i);
+            list.set(i, list.get(j));
+            list.set(j, temp);
+        }
     }
 
     private static void placeGuardsNearAnchors(
@@ -129,11 +142,14 @@ final class MapLayoutEngine {
             item.x = 0;
             item.y = 0;
         }
-        pool.sort((a, b) -> Float.compare(rng.next(), rng.next()));
+        shuffle(pool, rng);
         List<Vec2> grid = mixedGridCandidates(rng);
         int slot = gridOffset % grid.size();
         for (PlacedItem item : pool) {
-            if (!tryPlaceInGrid(item, grid, slot, items, rng)) return false;
+            if (!tryPlaceInGrid(item, grid, slot, items, rng)) {
+                System.out.println("Failed to place item: " + item.type + " (id=" + item.id + ") after all attempts.");
+                return false;
+            }
             slot = (slot + 2) % grid.size();
         }
         return true;
@@ -166,7 +182,7 @@ final class MapLayoutEngine {
 
     private static boolean tryRandomInBand(
             PlacedItem item, float minY, float maxY, List<PlacedItem> items, SeededRng rng) {
-        for (int i = 0; i < 120; i++) {
+        for (int i = 0; i < 300; i++) {
             float x = GameConstants.SETUP_MIN_X + rng.next() * (GameConstants.SETUP_MAX_X - GameConstants.SETUP_MIN_X);
             float y = minY + rng.next() * (maxY - minY);
             if (isValidPlacement(item.id, x, y, items)) {
@@ -183,8 +199,8 @@ final class MapLayoutEngine {
         float deepMax = GameConstants.SETUP_MAX_Y - 12f;
         List<Vec2> candidates = new ArrayList<>();
         for (int row = 0; row < 5; row++) {
-            for (int col = 0; col < 11; col++) {
-                float tx = col / 10f;
+            for (int col = 0; col < 15; col++) {
+                float tx = col / 14f;
                 float ty = 0.5f + (row / 4f) * 0.5f;
                 candidates.add(new Vec2(
                         GameConstants.SETUP_MIN_X + 32f + tx * (GameConstants.SETUP_MAX_X - GameConstants.SETUP_MIN_X - 64f),
@@ -228,7 +244,7 @@ final class MapLayoutEngine {
                 }
             }
         }
-        candidates.sort((a, b) -> Float.compare(rng.next(), rng.next()));
+        shuffle(candidates, rng);
         return candidates;
     }
 
@@ -259,9 +275,7 @@ final class MapLayoutEngine {
 
     private static boolean isGuard(BugMinerItemType type) {
         return type == BugMinerItemType.BM_ITEM_POISON
-                || type == BugMinerItemType.BM_ITEM_ROCK
-                || type == BugMinerItemType.BM_ITEM_MOUSE
-                || type == BugMinerItemType.BM_ITEM_PIG;
+                || type == BugMinerItemType.BM_ITEM_ROCK;
     }
 
     private static int jackpotPriority(PlacedItem item) {

@@ -94,10 +94,9 @@ public class ChallengeInstance {
             addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 4);
         }
         
-        double rng = Math.random();
-        int mouseCount = 4 + (int)(rng * 6);
-        int pigCount = 5 + (int)(rng * 8);
-        int strengthDrinkCount = 2 + (int)(rng * 3);
+        int mouseCount = 4;
+        int pigCount = 5;
+        int strengthDrinkCount = 2;
         
         addItemsOfType(BugMinerItemType.BM_ITEM_MOUSE, mouseCount);
         addItemsOfType(BugMinerItemType.BM_ITEM_PIG, pigCount);

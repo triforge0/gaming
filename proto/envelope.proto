@@ -697,7 +697,7 @@ message BugMinerBoardState {
   repeated BugMinerClientEvent events = 5;
   uint32 playCountdown = 6;
   bool paused = 7;
-  uint64 winnerId = 8;
+  optional uint64 winnerId = 8;
   string matchEndReason = 9;
 }
 

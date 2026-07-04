@@ -85,6 +85,10 @@ final class BugMinerBoardTest {
                         .build())
                 .build());
 
+        game.handleLobbyCommand(1L, com.triforge.protocol.proto.LobbyCommand.newBuilder()
+                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
+                .build());
+
         while (game.matchPhase() == com.triforge.engine.match.MatchPhase.COUNTDOWN) {
             game.tickCountdownPhase();
         }
