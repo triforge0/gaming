@@ -14,6 +14,9 @@ public class BugMinerBoard {
 
     private final FairModeConfig fairMode = new FairModeConfig();
     private float playCountdown = 0f;
+    private boolean paused = false;
+    private Long matchWinnerId = null;
+    private String matchEndReason = null;
     private final List<BugMinerClientEvent> pendingEvents = new ArrayList<>();
 
     private static final float COUNTDOWN_SECONDS = 3f;
@@ -91,8 +94,10 @@ public class BugMinerBoard {
     }
 
     public void tick(float deltaSec, boolean isPlaying) {
-        tickPlayCountdown(deltaSec);
-        if (!isPlaying || !isGameplayActive()) return;
+        if (!paused) {
+            tickPlayCountdown(deltaSec);
+        }
+        if (!isPlaying || !isGameplayActive() || paused) return;
 
         if (battleArena != null) {
             battleArena.tick(deltaSec, true);
@@ -134,13 +139,72 @@ public class BugMinerBoard {
     }
 
     public boolean fireHook(long playerId) {
-        if (!isGameplayActive()) return false;
+        if (paused || !isGameplayActive()) return false;
         if (battleArena != null) return battleArena.fireHook(playerId);
         ChallengeInstance c = getChallengePlaying(playerId);
         return c != null && c.fireHook(playerId);
     }
 
+    public void setPaused(boolean value) {
+        this.paused = value;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setMatchOutcome(Long winnerId, String endReason) {
+        this.matchWinnerId = winnerId;
+        this.matchEndReason = endReason;
+    }
+
+    public void clearMatchOutcome() {
+        matchWinnerId = null;
+        matchEndReason = null;
+    }
+
+    public void resetForLobby() {
+        challengeA = null;
+        challengeB = null;
+        battleArena = null;
+        playCountdown = 0f;
+        paused = false;
+        clearMatchOutcome();
+        pendingEvents.clear();
+    }
+
+    public Long resolveDualWinner() {
+        if (battleArena != null) {
+            return battleArena.winnerId();
+        }
+        if (challengeA == null || challengeB == null) return null;
+        if ("target".equals(challengeA.endReason())) return challengeA.playerId;
+        if ("target".equals(challengeB.endReason())) return challengeB.playerId;
+        if ("poison".equals(challengeA.endReason())) return challengeB.playerId;
+        if ("poison".equals(challengeB.endReason())) return challengeA.playerId;
+        if (challengeA.isFinished() && challengeB.isFinished()) {
+            if (challengeA.score() > challengeB.score()) return challengeA.playerId;
+            if (challengeB.score() > challengeA.score()) return challengeB.playerId;
+            return null;
+        }
+        return null;
+    }
+
+    public String resolveDualEndReason() {
+        if (battleArena != null && battleArena.isFinished()) {
+            return battleArena.toProto().getEndReason();
+        }
+        if (challengeA == null || challengeB == null) return null;
+        if ("target".equals(challengeA.endReason()) || "target".equals(challengeB.endReason())) return "target";
+        if ("poison".equals(challengeA.endReason()) || "poison".equals(challengeB.endReason())) return "poison";
+        if (challengeA.isFinished() && challengeB.isFinished()) return "timeout";
+        return null;
+    }
+
     public BugMinerBoardState getState() {
+        Long winner = matchWinnerId != null ? matchWinnerId : resolveDualWinner();
+        String endReason = matchEndReason != null ? matchEndReason : resolveDualEndReason();
+
         BugMinerBoardState.Builder builder = BugMinerBoardState.newBuilder();
         if (challengeA != null) builder.setForPlayerA(challengeA.toProto());
         if (challengeB != null) builder.setForPlayerB(challengeB.toProto());
@@ -152,6 +216,9 @@ public class BugMinerBoard {
                 .setTimeLimit(fairMode.timeLimit)
                 .build());
         builder.setPlayCountdown(playCountdownSeconds());
+        builder.setPaused(paused);
+        if (winner != null) builder.setWinnerId(winner);
+        if (endReason != null) builder.setMatchEndReason(endReason);
         for (BugMinerClientEvent event : pendingEvents) {
             builder.addEvents(event.toProto());
         }

@@ -204,12 +204,13 @@ export function useSocket() {
           swingDirection: (hook?.swingDirection || 1) as 1 | -1,
         });
 
-        const mapItems = (items?: Array<{ id?: string | null; type?: number | null; x?: number | null; y?: number | null; collected?: boolean | null }> | null) =>
+        const mapItems = (items?: Array<{ id?: string | null; type?: number | null; x?: number | null; y?: number | null; collected?: boolean | null; scale?: number | null }> | null) =>
           items?.map((item) => ({
             id: item.id || '',
             type: itemTypeMap[item.type ?? 0] || 'gold',
             position: { x: item.x ?? 0, y: item.y ?? 0 },
             collected: item.collected || false,
+            scale: item.scale ?? 1,
           })) || [];
 
         const emptyChallenge = (playerAId: string, playerBId: string) => ({
@@ -243,7 +244,7 @@ export function useSocket() {
             setupLocked: c.setupLocked || false,
             finished: c.finished || false,
             endReason: (c.endReason as GameState['endReason']) || null,
-            strengthBuffRemaining: 0,
+            strengthBuffRemaining: c.strengthBuffRemaining ?? 0,
           };
         };
 
@@ -283,12 +284,18 @@ export function useSocket() {
           };
         };
 
+        const boardWinnerId = message.board.winnerId
+          ? String(toNum(message.board.winnerId as number))
+          : null;
+        const boardEndReason = (message.board.matchEndReason as GameState['endReason']) || null;
+
         const phase = resolveGamePhase(
           fairMode,
           battle,
           toPhaseInput(pA),
           toPhaseInput(pB),
           message.board.playCountdown ?? 0,
+          message.board.paused ?? false,
         );
 
         handleBoardEvents(message.board.events, current.playerId);
@@ -305,11 +312,16 @@ export function useSocket() {
           },
           hostId: current.gameState?.hostId || '',
           players: current.gameState?.players || [],
-          winnerId: battle?.winnerId ?? current.gameState?.winnerId ?? null,
-          endReason: battle?.endReason ?? current.gameState?.endReason ?? null,
+          winnerId: battle?.winnerId ?? boardWinnerId ?? current.gameState?.winnerId ?? null,
+          endReason: battle?.endReason ?? boardEndReason ?? current.gameState?.endReason ?? null,
           countdown: message.board.playCountdown ?? 0,
         };
         current.setGameState(newState);
+        if (message.board.paused) {
+          current.setPaused(true);
+        } else if (phase === 'playing') {
+          current.setPaused(false);
+        }
       },
     });
 
@@ -354,8 +366,8 @@ export function useSocket() {
     lockMap: () => clientRef.current?.sendBugMinerMessage({ lockMap: {} }),
     autoArrange: () => clientRef.current?.sendBugMinerMessage({ autoArrange: {} }),
     fireHook: () => clientRef.current?.sendBugMinerMessage({ fireHook: {} }),
-    pause: (_paused: boolean) => { /* not implemented in proto */ },
-    restart: () => { /* not implemented in proto */ },
+    pause: (paused: boolean) => clientRef.current?.sendBugMinerMessage({ pause: { paused } }),
+    restart: () => clientRef.current?.sendBugMinerMessage({ restart: {} }),
     leave: () => clientRef.current?.close(),
     refreshRoomList: fetchRooms,
     configureFairMode: (config: Partial<FairModeConfig>) => {

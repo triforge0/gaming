@@ -25,6 +25,11 @@ describe('resolveGamePhase', () => {
     expect(resolveGamePhase(fair, null, finished, finished)).toBe('finished');
   });
 
+  it('paused during active play', () => {
+    const fair = { ...DEFAULT_FAIR_MODE, enabled: true };
+    expect(resolveGamePhase(fair, null, locked, locked, 0, true)).toBe('paused');
+  });
+
   it('battle mode uses shared arena state', () => {
     const battleMode = { ...DEFAULT_FAIR_MODE, enabled: true, battle: true };
     const battle = {

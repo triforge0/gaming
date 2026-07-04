@@ -89,7 +89,7 @@ public class BattleArena {
             if (item.x == 0 && item.y == 0) continue;
 
             ItemDefinition def = ItemDefinitions.get(item.type);
-            float radius = def.radius;
+            float radius = ItemValueHelper.getRadius(item.type, item.scale);
             item.x += item.vx * deltaSec;
             item.y += item.vy * deltaSec;
 
@@ -141,7 +141,7 @@ public class BattleArena {
 
         if (hook.state == BugMinerHookState.BM_HOOK_RETRACTING) {
             PlacedItem attached = hook.attachedItemId == null ? null : findItem(hook.attachedItemId);
-            float weight = attached != null ? ItemDefinitions.get(attached.type).weight : 1f;
+            float weight = attached != null ? ItemValueHelper.getWeight(attached.type, attached.scale) : 1f;
             float strength = getStrength(side);
             HookPhysics.updateRetract(hook, deltaSec, weight, strength);
 
@@ -213,9 +213,9 @@ public class BattleArena {
             return;
         }
 
-        int value = ItemDefinitions.get(item.type).value;
+        int value = ItemValueHelper.getValue(item.type, item.scale);
         if (item.type == BugMinerItemType.BM_ITEM_MYSTERY_BAG) {
-            value = 50 + (int) (Math.random() * 451);
+            value = ItemValueHelper.resolveMysteryValue();
             BugMinerClientEvent reveal = new BugMinerClientEvent("mystery:reveal");
             reveal.playerId = side == 'A' ? playerAId : playerBId;
             reveal.itemId = item.id;
@@ -291,7 +291,8 @@ public class BattleArena {
                     .setType(item.type)
                     .setX(item.x)
                     .setY(item.y)
-                    .setCollected(item.collected));
+                    .setCollected(item.collected)
+                    .setScale(item.scale));
         }
         return b.build();
     }

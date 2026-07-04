@@ -298,6 +298,7 @@ final class MapLayoutEngine {
             copy.moving = src.moving;
             copy.vx = src.vx;
             copy.vy = src.vy;
+            copy.scale = src.scale;
             copies.add(copy);
         }
         return copies;

@@ -186,6 +186,7 @@ public class ChallengeInstance {
             copy.moving = src.moving;
             copy.vx = src.vx;
             copy.vy = src.vy;
+            copy.scale = src.scale;
             items.add(copy);
         }
         setupLocked = true;
@@ -201,6 +202,7 @@ public class ChallengeInstance {
             copy.moving = item.moving;
             copy.vx = item.vx;
             copy.vy = item.vy;
+            copy.scale = item.scale;
             copies.add(copy);
         }
         return copies;
@@ -243,7 +245,7 @@ public class ChallengeInstance {
             if (item.collected || !item.moving) continue;
             if (item.x == 0 && item.y == 0) continue;
             
-            float radius = ItemDefinitions.get(item.type).radius;
+            float radius = ItemValueHelper.getRadius(item.type, item.scale);
             item.x += item.vx * deltaSec;
             item.y += item.vy * deltaSec;
             
@@ -289,7 +291,7 @@ public class ChallengeInstance {
                 PlacedItem attached = hook.attachedItemId != null 
                     ? items.stream().filter(i -> i.id.equals(hook.attachedItemId)).findFirst().orElse(null) 
                     : null;
-                float weight = attached != null ? ItemDefinitions.get(attached.type).weight : 1f;
+                float weight = attached != null ? ItemValueHelper.getWeight(attached.type, attached.scale) : 1f;
                 float strengthMultiplier = strengthBuffRemaining > 0 ? 2.0f : 1.0f;
                 
                 HookPhysics.updateRetract(hook, deltaSec, weight, strengthMultiplier);
@@ -327,9 +329,9 @@ public class ChallengeInstance {
             return;
         }
 
-        int value = ItemDefinitions.get(item.type).value;
+        int value = ItemValueHelper.getValue(item.type, item.scale);
         if (item.type == BugMinerItemType.BM_ITEM_MYSTERY_BAG) {
-            value = 50 + (int) (Math.random() * 451);
+            value = ItemValueHelper.resolveMysteryValue();
             BugMinerClientEvent reveal = new BugMinerClientEvent("mystery:reveal");
             reveal.playerId = playerId;
             reveal.itemId = item.id;
@@ -383,7 +385,8 @@ public class ChallengeInstance {
             .setScore(score)
             .setTargetScore(targetScore)
             .setSetupLocked(setupLocked)
-            .setFinished(finished);
+            .setFinished(finished)
+            .setStrengthBuffRemaining((int) Math.ceil(strengthBuffRemaining));
             
         if (endReason != null) builder.setEndReason(endReason);
         
@@ -402,7 +405,8 @@ public class ChallengeInstance {
                 .setType(item.type)
                 .setX(item.x)
                 .setY(item.y)
-                .setCollected(item.collected));
+                .setCollected(item.collected)
+                .setScale(item.scale));
         }
         
         return builder.build();

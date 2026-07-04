@@ -67,11 +67,11 @@ public class HookPhysics {
         Vec2 tip = getHookTipAt(anchor, hook);
         for (PlacedItem item : items) {
             if (item.collected) continue;
-            ItemDefinition def = ItemDefinitions.get(item.type);
+            float radius = ItemValueHelper.getRadius(item.type, item.scale);
             float dx = tip.x - item.x;
             float dy = tip.y - item.y;
             float dist = (float) Math.sqrt(dx * dx + dy * dy);
-            if (dist < def.radius + 8) return item;
+            if (dist < radius + 8) return item;
         }
         return null;
     }
@@ -81,11 +81,11 @@ public class HookPhysics {
         float tipY = -tip.y;
         for (PlacedItem item : items) {
             if (item.collected) continue;
-            ItemDefinition def = ItemDefinitions.get(item.type);
+            float radius = ItemValueHelper.getRadius(item.type, item.scale);
             float dx = tip.x - item.x;
             float dy = tipY - item.y;
             float dist = (float) Math.sqrt(dx * dx + dy * dy);
-            if (dist < def.radius + 8) return item;
+            if (dist < radius + 8) return item;
         }
         return null;
     }

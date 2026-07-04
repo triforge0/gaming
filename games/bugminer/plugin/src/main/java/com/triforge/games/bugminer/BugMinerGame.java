@@ -254,10 +254,12 @@ public class BugMinerGame implements Game {
         if (active) {
             board.tick(1f / 60f, true);
             if (board.battleArena != null && board.battleArena.isFinished()) {
+                board.setMatchOutcome(board.battleArena.winnerId(), board.battleArena.toProto().getEndReason());
                 endMatch();
                 return;
             }
             if (checkChallengeWinConditions()) {
+                board.setMatchOutcome(board.resolveDualWinner(), board.resolveDualEndReason());
                 endMatch();
                 return;
             }
@@ -395,7 +397,28 @@ public class BugMinerGame implements Game {
             case FIREHOOK -> {
                 if (board.fireHook(playerId)) broadcastBoardState();
             }
+            case PAUSE -> {
+                if (matchPhase.phase() != MatchPhase.PLAYING) break;
+                board.setPaused(bm.getPause().getPaused());
+                broadcastBoardState();
+            }
+            case RESTART -> {
+                restartToLobby();
+            }
             default -> {}
         }
+    }
+
+    private void restartToLobby() {
+        if (matchPhase.phase() != MatchPhase.PLAYING && matchPhase.phase() != MatchPhase.ENDED) {
+            return;
+        }
+        board.resetForLobby();
+        matchPhase.returnToLobby();
+        lobby.resetAllReady();
+        host().broadcaster().broadcastLobbySnapshot(host(), this);
+        host().broadcaster().broadcastMatchPhaseUpdate(matchPhase, this);
+        broadcastBoardState();
+        logger.info("BugMiner room '{}' restarted to lobby", host().roomId());
     }
 }

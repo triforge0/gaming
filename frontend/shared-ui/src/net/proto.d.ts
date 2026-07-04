@@ -7613,6 +7613,9 @@ export namespace com {
 
                     /** BugMinerPlacedItem collected */
                     collected?: (boolean|null);
+
+                    /** BugMinerPlacedItem scale */
+                    scale?: (number|null);
                 }
 
                 /** Represents a BugMinerPlacedItem. */
@@ -7638,6 +7641,9 @@ export namespace com {
 
                     /** BugMinerPlacedItem collected. */
                     public collected: boolean;
+
+                    /** BugMinerPlacedItem scale. */
+                    public scale: number;
 
                     /**
                      * Creates a new BugMinerPlacedItem instance using the specified properties.
@@ -7876,6 +7882,9 @@ export namespace com {
 
                     /** BugMinerChallengeState endReason */
                     endReason?: (string|null);
+
+                    /** BugMinerChallengeState strengthBuffRemaining */
+                    strengthBuffRemaining?: (number|null);
                 }
 
                 /** Represents a BugMinerChallengeState. */
@@ -7922,6 +7931,9 @@ export namespace com {
 
                     /** BugMinerChallengeState endReason. */
                     public endReason: string;
+
+                    /** BugMinerChallengeState strengthBuffRemaining. */
+                    public strengthBuffRemaining: number;
 
                     /**
                      * Creates a new BugMinerChallengeState instance using the specified properties.
@@ -8160,6 +8172,15 @@ export namespace com {
 
                     /** BugMinerBoardState playCountdown */
                     playCountdown?: (number|null);
+
+                    /** BugMinerBoardState paused */
+                    paused?: (boolean|null);
+
+                    /** BugMinerBoardState winnerId */
+                    winnerId?: (number|Long|null);
+
+                    /** BugMinerBoardState matchEndReason */
+                    matchEndReason?: (string|null);
                 }
 
                 /** Represents a BugMinerBoardState. */
@@ -8188,6 +8209,15 @@ export namespace com {
 
                     /** BugMinerBoardState playCountdown. */
                     public playCountdown: number;
+
+                    /** BugMinerBoardState paused. */
+                    public paused: boolean;
+
+                    /** BugMinerBoardState winnerId. */
+                    public winnerId: (number|Long);
+
+                    /** BugMinerBoardState matchEndReason. */
+                    public matchEndReason: string;
 
                     /**
                      * Creates a new BugMinerBoardState instance using the specified properties.
@@ -9260,6 +9290,194 @@ export namespace com {
                     public static getTypeUrl(typeUrlPrefix?: string): string;
                 }
 
+                /** Properties of a BMPauseCommand. */
+                interface IBMPauseCommand {
+
+                    /** BMPauseCommand paused */
+                    paused?: (boolean|null);
+                }
+
+                /** Represents a BMPauseCommand. */
+                class BMPauseCommand implements IBMPauseCommand {
+
+                    /**
+                     * Constructs a new BMPauseCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBMPauseCommand);
+
+                    /** BMPauseCommand paused. */
+                    public paused: boolean;
+
+                    /**
+                     * Creates a new BMPauseCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BMPauseCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBMPauseCommand): com.triforge.protocol.proto.BMPauseCommand;
+
+                    /**
+                     * Encodes the specified BMPauseCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMPauseCommand.verify|verify} messages.
+                     * @param message BMPauseCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBMPauseCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BMPauseCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMPauseCommand.verify|verify} messages.
+                     * @param message BMPauseCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBMPauseCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BMPauseCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BMPauseCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BMPauseCommand;
+
+                    /**
+                     * Decodes a BMPauseCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BMPauseCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BMPauseCommand;
+
+                    /**
+                     * Verifies a BMPauseCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BMPauseCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BMPauseCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BMPauseCommand;
+
+                    /**
+                     * Creates a plain object from a BMPauseCommand message. Also converts values to other types if specified.
+                     * @param message BMPauseCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BMPauseCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BMPauseCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BMPauseCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BMRestartCommand. */
+                interface IBMRestartCommand {
+                }
+
+                /** Represents a BMRestartCommand. */
+                class BMRestartCommand implements IBMRestartCommand {
+
+                    /**
+                     * Constructs a new BMRestartCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBMRestartCommand);
+
+                    /**
+                     * Creates a new BMRestartCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BMRestartCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBMRestartCommand): com.triforge.protocol.proto.BMRestartCommand;
+
+                    /**
+                     * Encodes the specified BMRestartCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMRestartCommand.verify|verify} messages.
+                     * @param message BMRestartCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBMRestartCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BMRestartCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMRestartCommand.verify|verify} messages.
+                     * @param message BMRestartCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBMRestartCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BMRestartCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BMRestartCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BMRestartCommand;
+
+                    /**
+                     * Decodes a BMRestartCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BMRestartCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BMRestartCommand;
+
+                    /**
+                     * Verifies a BMRestartCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BMRestartCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BMRestartCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BMRestartCommand;
+
+                    /**
+                     * Creates a plain object from a BMRestartCommand message. Also converts values to other types if specified.
+                     * @param message BMRestartCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BMRestartCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BMRestartCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BMRestartCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
                 /** Properties of a BugMinerMessage. */
                 interface IBugMinerMessage {
 
@@ -9286,6 +9504,12 @@ export namespace com {
 
                     /** BugMinerMessage configureFairMode */
                     configureFairMode?: (com.triforge.protocol.proto.IBMConfigureFairModeCommand|null);
+
+                    /** BugMinerMessage pause */
+                    pause?: (com.triforge.protocol.proto.IBMPauseCommand|null);
+
+                    /** BugMinerMessage restart */
+                    restart?: (com.triforge.protocol.proto.IBMRestartCommand|null);
                 }
 
                 /** Represents a BugMinerMessage. */
@@ -9321,8 +9545,14 @@ export namespace com {
                     /** BugMinerMessage configureFairMode. */
                     public configureFairMode?: (com.triforge.protocol.proto.IBMConfigureFairModeCommand|null);
 
+                    /** BugMinerMessage pause. */
+                    public pause?: (com.triforge.protocol.proto.IBMPauseCommand|null);
+
+                    /** BugMinerMessage restart. */
+                    public restart?: (com.triforge.protocol.proto.IBMRestartCommand|null);
+
                     /** BugMinerMessage content. */
-                    public content?: ("setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board"|"configureFairMode");
+                    public content?: ("setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board"|"configureFairMode"|"pause"|"restart");
 
                     /**
                      * Creates a new BugMinerMessage instance using the specified properties.

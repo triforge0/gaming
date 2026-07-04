@@ -22485,6 +22485,7 @@ export const com = $root.com = (() => {
                      * @property {number|null} [x] BugMinerPlacedItem x
                      * @property {number|null} [y] BugMinerPlacedItem y
                      * @property {boolean|null} [collected] BugMinerPlacedItem collected
+                     * @property {number|null} [scale] BugMinerPlacedItem scale
                      */
 
                     /**
@@ -22543,6 +22544,14 @@ export const com = $root.com = (() => {
                     BugMinerPlacedItem.prototype.collected = false;
 
                     /**
+                     * BugMinerPlacedItem scale.
+                     * @member {number} scale
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @instance
+                     */
+                    BugMinerPlacedItem.prototype.scale = 0;
+
+                    /**
                      * Creates a new BugMinerPlacedItem instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
@@ -22580,6 +22589,8 @@ export const com = $root.com = (() => {
                             writer.uint32(/* id 4, wireType 5 =*/37).float(message.y);
                         if (message.collected != null && Object.hasOwnProperty.call(message, "collected"))
                             writer.uint32(/* id 5, wireType 0 =*/40).bool(message.collected);
+                        if (message.scale != null && Object.hasOwnProperty.call(message, "scale"))
+                            writer.uint32(/* id 6, wireType 5 =*/53).float(message.scale);
                         return writer;
                     };
 
@@ -22638,6 +22649,10 @@ export const com = $root.com = (() => {
                                 }
                             case 5: {
                                     message.collected = reader.bool();
+                                    break;
+                                }
+                            case 6: {
+                                    message.scale = reader.float();
                                     break;
                                 }
                             default:
@@ -22707,6 +22722,9 @@ export const com = $root.com = (() => {
                         if (message.collected != null && Object.hasOwnProperty.call(message, "collected"))
                             if (typeof message.collected !== "boolean")
                                 return "collected: boolean expected";
+                        if (message.scale != null && Object.hasOwnProperty.call(message, "scale"))
+                            if (typeof message.scale !== "number")
+                                return "scale: number expected";
                         return null;
                     };
 
@@ -22784,6 +22802,8 @@ export const com = $root.com = (() => {
                             message.y = Number(object.y);
                         if (object.collected != null)
                             message.collected = Boolean(object.collected);
+                        if (object.scale != null)
+                            message.scale = Number(object.scale);
                         return message;
                     };
 
@@ -22810,6 +22830,7 @@ export const com = $root.com = (() => {
                             object.x = 0;
                             object.y = 0;
                             object.collected = false;
+                            object.scale = 0;
                         }
                         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
                             object.id = message.id;
@@ -22821,6 +22842,8 @@ export const com = $root.com = (() => {
                             object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
                         if (message.collected != null && Object.hasOwnProperty.call(message, "collected"))
                             object.collected = message.collected;
+                        if (message.scale != null && Object.hasOwnProperty.call(message, "scale"))
+                            object.scale = options.json && !isFinite(message.scale) ? String(message.scale) : message.scale;
                         return object;
                     };
 
@@ -23220,6 +23243,7 @@ export const com = $root.com = (() => {
                      * @property {boolean|null} [setupLocked] BugMinerChallengeState setupLocked
                      * @property {boolean|null} [finished] BugMinerChallengeState finished
                      * @property {string|null} [endReason] BugMinerChallengeState endReason
+                     * @property {number|null} [strengthBuffRemaining] BugMinerChallengeState strengthBuffRemaining
                      */
 
                     /**
@@ -23335,6 +23359,14 @@ export const com = $root.com = (() => {
                     BugMinerChallengeState.prototype.endReason = "";
 
                     /**
+                     * BugMinerChallengeState strengthBuffRemaining.
+                     * @member {number} strengthBuffRemaining
+                     * @memberof com.triforge.protocol.proto.BugMinerChallengeState
+                     * @instance
+                     */
+                    BugMinerChallengeState.prototype.strengthBuffRemaining = 0;
+
+                    /**
                      * Creates a new BugMinerChallengeState instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.BugMinerChallengeState
@@ -23387,6 +23419,8 @@ export const com = $root.com = (() => {
                             writer.uint32(/* id 11, wireType 0 =*/88).bool(message.finished);
                         if (message.endReason != null && Object.hasOwnProperty.call(message, "endReason"))
                             writer.uint32(/* id 12, wireType 2 =*/98).string(message.endReason);
+                        if (message.strengthBuffRemaining != null && Object.hasOwnProperty.call(message, "strengthBuffRemaining"))
+                            writer.uint32(/* id 13, wireType 0 =*/104).uint32(message.strengthBuffRemaining);
                         return writer;
                     };
 
@@ -23477,6 +23511,10 @@ export const com = $root.com = (() => {
                                     message.endReason = reader.string();
                                     break;
                                 }
+                            case 13: {
+                                    message.strengthBuffRemaining = reader.uint32();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7, long);
                                 break;
@@ -23560,6 +23598,9 @@ export const com = $root.com = (() => {
                         if (message.endReason != null && Object.hasOwnProperty.call(message, "endReason"))
                             if (!$util.isString(message.endReason))
                                 return "endReason: string expected";
+                        if (message.strengthBuffRemaining != null && Object.hasOwnProperty.call(message, "strengthBuffRemaining"))
+                            if (!$util.isInteger(message.strengthBuffRemaining))
+                                return "strengthBuffRemaining: integer expected";
                         return null;
                     };
 
@@ -23630,6 +23671,8 @@ export const com = $root.com = (() => {
                             message.finished = Boolean(object.finished);
                         if (object.endReason != null)
                             message.endReason = String(object.endReason);
+                        if (object.strengthBuffRemaining != null)
+                            message.strengthBuffRemaining = object.strengthBuffRemaining >>> 0;
                         return message;
                     };
 
@@ -23672,6 +23715,7 @@ export const com = $root.com = (() => {
                             object.setupLocked = false;
                             object.finished = false;
                             object.endReason = "";
+                            object.strengthBuffRemaining = 0;
                         }
                         if (message.designerId != null && Object.hasOwnProperty.call(message, "designerId"))
                             if (typeof BigInt !== "undefined" && options.longs === BigInt)
@@ -23710,6 +23754,8 @@ export const com = $root.com = (() => {
                             object.finished = message.finished;
                         if (message.endReason != null && Object.hasOwnProperty.call(message, "endReason"))
                             object.endReason = message.endReason;
+                        if (message.strengthBuffRemaining != null && Object.hasOwnProperty.call(message, "strengthBuffRemaining"))
+                            object.strengthBuffRemaining = message.strengthBuffRemaining;
                         return object;
                     };
 
@@ -24223,6 +24269,9 @@ export const com = $root.com = (() => {
                      * @property {com.triforge.protocol.proto.IBugMinerBattleState|null} [battle] BugMinerBoardState battle
                      * @property {Array.<com.triforge.protocol.proto.IBugMinerClientEvent>|null} [events] BugMinerBoardState events
                      * @property {number|null} [playCountdown] BugMinerBoardState playCountdown
+                     * @property {boolean|null} [paused] BugMinerBoardState paused
+                     * @property {number|Long|null} [winnerId] BugMinerBoardState winnerId
+                     * @property {string|null} [matchEndReason] BugMinerBoardState matchEndReason
                      */
 
                     /**
@@ -24290,6 +24339,30 @@ export const com = $root.com = (() => {
                     BugMinerBoardState.prototype.playCountdown = 0;
 
                     /**
+                     * BugMinerBoardState paused.
+                     * @member {boolean} paused
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @instance
+                     */
+                    BugMinerBoardState.prototype.paused = false;
+
+                    /**
+                     * BugMinerBoardState winnerId.
+                     * @member {number|Long} winnerId
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @instance
+                     */
+                    BugMinerBoardState.prototype.winnerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * BugMinerBoardState matchEndReason.
+                     * @member {string} matchEndReason
+                     * @memberof com.triforge.protocol.proto.BugMinerBoardState
+                     * @instance
+                     */
+                    BugMinerBoardState.prototype.matchEndReason = "";
+
+                    /**
                      * Creates a new BugMinerBoardState instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.BugMinerBoardState
@@ -24330,6 +24403,12 @@ export const com = $root.com = (() => {
                                 $root.com.triforge.protocol.proto.BugMinerClientEvent.encode(message.events[i], writer.uint32(/* id 5, wireType 2 =*/42).fork(), q + 1).ldelim();
                         if (message.playCountdown != null && Object.hasOwnProperty.call(message, "playCountdown"))
                             writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.playCountdown);
+                        if (message.paused != null && Object.hasOwnProperty.call(message, "paused"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).bool(message.paused);
+                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId"))
+                            writer.uint32(/* id 8, wireType 0 =*/64).uint64(message.winnerId);
+                        if (message.matchEndReason != null && Object.hasOwnProperty.call(message, "matchEndReason"))
+                            writer.uint32(/* id 9, wireType 2 =*/74).string(message.matchEndReason);
                         return writer;
                     };
 
@@ -24394,6 +24473,18 @@ export const com = $root.com = (() => {
                                 }
                             case 6: {
                                     message.playCountdown = reader.uint32();
+                                    break;
+                                }
+                            case 7: {
+                                    message.paused = reader.bool();
+                                    break;
+                                }
+                            case 8: {
+                                    message.winnerId = reader.uint64();
+                                    break;
+                                }
+                            case 9: {
+                                    message.matchEndReason = reader.string();
                                     break;
                                 }
                             default:
@@ -24467,6 +24558,15 @@ export const com = $root.com = (() => {
                         if (message.playCountdown != null && Object.hasOwnProperty.call(message, "playCountdown"))
                             if (!$util.isInteger(message.playCountdown))
                                 return "playCountdown: integer expected";
+                        if (message.paused != null && Object.hasOwnProperty.call(message, "paused"))
+                            if (typeof message.paused !== "boolean")
+                                return "paused: boolean expected";
+                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId"))
+                            if (!$util.isInteger(message.winnerId) && !(message.winnerId && $util.isInteger(message.winnerId.low) && $util.isInteger(message.winnerId.high)))
+                                return "winnerId: integer|Long expected";
+                        if (message.matchEndReason != null && Object.hasOwnProperty.call(message, "matchEndReason"))
+                            if (!$util.isString(message.matchEndReason))
+                                return "matchEndReason: string expected";
                         return null;
                     };
 
@@ -24520,6 +24620,19 @@ export const com = $root.com = (() => {
                         }
                         if (object.playCountdown != null)
                             message.playCountdown = object.playCountdown >>> 0;
+                        if (object.paused != null)
+                            message.paused = Boolean(object.paused);
+                        if (object.winnerId != null)
+                            if ($util.Long)
+                                message.winnerId = $util.Long.fromValue(object.winnerId, true);
+                            else if (typeof object.winnerId === "string")
+                                message.winnerId = parseInt(object.winnerId, 10);
+                            else if (typeof object.winnerId === "number")
+                                message.winnerId = object.winnerId;
+                            else if (typeof object.winnerId === "object")
+                                message.winnerId = new $util.LongBits(object.winnerId.low >>> 0, object.winnerId.high >>> 0).toNumber(true);
+                        if (object.matchEndReason != null)
+                            message.matchEndReason = String(object.matchEndReason);
                         return message;
                     };
 
@@ -24548,6 +24661,13 @@ export const com = $root.com = (() => {
                             object.fairMode = null;
                             object.battle = null;
                             object.playCountdown = 0;
+                            object.paused = false;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.winnerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.winnerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.matchEndReason = "";
                         }
                         if (message.forPlayerA != null && Object.hasOwnProperty.call(message, "forPlayerA"))
                             object.forPlayerA = $root.com.triforge.protocol.proto.BugMinerChallengeState.toObject(message.forPlayerA, options, q + 1);
@@ -24564,6 +24684,17 @@ export const com = $root.com = (() => {
                         }
                         if (message.playCountdown != null && Object.hasOwnProperty.call(message, "playCountdown"))
                             object.playCountdown = message.playCountdown;
+                        if (message.paused != null && Object.hasOwnProperty.call(message, "paused"))
+                            object.paused = message.paused;
+                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.winnerId = typeof message.winnerId === "number" ? BigInt(message.winnerId) : $util.Long.fromBits(message.winnerId.low >>> 0, message.winnerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.winnerId === "number")
+                                object.winnerId = options.longs === String ? String(message.winnerId) : message.winnerId;
+                            else
+                                object.winnerId = options.longs === String ? $util.Long.prototype.toString.call(message.winnerId) : options.longs === Number ? new $util.LongBits(message.winnerId.low >>> 0, message.winnerId.high >>> 0).toNumber(true) : message.winnerId;
+                        if (message.matchEndReason != null && Object.hasOwnProperty.call(message, "matchEndReason"))
+                            object.matchEndReason = message.matchEndReason;
                         return object;
                     };
 
@@ -27180,6 +27311,422 @@ export const com = $root.com = (() => {
                     return BMConfigureFairModeCommand;
                 })();
 
+                proto.BMPauseCommand = (function() {
+
+                    /**
+                     * Properties of a BMPauseCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBMPauseCommand
+                     * @property {boolean|null} [paused] BMPauseCommand paused
+                     */
+
+                    /**
+                     * Constructs a new BMPauseCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BMPauseCommand.
+                     * @implements IBMPauseCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBMPauseCommand=} [properties] Properties to set
+                     */
+                    function BMPauseCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * BMPauseCommand paused.
+                     * @member {boolean} paused
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @instance
+                     */
+                    BMPauseCommand.prototype.paused = false;
+
+                    /**
+                     * Creates a new BMPauseCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMPauseCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BMPauseCommand} BMPauseCommand instance
+                     */
+                    BMPauseCommand.create = function create(properties) {
+                        return new BMPauseCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BMPauseCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMPauseCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMPauseCommand} message BMPauseCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMPauseCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.paused != null && Object.hasOwnProperty.call(message, "paused"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).bool(message.paused);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BMPauseCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMPauseCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMPauseCommand} message BMPauseCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMPauseCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BMPauseCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BMPauseCommand} BMPauseCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMPauseCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BMPauseCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.paused = reader.bool();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BMPauseCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BMPauseCommand} BMPauseCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMPauseCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BMPauseCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BMPauseCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.paused != null && Object.hasOwnProperty.call(message, "paused"))
+                            if (typeof message.paused !== "boolean")
+                                return "paused: boolean expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BMPauseCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BMPauseCommand} BMPauseCommand
+                     */
+                    BMPauseCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BMPauseCommand)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.BMPauseCommand: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.BMPauseCommand();
+                        if (object.paused != null)
+                            message.paused = Boolean(object.paused);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a BMPauseCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.BMPauseCommand} message BMPauseCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BMPauseCommand.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults)
+                            object.paused = false;
+                        if (message.paused != null && Object.hasOwnProperty.call(message, "paused"))
+                            object.paused = message.paused;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this BMPauseCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BMPauseCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BMPauseCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BMPauseCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BMPauseCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BMPauseCommand";
+                    };
+
+                    return BMPauseCommand;
+                })();
+
+                proto.BMRestartCommand = (function() {
+
+                    /**
+                     * Properties of a BMRestartCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBMRestartCommand
+                     */
+
+                    /**
+                     * Constructs a new BMRestartCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BMRestartCommand.
+                     * @implements IBMRestartCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBMRestartCommand=} [properties] Properties to set
+                     */
+                    function BMRestartCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Creates a new BMRestartCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BMRestartCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMRestartCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BMRestartCommand} BMRestartCommand instance
+                     */
+                    BMRestartCommand.create = function create(properties) {
+                        return new BMRestartCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BMRestartCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMRestartCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BMRestartCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMRestartCommand} message BMRestartCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMRestartCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BMRestartCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMRestartCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMRestartCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMRestartCommand} message BMRestartCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMRestartCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BMRestartCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BMRestartCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BMRestartCommand} BMRestartCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMRestartCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BMRestartCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BMRestartCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMRestartCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BMRestartCommand} BMRestartCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMRestartCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BMRestartCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BMRestartCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BMRestartCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BMRestartCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BMRestartCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BMRestartCommand} BMRestartCommand
+                     */
+                    BMRestartCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BMRestartCommand)
+                            return object;
+                        return new $root.com.triforge.protocol.proto.BMRestartCommand();
+                    };
+
+                    /**
+                     * Creates a plain object from a BMRestartCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BMRestartCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.BMRestartCommand} message BMRestartCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BMRestartCommand.toObject = function toObject() {
+                        return {};
+                    };
+
+                    /**
+                     * Converts this BMRestartCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BMRestartCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BMRestartCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BMRestartCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BMRestartCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BMRestartCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BMRestartCommand";
+                    };
+
+                    return BMRestartCommand;
+                })();
+
                 proto.BugMinerMessage = (function() {
 
                     /**
@@ -27194,6 +27741,8 @@ export const com = $root.com = (() => {
                      * @property {com.triforge.protocol.proto.IBMFireHookCommand|null} [fireHook] BugMinerMessage fireHook
                      * @property {com.triforge.protocol.proto.IBugMinerBoardState|null} [board] BugMinerMessage board
                      * @property {com.triforge.protocol.proto.IBMConfigureFairModeCommand|null} [configureFairMode] BugMinerMessage configureFairMode
+                     * @property {com.triforge.protocol.proto.IBMPauseCommand|null} [pause] BugMinerMessage pause
+                     * @property {com.triforge.protocol.proto.IBMRestartCommand|null} [restart] BugMinerMessage restart
                      */
 
                     /**
@@ -27275,17 +27824,33 @@ export const com = $root.com = (() => {
                      */
                     BugMinerMessage.prototype.configureFairMode = null;
 
+                    /**
+                     * BugMinerMessage pause.
+                     * @member {com.triforge.protocol.proto.IBMPauseCommand|null|undefined} pause
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    BugMinerMessage.prototype.pause = null;
+
+                    /**
+                     * BugMinerMessage restart.
+                     * @member {com.triforge.protocol.proto.IBMRestartCommand|null|undefined} restart
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    BugMinerMessage.prototype.restart = null;
+
                     // OneOf field names bound to virtual getters and setters
                     let $oneOfFields;
 
                     /**
                      * BugMinerMessage content.
-                     * @member {"setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board"|"configureFairMode"|undefined} content
+                     * @member {"setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board"|"configureFairMode"|"pause"|"restart"|undefined} content
                      * @memberof com.triforge.protocol.proto.BugMinerMessage
                      * @instance
                      */
                     Object.defineProperty(BugMinerMessage.prototype, "content", {
-                        get: $util.oneOfGetter($oneOfFields = ["setLevel", "setTimeLimit", "placeItem", "autoArrange", "lockMap", "fireHook", "board", "configureFairMode"]),
+                        get: $util.oneOfGetter($oneOfFields = ["setLevel", "setTimeLimit", "placeItem", "autoArrange", "lockMap", "fireHook", "board", "configureFairMode", "pause", "restart"]),
                         set: $util.oneOfSetter($oneOfFields)
                     });
 
@@ -27333,6 +27898,10 @@ export const com = $root.com = (() => {
                             $root.com.triforge.protocol.proto.BugMinerBoardState.encode(message.board, writer.uint32(/* id 7, wireType 2 =*/58).fork(), q + 1).ldelim();
                         if (message.configureFairMode != null && Object.hasOwnProperty.call(message, "configureFairMode"))
                             $root.com.triforge.protocol.proto.BMConfigureFairModeCommand.encode(message.configureFairMode, writer.uint32(/* id 8, wireType 2 =*/66).fork(), q + 1).ldelim();
+                        if (message.pause != null && Object.hasOwnProperty.call(message, "pause"))
+                            $root.com.triforge.protocol.proto.BMPauseCommand.encode(message.pause, writer.uint32(/* id 9, wireType 2 =*/74).fork(), q + 1).ldelim();
+                        if (message.restart != null && Object.hasOwnProperty.call(message, "restart"))
+                            $root.com.triforge.protocol.proto.BMRestartCommand.encode(message.restart, writer.uint32(/* id 10, wireType 2 =*/82).fork(), q + 1).ldelim();
                         return writer;
                     };
 
@@ -27403,6 +27972,14 @@ export const com = $root.com = (() => {
                                 }
                             case 8: {
                                     message.configureFairMode = $root.com.triforge.protocol.proto.BMConfigureFairModeCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 9: {
+                                    message.pause = $root.com.triforge.protocol.proto.BMPauseCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 10: {
+                                    message.restart = $root.com.triforge.protocol.proto.BMRestartCommand.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 }
                             default:
@@ -27523,6 +28100,26 @@ export const com = $root.com = (() => {
                                     return "configureFairMode." + error;
                             }
                         }
+                        if (message.pause != null && Object.hasOwnProperty.call(message, "pause")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BMPauseCommand.verify(message.pause, long + 1);
+                                if (error)
+                                    return "pause." + error;
+                            }
+                        }
+                        if (message.restart != null && Object.hasOwnProperty.call(message, "restart")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BMRestartCommand.verify(message.restart, long + 1);
+                                if (error)
+                                    return "restart." + error;
+                            }
+                        }
                         return null;
                     };
 
@@ -27584,6 +28181,16 @@ export const com = $root.com = (() => {
                                 throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.configureFairMode: object expected");
                             message.configureFairMode = $root.com.triforge.protocol.proto.BMConfigureFairModeCommand.fromObject(object.configureFairMode, long + 1);
                         }
+                        if (object.pause != null) {
+                            if (!$util.isObject(object.pause))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.pause: object expected");
+                            message.pause = $root.com.triforge.protocol.proto.BMPauseCommand.fromObject(object.pause, long + 1);
+                        }
+                        if (object.restart != null) {
+                            if (!$util.isObject(object.restart))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.restart: object expected");
+                            message.restart = $root.com.triforge.protocol.proto.BMRestartCommand.fromObject(object.restart, long + 1);
+                        }
                         return message;
                     };
 
@@ -27643,6 +28250,16 @@ export const com = $root.com = (() => {
                             object.configureFairMode = $root.com.triforge.protocol.proto.BMConfigureFairModeCommand.toObject(message.configureFairMode, options, q + 1);
                             if (options.oneofs)
                                 object.content = "configureFairMode";
+                        }
+                        if (message.pause != null && Object.hasOwnProperty.call(message, "pause")) {
+                            object.pause = $root.com.triforge.protocol.proto.BMPauseCommand.toObject(message.pause, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "pause";
+                        }
+                        if (message.restart != null && Object.hasOwnProperty.call(message, "restart")) {
+                            object.restart = $root.com.triforge.protocol.proto.BMRestartCommand.toObject(message.restart, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "restart";
                         }
                         return object;
                     };

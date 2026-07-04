@@ -651,6 +651,7 @@ message BugMinerPlacedItem {
   float x = 3;
   float y = 4;
   bool collected = 5;
+  float scale = 6;
 }
 
 message BugMinerHookData {
@@ -674,6 +675,7 @@ message BugMinerChallengeState {
   bool setupLocked = 10;
   bool finished = 11;
   string endReason = 12;
+  uint32 strengthBuffRemaining = 13;
 }
 
 message BugMinerClientEvent {
@@ -694,6 +696,9 @@ message BugMinerBoardState {
   BugMinerBattleState battle = 4;
   repeated BugMinerClientEvent events = 5;
   uint32 playCountdown = 6;
+  bool paused = 7;
+  uint64 winnerId = 8;
+  string matchEndReason = 9;
 }
 
 message BugMinerFairModeConfig {
@@ -739,6 +744,8 @@ message BMConfigureFairModeCommand {
   optional string levelId = 3;
   optional uint32 timeLimit = 4;
 }
+message BMPauseCommand { bool paused = 1; }
+message BMRestartCommand {}
 
 message BugMinerMessage {
   oneof content {
@@ -750,5 +757,7 @@ message BugMinerMessage {
     BMFireHookCommand fireHook = 6;
     BugMinerBoardState board = 7;
     BMConfigureFairModeCommand configureFairMode = 8;
+    BMPauseCommand pause = 9;
+    BMRestartCommand restart = 10;
   }
 }
