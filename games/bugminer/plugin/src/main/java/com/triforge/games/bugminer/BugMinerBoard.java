@@ -31,6 +31,10 @@ public class BugMinerBoard {
         challengeA = null;
         challengeB = null;
         battleArena = null;
+        playCountdown = 0f;
+        paused = false;
+        clearMatchOutcome();
+        pendingEvents.clear();
     }
 
     public void beginFreeMode() {

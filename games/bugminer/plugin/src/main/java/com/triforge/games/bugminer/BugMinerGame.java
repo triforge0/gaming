@@ -316,9 +316,11 @@ public class BugMinerGame implements Game {
     public void tickScoreboardPhase() {
         matchPhase.tickScoreboard();
         if (matchPhase.scoreboardFinished()) {
+            board.resetForLobby();
             matchPhase.returnToLobby();
             lobby.resetAllReady();
             host().broadcaster().broadcastLobbySnapshot(host(), this);
+            broadcastBoardState();
             logger.info("BugMiner room '{}' returned to lobby", host().roomId());
         }
     }

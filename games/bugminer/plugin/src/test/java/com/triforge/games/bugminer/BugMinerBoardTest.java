@@ -101,4 +101,22 @@ final class BugMinerBoardTest {
                 .build());
         // No exception — placeItem blocked silently in battle mode
     }
+
+    @Test
+    void initClearsStaleWinnerBeforeBattleStart() {
+        BugMinerBoard board = new BugMinerBoard();
+        board.setMatchOutcome(1L, "target");
+        board.init(1L, 2L);
+        board.fairMode().enabled = true;
+        board.fairMode().battle = true;
+        board.fairMode().levelId = "easy-mine";
+        board.fairMode().timeLimit = 90;
+        board.beginBattleMode("room-battle-1");
+
+        var state = board.getState();
+        assertFalse(state.hasWinnerId(), "stale winner must be cleared on new match");
+        assertTrue(state.hasBattle());
+        assertFalse(state.getBattle().getFinished());
+        assertEquals(3, state.getPlayCountdown());
+    }
 }

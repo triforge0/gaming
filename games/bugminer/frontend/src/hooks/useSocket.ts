@@ -119,11 +119,11 @@ function applyLobbySnapshot(
     hostId,
     fairMode: prev?.fairMode ?? { ...DEFAULT_FAIR_MODE },
     players: mapLobbyPlayers(snapshot.players),
-    challenges: prev?.challenges,
-    battle: prev?.battle ?? null,
-    winnerId: prev?.winnerId ?? null,
-    endReason: prev?.endReason ?? null,
-    countdown: prev?.countdown ?? 0,
+    challenges: snapshot.phase === MatchPhase.LOBBY ? undefined : prev?.challenges,
+    battle: snapshot.phase === MatchPhase.LOBBY ? null : (prev?.battle ?? null),
+    winnerId: snapshot.phase === MatchPhase.LOBBY ? null : (prev?.winnerId ?? null),
+    endReason: snapshot.phase === MatchPhase.LOBBY ? null : (prev?.endReason ?? null),
+    countdown: snapshot.phase === MatchPhase.LOBBY ? 0 : (prev?.countdown ?? 0),
   } as GameState);
 
   if (snapshot.phase === MatchPhase.LOBBY) setScreen('lobby');
@@ -217,17 +217,33 @@ export function useSocket() {
         useGameStore.getState().setScreen('home');
       },
       onMatchPhaseUpdate: (update) => {
-        const { setScreen, gameState } = useGameStore.getState();
-        if (update.phase === MatchPhase.ENDED && gameState?.phase === 'finished') {
+        const store = useGameStore.getState();
+        const { gameState } = store;
+
+        if (update.phase === MatchPhase.ENDED) {
           return;
         }
+
         if (update.phase === MatchPhase.LOBBY || update.phase === MatchPhase.COUNTDOWN) {
-          setScreen('lobby');
-        } else if (update.phase === MatchPhase.PLAYING && gameState) {
-          // Let gameState.phase drive setup vs play (free mode starts in dual_setup).
-          useGameStore.getState().setGameState(gameState);
+          const inActiveRound = gameState?.phase === 'playing'
+            || gameState?.phase === 'countdown'
+            || gameState?.phase === 'paused'
+            || gameState?.phase === 'dual_setup';
+          if (!inActiveRound) {
+            store.setScreen('lobby');
+          }
+          return;
+        }
+
+        if (update.phase === MatchPhase.PLAYING && gameState) {
+          store.setGameState({
+            ...gameState,
+            phase: gameState.phase === 'lobby' ? 'countdown' : gameState.phase,
+            winnerId: null,
+            endReason: null,
+          });
         } else if (update.phase === MatchPhase.PLAYING) {
-          setScreen('game');
+          store.setScreen('game');
         }
       },
       onBugMinerMessage: (message) => {
@@ -357,15 +373,17 @@ export function useSocket() {
           ? String(toNum(message.board.winnerId as number))
           : null;
         const boardEndReason = (message.board.matchEndReason as GameState['endReason']) || null;
+        const activeWinnerId = battle?.finished ? (battle.winnerId ?? boardWinnerId) : null;
+        const activeEndReason = battle?.finished ? (battle.endReason ?? boardEndReason) : null;
 
         const phase = resolveGamePhase(
           fairMode,
           battle,
-          toPhaseInput(pA),
-          toPhaseInput(pB),
+          fairMode.battle ? null : toPhaseInput(pA),
+          fairMode.battle ? null : toPhaseInput(pB),
           message.board.playCountdown ?? 0,
           message.board.paused ?? false,
-          boardWinnerId,
+          activeWinnerId,
         );
 
         handleBoardEvents(message.board.events, current.playerId);
@@ -376,14 +394,16 @@ export function useSocket() {
           phase,
           fairMode,
           battle,
-          challenges: {
-            forPlayerA: mapChallengeState(pA) ?? emptyChallenge(playerAId, playerBId),
-            forPlayerB: mapChallengeState(pB) ?? emptyChallenge(playerBId, playerAId),
-          },
+          challenges: fairMode.battle
+            ? undefined
+            : {
+                forPlayerA: mapChallengeState(pA) ?? emptyChallenge(playerAId, playerBId),
+                forPlayerB: mapChallengeState(pB) ?? emptyChallenge(playerBId, playerAId),
+              },
           hostId: current.gameState?.hostId || '',
           players: current.gameState?.players || [],
-          winnerId: battle?.winnerId ?? boardWinnerId ?? current.gameState?.winnerId ?? null,
-          endReason: battle?.endReason ?? boardEndReason ?? current.gameState?.endReason ?? null,
+          winnerId: activeWinnerId,
+          endReason: activeEndReason,
           countdown: message.board.playCountdown ?? 0,
         };
         current.setGameState(newState);

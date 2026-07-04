@@ -117,7 +117,7 @@ export interface GameState {
   phase: GamePhase;
   hostId: string;
   players: PlayerInfo[];
-  challenges: DualChallenges;
+  challenges?: DualChallenges;
   battle: BattleArenaState | null;
   winnerId: string | null;
   endReason: EndReason;
