@@ -92,6 +92,10 @@ public class BugMinerGame implements Game {
 
         logger.info("Player '{}' joined bugminer room '{}' as playerId={} (host={})",
                 displayName, host().roomId(), playerId, isHost);
+
+        if (lobby.playerCount() >= 2 && matchPhase.phase() == MatchPhase.LOBBY) {
+            beginCountdown();
+        }
     }
 
     @Override

@@ -80,6 +80,21 @@ export function useSocket() {
         url.searchParams.set('room', shortRoomId);
         window.history.pushState({}, '', url);
         
+        // Update GameState with lobby players
+        const currentState = useGameStore.getState().gameState;
+        const host = snapshot.players?.find(p => p.isHost);
+        useGameStore.getState().setGameState({
+          ...(currentState || {}),
+          phase: snapshot.phase === MatchPhase.LOBBY ? 'lobby' : (currentState?.phase || 'lobby'),
+          hostId: host ? toNum(host.playerId).toString() : '',
+          players: snapshot.players?.map(p => ({
+            id: toNum(p.playerId).toString(),
+            name: p.displayName || '',
+            role: null,
+            ready: p.ready || false
+          })) || []
+        } as any);
+
         // MatchPhase mapping
         if (snapshot.phase === MatchPhase.LOBBY) {
            setScreen('lobby');
@@ -87,8 +102,40 @@ export function useSocket() {
            setScreen('game');
         }
       },
+      onMatchPhaseUpdate: (update) => {
+        const { setScreen } = useGameStore.getState();
+        if (update.phase === MatchPhase.LOBBY) {
+           setScreen('lobby');
+        } else if (update.phase === MatchPhase.PLAYING) {
+           // We let the board state determine if it's setup or game
+        } else if (update.phase === MatchPhase.COUNTDOWN) {
+           setScreen('lobby'); // or a countdown screen
+        }
+      },
       onBugMinerMessage: (message) => {
-        // Implement when Java backend starts sending bugminer messages
+        if (message.board) {
+          const current = useGameStore.getState();
+          const pA = message.board.forPlayerA;
+          const pB = message.board.forPlayerB;
+          
+          let phase: any = 'playing';
+          if (!pA?.setupLocked || !pB?.setupLocked) {
+             phase = 'dual_setup';
+          }
+          if (pA?.finished && pB?.finished) {
+             phase = 'finished';
+          }
+
+          const newState: any = {
+             ...(current.gameState || {}),
+             phase,
+             challenges: {
+                forPlayerA: pA,
+                forPlayerB: pB
+             }
+          };
+          current.setGameState(newState);
+        }
       }
     });
     

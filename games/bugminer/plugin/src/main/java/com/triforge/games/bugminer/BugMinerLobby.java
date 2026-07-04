@@ -39,7 +39,7 @@ final class BugMinerLobby {
     }
 
     void addPlayer(long playerId, String displayName, boolean host) {
-        players.put(playerId, new Player(playerId, displayName, false, host));
+        players.put(playerId, new Player(playerId, displayName, true, host));
         if (host) {
             hostPlayerId = playerId;
         }
