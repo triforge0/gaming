@@ -6,10 +6,19 @@ interface Props {
   socket: ReturnType<typeof import('../hooks/useSocket').useSocket>;
 }
 
+const STORAGE_KEY = 'triforge.bugminer.v1';
+
 export default function HomeScreen({ socket }: Props) {
   const [name, setName] = useState(() => {
-    const saved = localStorage.getItem('triforge.sudokucube.v1');
-    if (saved) return saved;
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.name) return parsed.name;
+      }
+    } catch (e) {
+      // ignore
+    }
     const rand = Math.floor(Math.random() * 9000) + 1000;
     return `Miner${rand}`;
   });
@@ -22,9 +31,17 @@ export default function HomeScreen({ socket }: Props) {
   const availableRooms = useGameStore((s) => s.availableRooms);
   const connected = useGameStore((s) => s.connected);
 
+  const saveName = (newName: string) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, name: newName }));
+    } catch (e) {
+      // ignore
+    }
+  };
+
   const handleCreate = () => {
     if (!name.trim()) return;
-    localStorage.setItem('triforge.sudokucube.v1', name.trim());
+    saveName(name.trim());
     useGameStore.setState({ playerName: name.trim() });
     socket.createRoom(name.trim(), levelId);
   };
@@ -32,14 +49,14 @@ export default function HomeScreen({ socket }: Props) {
   const handleJoin = (targetRoomId?: string) => {
     const id = (targetRoomId ?? roomId).trim().toUpperCase();
     if (!name.trim() || !id) return;
-    localStorage.setItem('triforge.sudokucube.v1', name.trim());
+    saveName(name.trim());
     useGameStore.setState({ playerName: name.trim() });
     socket.joinRoom(id, name.trim());
   };
 
   const handleAutoJoin = () => {
     if (!name.trim()) return;
-    localStorage.setItem('triforge.sudokucube.v1', name.trim());
+    saveName(name.trim());
     useGameStore.setState({ playerName: name.trim() });
     
     // Find an open room that matches the currently selected levelId
