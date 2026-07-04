@@ -2,6 +2,7 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 import { useGame } from '../state/store';
 import { SKINS } from '../skins';
 import { CubeRig } from './CubeRig';
@@ -20,6 +21,41 @@ export function GameCanvas({ onReady }: { onReady?: (resetCamera: () => void) =>
   useEffect(() => {
     onReady?.(() => controls.current?.reset());
   }, [onReady]);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (!controls.current || document.activeElement?.tagName === 'INPUT') return;
+      const c = controls.current;
+      const cam = c.object;
+      const target = c.target;
+      let handled = true;
+
+      const offset = cam.position.clone().sub(target);
+      const rightAxis = new THREE.Vector3(0, 1, 0).cross(offset).normalize();
+
+      switch (e.key.toLowerCase()) {
+        case 'w': offset.applyAxisAngle(rightAxis, -0.2); break;
+        case 's': offset.applyAxisAngle(rightAxis, 0.2); break;
+        case 'a': offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), -0.2); break;
+        case 'd': offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), 0.2); break;
+        case '+': case '=':
+          if (offset.length() > c.minDistance) offset.multiplyScalar(0.9);
+          break;
+        case '-': case '_':
+          if (offset.length() < c.maxDistance) offset.multiplyScalar(1.1);
+          break;
+        default: handled = false;
+      }
+
+      if (handled) {
+        e.preventDefault();
+        cam.position.copy(target).add(offset);
+        c.update();
+      }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   return (
     <Canvas
