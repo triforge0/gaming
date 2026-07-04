@@ -40,7 +40,8 @@ export function CubeRig({ skin, idle }: { skin: SkinPreset; idle: boolean }) {
 
   useEffect(() => {
     if (!won || reduced) {
-      api.start(() => ({ px: 0, py: 0, pz: 0, rz: 0 }));
+      api.stop();
+      api.start(() => ({ px: 0, py: 0, pz: 0, rz: 0, immediate: true }));
       return;
     }
     // giai đoạn 1: bay ra theo pháp tuyến; giai đoạn 2: xếp sao
