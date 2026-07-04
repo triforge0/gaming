@@ -230,6 +230,22 @@ a.game-card:hover {
   line-height: 1.45;
 }
 
+.card-author {
+  margin-bottom: 0.8rem;
+}
+
+.author-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-style: italic;
+  font-weight: 500;
+  color: #ffb86c;
+  background: color-mix(in srgb, #ffb86c 10%, transparent);
+  border: 1px solid color-mix(in srgb, #ffb86c 30%, transparent);
+  border-radius: 6px;
+  padding: 0.2rem 0.5rem;
+}
+
 .live-badge {
   display: inline-block;
   font-size: 0.75rem;

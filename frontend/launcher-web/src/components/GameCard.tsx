@@ -35,6 +35,11 @@ export function GameCard({ entry, stats }: { entry: CatalogEntry; stats?: Plugin
           <span className="tag">{CATEGORY_LABELS[entry.category]}</span>
         </div>
         <p className="card-desc">{entry.description}</p>
+        {entry.authorTag && (
+          <div className="card-author">
+            <span className="author-tag">❤️ {entry.authorTag}</span>
+          </div>
+        )}
         {entry.comingSoon ? (
           <span className="coming-soon">Sắp ra mắt</span>
         ) : (

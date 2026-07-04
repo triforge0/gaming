@@ -14,6 +14,8 @@ export interface CatalogEntry {
   pluginId?: string;
   /** Placeholder: render mờ, không click được. */
   comingSoon?: boolean;
+  /** Tên tác giả (VD: Made with love by xxx). */
+  authorTag?: string;
   Art: ComponentType;
 }
 

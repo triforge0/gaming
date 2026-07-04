@@ -4,6 +4,7 @@ import { TreasureQuestArt } from './art/TreasureQuestArt';
 import { OAnQuanArt } from './art/OAnQuanArt';
 import { UtilityArt, EducationArt, ArcadeArt } from './art/PlaceholderArt';
 import { SudokuCubeArt } from './art/SudokuCubeArt';
+import { BugMinerArt } from './art/BugMinerArt';
 
 export const REGISTRY: CatalogEntry[] = [
   {
@@ -45,6 +46,18 @@ export const REGISTRY: CatalogEntry[] = [
     accent: '#3b82f6',
     pluginId: 'sudokucube',
     Art: SudokuCubeArt,
+  },
+  {
+    id: 'bugminer',
+    title: 'Bug Miner',
+    description: 'Game 3D multiplayer 1v1 lấy cảm hứng từ Đào Vàng. Chế độ PvP: Developer vs QC.',
+    category: 'arcade',
+    path: '/games/bugminer/',
+    accent: '#ffcc00',
+    pluginId: 'bugminer',
+    comingSoon: true,
+    authorTag: 'Made with love by Trang',
+    Art: BugMinerArt,
   },
   {
     id: 'scoreboard',

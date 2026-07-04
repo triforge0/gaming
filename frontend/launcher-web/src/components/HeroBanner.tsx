@@ -24,6 +24,11 @@ export function HeroBanner({ entry, stats }: { entry: CatalogEntry; stats?: Plug
       <div className="hero-info">
         <h2 className="hero-title">{entry.title}</h2>
         <p className="hero-desc">{entry.description}</p>
+        {entry.authorTag && (
+          <div className="hero-author" style={{ marginBottom: '1rem' }}>
+            <span className="author-tag">❤️ {entry.authorTag}</span>
+          </div>
+        )}
         <div className="hero-actions">
           <a
             className="hero-play"
