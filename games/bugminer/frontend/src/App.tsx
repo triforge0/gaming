@@ -37,7 +37,7 @@ export default function App() {
       {screen === 'lobby' && <LobbyScreen socket={socket} />}
       {screen === 'setup' && (gameState ? <SetupScreen socket={socket} /> : <HomeScreen socket={socket} />)}
       {screen === 'game' && gameState && (
-        gameState.fairMode?.battle && gameState.battle
+        gameState.fairMode?.battle
           ? <BattleGameScreen socket={socket} />
           : <GameScreen socket={socket} />
       )}

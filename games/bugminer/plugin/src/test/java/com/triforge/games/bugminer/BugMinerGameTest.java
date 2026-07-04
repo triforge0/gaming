@@ -3,235 +3,435 @@ package com.triforge.games.bugminer;
 import com.triforge.engine.game.Game;
 import com.triforge.engine.game.GamePlugins;
 import com.triforge.engine.match.MatchPhase;
+import com.triforge.protocol.proto.BugMinerBoardState;
+import com.triforge.protocol.proto.BugMinerHookState;
+import com.triforge.protocol.proto.BugMinerPlacedItem;
 import com.triforge.protocol.proto.GameMessage;
 import com.triforge.protocol.proto.LobbyCommand;
 import io.netty.channel.embedded.EmbeddedChannel;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static com.triforge.games.bugminer.BugMinerTestFixtures.GUEST_ID;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.HOST_ID;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.autoArrangeMessage;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.configureFairMode;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.hostStartMatch;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.joinTwoPlayers;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.lockMapMessage;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.newGame;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.placeItemMessage;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.restartMessage;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.setLevelMessage;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.tickPlaying;
+import static com.triforge.games.bugminer.BugMinerTestFixtures.tickUntilPhase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class BugMinerGameTest {
 
-    @Test
-    void twoPlayersJoinStaysInLobbyUntilHostStarts() {
-        BugMinerGame game = new BugMinerGame();
-        BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
-        game.bind(host);
+    // ── Lobby lifecycle ───────────────────────────────────────────────
 
-        game.handleJoinRequest("Alice", new EmbeddedChannel());
-        game.handleJoinRequest("Bob", new EmbeddedChannel());
+    @Nested
+    class LobbyLifecycle {
 
-        assertEquals(MatchPhase.LOBBY, game.matchPhase());
-    }
-
-    @Test
-    void nonHostCannotStartMatch() {
-        BugMinerGame game = new BugMinerGame();
-        BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
-        game.bind(host);
-
-        game.handleJoinRequest("Alice", new EmbeddedChannel());
-        game.handleJoinRequest("Bob", new EmbeddedChannel());
-
-        game.handleLobbyCommand(2L, LobbyCommand.newBuilder()
-                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
-                .build());
-
-        assertEquals(MatchPhase.LOBBY, game.matchPhase());
-    }
-
-    @Test
-    void hostStartsMatchWithTwoPlayers() {
-        BugMinerGame game = new BugMinerGame();
-        BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
-        game.bind(host);
-
-        game.handleJoinRequest("Alice", new EmbeddedChannel());
-        game.handleJoinRequest("Bob", new EmbeddedChannel());
-        assertEquals(MatchPhase.LOBBY, game.matchPhase());
-
-        game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
-                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
-                .build());
-
-        while (game.matchPhase() == MatchPhase.COUNTDOWN) {
-            game.tickCountdownPhase();
+        @Test
+        void twoPlayersJoinStaysInLobbyUntilHostStarts() {
+            BugMinerGame game = newGame(new BugMinerRoomHost("bugminer-room"));
+            joinTwoPlayers(game);
+            assertEquals(MatchPhase.LOBBY, game.matchPhase());
         }
 
-        assertEquals(MatchPhase.PLAYING, game.matchPhase());
-    }
-
-    @Test
-    void fullPlaythroughTest() {
-        BugMinerGame game = new BugMinerGame();
-        BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
-        game.bind(host);
-
-        // 1. Two players join
-        game.handleJoinRequest("Alice", new EmbeddedChannel()); // player 1
-        game.handleJoinRequest("Bob", new EmbeddedChannel());   // player 2
-        assertEquals(MatchPhase.LOBBY, game.matchPhase());
-
-        game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
-                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
-                .build());
-
-        // Fast forward countdown
-        while (game.matchPhase() == MatchPhase.COUNTDOWN) {
-            game.tickCountdownPhase();
+        @Test
+        void hostCannotStartWithOnePlayer() {
+            BugMinerGame game = newGame(new BugMinerRoomHost("bugminer-room"));
+            game.handleJoinRequest("Alice", new EmbeddedChannel());
+            hostStartMatch(game);
+            assertEquals(MatchPhase.LOBBY, game.matchPhase());
         }
-        assertEquals(MatchPhase.PLAYING, game.matchPhase());
 
-        // 2. Setup Phase: Alice designs Bob's map, Bob designs Alice's map.
-        // Send level change commands
-        game.handleGameMessage(1L, com.triforge.protocol.proto.GameMessage.newBuilder()
-                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
-                        .setSetLevel(com.triforge.protocol.proto.BMSetLevelCommand.newBuilder().setLevelId("easy-mine").build())
-                        .build())
-                .build());
-        
-        game.handleGameMessage(2L, com.triforge.protocol.proto.GameMessage.newBuilder()
-                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
-                        .setSetLevel(com.triforge.protocol.proto.BMSetLevelCommand.newBuilder().setLevelId("rock-mine").build())
-                        .build())
-                .build());
+        @Test
+        void nonHostCannotStartMatch() {
+            BugMinerGame game = newGame(new BugMinerRoomHost("bugminer-room"));
+            joinTwoPlayers(game);
+            game.handleLobbyCommand(GUEST_ID, LobbyCommand.newBuilder()
+                    .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
+                    .build());
+            assertEquals(MatchPhase.LOBBY, game.matchPhase());
+        }
 
-        // Call auto-arrange for both players
-        game.handleGameMessage(1L, com.triforge.protocol.proto.GameMessage.newBuilder()
-                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
-                        .setAutoArrange(com.triforge.protocol.proto.BMAutoArrangeCommand.newBuilder().build())
-                        .build())
-                .build());
+        @Test
+        void hostStartsMatchWithTwoPlayers() {
+            BugMinerGame game = newGame(new BugMinerRoomHost("bugminer-room"));
+            joinTwoPlayers(game);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+            assertEquals(MatchPhase.PLAYING, game.matchPhase());
+        }
 
-        game.handleGameMessage(2L, com.triforge.protocol.proto.GameMessage.newBuilder()
-                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
-                        .setAutoArrange(com.triforge.protocol.proto.BMAutoArrangeCommand.newBuilder().build())
-                        .build())
-                .build());
+        @Test
+        void scoreboardReturnsToLobby() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            configureFairMode(game, HOST_ID, true, true, "easy-mine", 1);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+            tickPlaying(game, 400);
+            tickUntilPhase(game, MatchPhase.ENDED);
+            tickUntilPhase(game, MatchPhase.LOBBY);
 
-        // Lock both maps
-        game.handleGameMessage(1L, com.triforge.protocol.proto.GameMessage.newBuilder()
-                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
-                        .setLockMap(com.triforge.protocol.proto.BMLockMapCommand.newBuilder().build())
-                        .build())
-                .build());
-
-        game.handleGameMessage(2L, com.triforge.protocol.proto.GameMessage.newBuilder()
-                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
-                        .setLockMap(com.triforge.protocol.proto.BMLockMapCommand.newBuilder().build())
-                        .build())
-                .build());
-
-        // 3. Play Phase: Tick loop, moving items, hook shooting
-        // Verify items moved inside tick
-        game.tickMatchTimer();
-
-        // Alice (playerId=1) fires hook on challengeA (designed by Bob, i.e. player 2)
-        game.handleGameMessage(1L, com.triforge.protocol.proto.GameMessage.newBuilder()
-                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
-                        .setFireHook(com.triforge.protocol.proto.BMFireHookCommand.newBuilder().build())
-                        .build())
-                .build());
-
-        // Tick several times to let hook extend and check updates
-        for (int i = 0; i < 30; i++) {
-            game.tickMatchTimer();
+            BugMinerBoardState board = host.latestBoard();
+            assertFalse(board.hasForPlayerA());
+            assertFalse(board.hasForPlayerB());
+            assertFalse(board.hasBattle());
+            assertFalse(board.hasWinnerId());
         }
     }
+
+    // ── Free mode ───────────────────────────────────────────────────
+
+    @Nested
+    class FreeModeFlow {
+
+        @Test
+        void staysInDualSetupUntilBothLock() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            BugMinerBoardState afterStart = host.latestBoard();
+            assertFalse(afterStart.getForPlayerA().getSetupLocked());
+            assertFalse(afterStart.getForPlayerB().getSetupLocked());
+
+            game.handleGameMessage(HOST_ID, autoArrangeMessage());
+            game.handleGameMessage(GUEST_ID, autoArrangeMessage());
+            game.handleGameMessage(HOST_ID, lockMapMessage());
+            BugMinerBoardState afterOneLock = host.latestBoard();
+            assertTrue(afterOneLock.getForPlayerB().getSetupLocked());
+            assertFalse(afterOneLock.getForPlayerA().getSetupLocked());
+            assertEquals(0, afterOneLock.getPlayCountdown());
+
+            game.handleGameMessage(GUEST_ID, lockMapMessage());
+            BugMinerBoardState afterBothLock = host.latestBoard();
+            assertTrue(afterBothLock.getForPlayerA().getSetupLocked());
+            assertTrue(afterBothLock.getForPlayerB().getSetupLocked());
+            assertTrue(afterBothLock.getPlayCountdown() > 0);
+        }
+
+        @Test
+        void designerCrossAssignment() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            BugMinerBoardState board = host.latestBoard();
+            assertEquals(GUEST_ID, board.getForPlayerA().getDesignerId());
+            assertEquals(HOST_ID, board.getForPlayerA().getPlayerId());
+            assertEquals(HOST_ID, board.getForPlayerB().getDesignerId());
+            assertEquals(GUEST_ID, board.getForPlayerB().getPlayerId());
+        }
+
+        @Test
+        void allowsDifferentLevelsPerDesigner() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            game.handleGameMessage(HOST_ID, setLevelMessage("night-mine"));
+            game.handleGameMessage(GUEST_ID, setLevelMessage("rock-mine"));
+
+            BugMinerBoardState board = host.latestBoard();
+            assertEquals("rock-mine", board.getForPlayerA().getLevelId());
+            assertEquals("night-mine", board.getForPlayerB().getLevelId());
+        }
+
+        @Test
+        void countdownAfterBothLock() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            game.handleGameMessage(HOST_ID, autoArrangeMessage());
+            game.handleGameMessage(GUEST_ID, autoArrangeMessage());
+            game.handleGameMessage(HOST_ID, lockMapMessage());
+            game.handleGameMessage(GUEST_ID, lockMapMessage());
+
+            assertTrue(host.latestBoard().getPlayCountdown() > 0);
+            tickPlaying(game, 200);
+            assertEquals(0, host.latestBoard().getPlayCountdown());
+            assertEquals(MatchPhase.PLAYING, game.matchPhase());
+        }
+
+        @Test
+        void restartReturnsToLobby() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            game.handleGameMessage(HOST_ID, restartMessage());
+            assertEquals(MatchPhase.LOBBY, game.matchPhase());
+            assertFalse(host.latestBoard().hasForPlayerA());
+            assertFalse(host.latestBoard().hasForPlayerB());
+        }
+
+        @Test
+        void fullPlaythrough() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            game.handleGameMessage(HOST_ID, setLevelMessage("easy-mine"));
+            game.handleGameMessage(GUEST_ID, setLevelMessage("rock-mine"));
+            game.handleGameMessage(HOST_ID, autoArrangeMessage());
+            game.handleGameMessage(GUEST_ID, autoArrangeMessage());
+            game.handleGameMessage(HOST_ID, lockMapMessage());
+            game.handleGameMessage(GUEST_ID, lockMapMessage());
+
+            assertTrue(host.latestBoard().getPlayCountdown() > 0);
+            tickPlaying(game, 200);
+            assertEquals(MatchPhase.PLAYING, game.matchPhase());
+
+            game.handleGameMessage(HOST_ID, GameMessage.newBuilder()
+                    .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
+                            .setFireHook(com.triforge.protocol.proto.BMFireHookCommand.newBuilder().build())
+                            .build())
+                    .build());
+            tickPlaying(game, 30);
+        }
+    }
+
+    // ── Fair mode ───────────────────────────────────────────────────
+
+    @Nested
+    class FairModeFlow {
+
+        @Test
+        void onlyHostCanConfigure() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer:easy-mine:FAIR");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+
+            game.handleGameMessage(GUEST_ID, BugMinerTestFixtures.configureFairModeMessage(
+                    true, false, "easy-mine", 90));
+            assertFalse(host.latestBoard().getFairMode().getEnabled());
+
+            configureFairMode(game, HOST_ID, true, false, "easy-mine", 90);
+            assertTrue(host.latestBoard().getFairMode().getEnabled());
+        }
+
+        @Test
+        void skipsDualSetup() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer:easy-mine:FAIR");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            configureFairMode(game, HOST_ID, true, false, "easy-mine", 90);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            BugMinerBoardState board = host.latestBoard();
+            assertTrue(board.getForPlayerA().getSetupLocked());
+            assertTrue(board.getForPlayerB().getSetupLocked());
+            assertTrue(board.getPlayCountdown() > 0);
+            assertTrue(board.getForPlayerA().getItemsCount() > 0);
+            assertTrue(board.getForPlayerA().getItemsList().stream()
+                    .noneMatch(i -> i.getX() == 0f && i.getY() == 0f));
+        }
+
+        @Test
+        void identicalMaps() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer:easy-mine:FAIR");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            configureFairMode(game, HOST_ID, true, false, "easy-mine", 90);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            assertPlacedItemsEqual(
+                    host.latestBoard().getForPlayerA().getItemsList(),
+                    host.latestBoard().getForPlayerB().getItemsList());
+        }
+
+        @Test
+        void sameLevelAndTime() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer:rock-mine:FAIR");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            configureFairMode(game, HOST_ID, true, false, "rock-mine", 100);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            BugMinerBoardState board = host.latestBoard();
+            assertEquals("rock-mine", board.getForPlayerA().getLevelId());
+            assertEquals("rock-mine", board.getForPlayerB().getLevelId());
+            assertEquals(100, board.getForPlayerA().getTimeLimit());
+            assertEquals(100, board.getForPlayerB().getTimeLimit());
+        }
+
+        @Test
+        void blocksManualSetup() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer:easy-mine:FAIR");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            configureFairMode(game, HOST_ID, true, false, "easy-mine", 90);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            BugMinerBoardState before = host.latestBoard();
+            game.handleGameMessage(HOST_ID, setLevelMessage("night-mine"));
+            game.handleGameMessage(HOST_ID, placeItemMessage("item-0", 100, 100));
+            game.handleGameMessage(HOST_ID, autoArrangeMessage());
+            game.handleGameMessage(HOST_ID, lockMapMessage());
+
+            BugMinerBoardState after = host.latestBoard();
+            assertEquals(before.getForPlayerA().getLevelId(), after.getForPlayerA().getLevelId());
+            assertEquals(before.getForPlayerA().getItemsCount(), after.getForPlayerA().getItemsCount());
+            assertTrue(after.getForPlayerA().getSetupLocked());
+        }
+
+        @Test
+        void matchStartsAfterLobbyConfiguration() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer:easy-mine:FAIR");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            configureFairMode(game, HOST_ID, true, false, "easy-mine", 90);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+            assertEquals(MatchPhase.PLAYING, game.matchPhase());
+        }
+
+        @Test
+        void configureAllowedDuringCountdown() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            hostStartMatch(game);
+            assertEquals(MatchPhase.COUNTDOWN, game.matchPhase());
+
+            configureFairMode(game, HOST_ID, true, false, "rock-mine", 100);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+            assertEquals("rock-mine", host.latestBoard().getForPlayerA().getLevelId());
+        }
+    }
+
+    // ── Battle mode ─────────────────────────────────────────────────
+
+    @Nested
+    class BattleModeFlow {
+
+        @Test
+        void configuresViaHost() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            configureFairMode(game, HOST_ID, true, true, "easy-mine", 90);
+
+            var fairMode = host.latestBoard().getFairMode();
+            assertTrue(fairMode.getEnabled());
+            assertTrue(fairMode.getBattle());
+        }
+
+        @Test
+        void skipsDualSetupAndCreatesArena() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            configureFairMode(game, HOST_ID, true, true, "easy-mine", 90);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            BugMinerBoardState board = host.latestBoard();
+            assertFalse(board.hasForPlayerA());
+            assertFalse(board.hasForPlayerB());
+            assertTrue(board.hasBattle());
+            assertTrue(board.getBattle().getItemsCount() > 0);
+            assertEquals(BugMinerHookState.BM_HOOK_SWINGING, board.getBattle().getHookA().getState());
+            assertEquals(BugMinerHookState.BM_HOOK_SWINGING, board.getBattle().getHookB().getState());
+            assertTrue(board.getPlayCountdown() > 0);
+        }
+
+        @Test
+        void blocksManualSetup() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            configureFairMode(game, HOST_ID, true, true, "easy-mine", 90);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            int itemsBefore = host.latestBoard().getBattle().getItemsCount();
+            game.handleGameMessage(HOST_ID, placeItemMessage("item-0", 100, 100));
+            game.handleGameMessage(HOST_ID, lockMapMessage());
+            assertEquals(itemsBefore, host.latestBoard().getBattle().getItemsCount());
+        }
+
+        @Test
+        void noStaleWinnerOnRematch() {
+            BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+            BugMinerGame game = newGame(host);
+            joinTwoPlayers(game);
+            configureFairMode(game, HOST_ID, true, true, "easy-mine", 1);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            tickPlaying(game, 400);
+            tickUntilPhase(game, MatchPhase.ENDED);
+            assertTrue(host.latestBoard().hasWinnerId() || host.latestBoard().getBattle().getFinished());
+
+            tickUntilPhase(game, MatchPhase.LOBBY);
+            host.clearBoards();
+
+            configureFairMode(game, HOST_ID, true, true, "easy-mine", 90);
+            hostStartMatch(game);
+            tickUntilPhase(game, MatchPhase.PLAYING);
+
+            BugMinerBoardState rematch = host.latestBoard();
+            assertFalse(rematch.hasWinnerId(), "stale winner must not carry into rematch");
+            assertTrue(rematch.hasBattle());
+            assertFalse(rematch.getBattle().getFinished());
+            assertTrue(rematch.getPlayCountdown() > 0);
+        }
+    }
+
+    // ── Misc ────────────────────────────────────────────────────────
 
     @Test
     void playerReconnectTest() {
-        BugMinerGame game = new BugMinerGame();
-        BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
-        game.bind(host);
-
-        // Join two players
-        game.handleJoinRequest("Alice", new EmbeddedChannel()); // 1L
-        game.handleJoinRequest("Bob", new EmbeddedChannel());   // 2L
-
-        game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
-                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
-                .build());
-
-        // Fast forward countdown
-        while (game.matchPhase() == MatchPhase.COUNTDOWN) {
-            game.tickCountdownPhase();
-        }
-        assertEquals(MatchPhase.PLAYING, game.matchPhase());
-
-        // Alice disconnects
-        game.handleLeaveRequest(1L);
-
-        // Join request with name "Alice" should reconnect her and give same ID (1L)
+        BugMinerGame game = newGame(new BugMinerRoomHost("bugminer-room"));
+        joinTwoPlayers(game);
+        hostStartMatch(game);
+        tickUntilPhase(game, MatchPhase.PLAYING);
+        game.handleLeaveRequest(HOST_ID);
         game.handleJoinRequest("Alice", new EmbeddedChannel());
-    }
-
-    @Test
-    void fairModeMatchStartsAfterLobbyConfiguration() {
-        BugMinerGame game = new BugMinerGame();
-        BugMinerRoomHost host = new BugMinerRoomHost("bugminer:easy-mine:FAIR");
-        game.bind(host);
-
-        game.handleJoinRequest("Alice", new io.netty.channel.embedded.EmbeddedChannel());
-        game.handleJoinRequest("Bob", new io.netty.channel.embedded.EmbeddedChannel());
-        assertEquals(com.triforge.engine.match.MatchPhase.LOBBY, game.matchPhase());
-
-        game.handleGameMessage(1L, GameMessage.newBuilder()
-                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
-                        .setConfigureFairMode(com.triforge.protocol.proto.BMConfigureFairModeCommand.newBuilder()
-                                .setEnabled(true)
-                                .setLevelId("easy-mine")
-                                .setTimeLimit(90)
-                                .build())
-                        .build())
-                .build());
-
-        game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
-                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
-                .build());
-
-        while (game.matchPhase() == com.triforge.engine.match.MatchPhase.COUNTDOWN) {
-            game.tickCountdownPhase();
-        }
-        assertEquals(com.triforge.engine.match.MatchPhase.PLAYING, game.matchPhase());
-    }
-
-    @Test
-    void configureFairModeAllowedDuringCountdown() {
-        BugMinerGame game = new BugMinerGame();
-        BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
-        game.bind(host);
-
-        game.handleJoinRequest("Alice", new io.netty.channel.embedded.EmbeddedChannel());
-        game.handleJoinRequest("Bob", new io.netty.channel.embedded.EmbeddedChannel());
-        assertEquals(com.triforge.engine.match.MatchPhase.LOBBY, game.matchPhase());
-
-        game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
-                .setStartMatch(com.triforge.protocol.proto.StartMatchAction.newBuilder().build())
-                .build());
-        assertEquals(com.triforge.engine.match.MatchPhase.COUNTDOWN, game.matchPhase());
-
-        game.handleGameMessage(1L, GameMessage.newBuilder()
-                .setBugminer(com.triforge.protocol.proto.BugMinerMessage.newBuilder()
-                        .setConfigureFairMode(com.triforge.protocol.proto.BMConfigureFairModeCommand.newBuilder()
-                                .setEnabled(true)
-                                .setBattle(false)
-                                .setLevelId("rock-mine")
-                                .setTimeLimit(100)
-                                .build())
-                        .build())
-                .build());
-
-        while (game.matchPhase() == com.triforge.engine.match.MatchPhase.COUNTDOWN) {
-            game.tickCountdownPhase();
-        }
-        assertEquals(com.triforge.engine.match.MatchPhase.PLAYING, game.matchPhase());
     }
 
     @Test
     void serviceLoaderRegistersBugMinerPlugin() {
         Game game = GamePlugins.require(BugMinerPlugin.ID).createGame(null);
         assertNotNull(game);
+    }
+
+    private static void assertPlacedItemsEqual(
+            java.util.List<BugMinerPlacedItem> a, java.util.List<BugMinerPlacedItem> b) {
+        assertEquals(a.size(), b.size());
+        for (int i = 0; i < a.size(); i++) {
+            assertEquals(a.get(i).getType(), b.get(i).getType());
+            assertEquals(a.get(i).getX(), b.get(i).getX(), 0.01f);
+            assertEquals(a.get(i).getY(), b.get(i).getY(), 0.01f);
+        }
     }
 }

@@ -103,6 +103,60 @@ final class BugMinerBoardTest {
     }
 
     @Test
+    void beginFreeModeCreatesUnlockedChallenges() {
+        BugMinerBoard board = new BugMinerBoard();
+        board.init(1L, 2L);
+        board.beginFreeMode();
+
+        assertNotNull(board.challengeA);
+        assertNotNull(board.challengeB);
+        assertFalse(board.getState().getForPlayerA().getSetupLocked());
+        assertFalse(board.getState().getForPlayerB().getSetupLocked());
+        assertTrue(board.challengeA.copyItemsLayout().size() > 0);
+        assertTrue(board.challengeB.copyItemsLayout().size() > 0);
+    }
+
+    @Test
+    void onSetupLockedStartsCountdownWhenBothLocked() {
+        BugMinerBoard board = new BugMinerBoard();
+        board.init(1L, 2L);
+        board.beginFreeMode();
+
+        assertTrue(board.challengeA.autoArrange(2L));
+        assertTrue(board.challengeB.autoArrange(1L));
+
+        board.challengeA.lockSetup(2L);
+        board.onSetupLocked();
+        assertEquals(0, board.playCountdownSeconds());
+
+        board.challengeB.lockSetup(1L);
+        board.onSetupLocked();
+        assertTrue(board.playCountdownSeconds() > 0);
+    }
+
+    @Test
+    void resetForLobbyClearsArenaAndWinner() {
+        BugMinerBoard board = new BugMinerBoard();
+        board.init(1L, 2L);
+        board.fairMode().enabled = true;
+        board.fairMode().battle = true;
+        board.fairMode().levelId = "easy-mine";
+        board.fairMode().timeLimit = 90;
+        board.beginBattleMode("room-battle-1");
+        board.setMatchOutcome(1L, "target");
+
+        board.resetForLobby();
+
+        var state = board.getState();
+        assertNull(board.challengeA);
+        assertNull(board.challengeB);
+        assertNull(board.battleArena);
+        assertFalse(state.hasBattle());
+        assertFalse(state.hasWinnerId());
+        assertEquals(0, state.getPlayCountdown());
+    }
+
+    @Test
     void initClearsStaleWinnerBeforeBattleStart() {
         BugMinerBoard board = new BugMinerBoard();
         board.setMatchOutcome(1L, "target");

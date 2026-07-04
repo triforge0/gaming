@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { GameClient, MatchPhase, toNum } from '@triforge/shared-ui';
 import type { FairModeConfig, GameState, ItemType, RoomSummary } from '../shared';
 import { DEFAULT_FAIR_MODE, formatJoinCode, resolveBugMinerRoomId, resolveGamePhase } from '../shared';
+import { mergePlayingPhaseUpdate, resolveActiveWinner, shouldInterruptForLobbyPhase } from '../shared/boardStateSync';
 import { useGameStore } from '../store/gameStore';
 
 function mapFairMode(proto?: { enabled?: boolean | null; battle?: boolean | null; levelId?: string | null; timeLimit?: number | null } | null): FairModeConfig {
@@ -225,23 +226,20 @@ export function useSocket() {
         }
 
         if (update.phase === MatchPhase.LOBBY || update.phase === MatchPhase.COUNTDOWN) {
-          const inActiveRound = gameState?.phase === 'playing'
-            || gameState?.phase === 'countdown'
-            || gameState?.phase === 'paused'
-            || gameState?.phase === 'dual_setup';
-          if (!inActiveRound) {
+          const wirePhase = update.phase === MatchPhase.LOBBY ? 'lobby' : 'countdown';
+          if (shouldInterruptForLobbyPhase(wirePhase, gameState?.phase)) {
             store.setScreen('lobby');
           }
           return;
         }
 
         if (update.phase === MatchPhase.PLAYING && gameState) {
-          store.setGameState({
+          store.setGameState(mergePlayingPhaseUpdate({
             ...gameState,
-            phase: gameState.phase === 'lobby' ? 'countdown' : gameState.phase,
-            winnerId: null,
-            endReason: null,
-          });
+            phase: gameState.phase,
+            winnerId: gameState.winnerId,
+            endReason: gameState.endReason,
+          }));
         } else if (update.phase === MatchPhase.PLAYING) {
           store.setScreen('game');
         }
@@ -373,8 +371,11 @@ export function useSocket() {
           ? String(toNum(message.board.winnerId as number))
           : null;
         const boardEndReason = (message.board.matchEndReason as GameState['endReason']) || null;
-        const activeWinnerId = battle?.finished ? (battle.winnerId ?? boardWinnerId) : null;
-        const activeEndReason = battle?.finished ? (battle.endReason ?? boardEndReason) : null;
+        const { winnerId: activeWinnerId, endReason: activeEndReason } = resolveActiveWinner(
+          battle,
+          boardWinnerId,
+          boardEndReason,
+        );
 
         const phase = resolveGamePhase(
           fairMode,

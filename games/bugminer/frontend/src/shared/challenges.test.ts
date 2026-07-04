@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import type { ChallengeState, GameState } from './types';
-import { getChallengeDesignedBy, getChallengeForPlayer } from './challenges';
+import { getChallengeDesignedBy, getChallengeForPlayer, getOpponentId, getPlayerIds } from './challenges';
 
 function makeChallenge(
   designerId: string,
@@ -65,5 +65,37 @@ describe('challenge helpers — designerId based lookup', () => {
     expect(getChallengeDesignedBy(baseState, playerB)?.playerId).toBe(playerA);
     expect(getChallengeForPlayer(baseState, playerA)?.designerId).toBe(playerB);
     expect(getChallengeForPlayer(baseState, playerB)?.designerId).toBe(playerA);
+  });
+
+  it('returns null when challenges undefined (battle mode)', () => {
+    const battleState: GameState = {
+      ...baseState,
+      phase: 'countdown',
+      challenges: undefined,
+      fairMode: { enabled: true, battle: true, levelId: 'easy-mine', timeLimit: 90 },
+      battle: {
+        levelId: 'easy-mine',
+        timeLimit: 90,
+        timeRemaining: 90,
+        targetScore: 800,
+        items: [],
+        playerAId: playerA,
+        playerBId: playerB,
+        hookA: { angle: 0, length: 0, state: 'swinging', attachedItemId: null, swingDirection: 1 },
+        hookB: { angle: 0, length: 0, state: 'swinging', attachedItemId: null, swingDirection: 1 },
+        scoreA: 0,
+        scoreB: 0,
+        finished: false,
+        winnerId: null,
+        endReason: null,
+        strengthBuffA: 0,
+        strengthBuffB: 0,
+      },
+    };
+
+    expect(getChallengeForPlayer(battleState, playerA)).toBeNull();
+    expect(getChallengeDesignedBy(battleState, playerA)).toBeNull();
+    expect(getPlayerIds(battleState)).toEqual({ playerA, playerB });
+    expect(getOpponentId(battleState, playerA)).toBe(playerB);
   });
 });

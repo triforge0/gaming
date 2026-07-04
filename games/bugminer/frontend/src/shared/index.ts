@@ -7,6 +7,7 @@ export * from './setupUi';
 export * from './constants';
 export * from './fairMode';
 export * from './gamePhase';
+export * from './boardStateSync';
 export * from './roomIds';
 export * from './battleMap';
 export * from './battleArrange';

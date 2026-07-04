@@ -99,6 +99,66 @@ describe('gameStore — Screen routing (UI Flow)', () => {
   });
 });
 
+describe('gameStore — Screen routing (mode flows)', () => {
+  beforeEach(() => {
+    useGameStore.getState().reset();
+  });
+
+  it('free mode routes dual_setup to setup screen', () => {
+    useGameStore.setState({ screen: 'lobby', playerId: 'a', roomId: 'ABC123' });
+    useGameStore.getState().setGameState(makeState({ phase: 'dual_setup' }));
+    expect(useGameStore.getState().screen).toBe('setup');
+  });
+
+  it('fair mode routes countdown to game (skips setup)', () => {
+    useGameStore.setState({ screen: 'lobby', playerId: 'a', roomId: 'ABC123' });
+    useGameStore.getState().setGameState(makeState({
+      phase: 'countdown',
+      countdown: 3,
+      fairMode: { enabled: true, battle: false, levelId: 'easy-mine', timeLimit: 90 },
+    }));
+    expect(useGameStore.getState().screen).toBe('game');
+  });
+
+  it('battle mode routes countdown to game (skips setup)', () => {
+    useGameStore.setState({ screen: 'lobby', playerId: 'a', roomId: 'ABC123' });
+    useGameStore.getState().setGameState(makeState({
+      phase: 'countdown',
+      countdown: 3,
+      fairMode: { enabled: true, battle: true, levelId: 'easy-mine', timeLimit: 90 },
+      battle: {
+        levelId: 'easy-mine',
+        timeLimit: 90,
+        timeRemaining: 90,
+        targetScore: 800,
+        items: [],
+        playerAId: '1',
+        playerBId: '2',
+        hookA: { angle: 0, length: 0, state: 'swinging', attachedItemId: null, swingDirection: 1 },
+        hookB: { angle: 0, length: 0, state: 'swinging', attachedItemId: null, swingDirection: 1 },
+        scoreA: 0,
+        scoreB: 0,
+        finished: false,
+        winnerId: null,
+        endReason: null,
+        strengthBuffA: 0,
+        strengthBuffB: 0,
+      },
+    }));
+    expect(useGameStore.getState().screen).toBe('game');
+  });
+
+  it('finished routes to result for all modes', () => {
+    useGameStore.setState({ screen: 'game' });
+    useGameStore.getState().setGameState(makeState({
+      phase: 'finished',
+      winnerId: 'a',
+      fairMode: { enabled: true, battle: true, levelId: 'easy-mine', timeLimit: 90 },
+    }));
+    expect(useGameStore.getState().screen).toBe('result');
+  });
+});
+
 describe('gameStore — Collection popups', () => {
   beforeEach(() => useGameStore.getState().reset());
 
