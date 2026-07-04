@@ -3,6 +3,7 @@ import { TankArenaArt } from './art/TankArenaArt';
 import { TreasureQuestArt } from './art/TreasureQuestArt';
 import { OAnQuanArt } from './art/OAnQuanArt';
 import { UtilityArt, EducationArt, ArcadeArt } from './art/PlaceholderArt';
+import { SudokuCubeArt } from './art/SudokuCubeArt';
 
 export const REGISTRY: CatalogEntry[] = [
   {
@@ -43,7 +44,7 @@ export const REGISTRY: CatalogEntry[] = [
     path: '/games/sudokucube/',
     accent: '#3b82f6',
     pluginId: 'sudokucube',
-    Art: ArcadeArt,
+    Art: SudokuCubeArt,
   },
   {
     id: 'scoreboard',
