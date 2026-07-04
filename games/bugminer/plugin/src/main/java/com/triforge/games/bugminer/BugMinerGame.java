@@ -66,6 +66,21 @@ public class BugMinerGame implements Game {
 
     @Override
     public void handleJoinRequest(String requestedName, Channel channel) {
+        Long existingPlayerId = lobby.getPlayerIdByName(requestedName);
+        if (existingPlayerId != null) {
+            host().sessions().register(existingPlayerId, channel);
+            logger.info("Player '{}' reconnected as playerId={}", requestedName, existingPlayerId);
+            
+            RoomLobbySnapshot snapshot = toLobbySnapshot(host());
+            JoinResponse response = host().broadcaster()
+                    .joinResponseBuilder(existingPlayerId, this, snapshot)
+                    .build();
+            host().broadcaster().sendJoinResponse(channel, response);
+            host().broadcaster().broadcastLobbySnapshot(host(), this);
+            broadcastBoardState();
+            return;
+        }
+
         if (matchPhase.phase() == MatchPhase.PLAYING) {
             JoinResponse response = host().broadcaster()
                     .rejectedJoinResponseBuilder(toLobbySnapshot(host()))
@@ -100,9 +115,14 @@ public class BugMinerGame implements Game {
 
     @Override
     public void handleLeaveRequest(long playerId) {
-        host().sessions().unregister(playerId);
-        lobby.removePlayer(playerId);
-        host().broadcaster().broadcastLobbySnapshot(host(), this);
+        if (matchPhase.phase() == MatchPhase.PLAYING) {
+            host().sessions().unregister(playerId);
+            logger.info("Player playerId={} disconnected during match, keeping session for reconnect", playerId);
+        } else {
+            host().sessions().unregister(playerId);
+            lobby.removePlayer(playerId);
+            host().broadcaster().broadcastLobbySnapshot(host(), this);
+        }
     }
 
     @Override

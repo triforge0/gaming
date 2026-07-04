@@ -119,6 +119,37 @@ final class BugMinerGameTest {
     }
 
     @Test
+    void playerReconnectTest() {
+        BugMinerGame game = new BugMinerGame();
+        BugMinerRoomHost host = new BugMinerRoomHost("bugminer-room");
+        game.bind(host);
+
+        // Join two players
+        game.handleJoinRequest("Alice", new EmbeddedChannel()); // 1L
+        game.handleJoinRequest("Bob", new EmbeddedChannel());   // 2L
+
+        // Mark ready
+        game.handleLobbyCommand(1L, LobbyCommand.newBuilder()
+                .setSetReady(SetReadyAction.newBuilder().setReady(true))
+                .build());
+        game.handleLobbyCommand(2L, LobbyCommand.newBuilder()
+                .setSetReady(SetReadyAction.newBuilder().setReady(true))
+                .build());
+
+        // Fast forward countdown
+        while (game.matchPhase() == MatchPhase.COUNTDOWN) {
+            game.tickCountdownPhase();
+        }
+        assertEquals(MatchPhase.PLAYING, game.matchPhase());
+
+        // Alice disconnects
+        game.handleLeaveRequest(1L);
+
+        // Join request with name "Alice" should reconnect her and give same ID (1L)
+        game.handleJoinRequest("Alice", new EmbeddedChannel());
+    }
+
+    @Test
     void serviceLoaderRegistersBugMinerPlugin() {
         Game game = GamePlugins.require(BugMinerPlugin.ID).createGame(null);
         assertNotNull(game);

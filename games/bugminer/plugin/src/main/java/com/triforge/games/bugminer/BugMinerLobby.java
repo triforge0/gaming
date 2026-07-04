@@ -34,6 +34,17 @@ final class BugMinerLobby {
         return playerId == hostPlayerId;
     }
 
+    Long getPlayerIdByName(String name) {
+        if (name == null) return null;
+        String trimmed = name.trim();
+        for (Player p : players.values()) {
+            if (p.displayName().equalsIgnoreCase(trimmed)) {
+                return p.playerId();
+            }
+        }
+        return null;
+    }
+
     Optional<Player> player(long playerId) {
         return Optional.ofNullable(players.get(playerId));
     }
