@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   GameEventType,
   IGameEvent,
@@ -11,6 +11,7 @@ import {
   toNum,
 } from '@triforge/shared-ui';
 import { GameBridge, UiState } from '../net/GameBridge';
+import { alarmSiren } from '../audio/alarm';
 
 const HQ_MAX_HP = 12;
 
@@ -58,6 +59,55 @@ function resolvePlayerName(bridge: GameBridge, playerId: number): string {
   return lobbyPlayer?.displayName?.trim() || `Pilot #${playerId}`;
 }
 
+/** The local player's team, from their live tank if present, else the lobby roster. */
+function selfTeam(bridge: GameBridge): number {
+  const selfId = bridge.client.selfPlayerId;
+  for (const entity of bridge.world.entities.values()) {
+    if (entity.player && toNum(entity.player.playerId) === selfId) {
+      return entity.player.team ?? Team.TEAM_NONE;
+    }
+  }
+  const lobbyPlayer = bridge.snapshotUi().lobby?.players?.find((p) => toNum(p.playerId) === selfId);
+  return lobbyPlayer?.team ?? Team.TEAM_NONE;
+}
+
+const MUTE_STORAGE_KEY = 'ta-alarm-muted';
+
+/** Persisted sound-mute preference; keeps the alarm siren in sync and survives reloads. */
+function useMuted(): [boolean, () => void] {
+  const [muted, setMuted] = useState(() => {
+    try {
+      return localStorage.getItem(MUTE_STORAGE_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    alarmSiren.setMuted(muted);
+    try {
+      localStorage.setItem(MUTE_STORAGE_KEY, muted ? '1' : '0');
+    } catch {
+      /* storage unavailable — preference just won't persist */
+    }
+  }, [muted]);
+  return [muted, () => setMuted((m) => !m)];
+}
+
+/** True for a few seconds after the given HP drops, so a base attack raises a visible alert. */
+function useUnderAttack(hp: number): boolean {
+  const prev = useRef(hp);
+  const [alerting, setAlerting] = useState(false);
+  useEffect(() => {
+    const dropped = hp < prev.current;
+    prev.current = hp;
+    if (!dropped) return;
+    setAlerting(true);
+    const id = window.setTimeout(() => setAlerting(false), 3500);
+    return () => window.clearTimeout(id);
+  }, [hp]);
+  return alerting;
+}
+
 export function GameUi({ bridge, ui }: { bridge: GameBridge; ui: UiState }) {
   const inLobby = ui.phase === MatchPhase.LOBBY;
   const inMatch = ui.phase === MatchPhase.PLAYING || ui.phase === MatchPhase.COUNTDOWN;
@@ -67,7 +117,7 @@ export function GameUi({ bridge, ui }: { bridge: GameBridge; ui: UiState }) {
       {inLobby && <div className="ta-backdrop" aria-hidden />}
       {inLobby && <LobbyPanel bridge={bridge} ui={ui} />}
       {ui.phase === MatchPhase.COUNTDOWN && <Countdown seconds={ui.phaseUpdate?.countdownSeconds ?? 0} />}
-      {inMatch && <Hud ui={ui} />}
+      {inMatch && <Hud ui={ui} bridge={bridge} />}
       {ui.phase === MatchPhase.PLAYING && <KillFeed events={ui.events} bridge={bridge} />}
       {ui.phase === MatchPhase.PLAYING && <ControlsHint />}
       {ui.phase === MatchPhase.ENDED && ui.result && <Scoreboard result={ui.result} bridge={bridge} />}
@@ -263,7 +313,7 @@ function Countdown({ seconds }: { seconds: number }) {
   );
 }
 
-function Hud({ ui }: { ui: UiState }) {
+function Hud({ ui, bridge }: { ui: UiState; bridge: GameBridge }) {
   const p = ui.phaseUpdate;
   const timeMs = toNum(p?.matchRemainingMs);
   const mm = Math.floor(timeMs / 60000);
@@ -271,26 +321,69 @@ function Hud({ ui }: { ui: UiState }) {
   const redHp = p?.redHqHp ?? 0;
   const blueHp = p?.blueHqHp ?? 0;
 
+  const team = selfTeam(bridge);
+  const ownHp = team === Team.TEAM_RED ? redHp : team === Team.TEAM_BLUE ? blueHp : HQ_MAX_HP;
+  const underAttack = useUnderAttack(ownHp);
+  const [muted, toggleMuted] = useMuted();
+
+  useEffect(() => {
+    if (underAttack && !muted) alarmSiren.start();
+    else alarmSiren.stop();
+    return () => alarmSiren.stop();
+  }, [underAttack, muted]);
+
   return (
-    <div className="ta-hud">
-      <TeamHq side="red" hp={redHp} />
-      <div className="ta-hud-timer">{mm}:{ss}</div>
-      <TeamHq side="blue" hp={blueHp} />
-    </div>
+    <>
+      <div className="ta-hud">
+        <TeamHq side="red" hp={redHp} alert={underAttack && team === Team.TEAM_RED} />
+        <div className="ta-hud-timer">{mm}:{ss}</div>
+        <TeamHq side="blue" hp={blueHp} alert={underAttack && team === Team.TEAM_BLUE} />
+      </div>
+      <MuteButton muted={muted} onToggle={toggleMuted} />
+      {underAttack && <BaseAlert hp={ownHp} />}
+    </>
   );
 }
 
-function TeamHq({ side, hp }: { side: 'red' | 'blue'; hp: number }) {
+function MuteButton({ muted, onToggle }: { muted: boolean; onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      className={`ta-mute-btn${muted ? ' ta-mute-btn--muted' : ''}`}
+      onClick={onToggle}
+      aria-label={muted ? 'Unmute alarm' : 'Mute alarm'}
+      title={muted ? 'Sound off' : 'Sound on'}
+    >
+      {muted ? '🔇' : '🔊'}
+    </button>
+  );
+}
+
+function TeamHq({ side, hp, alert }: { side: 'red' | 'blue'; hp: number; alert: boolean }) {
   const team = side === 'red' ? Team.TEAM_RED : Team.TEAM_BLUE;
   const pct = Math.max(0, Math.min(100, (hp / HQ_MAX_HP) * 100));
   const label = side === 'red' ? 'RED' : 'BLUE';
   return (
-    <div className={`ta-hud-team ${TEAM_CLASS[team]}`}>
+    <div className={`ta-hud-team ${TEAM_CLASS[team]}${alert ? ' ta-hud-team--alert' : ''}`}>
       <span className="ta-hud-tag">{label}</span>
       <div className="ta-hud-hp-track">
         <div className="ta-hud-hp-fill" style={{ width: `${pct}%` }} />
       </div>
       <span className="ta-hud-hp-value">{hp}</span>
+    </div>
+  );
+}
+
+/** Center-screen warning shown while the local player's base is taking fire. */
+function BaseAlert({ hp }: { hp: number }) {
+  const destroyed = hp <= 0;
+  return (
+    <div className={`ta-base-alert${destroyed ? ' ta-base-alert--critical' : ''}`} role="alert">
+      <span className="ta-base-alert-icon">⚠</span>
+      <span className="ta-base-alert-text">
+        {destroyed ? 'BASE DESTROYED' : 'YOUR BASE IS UNDER ATTACK'}
+      </span>
+      <span className="ta-base-alert-hp">HP {Math.max(0, hp)}/{HQ_MAX_HP}</span>
     </div>
   );
 }

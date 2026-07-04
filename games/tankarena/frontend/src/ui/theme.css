@@ -418,6 +418,103 @@
   }
 }
 
+/* ── Mute toggle ────────────────────────────────────────────────── */
+
+.ta-mute-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 12, 18, 0.55);
+  backdrop-filter: blur(10px);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.ta-mute-btn:hover {
+  background: rgba(22, 26, 36, 0.8);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.ta-mute-btn--muted {
+  opacity: 0.65;
+}
+
+/* ── Base-under-attack alert ────────────────────────────────────── */
+
+.ta-hud-team--alert .ta-hud-hp-track {
+  box-shadow: 0 0 0 1px rgba(255, 77, 87, 0.9), 0 0 10px rgba(255, 77, 87, 0.7);
+  animation: ta-alert-pulse 0.7s ease-in-out infinite;
+}
+
+.ta-hud-team--alert .ta-hud-hp-value {
+  color: var(--ta-red);
+}
+
+.ta-base-alert {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 77, 87, 0.6);
+  background: rgba(40, 8, 10, 0.72);
+  backdrop-filter: blur(8px);
+  color: #ffd7d9;
+  font-family: var(--ta-font-display);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  box-shadow: 0 0 24px rgba(255, 77, 87, 0.35);
+  pointer-events: none;
+  animation: ta-alert-pulse 0.7s ease-in-out infinite;
+}
+
+.ta-base-alert--critical {
+  border-color: rgba(255, 77, 87, 1);
+  background: rgba(90, 10, 12, 0.85);
+  animation: ta-alert-pulse 0.35s ease-in-out infinite;
+}
+
+.ta-base-alert-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.ta-base-alert-text {
+  font-size: 15px;
+}
+
+.ta-base-alert-hp {
+  font-size: 12px;
+  opacity: 0.85;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes ta-alert-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@media (max-width: 520px) {
+  .ta-base-alert-text {
+    font-size: 13px;
+  }
+}
+
 /* ── Countdown ──────────────────────────────────────────────────── */
 
 .ta-countdown {
