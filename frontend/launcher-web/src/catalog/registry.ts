@@ -36,6 +36,16 @@ export const REGISTRY: CatalogEntry[] = [
     Art: OAnQuanArt,
   },
   {
+    id: 'sudokucube',
+    title: 'Mini Sudoku Cube',
+    description: 'Sudoku 4x4 trên 6 mặt khối lập phương 3D.',
+    category: 'game',
+    path: '/games/sudokucube/',
+    accent: '#3b82f6',
+    pluginId: 'sudokucube',
+    Art: ArcadeArt,
+  },
+  {
     id: 'scoreboard',
     title: 'Bảng điểm',
     description: 'Bảng điểm chung cho cả buổi chơi cùng nhau.',

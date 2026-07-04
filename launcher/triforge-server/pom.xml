@@ -25,6 +25,7 @@
         <tankarena.frontend.dir>${project.basedir}/../../games/tankarena/frontend</tankarena.frontend.dir>
         <treasurequest.frontend.dir>${project.basedir}/../../games/treasurequest/frontend</treasurequest.frontend.dir>
         <oanquan.frontend.dir>${project.basedir}/../../games/oanquan/frontend</oanquan.frontend.dir>
+        <sudokucube.frontend.dir>${project.basedir}/../../games/sudokucube/frontend</sudokucube.frontend.dir>
     </properties>
 
     <dependencies>
@@ -179,6 +180,30 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>sudokucube-npm-ci</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${sudokucube.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>sudokucube-npm-build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${sudokucube.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>launcher-npm-ci</id>
                         <phase>prepare-package</phase>
                         <goals>
@@ -278,6 +303,23 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>copy-prebuilt-sudokucube-assets</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/sudokucube</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${sudokucube.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-launcher-assets</id>
                         <phase>prepare-package</phase>
                         <goals>
@@ -340,6 +382,23 @@
                             <resources>
                                 <resource>
                                     <directory>${oanquan.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-sudokucube-assets</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/sudokucube</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${sudokucube.frontend.dir}/dist</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
