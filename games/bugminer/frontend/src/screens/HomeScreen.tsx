@@ -7,7 +7,12 @@ interface Props {
 }
 
 export default function HomeScreen({ socket }: Props) {
-  const [name, setName] = useState(() => localStorage.getItem('triforge.sudokucube.v1') || '');
+  const [name, setName] = useState(() => {
+    const saved = localStorage.getItem('triforge.sudokucube.v1');
+    if (saved) return saved;
+    const rand = Math.floor(Math.random() * 9000) + 1000;
+    return `Miner${rand}`;
+  });
   
   // Read initial room ID from URL param if available
   const initialRoomId = new URLSearchParams(window.location.search).get('room') || '';
