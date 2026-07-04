@@ -10,14 +10,18 @@ export function resolveGamePhase(
   battle: BattleArenaState | null,
   forPlayerA: ChallengePhaseInput | null | undefined,
   forPlayerB: ChallengePhaseInput | null | undefined,
+  countdown = 0,
 ): GamePhase {
   if (fairMode.battle && battle) {
-    return battle.finished ? 'finished' : 'playing';
+    if (battle.finished) return 'finished';
+    if (countdown > 0) return 'countdown';
+    return 'playing';
   }
 
   if (fairMode.enabled && !fairMode.battle) {
     if (forPlayerA?.setupLocked && forPlayerB?.setupLocked) {
       if (forPlayerA.finished && forPlayerB.finished) return 'finished';
+      if (countdown > 0) return 'countdown';
       return 'playing';
     }
     return 'dual_setup';
@@ -25,5 +29,6 @@ export function resolveGamePhase(
 
   if (!forPlayerA?.setupLocked || !forPlayerB?.setupLocked) return 'dual_setup';
   if (forPlayerA.finished && forPlayerB.finished) return 'finished';
+  if (countdown > 0) return 'countdown';
   return 'playing';
 }

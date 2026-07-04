@@ -9,12 +9,14 @@ describe('resolveGamePhase', () => {
 
   it('free mode uses dual_setup until both lock', () => {
     expect(resolveGamePhase(DEFAULT_FAIR_MODE, null, unlocked, locked)).toBe('dual_setup');
-    expect(resolveGamePhase(DEFAULT_FAIR_MODE, null, locked, locked)).toBe('playing');
+    expect(resolveGamePhase(DEFAULT_FAIR_MODE, null, locked, locked, 3)).toBe('countdown');
+    expect(resolveGamePhase(DEFAULT_FAIR_MODE, null, locked, locked, 0)).toBe('playing');
   });
 
   it('fair mode skips dual_setup when both maps are pre-locked', () => {
     const fair = { ...DEFAULT_FAIR_MODE, enabled: true };
-    expect(resolveGamePhase(fair, null, locked, locked)).toBe('playing');
+    expect(resolveGamePhase(fair, null, locked, locked, 3)).toBe('countdown');
+    expect(resolveGamePhase(fair, null, locked, locked, 0)).toBe('playing');
     expect(resolveGamePhase(fair, null, unlocked, locked)).toBe('dual_setup');
   });
 
@@ -43,7 +45,8 @@ describe('resolveGamePhase', () => {
       strengthBuffA: 0,
       strengthBuffB: 0,
     };
-    expect(resolveGamePhase(battleMode, battle, null, null)).toBe('playing');
+    expect(resolveGamePhase(battleMode, battle, null, null, 3)).toBe('countdown');
+    expect(resolveGamePhase(battleMode, battle, null, null, 0)).toBe('playing');
     expect(resolveGamePhase(battleMode, { ...battle, finished: true }, null, null)).toBe('finished');
   });
 });

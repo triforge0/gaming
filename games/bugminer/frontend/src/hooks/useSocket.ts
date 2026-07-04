@@ -14,6 +14,47 @@ function mapFairMode(proto?: { enabled?: boolean | null; battle?: boolean | null
   };
 }
 
+function handleBoardEvents(
+  events: Array<{
+    eventType?: string | null;
+    playerId?: unknown;
+    thiefId?: unknown;
+    victimId?: unknown;
+    itemId?: string | null;
+    value?: number | null;
+  }> | null | undefined,
+  myId: string | null,
+) {
+  if (!events?.length || !myId) return;
+  const store = useGameStore.getState();
+  for (const event of events) {
+    const type = event.eventType || '';
+    const playerId = event.playerId != null ? String(toNum(event.playerId as number)) : '';
+    const thiefId = event.thiefId != null ? String(toNum(event.thiefId as number)) : '';
+    const victimId = event.victimId != null ? String(toNum(event.victimId as number)) : '';
+
+    if (type === 'item:collected' && playerId === myId) {
+      store.addCollection(event.value ?? 0, 'gold');
+    }
+    if (type === 'poison:hit' && playerId === myId) {
+      store.setPoisonFlash(true);
+      setTimeout(() => store.setPoisonFlash(false), 2000);
+    }
+    if (type === 'battle:clash') {
+      store.setError('⚡ Va chạm móc! Mất lượt phóng.');
+      setTimeout(() => store.setError(null), 1500);
+    }
+    if (type === 'battle:steal' && thiefId === myId) {
+      store.setError('🪝 Cướp được vật phẩm từ đối thủ!');
+      setTimeout(() => store.setError(null), 1500);
+    }
+    if (type === 'battle:steal' && victimId === myId) {
+      store.setError('😱 Đối thủ cướp mất vật phẩm bạn đang kéo!');
+      setTimeout(() => store.setError(null), 2000);
+    }
+  }
+}
+
 function hasChallengeProto(
   c?: { designerId?: unknown; playerId?: unknown } | null,
 ): boolean {
@@ -223,8 +264,8 @@ export function useSocket() {
             finished: battleProto.finished || false,
             winnerId: battleProto.winnerId ? String(toNum(battleProto.winnerId)) : null,
             endReason: (battleProto.endReason as GameState['endReason']) || null,
-            strengthBuffA: 0,
-            strengthBuffB: 0,
+            strengthBuffA: battleProto.strengthBuffA || 0,
+            strengthBuffB: battleProto.strengthBuffB || 0,
           };
         };
 
@@ -242,7 +283,15 @@ export function useSocket() {
           };
         };
 
-        const phase = resolveGamePhase(fairMode, battle, toPhaseInput(pA), toPhaseInput(pB));
+        const phase = resolveGamePhase(
+          fairMode,
+          battle,
+          toPhaseInput(pA),
+          toPhaseInput(pB),
+          message.board.playCountdown ?? 0,
+        );
+
+        handleBoardEvents(message.board.events, current.playerId);
 
         const newState: GameState = {
           ...(current.gameState || {}),
@@ -258,7 +307,7 @@ export function useSocket() {
           players: current.gameState?.players || [],
           winnerId: battle?.winnerId ?? current.gameState?.winnerId ?? null,
           endReason: battle?.endReason ?? current.gameState?.endReason ?? null,
-          countdown: current.gameState?.countdown ?? 0,
+          countdown: message.board.playCountdown ?? 0,
         };
         current.setGameState(newState);
       },

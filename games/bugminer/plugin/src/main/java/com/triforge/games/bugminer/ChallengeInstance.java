@@ -24,7 +24,7 @@ public class ChallengeInstance {
     private float strengthBuffRemaining = 0f;
     
     // We can store events to broadcast them later
-    public List<GameEvent> pendingEvents = new ArrayList<>();
+    private final List<BugMinerClientEvent> pendingEvents = new ArrayList<>();
 
     public ChallengeInstance(long designerId, long playerId, String levelId) {
         this.designerId = designerId;
@@ -164,6 +164,9 @@ public class ChallengeInstance {
     
     public boolean lockSetup(long socketId) {
         if (socketId != designerId || setupLocked) return false;
+        for (PlacedItem item : items) {
+            if (!item.collected && item.x == 0f && item.y == 0f) return false;
+        }
         setupLocked = true;
         return true;
     }
@@ -306,18 +309,62 @@ public class ChallengeInstance {
     private void collectItem(PlacedItem item) {
         if (item.collected) return;
         item.collected = true;
-        
+
         if (item.type == BugMinerItemType.BM_ITEM_POISON) {
+            BugMinerClientEvent ev = new BugMinerClientEvent("poison:hit");
+            ev.playerId = playerId;
+            ev.itemId = item.id;
+            pendingEvents.add(ev);
             markFinished("poison");
             return;
         }
         if (item.type == BugMinerItemType.BM_ITEM_STRENGTH_DRINK) {
-            strengthBuffRemaining = 8f;
+            strengthBuffRemaining = GameConstants.STRENGTH_BUFF_DURATION;
+            BugMinerClientEvent ev = new BugMinerClientEvent("strength:boost");
+            ev.playerId = playerId;
+            ev.itemId = item.id;
+            pendingEvents.add(ev);
             return;
         }
-        
+
         int value = ItemDefinitions.get(item.type).value;
+        if (item.type == BugMinerItemType.BM_ITEM_MYSTERY_BAG) {
+            value = 50 + (int) (Math.random() * 451);
+            BugMinerClientEvent reveal = new BugMinerClientEvent("mystery:reveal");
+            reveal.playerId = playerId;
+            reveal.itemId = item.id;
+            reveal.value = value;
+            pendingEvents.add(reveal);
+        }
+
         score += value;
+        BugMinerClientEvent collected = new BugMinerClientEvent("item:collected");
+        collected.playerId = playerId;
+        collected.itemId = item.id;
+        collected.value = value;
+        pendingEvents.add(collected);
+    }
+
+    List<BugMinerClientEvent> drainEvents() {
+        List<BugMinerClientEvent> drained = new ArrayList<>(pendingEvents);
+        pendingEvents.clear();
+        return drained;
+    }
+
+    boolean isFinished() {
+        return finished;
+    }
+
+    String endReason() {
+        return endReason;
+    }
+
+    int score() {
+        return score;
+    }
+
+    boolean setupLocked() {
+        return setupLocked;
     }
     
     private void markFinished(String reason) {

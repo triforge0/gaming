@@ -1,6 +1,7 @@
 package com.triforge.games.bugminer;
 
 import com.triforge.protocol.proto.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BugMinerBoard {
@@ -12,6 +13,10 @@ public class BugMinerBoard {
     public BattleArena battleArena;
 
     private final FairModeConfig fairMode = new FairModeConfig();
+    private float playCountdown = 0f;
+    private final List<BugMinerClientEvent> pendingEvents = new ArrayList<>();
+
+    private static final float COUNTDOWN_SECONDS = 3f;
 
     public FairModeConfig fairMode() {
         return fairMode;
@@ -29,6 +34,7 @@ public class BugMinerBoard {
         challengeA = new ChallengeInstance(playerB, playerA, fairMode.levelId);
         challengeB = new ChallengeInstance(playerA, playerB, fairMode.levelId);
         battleArena = null;
+        playCountdown = 0f;
     }
 
     public void beginFairMode(String roomId) {
@@ -38,6 +44,7 @@ public class BugMinerBoard {
         List<PlacedItem> layout = FairLayoutBuilder.build(fairMode.levelId, roomId);
         challengeA.applyFairLayout(fairMode.levelId, fairMode.timeLimit, layout);
         challengeB.applyFairLayout(fairMode.levelId, fairMode.timeLimit, layout);
+        startPlayCountdown();
     }
 
     public void beginBattleMode(String roomId) {
@@ -45,15 +52,61 @@ public class BugMinerBoard {
         battleArena = new BattleArena(playerA, playerB, fairMode.levelId, fairMode.timeLimit, layout);
         challengeA = null;
         challengeB = null;
+        startPlayCountdown();
+    }
+
+    public void startPlayCountdown() {
+        playCountdown = COUNTDOWN_SECONDS;
+    }
+
+    public void onSetupLocked() {
+        if (isAutoSetupMode()) return;
+        if (challengeA != null && challengeB != null
+                && challengeA.setupLocked() && challengeB.setupLocked()) {
+            startPlayCountdown();
+        }
+    }
+
+    public void tickPlayCountdown(float deltaSec) {
+        if (playCountdown > 0f) {
+            playCountdown = Math.max(0f, playCountdown - deltaSec);
+        }
+    }
+
+    public boolean isGameplayActive() {
+        return playCountdown <= 0f && isReadyToPlay();
+    }
+
+    private boolean isReadyToPlay() {
+        if (battleArena != null) return true;
+        if (isAutoSetupMode()) {
+            return challengeA != null && challengeB != null;
+        }
+        return challengeA != null && challengeB != null
+                && challengeA.setupLocked() && challengeB.setupLocked();
+    }
+
+    public int playCountdownSeconds() {
+        return (int) Math.ceil(playCountdown);
     }
 
     public void tick(float deltaSec, boolean isPlaying) {
+        tickPlayCountdown(deltaSec);
+        if (!isPlaying || !isGameplayActive()) return;
+
         if (battleArena != null) {
-            battleArena.tick(deltaSec, isPlaying);
+            battleArena.tick(deltaSec, true);
+            pendingEvents.addAll(battleArena.drainEvents());
             return;
         }
-        if (challengeA != null) challengeA.tick(deltaSec, isPlaying);
-        if (challengeB != null) challengeB.tick(deltaSec, isPlaying);
+        if (challengeA != null) {
+            challengeA.tick(deltaSec, true);
+            pendingEvents.addAll(challengeA.drainEvents());
+        }
+        if (challengeB != null) {
+            challengeB.tick(deltaSec, true);
+            pendingEvents.addAll(challengeB.drainEvents());
+        }
     }
 
     public ChallengeInstance getChallengeForPlayer(long playerId) {
@@ -81,6 +134,7 @@ public class BugMinerBoard {
     }
 
     public boolean fireHook(long playerId) {
+        if (!isGameplayActive()) return false;
         if (battleArena != null) return battleArena.fireHook(playerId);
         ChallengeInstance c = getChallengePlaying(playerId);
         return c != null && c.fireHook(playerId);
@@ -97,6 +151,11 @@ public class BugMinerBoard {
                 .setLevelId(fairMode.levelId)
                 .setTimeLimit(fairMode.timeLimit)
                 .build());
+        builder.setPlayCountdown(playCountdownSeconds());
+        for (BugMinerClientEvent event : pendingEvents) {
+            builder.addEvents(event.toProto());
+        }
+        pendingEvents.clear();
         return builder.build();
     }
 }

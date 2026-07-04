@@ -676,11 +676,24 @@ message BugMinerChallengeState {
   string endReason = 12;
 }
 
+message BugMinerClientEvent {
+  string event_type = 1;
+  uint64 player_id = 2;
+  uint64 player_a_id = 3;
+  uint64 player_b_id = 4;
+  uint64 thief_id = 5;
+  uint64 victim_id = 6;
+  string item_id = 7;
+  int32 value = 8;
+}
+
 message BugMinerBoardState {
   BugMinerChallengeState forPlayerA = 1;
   BugMinerChallengeState forPlayerB = 2;
   BugMinerFairModeConfig fairMode = 3;
   BugMinerBattleState battle = 4;
+  repeated BugMinerClientEvent events = 5;
+  uint32 playCountdown = 6;
 }
 
 message BugMinerFairModeConfig {
@@ -705,6 +718,8 @@ message BugMinerBattleState {
   bool finished = 12;
   uint64 winnerId = 13;
   string endReason = 14;
+  uint32 strengthBuffA = 15;
+  uint32 strengthBuffB = 16;
 }
 
 // Client Commands

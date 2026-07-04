@@ -8001,6 +8001,145 @@ export namespace com {
                     public static getTypeUrl(typeUrlPrefix?: string): string;
                 }
 
+                /** Properties of a BugMinerClientEvent. */
+                interface IBugMinerClientEvent {
+
+                    /** BugMinerClientEvent eventType */
+                    eventType?: (string|null);
+
+                    /** BugMinerClientEvent playerId */
+                    playerId?: (number|Long|null);
+
+                    /** BugMinerClientEvent playerAId */
+                    playerAId?: (number|Long|null);
+
+                    /** BugMinerClientEvent playerBId */
+                    playerBId?: (number|Long|null);
+
+                    /** BugMinerClientEvent thiefId */
+                    thiefId?: (number|Long|null);
+
+                    /** BugMinerClientEvent victimId */
+                    victimId?: (number|Long|null);
+
+                    /** BugMinerClientEvent itemId */
+                    itemId?: (string|null);
+
+                    /** BugMinerClientEvent value */
+                    value?: (number|null);
+                }
+
+                /** Represents a BugMinerClientEvent. */
+                class BugMinerClientEvent implements IBugMinerClientEvent {
+
+                    /**
+                     * Constructs a new BugMinerClientEvent.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBugMinerClientEvent);
+
+                    /** BugMinerClientEvent eventType. */
+                    public eventType: string;
+
+                    /** BugMinerClientEvent playerId. */
+                    public playerId: (number|Long);
+
+                    /** BugMinerClientEvent playerAId. */
+                    public playerAId: (number|Long);
+
+                    /** BugMinerClientEvent playerBId. */
+                    public playerBId: (number|Long);
+
+                    /** BugMinerClientEvent thiefId. */
+                    public thiefId: (number|Long);
+
+                    /** BugMinerClientEvent victimId. */
+                    public victimId: (number|Long);
+
+                    /** BugMinerClientEvent itemId. */
+                    public itemId: string;
+
+                    /** BugMinerClientEvent value. */
+                    public value: number;
+
+                    /**
+                     * Creates a new BugMinerClientEvent instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BugMinerClientEvent instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBugMinerClientEvent): com.triforge.protocol.proto.BugMinerClientEvent;
+
+                    /**
+                     * Encodes the specified BugMinerClientEvent message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerClientEvent.verify|verify} messages.
+                     * @param message BugMinerClientEvent message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBugMinerClientEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BugMinerClientEvent message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerClientEvent.verify|verify} messages.
+                     * @param message BugMinerClientEvent message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBugMinerClientEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BugMinerClientEvent message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BugMinerClientEvent
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BugMinerClientEvent;
+
+                    /**
+                     * Decodes a BugMinerClientEvent message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BugMinerClientEvent
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BugMinerClientEvent;
+
+                    /**
+                     * Verifies a BugMinerClientEvent message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BugMinerClientEvent message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BugMinerClientEvent
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BugMinerClientEvent;
+
+                    /**
+                     * Creates a plain object from a BugMinerClientEvent message. Also converts values to other types if specified.
+                     * @param message BugMinerClientEvent
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BugMinerClientEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BugMinerClientEvent to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BugMinerClientEvent
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
                 /** Properties of a BugMinerBoardState. */
                 interface IBugMinerBoardState {
 
@@ -8015,6 +8154,12 @@ export namespace com {
 
                     /** BugMinerBoardState battle */
                     battle?: (com.triforge.protocol.proto.IBugMinerBattleState|null);
+
+                    /** BugMinerBoardState events */
+                    events?: (com.triforge.protocol.proto.IBugMinerClientEvent[]|null);
+
+                    /** BugMinerBoardState playCountdown */
+                    playCountdown?: (number|null);
                 }
 
                 /** Represents a BugMinerBoardState. */
@@ -8037,6 +8182,12 @@ export namespace com {
 
                     /** BugMinerBoardState battle. */
                     public battle?: (com.triforge.protocol.proto.IBugMinerBattleState|null);
+
+                    /** BugMinerBoardState events. */
+                    public events: com.triforge.protocol.proto.IBugMinerClientEvent[];
+
+                    /** BugMinerBoardState playCountdown. */
+                    public playCountdown: number;
 
                     /**
                      * Creates a new BugMinerBoardState instance using the specified properties.
@@ -8275,6 +8426,12 @@ export namespace com {
 
                     /** BugMinerBattleState endReason */
                     endReason?: (string|null);
+
+                    /** BugMinerBattleState strengthBuffA */
+                    strengthBuffA?: (number|null);
+
+                    /** BugMinerBattleState strengthBuffB */
+                    strengthBuffB?: (number|null);
                 }
 
                 /** Represents a BugMinerBattleState. */
@@ -8327,6 +8484,12 @@ export namespace com {
 
                     /** BugMinerBattleState endReason. */
                     public endReason: string;
+
+                    /** BugMinerBattleState strengthBuffA. */
+                    public strengthBuffA: number;
+
+                    /** BugMinerBattleState strengthBuffB. */
+                    public strengthBuffB: number;
 
                     /**
                      * Creates a new BugMinerBattleState instance using the specified properties.

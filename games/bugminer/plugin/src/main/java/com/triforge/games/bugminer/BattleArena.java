@@ -22,6 +22,7 @@ public class BattleArena {
     private boolean finished = false;
     private Long winnerId = null;
     private String endReason = null;
+    private final List<BugMinerClientEvent> pendingEvents = new ArrayList<>();
 
     private static final BattleHookAnchor ANCHOR_A =
             new BattleHookAnchor(GameConstants.BATTLE_MINER_A, false);
@@ -121,6 +122,11 @@ public class BattleArena {
                     other.attachedItemId = null;
                     hook.attachedItemId = hit.id;
                     hook.state = BugMinerHookState.BM_HOOK_RETRACTING;
+                    BugMinerClientEvent steal = new BugMinerClientEvent("battle:steal");
+                    steal.itemId = hit.id;
+                    steal.thiefId = side == 'A' ? playerAId : playerBId;
+                    steal.victimId = side == 'A' ? playerBId : playerAId;
+                    pendingEvents.add(steal);
                 } else if (!isItemAttached(hit.id, side)) {
                     hook.attachedItemId = hit.id;
                     hook.state = BugMinerHookState.BM_HOOK_RETRACTING;
@@ -176,6 +182,11 @@ public class BattleArena {
 
         if (activeA) hookA = HookPhysics.bounceHook(hookA);
         if (activeB) hookB = HookPhysics.bounceHook(hookB);
+
+        BugMinerClientEvent clash = new BugMinerClientEvent("battle:clash");
+        clash.playerAId = playerAId;
+        clash.playerBId = playerBId;
+        pendingEvents.add(clash);
     }
 
     private void collectItem(PlacedItem item, char side) {
@@ -183,6 +194,10 @@ public class BattleArena {
         item.collected = true;
 
         if (item.type == BugMinerItemType.BM_ITEM_POISON) {
+            BugMinerClientEvent poison = new BugMinerClientEvent("poison:hit");
+            poison.playerId = side == 'A' ? playerAId : playerBId;
+            poison.itemId = item.id;
+            pendingEvents.add(poison);
             long winner = side == 'A' ? playerBId : playerAId;
             finish(winner, "poison");
             return;
@@ -191,16 +206,37 @@ public class BattleArena {
         if (item.type == BugMinerItemType.BM_ITEM_STRENGTH_DRINK) {
             if (side == 'A') strengthBuffA = GameConstants.STRENGTH_BUFF_DURATION;
             else strengthBuffB = GameConstants.STRENGTH_BUFF_DURATION;
+            BugMinerClientEvent boost = new BugMinerClientEvent("strength:boost");
+            boost.playerId = side == 'A' ? playerAId : playerBId;
+            boost.itemId = item.id;
+            pendingEvents.add(boost);
             return;
         }
 
         int value = ItemDefinitions.get(item.type).value;
         if (item.type == BugMinerItemType.BM_ITEM_MYSTERY_BAG) {
             value = 50 + (int) (Math.random() * 451);
+            BugMinerClientEvent reveal = new BugMinerClientEvent("mystery:reveal");
+            reveal.playerId = side == 'A' ? playerAId : playerBId;
+            reveal.itemId = item.id;
+            reveal.value = value;
+            pendingEvents.add(reveal);
         }
 
         if (side == 'A') scoreA += value;
         else scoreB += value;
+
+        BugMinerClientEvent collected = new BugMinerClientEvent("item:collected");
+        collected.playerId = side == 'A' ? playerAId : playerBId;
+        collected.itemId = item.id;
+        collected.value = value;
+        pendingEvents.add(collected);
+    }
+
+    List<BugMinerClientEvent> drainEvents() {
+        List<BugMinerClientEvent> drained = new ArrayList<>(pendingEvents);
+        pendingEvents.clear();
+        return drained;
     }
 
     private PlacedItem findItem(String id) {
@@ -244,7 +280,9 @@ public class BattleArena {
                         .setHookB(hookToProto(hookB))
                         .setScoreA(scoreA)
                         .setScoreB(scoreB)
-                        .setFinished(finished);
+                        .setFinished(finished)
+                        .setStrengthBuffA((int) Math.ceil(strengthBuffA))
+                        .setStrengthBuffB((int) Math.ceil(strengthBuffB));
         if (winnerId != null) b.setWinnerId(winnerId);
         if (endReason != null) b.setEndReason(endReason);
         for (PlacedItem item : items) {

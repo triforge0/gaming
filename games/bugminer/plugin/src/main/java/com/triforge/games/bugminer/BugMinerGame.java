@@ -257,8 +257,26 @@ public class BugMinerGame implements Game {
                 endMatch();
                 return;
             }
+            if (checkChallengeWinConditions()) {
+                endMatch();
+                return;
+            }
             broadcastBoardState();
         }
+    }
+
+    private boolean checkChallengeWinConditions() {
+        if (board.battleArena != null || board.challengeA == null || board.challengeB == null) {
+            return false;
+        }
+        ChallengeInstance a = board.challengeA;
+        ChallengeInstance b = board.challengeB;
+        if (!a.isFinished() && !b.isFinished()) return false;
+
+        if ("target".equals(a.endReason())) return true;
+        if ("target".equals(b.endReason())) return true;
+        if ("poison".equals(a.endReason()) || "poison".equals(b.endReason())) return true;
+        return a.isFinished() && b.isFinished();
     }
 
     private boolean hasConnectedPlayers() {
@@ -369,7 +387,10 @@ public class BugMinerGame implements Game {
             case LOCKMAP -> {
                 if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
-                if (c != null && c.lockSetup(playerId)) broadcastBoardState();
+                if (c != null && c.lockSetup(playerId)) {
+                    board.onSetupLocked();
+                    broadcastBoardState();
+                }
             }
             case FIREHOOK -> {
                 if (board.fireHook(playerId)) broadcastBoardState();
