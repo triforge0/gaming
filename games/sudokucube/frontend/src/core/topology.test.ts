@@ -26,9 +26,9 @@ describe('topology', () => {
     }
   });
 
-  it('diffPeers: mỗi ô có 6 peer (3 cùng hàng + 3 cùng cột)', () => {
+  it('diffPeers: mỗi ô có 7 peer (3 cùng hàng + 3 cùng cột + 1 cùng cụm 2x2)', () => {
     const diff = buildDiffPeers();
-    for (let i = 0; i < CELL_COUNT; i++) expect(diff[i]).toHaveLength(6);
+    for (let i = 0; i < CELL_COUNT; i++) expect(diff[i]).toHaveLength(7);
   });
 
   it('cặp qua cạnh có tâm 3D cách nhau √0.5', () => {

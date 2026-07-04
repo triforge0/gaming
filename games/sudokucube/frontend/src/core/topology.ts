@@ -35,10 +35,19 @@ export function buildDiffPeers(): number[][] {
   const peers: number[][] = Array.from({ length: CELL_COUNT }, () => []);
   for (let i = 0; i < CELL_COUNT; i++) {
     const { face, row, col } = cellAt(i);
+    const set = new Set<number>();
     for (let k = 0; k < N; k++) {
-      if (k !== col) peers[i].push(cellIndex(face, row, k));
-      if (k !== row) peers[i].push(cellIndex(face, k, col));
+      if (k !== col) set.add(cellIndex(face, row, k));
+      if (k !== row) set.add(cellIndex(face, k, col));
     }
+    const br = Math.floor(row / 2) * 2;
+    const bc = Math.floor(col / 2) * 2;
+    for (let r = br; r < br + 2; r++) {
+      for (let c = bc; c < bc + 2; c++) {
+        if (r !== row || c !== col) set.add(cellIndex(face, r, c));
+      }
+    }
+    peers[i] = Array.from(set);
   }
   return peers;
 }
