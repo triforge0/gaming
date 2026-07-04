@@ -34,9 +34,11 @@ export function CellMesh({ index, skin, atlas }: Props) {
   const reduced = useReducedMotion();
   const [hovered, setHovered] = useState(false);
 
-  const { lift, scale } = useSpring({
+  const { lift, scale, emissiveInt, animColor } = useSpring({
     lift: hovered || selected ? 0.3 : 0,          // hover/select: translateZ +0.3
     scale: selected ? 1.1 : 1,
+    emissiveInt: selected || locked || fx?.kind === 'correct' ? 1.6 : 0,
+    animColor: color,
     config: { tension: 300, friction: 20 },
   });
 
@@ -101,8 +103,8 @@ export function CellMesh({ index, skin, atlas }: Props) {
             useGame.getState().clearCell();
           }}
         >
-          <meshPhysicalMaterial
-            color={color}
+          <animated.meshPhysicalMaterial
+            color={animColor}
             metalness={0.1}
             roughness={0.2}
             transmission={0.1}
@@ -110,7 +112,7 @@ export function CellMesh({ index, skin, atlas }: Props) {
             clearcoat={1.0}
             clearcoatRoughness={0.1}
             emissive={selected ? skin.select : locked ? skin.lockB : fx?.kind === 'correct' ? skin.correct : '#000000'}
-            emissiveIntensity={selected || locked || fx?.kind === 'correct' ? 1.6 : 0}
+            emissiveIntensity={emissiveInt}
           />
         </RoundedBox>
         {value !== null && (
