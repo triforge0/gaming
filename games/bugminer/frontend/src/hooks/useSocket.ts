@@ -14,6 +14,13 @@ function mapFairMode(proto?: { enabled?: boolean | null; battle?: boolean | null
   };
 }
 
+function hasChallengeProto(
+  c?: { designerId?: number | null; playerId?: number | null } | null,
+): boolean {
+  if (!c) return false;
+  return toNum(c.designerId) > 0 || toNum(c.playerId) > 0;
+}
+
 export function useSocket() {
   const clientRef = useRef<GameClient | null>(null);
 
@@ -108,8 +115,11 @@ export function useSocket() {
       },
       onMatchPhaseUpdate: (update) => {
         const { setScreen } = useGameStore.getState();
-        if (update.phase === MatchPhase.LOBBY) setScreen('lobby');
-        else if (update.phase === MatchPhase.COUNTDOWN) setScreen('lobby');
+        if (update.phase === MatchPhase.LOBBY || update.phase === MatchPhase.COUNTDOWN) {
+          setScreen('lobby');
+        } else if (update.phase === MatchPhase.PLAYING) {
+          setScreen('game');
+        }
       },
       onBugMinerMessage: (message) => {
         if (!message.board) return;
@@ -120,7 +130,7 @@ export function useSocket() {
         const battleProto = message.board.battle;
 
         // Lobby sync: fair/battle settings before challenges exist
-        if (!pA && !pB && !battleProto) {
+        if (!hasChallengeProto(pA) && !hasChallengeProto(pB) && !battleProto) {
           current.setGameState({
             ...(current.gameState || {}),
             roomId: fullRoomId,
@@ -157,7 +167,7 @@ export function useSocket() {
           items?.map((item) => ({
             id: item.id || '',
             type: itemTypeMap[item.type ?? 0] || 'gold',
-            position: { x: item.x || 0, y: item.y || 0 },
+            position: { x: item.x ?? 0, y: item.y ?? 0 },
             collected: item.collected || false,
           })) || [];
 

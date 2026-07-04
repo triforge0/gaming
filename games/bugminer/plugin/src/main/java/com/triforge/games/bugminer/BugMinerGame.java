@@ -104,6 +104,7 @@ public class BugMinerGame implements Game {
                 .build();
         host().broadcaster().sendJoinResponse(channel, response);
         host().broadcaster().broadcastLobbySnapshot(host(), this);
+        broadcastBoardState();
 
         logger.info("Player '{}' joined bugminer room '{}' as playerId={} (host={})",
                 displayName, host().roomId(), playerId, isHost);
