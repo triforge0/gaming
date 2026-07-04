@@ -225,8 +225,12 @@ public class BugMinerGame implements Game {
         long p2 = pids.size() > 1 ? pids.get(1) : 0;
         
         board.init(p1, p2);
-        if (board.isFairModeActive()) {
+        if (board.isBattleModeActive()) {
+            board.beginBattleMode(host().roomId());
+        } else if (board.isFairModeActive()) {
             board.beginFairMode(host().roomId());
+        } else {
+            board.beginFreeMode();
         }
         broadcastBoardState();
         
@@ -248,6 +252,10 @@ public class BugMinerGame implements Game {
         
         if (active) {
             board.tick(1f / 60f, true);
+            if (board.battleArena != null && board.battleArena.isFinished()) {
+                endMatch();
+                return;
+            }
             broadcastBoardState();
         }
     }
@@ -330,17 +338,17 @@ public class BugMinerGame implements Game {
                 broadcastBoardState();
             }
             case SETLEVEL -> {
-                if (board.isFairModeActive()) break;
+                if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.setLevel(bm.getSetLevel().getLevelId())) broadcastBoardState();
             }
             case SETTIMELIMIT -> {
-                if (board.isFairModeActive()) break;
+                if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.setTimeLimit(bm.getSetTimeLimit().getTimeLimit())) broadcastBoardState();
             }
             case PLACEITEM -> {
-                if (board.isFairModeActive()) break;
+                if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
                 // We need to parse ItemType here
                 BugMinerItemType type = BugMinerItemType.BM_ITEM_NONE;
@@ -352,18 +360,17 @@ public class BugMinerGame implements Game {
                 }
             }
             case AUTOARRANGE -> {
-                if (board.isFairModeActive()) break;
+                if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.autoArrange(playerId)) broadcastBoardState();
             }
             case LOCKMAP -> {
-                if (board.isFairModeActive()) break;
+                if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.lockSetup(playerId)) broadcastBoardState();
             }
             case FIREHOOK -> {
-                c = board.getChallengePlaying(playerId);
-                if (c != null && c.fireHook(playerId)) broadcastBoardState();
+                if (board.fireHook(playerId)) broadcastBoardState();
             }
             default -> {}
         }

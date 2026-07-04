@@ -8009,6 +8009,12 @@ export namespace com {
 
                     /** BugMinerBoardState forPlayerB */
                     forPlayerB?: (com.triforge.protocol.proto.IBugMinerChallengeState|null);
+
+                    /** BugMinerBoardState fairMode */
+                    fairMode?: (com.triforge.protocol.proto.IBugMinerFairModeConfig|null);
+
+                    /** BugMinerBoardState battle */
+                    battle?: (com.triforge.protocol.proto.IBugMinerBattleState|null);
                 }
 
                 /** Represents a BugMinerBoardState. */
@@ -8025,6 +8031,12 @@ export namespace com {
 
                     /** BugMinerBoardState forPlayerB. */
                     public forPlayerB?: (com.triforge.protocol.proto.IBugMinerChallengeState|null);
+
+                    /** BugMinerBoardState fairMode. */
+                    public fairMode?: (com.triforge.protocol.proto.IBugMinerFairModeConfig|null);
+
+                    /** BugMinerBoardState battle. */
+                    public battle?: (com.triforge.protocol.proto.IBugMinerBattleState|null);
 
                     /**
                      * Creates a new BugMinerBoardState instance using the specified properties.
@@ -8098,6 +8110,296 @@ export namespace com {
 
                     /**
                      * Gets the default type url for BugMinerBoardState
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BugMinerFairModeConfig. */
+                interface IBugMinerFairModeConfig {
+
+                    /** BugMinerFairModeConfig enabled */
+                    enabled?: (boolean|null);
+
+                    /** BugMinerFairModeConfig battle */
+                    battle?: (boolean|null);
+
+                    /** BugMinerFairModeConfig levelId */
+                    levelId?: (string|null);
+
+                    /** BugMinerFairModeConfig timeLimit */
+                    timeLimit?: (number|null);
+                }
+
+                /** Represents a BugMinerFairModeConfig. */
+                class BugMinerFairModeConfig implements IBugMinerFairModeConfig {
+
+                    /**
+                     * Constructs a new BugMinerFairModeConfig.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBugMinerFairModeConfig);
+
+                    /** BugMinerFairModeConfig enabled. */
+                    public enabled: boolean;
+
+                    /** BugMinerFairModeConfig battle. */
+                    public battle: boolean;
+
+                    /** BugMinerFairModeConfig levelId. */
+                    public levelId: string;
+
+                    /** BugMinerFairModeConfig timeLimit. */
+                    public timeLimit: number;
+
+                    /**
+                     * Creates a new BugMinerFairModeConfig instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BugMinerFairModeConfig instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBugMinerFairModeConfig): com.triforge.protocol.proto.BugMinerFairModeConfig;
+
+                    /**
+                     * Encodes the specified BugMinerFairModeConfig message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerFairModeConfig.verify|verify} messages.
+                     * @param message BugMinerFairModeConfig message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBugMinerFairModeConfig, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BugMinerFairModeConfig message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerFairModeConfig.verify|verify} messages.
+                     * @param message BugMinerFairModeConfig message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBugMinerFairModeConfig, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BugMinerFairModeConfig message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BugMinerFairModeConfig
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BugMinerFairModeConfig;
+
+                    /**
+                     * Decodes a BugMinerFairModeConfig message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BugMinerFairModeConfig
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BugMinerFairModeConfig;
+
+                    /**
+                     * Verifies a BugMinerFairModeConfig message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BugMinerFairModeConfig message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BugMinerFairModeConfig
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BugMinerFairModeConfig;
+
+                    /**
+                     * Creates a plain object from a BugMinerFairModeConfig message. Also converts values to other types if specified.
+                     * @param message BugMinerFairModeConfig
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BugMinerFairModeConfig, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BugMinerFairModeConfig to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BugMinerFairModeConfig
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a BugMinerBattleState. */
+                interface IBugMinerBattleState {
+
+                    /** BugMinerBattleState levelId */
+                    levelId?: (string|null);
+
+                    /** BugMinerBattleState timeLimit */
+                    timeLimit?: (number|null);
+
+                    /** BugMinerBattleState timeRemaining */
+                    timeRemaining?: (number|null);
+
+                    /** BugMinerBattleState targetScore */
+                    targetScore?: (number|null);
+
+                    /** BugMinerBattleState items */
+                    items?: (com.triforge.protocol.proto.IBugMinerPlacedItem[]|null);
+
+                    /** BugMinerBattleState playerAId */
+                    playerAId?: (number|Long|null);
+
+                    /** BugMinerBattleState playerBId */
+                    playerBId?: (number|Long|null);
+
+                    /** BugMinerBattleState hookA */
+                    hookA?: (com.triforge.protocol.proto.IBugMinerHookData|null);
+
+                    /** BugMinerBattleState hookB */
+                    hookB?: (com.triforge.protocol.proto.IBugMinerHookData|null);
+
+                    /** BugMinerBattleState scoreA */
+                    scoreA?: (number|null);
+
+                    /** BugMinerBattleState scoreB */
+                    scoreB?: (number|null);
+
+                    /** BugMinerBattleState finished */
+                    finished?: (boolean|null);
+
+                    /** BugMinerBattleState winnerId */
+                    winnerId?: (number|Long|null);
+
+                    /** BugMinerBattleState endReason */
+                    endReason?: (string|null);
+                }
+
+                /** Represents a BugMinerBattleState. */
+                class BugMinerBattleState implements IBugMinerBattleState {
+
+                    /**
+                     * Constructs a new BugMinerBattleState.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBugMinerBattleState);
+
+                    /** BugMinerBattleState levelId. */
+                    public levelId: string;
+
+                    /** BugMinerBattleState timeLimit. */
+                    public timeLimit: number;
+
+                    /** BugMinerBattleState timeRemaining. */
+                    public timeRemaining: number;
+
+                    /** BugMinerBattleState targetScore. */
+                    public targetScore: number;
+
+                    /** BugMinerBattleState items. */
+                    public items: com.triforge.protocol.proto.IBugMinerPlacedItem[];
+
+                    /** BugMinerBattleState playerAId. */
+                    public playerAId: (number|Long);
+
+                    /** BugMinerBattleState playerBId. */
+                    public playerBId: (number|Long);
+
+                    /** BugMinerBattleState hookA. */
+                    public hookA?: (com.triforge.protocol.proto.IBugMinerHookData|null);
+
+                    /** BugMinerBattleState hookB. */
+                    public hookB?: (com.triforge.protocol.proto.IBugMinerHookData|null);
+
+                    /** BugMinerBattleState scoreA. */
+                    public scoreA: number;
+
+                    /** BugMinerBattleState scoreB. */
+                    public scoreB: number;
+
+                    /** BugMinerBattleState finished. */
+                    public finished: boolean;
+
+                    /** BugMinerBattleState winnerId. */
+                    public winnerId: (number|Long);
+
+                    /** BugMinerBattleState endReason. */
+                    public endReason: string;
+
+                    /**
+                     * Creates a new BugMinerBattleState instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BugMinerBattleState instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBugMinerBattleState): com.triforge.protocol.proto.BugMinerBattleState;
+
+                    /**
+                     * Encodes the specified BugMinerBattleState message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerBattleState.verify|verify} messages.
+                     * @param message BugMinerBattleState message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBugMinerBattleState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BugMinerBattleState message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerBattleState.verify|verify} messages.
+                     * @param message BugMinerBattleState message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBugMinerBattleState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BugMinerBattleState message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BugMinerBattleState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BugMinerBattleState;
+
+                    /**
+                     * Decodes a BugMinerBattleState message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BugMinerBattleState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BugMinerBattleState;
+
+                    /**
+                     * Verifies a BugMinerBattleState message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BugMinerBattleState message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BugMinerBattleState
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BugMinerBattleState;
+
+                    /**
+                     * Creates a plain object from a BugMinerBattleState message. Also converts values to other types if specified.
+                     * @param message BugMinerBattleState
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BugMinerBattleState, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BugMinerBattleState to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BugMinerBattleState
                      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                      * @returns The default type url
                      */
@@ -8680,6 +8982,121 @@ export namespace com {
                     public static getTypeUrl(typeUrlPrefix?: string): string;
                 }
 
+                /** Properties of a BMConfigureFairModeCommand. */
+                interface IBMConfigureFairModeCommand {
+
+                    /** BMConfigureFairModeCommand enabled */
+                    enabled?: (boolean|null);
+
+                    /** BMConfigureFairModeCommand battle */
+                    battle?: (boolean|null);
+
+                    /** BMConfigureFairModeCommand levelId */
+                    levelId?: (string|null);
+
+                    /** BMConfigureFairModeCommand timeLimit */
+                    timeLimit?: (number|null);
+                }
+
+                /** Represents a BMConfigureFairModeCommand. */
+                class BMConfigureFairModeCommand implements IBMConfigureFairModeCommand {
+
+                    /**
+                     * Constructs a new BMConfigureFairModeCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBMConfigureFairModeCommand);
+
+                    /** BMConfigureFairModeCommand enabled. */
+                    public enabled?: (boolean|null);
+
+                    /** BMConfigureFairModeCommand battle. */
+                    public battle?: (boolean|null);
+
+                    /** BMConfigureFairModeCommand levelId. */
+                    public levelId?: (string|null);
+
+                    /** BMConfigureFairModeCommand timeLimit. */
+                    public timeLimit?: (number|null);
+
+                    /**
+                     * Creates a new BMConfigureFairModeCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BMConfigureFairModeCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBMConfigureFairModeCommand): com.triforge.protocol.proto.BMConfigureFairModeCommand;
+
+                    /**
+                     * Encodes the specified BMConfigureFairModeCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMConfigureFairModeCommand.verify|verify} messages.
+                     * @param message BMConfigureFairModeCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBMConfigureFairModeCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BMConfigureFairModeCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMConfigureFairModeCommand.verify|verify} messages.
+                     * @param message BMConfigureFairModeCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBMConfigureFairModeCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BMConfigureFairModeCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BMConfigureFairModeCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BMConfigureFairModeCommand;
+
+                    /**
+                     * Decodes a BMConfigureFairModeCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BMConfigureFairModeCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BMConfigureFairModeCommand;
+
+                    /**
+                     * Verifies a BMConfigureFairModeCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BMConfigureFairModeCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BMConfigureFairModeCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BMConfigureFairModeCommand;
+
+                    /**
+                     * Creates a plain object from a BMConfigureFairModeCommand message. Also converts values to other types if specified.
+                     * @param message BMConfigureFairModeCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BMConfigureFairModeCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BMConfigureFairModeCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BMConfigureFairModeCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
                 /** Properties of a BugMinerMessage. */
                 interface IBugMinerMessage {
 
@@ -8703,6 +9120,9 @@ export namespace com {
 
                     /** BugMinerMessage board */
                     board?: (com.triforge.protocol.proto.IBugMinerBoardState|null);
+
+                    /** BugMinerMessage configureFairMode */
+                    configureFairMode?: (com.triforge.protocol.proto.IBMConfigureFairModeCommand|null);
                 }
 
                 /** Represents a BugMinerMessage. */
@@ -8735,8 +9155,11 @@ export namespace com {
                     /** BugMinerMessage board. */
                     public board?: (com.triforge.protocol.proto.IBugMinerBoardState|null);
 
+                    /** BugMinerMessage configureFairMode. */
+                    public configureFairMode?: (com.triforge.protocol.proto.IBMConfigureFairModeCommand|null);
+
                     /** BugMinerMessage content. */
-                    public content?: ("setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board");
+                    public content?: ("setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board"|"configureFairMode");
 
                     /**
                      * Creates a new BugMinerMessage instance using the specified properties.

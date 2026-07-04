@@ -9,6 +9,7 @@ public class BugMinerBoard {
 
     public ChallengeInstance challengeA;
     public ChallengeInstance challengeB;
+    public BattleArena battleArena;
 
     private final FairModeConfig fairMode = new FairModeConfig();
 
@@ -19,20 +20,40 @@ public class BugMinerBoard {
     public void init(long pA, long pB) {
         this.playerA = pA;
         this.playerB = pB;
+        challengeA = null;
+        challengeB = null;
+        battleArena = null;
+    }
+
+    public void beginFreeMode() {
         challengeA = new ChallengeInstance(pB, pA, fairMode.levelId);
         challengeB = new ChallengeInstance(pA, pB, fairMode.levelId);
+        battleArena = null;
     }
 
     public void beginFairMode(String roomId) {
-        if (challengeA == null || challengeB == null) return;
+        challengeA = new ChallengeInstance(pB, pA, fairMode.levelId);
+        challengeB = new ChallengeInstance(pA, pB, fairMode.levelId);
+        battleArena = null;
         challengeA.setLevel(fairMode.levelId);
         challengeA.setTimeLimit(fairMode.timeLimit);
-        challengeA.autoArrange(challengeA.designerId);
+        challengeA.autoArrangeSeeded(challengeA.designerId, roomId.hashCode());
         List<PlacedItem> layout = challengeA.copyItemsLayout();
         challengeB.applyFairLayout(fairMode.levelId, fairMode.timeLimit, layout);
     }
 
+    public void beginBattleMode(String roomId) {
+        List<PlacedItem> layout = BattleLayoutBuilder.build(fairMode.levelId, roomId);
+        battleArena = new BattleArena(playerA, playerB, fairMode.levelId, fairMode.timeLimit, layout);
+        challengeA = null;
+        challengeB = null;
+    }
+
     public void tick(float deltaSec, boolean isPlaying) {
+        if (battleArena != null) {
+            battleArena.tick(deltaSec, isPlaying);
+            return;
+        }
         if (challengeA != null) challengeA.tick(deltaSec, isPlaying);
         if (challengeB != null) challengeB.tick(deltaSec, isPlaying);
     }
@@ -53,10 +74,25 @@ public class BugMinerBoard {
         return fairMode.enabled && !fairMode.battle;
     }
 
+    public boolean isBattleModeActive() {
+        return fairMode.enabled && fairMode.battle;
+    }
+
+    public boolean isAutoSetupMode() {
+        return fairMode.enabled;
+    }
+
+    public boolean fireHook(long playerId) {
+        if (battleArena != null) return battleArena.fireHook(playerId);
+        ChallengeInstance c = getChallengePlaying(playerId);
+        return c != null && c.fireHook(playerId);
+    }
+
     public BugMinerBoardState getState() {
         BugMinerBoardState.Builder builder = BugMinerBoardState.newBuilder();
         if (challengeA != null) builder.setForPlayerA(challengeA.toProto());
         if (challengeB != null) builder.setForPlayerB(challengeB.toProto());
+        if (battleArena != null) builder.setBattle(battleArena.toProto());
         builder.setFairMode(BugMinerFairModeConfig.newBuilder()
                 .setEnabled(fairMode.enabled)
                 .setBattle(fairMode.battle)

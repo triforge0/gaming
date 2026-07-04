@@ -117,10 +117,7 @@ export function useSocket() {
         const pA = message.board.forPlayerA;
         const pB = message.board.forPlayerB;
         const fairMode = mapFairMode(message.board.fairMode);
-
-        let phase: GameState['phase'] = 'playing';
-        if (!pA?.setupLocked || !pB?.setupLocked) phase = 'dual_setup';
-        if (pA?.finished && pB?.finished) phase = 'finished';
+        const battleProto = message.board.battle;
 
         const itemTypeMap: Record<number, ItemType> = {
           1: 'gold', 2: 'bigGold', 3: 'diamond', 4: 'rock', 5: 'mysteryBag', 6: 'poison',
@@ -129,6 +126,38 @@ export function useSocket() {
         const hookStateMap: Record<number, 'swinging' | 'extending' | 'retracting'> = {
           0: 'swinging', 1: 'swinging', 2: 'extending', 3: 'retracting',
         };
+
+        const mapHook = (hook?: { angle?: number; length?: number; state?: number; attachedItemId?: string; swingDirection?: number }) => ({
+          angle: hook?.angle ?? 0,
+          length: hook?.length ?? 0,
+          state: hookStateMap[hook?.state ?? 0] || 'swinging',
+          attachedItemId: hook?.attachedItemId || null,
+          swingDirection: (hook?.swingDirection || 1) as 1 | -1,
+        });
+
+        const mapItems = (items?: Array<{ id?: string; type?: number; x?: number; y?: number; collected?: boolean }>) =>
+          items?.map((item) => ({
+            id: item.id || '',
+            type: itemTypeMap[item.type ?? 0] || 'gold',
+            position: { x: item.x || 0, y: item.y || 0 },
+            collected: item.collected || false,
+          })) || [];
+
+        const emptyChallenge = (playerAId: string, playerBId: string) => ({
+          designerId: playerBId,
+          playerId: playerAId,
+          levelId: fairMode.levelId,
+          timeLimit: fairMode.timeLimit,
+          timeRemaining: fairMode.timeLimit,
+          targetScore: 800,
+          score: 0,
+          items: [],
+          hook: { angle: 0, length: 0, state: 'swinging' as const, attachedItemId: null, swingDirection: 1 as const },
+          setupLocked: true,
+          finished: false,
+          endReason: null,
+          strengthBuffRemaining: 0,
+        });
 
         const mapChallengeState = (c: typeof pA) => {
           if (!c) return null;
@@ -140,19 +169,8 @@ export function useSocket() {
             timeRemaining: c.timeRemaining || 90,
             targetScore: c.targetScore || 800,
             score: c.score || 0,
-            items: c.items?.map((item) => ({
-              id: item.id,
-              type: itemTypeMap[item.type] || 'gold',
-              position: { x: item.x || 0, y: item.y || 0 },
-              collected: item.collected || false,
-            })) || [],
-            hook: c.hook ? {
-              angle: c.hook.angle,
-              length: c.hook.length,
-              state: hookStateMap[c.hook.state] || 'swinging',
-              attachedItemId: c.hook.attachedItemId || null,
-              swingDirection: (c.hook.swingDirection || 1) as 1 | -1,
-            } : { angle: 0, length: 0, state: 'swinging' as const, attachedItemId: null, swingDirection: 1 as const },
+            items: mapItems(c.items),
+            hook: c.hook ? mapHook(c.hook) : mapHook(),
             setupLocked: c.setupLocked || false,
             finished: c.finished || false,
             endReason: (c.endReason as GameState['endReason']) || null,
@@ -160,20 +178,57 @@ export function useSocket() {
           };
         };
 
+        const mapBattleState = () => {
+          if (!battleProto) return null;
+          return {
+            levelId: battleProto.levelId || fairMode.levelId,
+            timeLimit: battleProto.timeLimit || fairMode.timeLimit,
+            timeRemaining: battleProto.timeRemaining || fairMode.timeLimit,
+            targetScore: battleProto.targetScore || 800,
+            items: mapItems(battleProto.items),
+            playerAId: String(toNum(battleProto.playerAId)),
+            playerBId: String(toNum(battleProto.playerBId)),
+            hookA: mapHook(battleProto.hookA),
+            hookB: mapHook(battleProto.hookB),
+            scoreA: battleProto.scoreA || 0,
+            scoreB: battleProto.scoreB || 0,
+            finished: battleProto.finished || false,
+            winnerId: battleProto.winnerId ? String(toNum(battleProto.winnerId)) : null,
+            endReason: (battleProto.endReason as GameState['endReason']) || null,
+            strengthBuffA: 0,
+            strengthBuffB: 0,
+          };
+        };
+
+        const battle = mapBattleState();
+        const playerAId = battle?.playerAId
+          || (pA ? String(toNum(pA.playerId)) : current.gameState?.players[0]?.id || '1');
+        const playerBId = battle?.playerBId
+          || (pB ? String(toNum(pB.playerId)) : current.gameState?.players[1]?.id || '2');
+
+        let phase: GameState['phase'] = 'playing';
+        if (fairMode.battle && battle) {
+          phase = battle.finished ? 'finished' : 'playing';
+        } else if (!pA?.setupLocked || !pB?.setupLocked) {
+          phase = 'dual_setup';
+        } else if (pA?.finished && pB?.finished) {
+          phase = 'finished';
+        }
+
         const newState: GameState = {
           ...(current.gameState || {}),
           roomId: fullRoomId,
           phase,
           fairMode,
-          battle: null,
+          battle,
           challenges: {
-            forPlayerA: mapChallengeState(pA)!,
-            forPlayerB: mapChallengeState(pB)!,
+            forPlayerA: mapChallengeState(pA) ?? emptyChallenge(playerAId, playerBId),
+            forPlayerB: mapChallengeState(pB) ?? emptyChallenge(playerBId, playerAId),
           },
           hostId: current.gameState?.hostId || '',
           players: current.gameState?.players || [],
-          winnerId: current.gameState?.winnerId ?? null,
-          endReason: current.gameState?.endReason ?? null,
+          winnerId: battle?.winnerId ?? current.gameState?.winnerId ?? null,
+          endReason: battle?.endReason ?? current.gameState?.endReason ?? null,
           countdown: current.gameState?.countdown ?? 0,
         };
         current.setGameState(newState);

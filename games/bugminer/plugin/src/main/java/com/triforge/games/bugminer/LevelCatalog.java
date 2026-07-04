@@ -13,4 +13,14 @@ final class LevelCatalog {
             default -> 90;
         };
     }
+
+    static int targetScore(String levelId) {
+        return switch (levelId) {
+            case "rock-mine" -> 1000;
+            case "diamond-cave" -> 1200;
+            case "chaos-mine" -> 1500;
+            case "night-mine" -> 1800;
+            default -> 800;
+        };
+    }
 }

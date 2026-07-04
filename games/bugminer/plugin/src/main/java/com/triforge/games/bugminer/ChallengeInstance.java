@@ -127,14 +127,18 @@ public class ChallengeInstance {
     }
     
     public boolean autoArrange(long socketId) {
+        return autoArrangeSeeded(socketId, 0);
+    }
+
+    public boolean autoArrangeSeeded(long socketId, long seed) {
         if (socketId != designerId || setupLocked) return false;
-        
+
         int cols = 9;
         float colSpacing = 78;
         float rowSpacing = 52;
         float startX = -312;
         float startY = 28;
-        
+
         List<Vec2> candidates = new ArrayList<>();
         for (int row = 0; row < 12; row++) {
             for (int col = 0; col < cols; col++) {
@@ -145,18 +149,15 @@ public class ChallengeInstance {
                 }
             }
         }
-        
-        int idx = 0;
+
+        int offset = candidates.isEmpty() ? 0 : (int) (Math.floorMod(seed, candidates.size()));
+        int idx = offset;
         for (PlacedItem item : items) {
-            if (idx < candidates.size()) {
-                Vec2 pos = candidates.get(idx);
-                item.x = pos.x;
-                item.y = pos.y;
-                idx++;
-            } else {
-                item.x = 0;
-                item.y = 200;
-            }
+            if (idx >= candidates.size()) idx = 0;
+            Vec2 pos = candidates.get(idx);
+            item.x = pos.x;
+            item.y = pos.y;
+            idx++;
         }
         return true;
     }
