@@ -6,21 +6,40 @@ import { useGameStore } from '../store/gameStore';
 export function useSocket() {
   const clientRef = useRef<GameClient | null>(null);
 
-  useEffect(() => {
-    // Stub room list for the legacy UI
-    setTimeout(() => {
+  const fetchRooms = async () => {
+    try {
+      const res = await fetch('/api/lobby/rooms');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.rooms) {
+          const bugminerRooms = data.rooms
+            .filter((r: any) => r.gamePluginId === 'bugminer')
+            .map((r: any) => ({
+              roomId: r.roomId,
+              name: r.roomName || 'BugMiner Room',
+              players: [], // Not provided by the summary API
+              playerCount: r.playerCount || 0,
+              maxPlayers: r.maxPlayers || 2,
+              hostName: 'Server', // Not provided by the summary API
+              state: 'waiting',
+              levelId: '1'
+            }));
+          useGameStore.getState().setAvailableRooms(bugminerRooms);
+        }
+      }
       useGameStore.getState().setConnected(true);
-      useGameStore.getState().setAvailableRooms([{
-        roomId: 'bugminer',
-        name: 'Phòng chơi BugMiner',
-        players: [],
-        maxPlayers: 2,
-        state: 'waiting',
-        levelId: '1'
-      } as any]);
-    }, 500);
+    } catch (e) {
+      console.error('Failed to fetch rooms', e);
+      useGameStore.getState().setConnected(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRooms();
+    const intervalId = setInterval(fetchRooms, 5000); // Auto-refresh every 5s
 
     return () => {
+      clearInterval(intervalId);
       clientRef.current?.close();
     };
   }, []);
@@ -93,6 +112,6 @@ export function useSocket() {
     pause: (paused: boolean) => { /* not implemented in proto */ },
     restart: () => { /* not implemented in proto */ },
     leave: () => clientRef.current?.close(),
-    refreshRoomList: () => {},
+    refreshRoomList: fetchRooms,
   };
 }

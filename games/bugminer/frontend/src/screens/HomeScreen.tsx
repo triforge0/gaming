@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function HomeScreen({ socket }: Props) {
-  const [name, setName] = useState('');
+  const [name, setName] = useState(() => localStorage.getItem('triforge.sudokucube.v1') || '');
   
   // Read initial room ID from URL param if available
   const initialRoomId = new URLSearchParams(window.location.search).get('room') || '';
@@ -19,6 +19,7 @@ export default function HomeScreen({ socket }: Props) {
 
   const handleCreate = () => {
     if (!name.trim()) return;
+    localStorage.setItem('triforge.sudokucube.v1', name.trim());
     useGameStore.setState({ playerName: name.trim() });
     socket.createRoom(name.trim(), levelId);
   };
@@ -26,8 +27,21 @@ export default function HomeScreen({ socket }: Props) {
   const handleJoin = (targetRoomId?: string) => {
     const id = (targetRoomId ?? roomId).trim().toUpperCase();
     if (!name.trim() || !id) return;
+    localStorage.setItem('triforge.sudokucube.v1', name.trim());
     useGameStore.setState({ playerName: name.trim() });
     socket.joinRoom(id, name.trim());
+  };
+
+  const handleAutoJoin = () => {
+    if (!name.trim()) return;
+    localStorage.setItem('triforge.sudokucube.v1', name.trim());
+    useGameStore.setState({ playerName: name.trim() });
+    const openRoom = availableRooms.find(r => r.playerCount < r.maxPlayers);
+    if (openRoom) {
+      socket.joinRoom(openRoom.roomId, name.trim());
+    } else {
+      socket.createRoom(name.trim(), levelId);
+    }
   };
 
   return (
@@ -63,11 +77,15 @@ export default function HomeScreen({ socket }: Props) {
             </div>
           </div>
 
-          <button type="button" className="btn btn-primary" onClick={handleCreate} style={{ width: '100%' }}>
+          <button type="button" className="btn btn-primary" onClick={handleCreate} style={{ width: '100%', marginBottom: '8px' }}>
             Tạo phòng mới
           </button>
+          
+          <button type="button" className="btn btn-secondary" onClick={handleAutoJoin} style={{ width: '100%' }}>
+            Chơi ngay (Auto Join)
+          </button>
 
-          <div className="home-join-row">
+          <div className="home-join-row" style={{ marginTop: '16px' }}>
             <input
               className="input-field"
               placeholder="Room ID..."
