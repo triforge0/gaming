@@ -22,10 +22,9 @@ export function CellMesh({ index, skin, atlas }: Props) {
   const position = useMemo(() => cellWorldPosition(face, row, col), [face, row, col]);
   const rotation = FACE_ROTATION[face];
 
-  if (!puzzle) return null;
-  const given = puzzle.givens[index];
-  const value = given ? puzzle.solution[index] : entry;
-  const correct = value !== null && value === puzzle.solution[index];
+  const given = puzzle?.givens[index] ?? false;
+  const value = given ? (puzzle?.solution[index] ?? null) : entry;
+  const correct = value !== null && puzzle && value === puzzle.solution[index];
   const style: NumberStyle = given ? 'given' : correct ? 'correct' : 'wrong';
 
   const baseColor = useMemo(() => {
@@ -94,6 +93,8 @@ export function CellMesh({ index, skin, atlas }: Props) {
       numberTex.repeat.set(repeat[0], repeat[1]);
     }
   }, [numberTex, value, given, style]);
+
+  if (!puzzle) return null;
 
   return (
     <group position={position} rotation={rotation}>
