@@ -17,6 +17,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import com.triforge.server.application.presence.PresenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +49,9 @@ public final class WebSocketServer {
 
         EnvelopeCodec envelopeCodec = new EnvelopeCodec();
         CommandDispatcher commandDispatcher = new CommandDispatcher(roomRegistry);
-        LobbyHttpHandler lobbyHttpHandler = new LobbyHttpHandler(discoveryService);
+        PresenceService presenceService = new PresenceService();
+        LobbyHttpHandler lobbyHttpHandler = new LobbyHttpHandler(discoveryService, presenceService);
+        PresenceHttpHandler presenceHttpHandler = new PresenceHttpHandler(presenceService);
         AdminHttpHandler adminHttpHandler = new AdminHttpHandler();
 
         ServerBootstrap bootstrap = new ServerBootstrap();
@@ -66,6 +69,7 @@ public final class WebSocketServer {
                  pipeline.addLast(new HttpServerCodec());
                  pipeline.addLast(new HttpObjectAggregator(MAX_HTTP_CONTENT_LENGTH));
                  pipeline.addLast(lobbyHttpHandler);
+                 pipeline.addLast(presenceHttpHandler);
                  pipeline.addLast(adminHttpHandler);
                  pipeline.addLast(new StaticFileHandler());
                  pipeline.addLast(new WebSocketServerProtocolHandler("/ws", null, true));

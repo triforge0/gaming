@@ -12,6 +12,12 @@ import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.triforge.server.application.presence.PresenceService;
+import com.triforge.server.transport.discovery.RoomsResponse;
+import com.triforge.server.transport.discovery.RoomSummary;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @ChannelHandler.Sharable
@@ -22,9 +28,11 @@ public final class LobbyHttpHandler extends SimpleChannelInboundHandler<FullHttp
     private static final String PLUGINS_PATH = "/api/lobby/plugins";
 
     private final DiscoveryService discoveryService;
+    private final PresenceService presenceService;
 
-    public LobbyHttpHandler(DiscoveryService discoveryService) {
+    public LobbyHttpHandler(DiscoveryService discoveryService, PresenceService presenceService) {
         this.discoveryService = Objects.requireNonNull(discoveryService, "discoveryService");
+        this.presenceService = Objects.requireNonNull(presenceService, "presenceService");
     }
 
     @Override
@@ -80,7 +88,22 @@ public final class LobbyHttpHandler extends SimpleChannelInboundHandler<FullHttp
             }
         }
 
-        sendJson(ctx, discoveryService.listLocalRooms());
+        RoomsResponse roomsResponse = discoveryService.listLocalRooms();
+        if (presenceService != null) {
+            List<RoomSummary> allRooms = new ArrayList<>(roomsResponse.rooms());
+            allRooms.addAll(presenceService.getVirtualRooms());
+            roomsResponse = new RoomsResponse(
+                    roomsResponse.schemaVersion(),
+                    roomsResponse.hostId(),
+                    roomsResponse.hostIp(),
+                    roomsResponse.port(),
+                    roomsResponse.defaultGamePluginId(),
+                    allRooms,
+                    roomsResponse.timestampMs()
+            );
+        }
+
+        sendJson(ctx, roomsResponse);
     }
 
     private static String firstQueryValue(QueryStringDecoder decoder, String key) {
