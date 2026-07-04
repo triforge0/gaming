@@ -233,15 +233,29 @@ public class BugMinerGame implements Game {
     @Override
     public void tickMatchTimer() {
         matchPhase.tickMatch();
+        boolean active = hasConnectedPlayers();
         if (matchPhase.matchTicksRemaining() % MatchPhaseMachine.TICKS_PER_SECOND == 0) {
-            host().broadcaster().broadcastMatchPhaseUpdate(matchPhase, this);
+            if (active) {
+                host().broadcaster().broadcastMatchPhaseUpdate(matchPhase, this);
+            }
         }
         if (matchPhase.matchTimeExpired()) {
             endMatch();
         }
         
-        board.tick(1f / 60f, true);
-        broadcastBoardState();
+        if (active) {
+            board.tick(1f / 60f, true);
+            broadcastBoardState();
+        }
+    }
+
+    private boolean hasConnectedPlayers() {
+        for (long playerId : lobby.playerIds()) {
+            if (host().sessions().isConnected(playerId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void endMatch() {

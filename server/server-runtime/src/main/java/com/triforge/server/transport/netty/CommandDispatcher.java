@@ -114,9 +114,27 @@ public final class CommandDispatcher extends SimpleChannelInboundHandler<Message
             roomRegistry.get(roomId).ifPresent(room -> {
                 room.enqueueCommand(() -> room.handleLeaveRequest(playerId));
                 logger.info("Enqueued leave cleanup command for playerId={} in room '{}' due to channel inactivity", playerId, roomId);
+                
+                // If it's a dynamic room (not one of the pre-seeded ones), schedule a check to clean it up if it stays empty
+                if (!isSeedRoom(roomId)) {
+                    ctx.channel().eventLoop().schedule(() -> {
+                        roomRegistry.get(roomId).ifPresent(r -> {
+                            if (r.connectedClientCount() == 0) {
+                                logger.info("Room '{}' has been empty for 30s. Cleaning up and destroying room resources.", roomId);
+                                roomRegistry.remove(roomId);
+                            }
+                        });
+                    }, 30, java.util.concurrent.TimeUnit.SECONDS);
+                }
             });
         }
         super.channelInactive(ctx);
+    }
+
+    private boolean isSeedRoom(String roomId) {
+        if (roomId == null) return true;
+        String lower = roomId.toLowerCase().trim();
+        return lower.equals("main") || lower.equals("quest") || lower.equals("oanquan") || lower.equals("bugminer");
     }
 
     @Override
