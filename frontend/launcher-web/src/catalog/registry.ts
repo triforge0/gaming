@@ -51,7 +51,7 @@ export const REGISTRY: CatalogEntry[] = [
     id: 'bugminer',
     title: 'Bug Miner',
     description: 'Game 3D multiplayer 1v1 lấy cảm hứng từ Đào Vàng. Chế độ PvP: Developer vs QC.',
-    category: 'arcade',
+    category: 'game',
     path: '/games/bugminer/',
     accent: '#ffcc00',
     pluginId: 'bugminer',
