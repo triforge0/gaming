@@ -126,12 +126,40 @@ export function useSocket() {
              phase = 'finished';
           }
 
+          const mapChallengeState = (c: any) => {
+             if (!c) return null;
+             
+             const itemTypeMap: Record<number, string> = {
+                1: 'gold', 2: 'bigGold', 3: 'diamond', 4: 'rock', 5: 'mysteryBag', 6: 'poison'
+             };
+             
+             const hookStateMap: Record<number, string> = {
+                0: 'swinging', 1: 'swinging', 2: 'extending', 3: 'retracting'
+             };
+
+             return {
+                ...c,
+                designerId: String(toNum(c.designerId)),
+                playerId: String(toNum(c.playerId)),
+                items: c.items?.map((item: any) => ({
+                   id: item.id,
+                   type: itemTypeMap[item.type] || 'gold',
+                   position: { x: item.x || 0, y: item.y || 0 },
+                   collected: item.collected || false
+                })) || [],
+                hook: c.hook ? {
+                   ...c.hook,
+                   state: hookStateMap[c.hook.state] || 'swinging'
+                } : { angle: 0, length: 0, state: 'swinging', attachedItemId: null, swingDirection: 1 }
+             };
+          };
+
           const newState: any = {
              ...(current.gameState || {}),
              phase,
              challenges: {
-                forPlayerA: pA ? { ...pA, designerId: String(toNum(pA.designerId)), playerId: String(toNum(pA.playerId)) } : null,
-                forPlayerB: pB ? { ...pB, designerId: String(toNum(pB.designerId)), playerId: String(toNum(pB.playerId)) } : null
+                forPlayerA: mapChallengeState(pA),
+                forPlayerB: mapChallengeState(pB)
              }
           };
           current.setGameState(newState);
