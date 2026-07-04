@@ -42,6 +42,13 @@ export function CellMesh({ index, skin, atlas }: Props) {
     config: { tension: 300, friction: 20 },
   });
 
+  const { startScale, startRot } = useSpring({
+    from: { startScale: reduced ? 1 : 0, startRot: reduced ? 0 : Math.PI / 2 },
+    to: { startScale: 1, startRot: 0 },
+    delay: index * 12,
+    config: { tension: 250, friction: 15 },
+  });
+
   const [spinSpring, spinApi] = useSpring(() => ({ rotY: 0 }));
   const [shakeSpring, shakeApi] = useSpring(() => ({ dx: 0 }));
   useEffect(() => {
@@ -83,44 +90,46 @@ export function CellMesh({ index, skin, atlas }: Props) {
 
   return (
     <group position={position} rotation={rotation}>
-      <animated.group
-        position-x={shakeSpring.dx}
-        position-z={lift}
-        scale={scale}
-        rotation-y={spinSpring.rotY}
-        rotation-x={lockSpring.tilt}
-      >
-        <RoundedBox
-          args={[0.9, 0.9, 0.2]}
-          radius={0.06}
-          onClick={(e) => { e.stopPropagation(); select(index); }}
-          onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
-          onPointerOut={() => setHovered(false)}
-          onContextMenu={(e) => {
-            e.stopPropagation();
-            e.nativeEvent.preventDefault();
-            select(index);
-            useGame.getState().clearCell();
-          }}
+      <animated.group scale={startScale} rotation-z={startRot}>
+        <animated.group
+          position-x={shakeSpring.dx}
+          position-z={lift}
+          scale={scale}
+          rotation-y={spinSpring.rotY}
+          rotation-x={lockSpring.tilt}
         >
-          <animated.meshPhysicalMaterial
-            color={animColor}
-            metalness={0.1}
-            roughness={0.2}
-            transmission={0.1}
-            thickness={0.5}
-            clearcoat={1.0}
-            clearcoatRoughness={0.1}
-            emissive={selected ? skin.select : locked ? skin.lockB : fx?.kind === 'correct' ? skin.correct : '#000000'}
-            emissiveIntensity={emissiveInt}
-          />
-        </RoundedBox>
-        {value !== null && (
-          <mesh position={[0, 0, 0.11]}>
-            <planeGeometry args={[0.72, 0.72]} />
-            <meshBasicMaterial map={numberTex} transparent depthWrite={false} />
-          </mesh>
-        )}
+          <RoundedBox
+            args={[0.9, 0.9, 0.2]}
+            radius={0.06}
+            onClick={(e) => { e.stopPropagation(); select(index); }}
+            onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
+            onPointerOut={() => setHovered(false)}
+            onContextMenu={(e) => {
+              e.stopPropagation();
+              e.nativeEvent.preventDefault();
+              select(index);
+              useGame.getState().clearCell();
+            }}
+          >
+            <animated.meshPhysicalMaterial
+              color={animColor}
+              metalness={0.1}
+              roughness={0.2}
+              transmission={0.1}
+              thickness={0.5}
+              clearcoat={1.0}
+              clearcoatRoughness={0.1}
+              emissive={selected ? skin.select : locked ? skin.lockB : fx?.kind === 'correct' ? skin.correct : '#000000'}
+              emissiveIntensity={emissiveInt}
+            />
+          </RoundedBox>
+          {value !== null && (
+            <mesh position={[0, 0, 0.11]}>
+              <planeGeometry args={[0.72, 0.72]} />
+              <meshBasicMaterial map={numberTex} transparent depthWrite={false} />
+            </mesh>
+          )}
+        </animated.group>
       </animated.group>
     </group>
   );
