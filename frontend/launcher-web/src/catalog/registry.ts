@@ -55,7 +55,6 @@ export const REGISTRY: CatalogEntry[] = [
     path: '/games/bugminer/',
     accent: '#ffcc00',
     pluginId: 'bugminer',
-    comingSoon: true,
     authorTag: 'Made with love by Trang',
     Art: BugMinerArt,
   },
