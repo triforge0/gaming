@@ -107,11 +107,20 @@ public class BugMinerBoard {
         if (challengeA != null) {
             challengeA.tick(deltaSec, true);
             pendingEvents.addAll(challengeA.drainEvents());
+            if (hasDecisiveOutcome()) return;
         }
         if (challengeB != null) {
             challengeB.tick(deltaSec, true);
             pendingEvents.addAll(challengeB.drainEvents());
         }
+    }
+
+    boolean hasDecisiveOutcome() {
+        if (challengeA == null || challengeB == null) return false;
+        String reasonA = challengeA.endReason();
+        String reasonB = challengeB.endReason();
+        return "target".equals(reasonA) || "target".equals(reasonB)
+                || "poison".equals(reasonA) || "poison".equals(reasonB);
     }
 
     public ChallengeInstance getChallengeForPlayer(long playerId) {

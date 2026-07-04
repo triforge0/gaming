@@ -121,6 +121,7 @@ public class ChallengeInstance {
         if (socketId != designerId || setupLocked) return false;
         PlacedItem item = items.stream().filter(i -> i.id.equals(itemId)).findFirst().orElse(null);
         if (item == null) return false;
+        if (!MapLayoutEngine.isValidPlacement(itemId, x, y, items)) return false;
         item.x = x;
         item.y = y;
         return true;

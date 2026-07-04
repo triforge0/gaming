@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { GameClient, MatchPhase, toNum } from '@triforge/shared-ui';
-import type { FairModeConfig, GameState, ItemType, PlayerRole, RoomSummary } from '../shared';
+import type { FairModeConfig, GameState, ItemType, RoomSummary } from '../shared';
 import { DEFAULT_FAIR_MODE, resolveGamePhase } from '../shared';
 import { useGameStore } from '../store/gameStore';
 
@@ -62,6 +62,58 @@ function hasChallengeProto(
   return toNum(c.designerId as number) > 0 || toNum(c.playerId as number) > 0;
 }
 
+function isJoinableBugMinerRoom(r: {
+  gamePluginId?: string;
+  roomId?: string;
+  playerCount?: number;
+}): boolean {
+  if (r.gamePluginId !== 'bugminer') return false;
+  const roomId = r.roomId || '';
+  if (!roomId.includes(':') || roomId === 'bugminer') return false;
+  if (roomId.startsWith('presence-')) return false;
+  return (r.playerCount ?? 0) > 0;
+}
+
+function applyLobbySnapshot(
+  snapshot: { players?: Array<{ playerId?: unknown; displayName?: string | null; isHost?: boolean | null; ready?: boolean | null }> | null; phase?: number | null },
+  selfPlayerId: number,
+  fullRoomId: string,
+  playerName: string,
+) {
+  const { setPlayer, setGameState, setScreen } = useGameStore.getState();
+  const host = snapshot.players?.find((p) => p.isHost);
+  const hostId = host ? String(toNum(host.playerId as number)) : '';
+  const prev = useGameStore.getState().gameState;
+
+  setPlayer(
+    selfPlayerId.toString(),
+    playerName,
+    fullRoomId,
+    null,
+  );
+
+  setGameState({
+    roomId: fullRoomId,
+    phase: snapshot.phase === MatchPhase.LOBBY ? 'lobby' : (prev?.phase ?? 'lobby'),
+    hostId,
+    fairMode: prev?.fairMode ?? { ...DEFAULT_FAIR_MODE },
+    players: snapshot.players?.map((p) => ({
+      id: String(toNum(p.playerId as number)),
+      name: p.displayName || '',
+      role: null,
+      ready: p.ready || false,
+    })) ?? [],
+    challenges: prev?.challenges,
+    battle: prev?.battle ?? null,
+    winnerId: prev?.winnerId ?? null,
+    endReason: prev?.endReason ?? null,
+    countdown: prev?.countdown ?? 0,
+  } as GameState);
+
+  if (snapshot.phase === MatchPhase.LOBBY) setScreen('lobby');
+  else if (snapshot.phase === MatchPhase.PLAYING) setScreen('game');
+}
+
 export function useSocket() {
   const clientRef = useRef<GameClient | null>(null);
 
@@ -72,8 +124,13 @@ export function useSocket() {
         const data = await res.json();
         if (data?.rooms) {
           const bugminerRooms: RoomSummary[] = data.rooms
-            .filter((r: { gamePluginId?: string }) => r.gamePluginId === 'bugminer')
-            .map((r: { roomId: string; roomName?: string; playerCount?: number; maxPlayers?: number }) => {
+            .filter(isJoinableBugMinerRoom)
+            .map((r: {
+              roomId: string;
+              playerCount?: number;
+              maxPlayers?: number;
+              hostDisplayName?: string;
+            }) => {
               let parsedLevelId = 'easy-mine';
               const parts = r.roomId.split(':');
               if (parts.length >= 3) parsedLevelId = parts[1];
@@ -83,7 +140,7 @@ export function useSocket() {
                 maxPlayers: r.maxPlayers || 2,
                 phase: 'lobby' as const,
                 levelId: parsedLevelId,
-                hostName: 'Server',
+                hostName: r.hostDisplayName?.trim() || '—',
                 players: [],
                 fairMode: { ...DEFAULT_FAIR_MODE, levelId: parsedLevelId },
               };
@@ -108,7 +165,19 @@ export function useSocket() {
   }, []);
 
   const connectToGame = (roomId: string, playerName: string) => {
-    if (clientRef.current) return;
+    if (clientRef.current) {
+      clientRef.current.close();
+      clientRef.current = null;
+    }
+
+    useGameStore.setState({
+      gameState: null,
+      playerId: null,
+      role: null,
+      roomId: null,
+      isPaused: false,
+      error: null,
+    });
 
     const fullRoomId = roomId === 'bugminer' || roomId.startsWith('bugminer:')
       ? roomId
@@ -119,43 +188,27 @@ export function useSocket() {
         useGameStore.getState().setError('Mất kết nối server');
       },
       onLobbySnapshot: (snapshot) => {
-        const { setPlayer, setScreen } = useGameStore.getState();
-        const me = snapshot.players?.find((p) => toNum(p.playerId) === client.selfPlayerId);
-        const isHost = me?.isHost ?? false;
-
-        setPlayer(
-          client.selfPlayerId.toString(),
-          playerName,
-          fullRoomId,
-          (isHost ? 'host' : 'player') as PlayerRole,
-        );
-
-        const shortRoomId = fullRoomId.startsWith('bugminer:') ? fullRoomId.substring(fullRoomId.indexOf(':') + 1) : fullRoomId;
+        const shortRoomId = fullRoomId.startsWith('bugminer:')
+          ? fullRoomId.substring(fullRoomId.indexOf(':') + 1)
+          : fullRoomId;
         const url = new URL(window.location.href);
         url.searchParams.set('room', shortRoomId);
         window.history.pushState({}, '', url);
 
-        const currentState = useGameStore.getState().gameState;
-        const host = snapshot.players?.find((p) => p.isHost);
-        useGameStore.getState().setGameState({
-          ...(currentState || {}),
-          roomId: fullRoomId,
-          phase: snapshot.phase === MatchPhase.LOBBY ? 'lobby' : (currentState?.phase || 'lobby'),
-          hostId: host ? toNum(host.playerId).toString() : '',
-          fairMode: currentState?.fairMode ?? { ...DEFAULT_FAIR_MODE },
-          players: snapshot.players?.map((p) => ({
-            id: toNum(p.playerId).toString(),
-            name: p.displayName || '',
-            role: null,
-            ready: p.ready || false,
-          })) || [],
-        } as GameState);
-
-        if (snapshot.phase === MatchPhase.LOBBY) setScreen('lobby');
-        else if (snapshot.phase === MatchPhase.PLAYING) setScreen('game');
+        const name = useGameStore.getState().playerName || playerName;
+        applyLobbySnapshot(snapshot, client.selfPlayerId, fullRoomId, name);
+      },
+      onJoinRejected: () => {
+        clientRef.current?.close();
+        clientRef.current = null;
+        useGameStore.getState().setError('Không thể vào phòng (phòng đầy, đang chơi, hoặc tên đã được dùng)');
+        useGameStore.getState().setScreen('home');
       },
       onMatchPhaseUpdate: (update) => {
-        const { setScreen } = useGameStore.getState();
+        const { setScreen, gameState } = useGameStore.getState();
+        if (update.phase === MatchPhase.ENDED && gameState?.phase === 'finished') {
+          return;
+        }
         if (update.phase === MatchPhase.LOBBY || update.phase === MatchPhase.COUNTDOWN) {
           setScreen('lobby');
         } else if (update.phase === MatchPhase.PLAYING) {
@@ -281,6 +334,7 @@ export function useSocket() {
           return {
             setupLocked: c?.setupLocked ?? false,
             finished: c?.finished ?? false,
+            endReason: c?.endReason ?? null,
           };
         };
 
@@ -296,6 +350,7 @@ export function useSocket() {
           toPhaseInput(pB),
           message.board.playCountdown ?? 0,
           message.board.paused ?? false,
+          boardWinnerId,
         );
 
         handleBoardEvents(message.board.events, current.playerId);
@@ -342,7 +397,6 @@ export function useSocket() {
   return {
     emit: () => false,
     createRoom: (playerName: string, levelId: string) => {
-      if (clientRef.current) return;
       const ADJECTIVES = ['LAZY', 'CRAZY', 'ANGRY', 'HAPPY', 'SLEEPY', 'HUNGRY', 'BUGGY', 'SUPER', 'FAST', 'SLOW'];
       const NOUNS = ['DEV', 'QC', 'BA', 'PM', 'CAT', 'DOG', 'DUCK', 'BUG', 'CODE', 'SERVER'];
       const id = `${ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)]}-${NOUNS[Math.floor(Math.random() * NOUNS.length)]}-${Math.floor(Math.random() * 100)}`;

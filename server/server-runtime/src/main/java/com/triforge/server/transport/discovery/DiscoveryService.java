@@ -81,7 +81,8 @@ public final class DiscoveryService {
                         summary.playerCount(),
                         summary.maxPlayers(),
                         summary.gamePluginId(),
-                        summary.gameDisplayName()
+                        summary.gameDisplayName(),
+                        summary.hostDisplayName()
                 ))
                 .toList();
         return new RoomsResponse(

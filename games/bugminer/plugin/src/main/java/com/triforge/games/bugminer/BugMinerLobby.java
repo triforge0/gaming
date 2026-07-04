@@ -17,6 +17,7 @@ import java.util.Optional;
 final class BugMinerLobby {
 
     static final int MIN_PLAYERS = 1;
+    static final int MAX_PLAYERS = 2;
     static final int MAX_NAME_LENGTH = 24;
 
     private final Map<Long, Player> players = new LinkedHashMap<>();
