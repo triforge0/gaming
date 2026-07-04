@@ -11,7 +11,7 @@
     "proto": "pbjs -t static-module -w es6 -o src/net/proto.js ../../proto/envelope.proto && pbts -o src/net/proto.d.ts src/net/proto.js"
   },
   "devDependencies": {
-    "protobufjs": "^7.2.5",
-    "protobufjs-cli": "^1.1.2"
+    "protobufjs": "^7.6.5",
+    "protobufjs-cli": "^1.3.3"
   }
 }

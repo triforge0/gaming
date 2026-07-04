@@ -15,10 +15,26 @@ export default function ResultScreen({ socket }: Props) {
 
   if (!gameState || !playerId) return null;
 
+  const battle = gameState.battle;
+  const isBattle = Boolean(gameState.fairMode.battle && battle);
+
   const won = gameState.winnerId === playerId;
   const isDraw = gameState.winnerId === null;
-  const myChallenge = getChallengeForPlayer(gameState, playerId);
-  const oppChallenge = getChallengeDesignedBy(gameState, playerId);
+  const myChallenge = !isBattle ? getChallengeForPlayer(gameState, playerId) : null;
+  const oppChallenge = !isBattle ? getChallengeDesignedBy(gameState, playerId) : null;
+
+  const myScore = isBattle
+    ? (playerId === battle!.playerAId ? battle!.scoreA : battle!.scoreB)
+    : myChallenge?.score ?? 0;
+  const oppScore = isBattle
+    ? (playerId === battle!.playerAId ? battle!.scoreB : battle!.scoreA)
+    : oppChallenge?.score ?? 0;
+  const targetScore = isBattle
+    ? battle!.targetScore
+    : myChallenge?.targetScore ?? 800;
+  const levelName = isBattle
+    ? getLevelById(battle!.levelId).name
+    : getLevelById(myChallenge?.levelId ?? 'easy-mine').name;
 
   const reasonText = (() => {
     if (gameState.endReason === 'target') {
@@ -54,34 +70,27 @@ export default function ResultScreen({ socket }: Props) {
         <div style={{
           display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24,
         }}>
-          {myChallenge && (
-            <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: 16 }}>
-              <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>MAP CỦA BẠN</p>
-              <p style={{ fontSize: '0.85rem', color: 'var(--gold)' }}>
-                {getLevelById(myChallenge.levelId).name}
-              </p>
-              <p style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--gold)' }}>
-                {myChallenge.score}
-              </p>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>
-                / {myChallenge.targetScore}
-              </p>
-            </div>
-          )}
-          {oppChallenge && (
-            <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: 16 }}>
-              <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>MAP ĐỐI THỦ</p>
+          <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: 16 }}>
+            <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>{isBattle ? 'BẠN' : 'MAP CỦA BẠN'}</p>
+            {!isBattle && myChallenge && (
+              <p style={{ fontSize: '0.85rem', color: 'var(--gold)' }}>{levelName}</p>
+            )}
+            {isBattle && (
+              <p style={{ fontSize: '0.85rem', color: 'var(--gold)' }}>⚔️ {levelName}</p>
+            )}
+            <p style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--gold)' }}>{myScore}</p>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>/ {targetScore}</p>
+          </div>
+          <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: 16 }}>
+            <p style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>{isBattle ? 'ĐỐI THỦ' : 'MAP ĐỐI THỦ'}</p>
+            {!isBattle && oppChallenge && (
               <p style={{ fontSize: '0.85rem', color: 'var(--accent2)' }}>
                 {getLevelById(oppChallenge.levelId).name}
               </p>
-              <p style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent2)' }}>
-                {oppChallenge.score}
-              </p>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>
-                / {oppChallenge.targetScore}
-              </p>
-            </div>
-          )}
+            )}
+            <p style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--accent2)' }}>{oppScore}</p>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>/ {targetScore}</p>
+          </div>
         </div>
 
         <div style={{ display: 'flex', gap: 12 }}>

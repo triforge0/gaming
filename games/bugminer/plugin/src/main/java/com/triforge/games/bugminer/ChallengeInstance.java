@@ -24,7 +24,7 @@ public class ChallengeInstance {
     private float strengthBuffRemaining = 0f;
     
     // We can store events to broadcast them later
-    public List<GameEvent> pendingEvents = new ArrayList<>();
+    private final List<BugMinerClientEvent> pendingEvents = new ArrayList<>();
 
     public ChallengeInstance(long designerId, long playerId, String levelId) {
         this.designerId = designerId;
@@ -127,14 +127,18 @@ public class ChallengeInstance {
     }
     
     public boolean autoArrange(long socketId) {
+        return autoArrangeSeeded(socketId, 0);
+    }
+
+    public boolean autoArrangeSeeded(long socketId, long seed) {
         if (socketId != designerId || setupLocked) return false;
-        
+
         int cols = 9;
         float colSpacing = 78;
         float rowSpacing = 52;
         float startX = -312;
         float startY = 28;
-        
+
         List<Vec2> candidates = new ArrayList<>();
         for (int row = 0; row < 12; row++) {
             for (int col = 0; col < cols; col++) {
@@ -145,26 +149,63 @@ public class ChallengeInstance {
                 }
             }
         }
-        
-        int idx = 0;
+
+        int offset = candidates.isEmpty() ? 0 : (int) (Math.floorMod(seed, candidates.size()));
+        int idx = offset;
         for (PlacedItem item : items) {
-            if (idx < candidates.size()) {
-                Vec2 pos = candidates.get(idx);
-                item.x = pos.x;
-                item.y = pos.y;
-                idx++;
-            } else {
-                item.x = 0;
-                item.y = 200;
-            }
+            if (idx >= candidates.size()) idx = 0;
+            Vec2 pos = candidates.get(idx);
+            item.x = pos.x;
+            item.y = pos.y;
+            idx++;
         }
         return true;
     }
     
     public boolean lockSetup(long socketId) {
         if (socketId != designerId || setupLocked) return false;
+        for (PlacedItem item : items) {
+            if (!item.collected && item.x == 0f && item.y == 0f) return false;
+        }
         setupLocked = true;
         return true;
+    }
+
+    /** Fair mode: apply pre-built layout and skip manual setup. */
+    public void applyFairLayout(String levelId, int timeLimitSeconds, List<PlacedItem> layout) {
+        this.levelId = levelId;
+        this.timeLimit = Math.max(30, Math.min(300, timeLimitSeconds));
+        this.timeRemaining = this.timeLimit;
+        this.targetScore = LevelCatalog.targetScore(levelId);
+        items.clear();
+        for (PlacedItem src : layout) {
+            PlacedItem copy = new PlacedItem(src.id, src.type);
+            copy.x = src.x;
+            copy.y = src.y;
+            copy.collected = false;
+            copy.moving = src.moving;
+            copy.vx = src.vx;
+            copy.vy = src.vy;
+            copy.scale = src.scale;
+            items.add(copy);
+        }
+        setupLocked = true;
+    }
+
+    public List<PlacedItem> copyItemsLayout() {
+        List<PlacedItem> copies = new ArrayList<>();
+        for (PlacedItem item : items) {
+            PlacedItem copy = new PlacedItem(item.id, item.type);
+            copy.x = item.x;
+            copy.y = item.y;
+            copy.collected = item.collected;
+            copy.moving = item.moving;
+            copy.vx = item.vx;
+            copy.vy = item.vy;
+            copy.scale = item.scale;
+            copies.add(copy);
+        }
+        return copies;
     }
     
     public boolean fireHook(long socketId) {
@@ -204,7 +245,7 @@ public class ChallengeInstance {
             if (item.collected || !item.moving) continue;
             if (item.x == 0 && item.y == 0) continue;
             
-            float radius = ItemDefinitions.get(item.type).radius;
+            float radius = ItemValueHelper.getRadius(item.type, item.scale);
             item.x += item.vx * deltaSec;
             item.y += item.vy * deltaSec;
             
@@ -250,7 +291,7 @@ public class ChallengeInstance {
                 PlacedItem attached = hook.attachedItemId != null 
                     ? items.stream().filter(i -> i.id.equals(hook.attachedItemId)).findFirst().orElse(null) 
                     : null;
-                float weight = attached != null ? ItemDefinitions.get(attached.type).weight : 1f;
+                float weight = attached != null ? ItemValueHelper.getWeight(attached.type, attached.scale) : 1f;
                 float strengthMultiplier = strengthBuffRemaining > 0 ? 2.0f : 1.0f;
                 
                 HookPhysics.updateRetract(hook, deltaSec, weight, strengthMultiplier);
@@ -270,18 +311,62 @@ public class ChallengeInstance {
     private void collectItem(PlacedItem item) {
         if (item.collected) return;
         item.collected = true;
-        
+
         if (item.type == BugMinerItemType.BM_ITEM_POISON) {
+            BugMinerClientEvent ev = new BugMinerClientEvent("poison:hit");
+            ev.playerId = playerId;
+            ev.itemId = item.id;
+            pendingEvents.add(ev);
             markFinished("poison");
             return;
         }
         if (item.type == BugMinerItemType.BM_ITEM_STRENGTH_DRINK) {
-            strengthBuffRemaining = 8f;
+            strengthBuffRemaining = GameConstants.STRENGTH_BUFF_DURATION;
+            BugMinerClientEvent ev = new BugMinerClientEvent("strength:boost");
+            ev.playerId = playerId;
+            ev.itemId = item.id;
+            pendingEvents.add(ev);
             return;
         }
-        
-        int value = ItemDefinitions.get(item.type).value;
+
+        int value = ItemValueHelper.getValue(item.type, item.scale);
+        if (item.type == BugMinerItemType.BM_ITEM_MYSTERY_BAG) {
+            value = ItemValueHelper.resolveMysteryValue();
+            BugMinerClientEvent reveal = new BugMinerClientEvent("mystery:reveal");
+            reveal.playerId = playerId;
+            reveal.itemId = item.id;
+            reveal.value = value;
+            pendingEvents.add(reveal);
+        }
+
         score += value;
+        BugMinerClientEvent collected = new BugMinerClientEvent("item:collected");
+        collected.playerId = playerId;
+        collected.itemId = item.id;
+        collected.value = value;
+        pendingEvents.add(collected);
+    }
+
+    List<BugMinerClientEvent> drainEvents() {
+        List<BugMinerClientEvent> drained = new ArrayList<>(pendingEvents);
+        pendingEvents.clear();
+        return drained;
+    }
+
+    boolean isFinished() {
+        return finished;
+    }
+
+    String endReason() {
+        return endReason;
+    }
+
+    int score() {
+        return score;
+    }
+
+    boolean setupLocked() {
+        return setupLocked;
     }
     
     private void markFinished(String reason) {
@@ -300,7 +385,8 @@ public class ChallengeInstance {
             .setScore(score)
             .setTargetScore(targetScore)
             .setSetupLocked(setupLocked)
-            .setFinished(finished);
+            .setFinished(finished)
+            .setStrengthBuffRemaining((int) Math.ceil(strengthBuffRemaining));
             
         if (endReason != null) builder.setEndReason(endReason);
         
@@ -319,7 +405,8 @@ public class ChallengeInstance {
                 .setType(item.type)
                 .setX(item.x)
                 .setY(item.y)
-                .setCollected(item.collected));
+                .setCollected(item.collected)
+                .setScale(item.scale));
         }
         
         return builder.build();

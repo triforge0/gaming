@@ -4,6 +4,7 @@ import HomeScreen from './screens/HomeScreen';
 import LobbyScreen from './screens/LobbyScreen';
 import SetupScreen from './screens/SetupScreen';
 import GameScreen from './screens/GameScreen';
+import BattleGameScreen from './screens/BattleGameScreen';
 import ResultScreen from './screens/ResultScreen';
 
 export default function App() {
@@ -35,7 +36,12 @@ export default function App() {
       {screen === 'home' && <HomeScreen socket={socket} />}
       {screen === 'lobby' && <LobbyScreen socket={socket} />}
       {screen === 'setup' && (gameState ? <SetupScreen socket={socket} /> : <HomeScreen socket={socket} />)}
-      {screen === 'game' && (gameState ? <GameScreen socket={socket} /> : <HomeScreen socket={socket} />)}
+      {screen === 'game' && gameState && (
+        gameState.fairMode?.battle && gameState.battle
+          ? <BattleGameScreen socket={socket} />
+          : <GameScreen socket={socket} />
+      )}
+      {screen === 'game' && !gameState && <HomeScreen socket={socket} />}
       {screen === 'result' && (gameState ? <ResultScreen socket={socket} /> : <HomeScreen socket={socket} />)}
     </div>
   );

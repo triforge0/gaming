@@ -104,6 +104,7 @@ public class BugMinerGame implements Game {
                 .build();
         host().broadcaster().sendJoinResponse(channel, response);
         host().broadcaster().broadcastLobbySnapshot(host(), this);
+        broadcastBoardState();
 
         logger.info("Player '{}' joined bugminer room '{}' as playerId={} (host={})",
                 displayName, host().roomId(), playerId, isHost);
@@ -225,6 +226,13 @@ public class BugMinerGame implements Game {
         long p2 = pids.size() > 1 ? pids.get(1) : 0;
         
         board.init(p1, p2);
+        if (board.isBattleModeActive()) {
+            board.beginBattleMode(host().roomId());
+        } else if (board.isFairModeActive()) {
+            board.beginFairMode(host().roomId());
+        } else {
+            board.beginFreeMode();
+        }
         broadcastBoardState();
         
         logger.info("BugMiner match started in room '{}' ({} players)", host().roomId(), lobby.playerCount());
@@ -245,8 +253,32 @@ public class BugMinerGame implements Game {
         
         if (active) {
             board.tick(1f / 60f, true);
+            if (board.battleArena != null && board.battleArena.isFinished()) {
+                board.setMatchOutcome(board.battleArena.winnerId(), board.battleArena.toProto().getEndReason());
+                endMatch();
+                return;
+            }
+            if (checkChallengeWinConditions()) {
+                board.setMatchOutcome(board.resolveDualWinner(), board.resolveDualEndReason());
+                endMatch();
+                return;
+            }
             broadcastBoardState();
         }
+    }
+
+    private boolean checkChallengeWinConditions() {
+        if (board.battleArena != null || board.challengeA == null || board.challengeB == null) {
+            return false;
+        }
+        ChallengeInstance a = board.challengeA;
+        ChallengeInstance b = board.challengeB;
+        if (!a.isFinished() && !b.isFinished()) return false;
+
+        if ("target".equals(a.endReason())) return true;
+        if ("target".equals(b.endReason())) return true;
+        if ("poison".equals(a.endReason()) || "poison".equals(b.endReason())) return true;
+        return a.isFinished() && b.isFinished();
     }
 
     private boolean hasConnectedPlayers() {
@@ -316,15 +348,29 @@ public class BugMinerGame implements Game {
         
         ChallengeInstance c;
         switch (bm.getContentCase()) {
+            case CONFIGUREFAIRMODE -> {
+                if (!lobby.isHost(playerId)) break;
+                if (matchPhase.phase() != MatchPhase.LOBBY && matchPhase.phase() != MatchPhase.COUNTDOWN) break;
+                BMConfigureFairModeCommand cmd = bm.getConfigureFairMode();
+                board.fairMode().applyPartial(
+                        cmd.hasEnabled() ? cmd.getEnabled() : null,
+                        cmd.hasBattle() ? cmd.getBattle() : null,
+                        cmd.hasLevelId() ? cmd.getLevelId() : null,
+                        cmd.hasTimeLimit() ? cmd.getTimeLimit() : null);
+                broadcastBoardState();
+            }
             case SETLEVEL -> {
+                if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.setLevel(bm.getSetLevel().getLevelId())) broadcastBoardState();
             }
             case SETTIMELIMIT -> {
+                if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.setTimeLimit(bm.getSetTimeLimit().getTimeLimit())) broadcastBoardState();
             }
             case PLACEITEM -> {
+                if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
                 // We need to parse ItemType here
                 BugMinerItemType type = BugMinerItemType.BM_ITEM_NONE;
@@ -336,18 +382,43 @@ public class BugMinerGame implements Game {
                 }
             }
             case AUTOARRANGE -> {
+                if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
                 if (c != null && c.autoArrange(playerId)) broadcastBoardState();
             }
             case LOCKMAP -> {
+                if (board.isAutoSetupMode()) break;
                 c = board.getChallengeForPlayer(playerId);
-                if (c != null && c.lockSetup(playerId)) broadcastBoardState();
+                if (c != null && c.lockSetup(playerId)) {
+                    board.onSetupLocked();
+                    broadcastBoardState();
+                }
             }
             case FIREHOOK -> {
-                c = board.getChallengePlaying(playerId);
-                if (c != null && c.fireHook(playerId)) broadcastBoardState();
+                if (board.fireHook(playerId)) broadcastBoardState();
+            }
+            case PAUSE -> {
+                if (matchPhase.phase() != MatchPhase.PLAYING) break;
+                board.setPaused(bm.getPause().getPaused());
+                broadcastBoardState();
+            }
+            case RESTART -> {
+                restartToLobby();
             }
             default -> {}
         }
+    }
+
+    private void restartToLobby() {
+        if (matchPhase.phase() != MatchPhase.PLAYING && matchPhase.phase() != MatchPhase.ENDED) {
+            return;
+        }
+        board.resetForLobby();
+        matchPhase.returnToLobby();
+        lobby.resetAllReady();
+        host().broadcaster().broadcastLobbySnapshot(host(), this);
+        host().broadcaster().broadcastMatchPhaseUpdate(matchPhase, this);
+        broadcastBoardState();
+        logger.info("BugMiner room '{}' restarted to lobby", host().roomId());
     }
 }
