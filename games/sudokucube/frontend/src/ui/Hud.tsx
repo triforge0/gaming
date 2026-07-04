@@ -31,6 +31,9 @@ export function Hud({ onOpenDrawer }: { onOpenDrawer: () => void }) {
           ))}
         </div>
         <div className="hud-tools">
+          {game.puzzle.difficulty === 'easy' && (
+            <button className="tool-btn" onClick={useGame.getState().autoSolve} style={{ color: '#2ecc71' }}>✨ Giải nhanh</button>
+          )}
           <button className="tool-btn" onClick={hint} disabled={game.hintsLeft <= 0}>
             💡 Hint ({game.hintsLeft})
           </button>

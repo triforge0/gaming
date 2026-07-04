@@ -39,6 +39,7 @@ interface GameStore {
   setSkin(id: SkinId): void;
   toggleSound(): void;
   backToMenu(): void;
+  autoSolve(): void;
 }
 
 let persistTimer: ReturnType<typeof setTimeout> | null = null;
@@ -249,6 +250,17 @@ export const useGame = create<GameStore>((set, get) => ({
 
   backToMenu() {
     set({ status: 'menu', winSummary: null, selected: null });
+  },
+
+  autoSolve() {
+    const { persisted, status } = get();
+    const g = persisted.currentGame;
+    if (!g || status !== 'playing' || g.puzzle.difficulty !== 'easy') return;
+    const entries = [...g.puzzle.solution];
+    const nextGame = { ...g, entries };
+    const nextPersisted = { ...persisted, currentGame: nextGame };
+    set({ persisted: nextPersisted, lockedFaces: completedFaces(g.puzzle, entries) });
+    finishWin(set, get);
   },
 }));
 
