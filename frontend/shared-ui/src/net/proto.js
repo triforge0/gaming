@@ -22437,6 +22437,9 @@ export const com = $root.com = (() => {
                  * @property {number} BM_ITEM_ROCK=4 BM_ITEM_ROCK value
                  * @property {number} BM_ITEM_MYSTERY_BAG=5 BM_ITEM_MYSTERY_BAG value
                  * @property {number} BM_ITEM_POISON=6 BM_ITEM_POISON value
+                 * @property {number} BM_ITEM_MOUSE=7 BM_ITEM_MOUSE value
+                 * @property {number} BM_ITEM_PIG=8 BM_ITEM_PIG value
+                 * @property {number} BM_ITEM_STRENGTH_DRINK=9 BM_ITEM_STRENGTH_DRINK value
                  */
                 proto.BugMinerItemType = (function() {
                     const valuesById = {}, values = Object.create(valuesById);
@@ -22447,6 +22450,9 @@ export const com = $root.com = (() => {
                     values[valuesById[4] = "BM_ITEM_ROCK"] = 4;
                     values[valuesById[5] = "BM_ITEM_MYSTERY_BAG"] = 5;
                     values[valuesById[6] = "BM_ITEM_POISON"] = 6;
+                    values[valuesById[7] = "BM_ITEM_MOUSE"] = 7;
+                    values[valuesById[8] = "BM_ITEM_PIG"] = 8;
+                    values[valuesById[9] = "BM_ITEM_STRENGTH_DRINK"] = 9;
                     return values;
                 })();
 
@@ -22687,6 +22693,9 @@ export const com = $root.com = (() => {
                             case 4:
                             case 5:
                             case 6:
+                            case 7:
+                            case 8:
+                            case 9:
                                 break;
                             }
                         if (message.x != null && Object.hasOwnProperty.call(message, "x"))
@@ -22755,6 +22764,18 @@ export const com = $root.com = (() => {
                         case "BM_ITEM_POISON":
                         case 6:
                             message.type = 6;
+                            break;
+                        case "BM_ITEM_MOUSE":
+                        case 7:
+                            message.type = 7;
+                            break;
+                        case "BM_ITEM_PIG":
+                        case 8:
+                            message.type = 8;
+                            break;
+                        case "BM_ITEM_STRENGTH_DRINK":
+                        case 9:
+                            message.type = 9;
                             break;
                         }
                         if (object.x != null)

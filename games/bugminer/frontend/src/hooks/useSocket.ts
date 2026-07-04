@@ -130,7 +130,8 @@ export function useSocket() {
              if (!c) return null;
              
              const itemTypeMap: Record<number, string> = {
-                1: 'gold', 2: 'bigGold', 3: 'diamond', 4: 'rock', 5: 'mysteryBag', 6: 'poison'
+                1: 'gold', 2: 'bigGold', 3: 'diamond', 4: 'rock', 5: 'mysteryBag', 6: 'poison',
+                7: 'mouse', 8: 'pig', 9: 'strengthDrink'
              };
              
              const hookStateMap: Record<number, string> = {

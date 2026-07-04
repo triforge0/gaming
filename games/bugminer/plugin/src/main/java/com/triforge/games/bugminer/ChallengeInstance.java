@@ -21,6 +21,7 @@ public class ChallengeInstance {
     private boolean setupLocked = false;
     private String endReason = null;
     private boolean finished = false;
+    private float strengthBuffRemaining = 0f;
     
     // We can store events to broadcast them later
     public List<GameEvent> pendingEvents = new ArrayList<>();
@@ -31,17 +32,81 @@ public class ChallengeInstance {
         setLevel(levelId);
     }
     
+    private void addItemsOfType(BugMinerItemType type, int count) {
+        for (int i = 0; i < count; i++) {
+            items.add(new PlacedItem(type.name() + "-" + UUID.randomUUID().toString(), type));
+        }
+    }
+    
     public boolean setLevel(String levelId) {
         if (setupLocked) return false;
         this.levelId = levelId;
-        this.timeLimit = 60; // Assuming easy-mine default
-        this.timeRemaining = this.timeLimit;
+        
+        int target = 800;
+        int time = 90;
         
         items.clear();
-        // Generate some default items
-        items.add(new PlacedItem(UUID.randomUUID().toString(), BugMinerItemType.BM_ITEM_BIG_GOLD));
-        items.add(new PlacedItem(UUID.randomUUID().toString(), BugMinerItemType.BM_ITEM_GOLD));
-        items.add(new PlacedItem(UUID.randomUUID().toString(), BugMinerItemType.BM_ITEM_ROCK));
+        
+        if (levelId.equals("easy-mine")) {
+            target = 800;
+            time = 90;
+            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 12);
+            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 7);
+            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 3);
+            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 10);
+            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 6);
+            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 1);
+        } else if (levelId.equals("rock-mine")) {
+            target = 1000;
+            time = 80;
+            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 10);
+            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 7);
+            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 2);
+            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 22);
+            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 6);
+            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 2);
+        } else if (levelId.equals("diamond-cave")) {
+            target = 1200;
+            time = 75;
+            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 10);
+            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 5);
+            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 2);
+            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 20);
+            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 6);
+            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 3);
+        } else if (levelId.equals("chaos-mine")) {
+            target = 1500;
+            time = 70;
+            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 14);
+            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 6);
+            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 3);
+            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 18);
+            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 7);
+            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 3);
+        } else if (levelId.equals("night-mine")) {
+            target = 1800;
+            time = 60;
+            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 12);
+            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 6);
+            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 2);
+            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 24);
+            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 6);
+            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 4);
+        }
+        
+        double rng = Math.random();
+        int mouseCount = 4 + (int)(rng * 6);
+        int pigCount = 5 + (int)(rng * 8);
+        int strengthDrinkCount = 2 + (int)(rng * 3);
+        
+        addItemsOfType(BugMinerItemType.BM_ITEM_MOUSE, mouseCount);
+        addItemsOfType(BugMinerItemType.BM_ITEM_PIG, pigCount);
+        addItemsOfType(BugMinerItemType.BM_ITEM_STRENGTH_DRINK, strengthDrinkCount);
+
+        this.timeLimit = time;
+        this.timeRemaining = time;
+        this.targetScore = target;
+        
         return true;
     }
     
@@ -63,11 +128,35 @@ public class ChallengeInstance {
     
     public boolean autoArrange(long socketId) {
         if (socketId != designerId || setupLocked) return false;
-        float currX = -100;
+        
+        int cols = 9;
+        float colSpacing = 78;
+        float rowSpacing = 52;
+        float startX = -312;
+        float startY = 28;
+        
+        List<Vec2> candidates = new ArrayList<>();
+        for (int row = 0; row < 12; row++) {
+            for (int col = 0; col < cols; col++) {
+                float px = startX + col * colSpacing;
+                float py = startY + row * rowSpacing;
+                if (px >= -360 && px <= 360 && py >= 20 && py <= 300) {
+                    candidates.add(new Vec2(px, py));
+                }
+            }
+        }
+        
+        int idx = 0;
         for (PlacedItem item : items) {
-            item.x = currX;
-            item.y = 200;
-            currX += 100;
+            if (idx < candidates.size()) {
+                Vec2 pos = candidates.get(idx);
+                item.x = pos.x;
+                item.y = pos.y;
+                idx++;
+            } else {
+                item.x = 0;
+                item.y = 200;
+            }
         }
         return true;
     }
@@ -95,10 +184,50 @@ public class ChallengeInstance {
             return;
         }
         
+        if (strengthBuffRemaining > 0) {
+            strengthBuffRemaining -= deltaSec;
+            if (strengthBuffRemaining < 0) strengthBuffRemaining = 0;
+        }
+        
+        updateMovingItems(deltaSec);
         updateHook(deltaSec);
         
         if (score >= targetScore) {
             markFinished("target");
+        }
+    }
+    
+    private void updateMovingItems(float deltaSec) {
+        if (!setupLocked) return;
+        
+        for (PlacedItem item : items) {
+            if (item.collected || !item.moving) continue;
+            if (item.x == 0 && item.y == 0) continue;
+            
+            float radius = ItemDefinitions.get(item.type).radius;
+            item.x += item.vx * deltaSec;
+            item.y += item.vy * deltaSec;
+            
+            float minX = -360f + radius;
+            float maxX = 360f - radius;
+            float minY = 20f + radius;
+            float maxY = 300f - radius;
+            
+            if (item.x < minX) {
+                item.x = minX;
+                item.vx = Math.abs(item.vx);
+            } else if (item.x > maxX) {
+                item.x = maxX;
+                item.vx = -Math.abs(item.vx);
+            }
+            
+            if (item.y < minY) {
+                item.y = minY;
+                item.vy = Math.abs(item.vy);
+            } else if (item.y > maxY) {
+                item.y = maxY;
+                item.vy = -Math.abs(item.vy);
+            }
         }
     }
     
@@ -122,12 +251,13 @@ public class ChallengeInstance {
                     ? items.stream().filter(i -> i.id.equals(hook.attachedItemId)).findFirst().orElse(null) 
                     : null;
                 float weight = attached != null ? ItemDefinitions.get(attached.type).weight : 1f;
+                float strengthMultiplier = strengthBuffRemaining > 0 ? 2.0f : 1.0f;
                 
-                HookPhysics.updateRetract(hook, deltaSec, weight);
+                HookPhysics.updateRetract(hook, deltaSec, weight, strengthMultiplier);
                 
                 if (attached != null && !attached.collected) {
                     attached.x = (float)(Math.sin(hook.angle) * hook.length);
-                    attached.y = (float)(Math.cos(hook.angle) * hook.length);
+                    attached.y = -(float)(Math.cos(hook.angle) * hook.length); // Negative Y because of how tipY maps to gameY
                 }
                 
                 if (hook.state == BugMinerHookState.BM_HOOK_SWINGING && attached != null) {
@@ -145,10 +275,13 @@ public class ChallengeInstance {
             markFinished("poison");
             return;
         }
+        if (item.type == BugMinerItemType.BM_ITEM_STRENGTH_DRINK) {
+            strengthBuffRemaining = 8f;
+            return;
+        }
         
         int value = ItemDefinitions.get(item.type).value;
         score += value;
-        // Broadcast item collection event if needed
     }
     
     private void markFinished(String reason) {

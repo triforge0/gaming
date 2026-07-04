@@ -1,4 +1,5 @@
 import type { ItemType } from './types';
+import { HOOK_RETRACT_SPEED_BASE } from './constants';
 
 export interface ItemDefinition {
   type: ItemType;
@@ -8,6 +9,10 @@ export interface ItemDefinition {
   weight: number;
   radius: number;
   color: string;
+  /** Size varies at spawn — bigger = more points & slower retract. */
+  variableSize?: boolean;
+  /** Moves continuously during play (mouse, pig). */
+  moving?: boolean;
 }
 
 export const ITEM_DEFINITIONS: Record<ItemType, ItemDefinition> = {
@@ -19,6 +24,7 @@ export const ITEM_DEFINITIONS: Record<ItemType, ItemDefinition> = {
     weight: 1,
     radius: 18,
     color: '#FFD700',
+    variableSize: true,
   },
   bigGold: {
     type: 'bigGold',
@@ -28,6 +34,7 @@ export const ITEM_DEFINITIONS: Record<ItemType, ItemDefinition> = {
     weight: 2.5,
     radius: 28,
     color: '#FFA500',
+    variableSize: true,
   },
   diamond: {
     type: 'diamond',
@@ -37,6 +44,7 @@ export const ITEM_DEFINITIONS: Record<ItemType, ItemDefinition> = {
     weight: 0.8,
     radius: 16,
     color: '#00FFFF',
+    variableSize: true,
   },
   rock: {
     type: 'rock',
@@ -46,6 +54,7 @@ export const ITEM_DEFINITIONS: Record<ItemType, ItemDefinition> = {
     weight: 4,
     radius: 26,
     color: '#808080',
+    variableSize: true,
   },
   mysteryBag: {
     type: 'mysteryBag',
@@ -65,7 +74,75 @@ export const ITEM_DEFINITIONS: Record<ItemType, ItemDefinition> = {
     radius: 20,
     color: '#8B6914',
   },
+  mouse: {
+    type: 'mouse',
+    label: 'Chuột',
+    emoji: '🐭',
+    value: 40,
+    weight: 0.6,
+    radius: 14,
+    color: '#9E9E9E',
+    moving: true,
+  },
+  pig: {
+    type: 'pig',
+    label: 'Heo',
+    emoji: '🐷',
+    value: 120,
+    weight: 2.2,
+    radius: 22,
+    color: '#FFAB91',
+    moving: true,
+  },
+  strengthDrink: {
+    type: 'strengthDrink',
+    label: 'Nước tăng lực',
+    emoji: '🧃',
+    value: 0,
+    weight: 0.5,
+    radius: 16,
+    color: '#FF5722',
+  },
 };
+
+export const SIZE_SCALES = [0.75, 1.0, 1.35] as const;
+
+export function pickItemScale(type: ItemType, rng: () => number = Math.random): number {
+  if (!ITEM_DEFINITIONS[type].variableSize) return 1;
+  const roll = rng();
+  if (roll < 0.34) return SIZE_SCALES[0];
+  if (roll < 0.67) return SIZE_SCALES[1];
+  return SIZE_SCALES[2];
+}
+
+export function getItemScale(item: { scale?: number }): number {
+  return item.scale ?? 1;
+}
+
+export function getItemRadius(type: ItemType, scale = 1): number {
+  return ITEM_DEFINITIONS[type].radius * scale;
+}
+
+export function getItemValue(type: ItemType, scale = 1): number {
+  const base = ITEM_DEFINITIONS[type].value;
+  if (!ITEM_DEFINITIONS[type].variableSize) return base;
+  return Math.round(base * scale * scale);
+}
+
+export function getItemWeight(type: ItemType, scale = 1): number {
+  const base = ITEM_DEFINITIONS[type].weight;
+  if (!ITEM_DEFINITIONS[type].variableSize) return base;
+  return base * scale * scale * scale;
+}
+
+export function createAnimalVelocity(seed: number): { x: number; y: number } {
+  const speed = 45 + (seed % 35);
+  const angle = ((seed * 47) % 360) * (Math.PI / 180);
+  return {
+    x: Math.cos(angle) * speed,
+    y: Math.sin(angle) * speed * 0.55,
+  };
+}
 
 export function resolveMysteryValue(): number {
   const roll = Math.random();
@@ -75,6 +152,6 @@ export function resolveMysteryValue(): number {
   return 50;
 }
 
-export function getRetractSpeed(weight: number): number {
-  return 320 / weight;
+export function getRetractSpeed(weight: number, strengthMultiplier = 1): number {
+  return (HOOK_RETRACT_SPEED_BASE / weight) * strengthMultiplier;
 }

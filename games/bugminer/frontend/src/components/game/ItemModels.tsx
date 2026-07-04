@@ -191,6 +191,187 @@ export function MouseTrapModel({ def, onPointerDown }: ModelProps) {
   );
 }
 
+export function MouseAnimalModel({ def, onPointerDown }: ModelProps) {
+  const r = def.radius;
+  const tailRef = useRef<THREE.Mesh>(null);
+
+  useFrame(({ clock }) => {
+    if (tailRef.current) {
+      tailRef.current.rotation.z = Math.sin(clock.elapsedTime * 8) * 0.35;
+    }
+  });
+
+  return (
+    <group onPointerDown={onPointerDown}>
+      <mesh castShadow>
+        <sphereGeometry args={[r * 0.55, 12, 12]} />
+        <meshStandardMaterial color="#9e9e9e" roughness={0.85} />
+      </mesh>
+      <mesh position={[r * 0.45, r * 0.05, 0]}>
+        <sphereGeometry args={[r * 0.38, 10, 10]} />
+        <meshStandardMaterial color="#bdbdbd" />
+      </mesh>
+      <mesh position={[r * 0.62, r * 0.35, 0]}>
+        <sphereGeometry args={[r * 0.18, 8, 8]} />
+        <meshStandardMaterial color="#e0e0e0" />
+      </mesh>
+      <mesh position={[r * 0.62, -r * 0.35, 0]}>
+        <sphereGeometry args={[r * 0.18, 8, 8]} />
+        <meshStandardMaterial color="#e0e0e0" />
+      </mesh>
+      <mesh ref={tailRef} position={[-r * 0.55, 0, 0]}>
+        <cylinderGeometry args={[r * 0.06, r * 0.04, r * 0.7, 6]} />
+        <meshStandardMaterial color="#757575" />
+      </mesh>
+    </group>
+  );
+}
+
+export function PigModel({ def, onPointerDown }: ModelProps) {
+  const r = def.radius;
+  const rootRef = useRef<THREE.Group>(null);
+  const tailRef = useRef<THREE.Group>(null);
+
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime;
+    if (rootRef.current) {
+      rootRef.current.position.y = Math.sin(t * 4) * 1.8;
+      rootRef.current.rotation.z = Math.sin(t * 3.5) * 0.04;
+    }
+    if (tailRef.current) {
+      tailRef.current.rotation.z = 0.8 + Math.sin(t * 6) * 0.35;
+    }
+  });
+
+  const skin = '#F0A0B0';
+  const skinShadow = '#D88798';
+  const snout = '#FFB8C6';
+  const hoof = '#5D4037';
+
+  return (
+    <group ref={rootRef} onPointerDown={onPointerDown}>
+      {/* Body */}
+      <mesh castShadow scale={[1.15, 0.88, 1]}>
+        <sphereGeometry args={[r * 0.58, 18, 18]} />
+        <meshStandardMaterial color={skin} roughness={0.78} />
+      </mesh>
+      <mesh position={[0, -r * 0.14, r * 0.12]} scale={[0.9, 0.5, 0.55]}>
+        <sphereGeometry args={[r * 0.48, 14, 14]} />
+        <meshStandardMaterial color="#FFD4DC" roughness={0.82} />
+      </mesh>
+
+      {/* Head group */}
+      <group position={[r * 0.58, r * 0.06, 0]}>
+        <mesh castShadow>
+          <sphereGeometry args={[r * 0.36, 16, 16]} />
+          <meshStandardMaterial color={skin} roughness={0.75} />
+        </mesh>
+
+        {/* Snout disk + nostrils */}
+        <mesh position={[r * 0.3, -r * 0.06, 0]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[r * 0.19, r * 0.21, r * 0.14, 14]} />
+          <meshStandardMaterial color={snout} roughness={0.62} />
+        </mesh>
+        <mesh position={[r * 0.38, -r * 0.06, r * 0.09]}>
+          <sphereGeometry args={[r * 0.045, 6, 6]} />
+          <meshStandardMaterial color={skinShadow} roughness={0.9} />
+        </mesh>
+        <mesh position={[r * 0.38, -r * 0.06, -r * 0.09]}>
+          <sphereGeometry args={[r * 0.045, 6, 6]} />
+          <meshStandardMaterial color={skinShadow} roughness={0.9} />
+        </mesh>
+
+        {/* Ears */}
+        <mesh position={[r * 0.02, r * 0.26, r * 0.24]} rotation={[0.5, 0.2, 0.65]}>
+          <boxGeometry args={[r * 0.2, r * 0.34, r * 0.07]} />
+          <meshStandardMaterial color={skinShadow} roughness={0.85} />
+        </mesh>
+        <mesh position={[r * 0.02, r * 0.26, -r * 0.24]} rotation={[-0.5, -0.2, 0.65]}>
+          <boxGeometry args={[r * 0.2, r * 0.34, r * 0.07]} />
+          <meshStandardMaterial color={skinShadow} roughness={0.85} />
+        </mesh>
+
+        {/* Eyes */}
+        <mesh position={[r * 0.18, r * 0.12, r * 0.22]}>
+          <sphereGeometry args={[r * 0.07, 8, 8]} />
+          <meshStandardMaterial color="#1a1a1a" roughness={0.3} />
+        </mesh>
+        <mesh position={[r * 0.18, r * 0.12, -r * 0.22]}>
+          <sphereGeometry args={[r * 0.07, 8, 8]} />
+          <meshStandardMaterial color="#1a1a1a" roughness={0.3} />
+        </mesh>
+        <mesh position={[r * 0.22, r * 0.14, r * 0.22]}>
+          <sphereGeometry args={[r * 0.025, 6, 6]} />
+          <meshStandardMaterial color="#fff" />
+        </mesh>
+        <mesh position={[r * 0.22, r * 0.14, -r * 0.22]}>
+          <sphereGeometry args={[r * 0.025, 6, 6]} />
+          <meshStandardMaterial color="#fff" />
+        </mesh>
+      </group>
+
+      {/* Legs + hooves */}
+      {([
+        [r * 0.28, -r * 0.42, r * 0.22],
+        [r * 0.28, -r * 0.42, -r * 0.22],
+        [-r * 0.22, -r * 0.42, r * 0.22],
+        [-r * 0.22, -r * 0.42, -r * 0.22],
+      ] as const).map(([lx, ly, lz], i) => (
+        <group key={i} position={[lx, ly, lz]}>
+          <mesh castShadow>
+            <cylinderGeometry args={[r * 0.09, r * 0.1, r * 0.32, 8]} />
+            <meshStandardMaterial color={skin} roughness={0.8} />
+          </mesh>
+          <mesh position={[0, -r * 0.2, 0]}>
+            <boxGeometry args={[r * 0.14, r * 0.08, r * 0.12]} />
+            <meshStandardMaterial color={hoof} roughness={0.95} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Curly tail */}
+      <group ref={tailRef} position={[-r * 0.56, r * 0.08, 0]} rotation={[0, Math.PI / 2, 0]}>
+        <mesh>
+          <torusGeometry args={[r * 0.14, r * 0.045, 8, 16, Math.PI * 1.45]} />
+          <meshStandardMaterial color={skinShadow} roughness={0.75} />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
+export function StrengthDrinkModel({ def, onPointerDown }: ModelProps) {
+  const r = def.radius;
+  const glowRef = useRef<THREE.Mesh>(null);
+
+  useFrame(({ clock }) => {
+    if (glowRef.current) {
+      glowRef.current.scale.setScalar(1 + Math.sin(clock.elapsedTime * 4) * 0.08);
+    }
+  });
+
+  return (
+    <group onPointerDown={onPointerDown}>
+      <mesh castShadow>
+        <cylinderGeometry args={[r * 0.45, r * 0.55, r * 1.1, 12]} />
+        <meshStandardMaterial color="#FF5722" emissive="#E64A19" emissiveIntensity={0.35} roughness={0.4} />
+      </mesh>
+      <mesh position={[0, r * 0.65, 0]}>
+        <cylinderGeometry args={[r * 0.48, r * 0.48, r * 0.12, 12]} />
+        <meshStandardMaterial color="#BF360C" metalness={0.5} />
+      </mesh>
+      <mesh ref={glowRef} position={[0, r * 0.15, r * 0.52]}>
+        <planeGeometry args={[r * 0.7, r * 0.9]} />
+        <meshBasicMaterial color="#FFEB3B" transparent opacity={0.85} />
+      </mesh>
+      <mesh position={[0, -r * 0.35, 0]}>
+        <cylinderGeometry args={[r * 0.35, r * 0.35, r * 0.08, 12]} />
+        <meshStandardMaterial color="#fff" emissive="#fff" emissiveIntensity={0.2} />
+      </mesh>
+    </group>
+  );
+}
+
 export function renderItemModel(
   type: ItemType,
   def: ItemDefinition,
@@ -210,6 +391,12 @@ export function renderItemModel(
       return <MysteryBagModel {...props} />;
     case 'poison':
       return <MouseTrapModel {...props} />;
+    case 'mouse':
+      return <MouseAnimalModel {...props} />;
+    case 'pig':
+      return <PigModel {...props} />;
+    case 'strengthDrink':
+      return <StrengthDrinkModel {...props} />;
     default:
       return null;
   }
@@ -221,6 +408,10 @@ export function getHighlightScale(type: ItemType): number {
       return 1.2;
     case 'poison':
       return 1.15;
+    case 'pig':
+      return 1.2;
+    case 'mouse':
+      return 1.1;
     default:
       return 1.25;
   }

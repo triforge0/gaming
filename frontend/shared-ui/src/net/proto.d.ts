@@ -7582,7 +7582,10 @@ export namespace com {
                     BM_ITEM_DIAMOND = 3,
                     BM_ITEM_ROCK = 4,
                     BM_ITEM_MYSTERY_BAG = 5,
-                    BM_ITEM_POISON = 6
+                    BM_ITEM_POISON = 6,
+                    BM_ITEM_MOUSE = 7,
+                    BM_ITEM_PIG = 8,
+                    BM_ITEM_STRENGTH_DRINK = 9
                 }
 
                 /** BugMinerHookState enum. */

@@ -1,6 +1,15 @@
 export type PlayerRole = 'developer' | 'qc' | null;
 
-export type ItemType = 'gold' | 'bigGold' | 'diamond' | 'rock' | 'mysteryBag' | 'poison';
+export type ItemType =
+  | 'gold'
+  | 'bigGold'
+  | 'diamond'
+  | 'rock'
+  | 'mysteryBag'
+  | 'poison'
+  | 'mouse'
+  | 'pig'
+  | 'strengthDrink';
 
 export type EndReason = 'timeout' | 'target' | 'poison' | null;
 
@@ -24,6 +33,10 @@ export interface PlacedItem {
   type: ItemType;
   position: Vec2;
   collected: boolean;
+  /** Visual/collision scale — larger = more points & heavier pull (variable-size items). */
+  scale?: number;
+  /** Patrol velocity for moving animals (mouse, pig). */
+  velocity?: Vec2;
 }
 
 export interface LevelConfig {
@@ -63,11 +76,40 @@ export interface ChallengeState {
   setupLocked: boolean;
   endReason: EndReason;
   finished: boolean;
+  /** Seconds remaining on strength buff (faster heavy pulls). */
+  strengthBuffRemaining: number;
 }
 
 export interface DualChallenges {
   forPlayerA: ChallengeState;
   forPlayerB: ChallengeState;
+}
+
+export interface FairModeConfig {
+  enabled: boolean;
+  /** Shared-screen PvP on one map (Battle mode). */
+  battle: boolean;
+  levelId: string;
+  timeLimit: number;
+}
+
+export interface BattleArenaState {
+  levelId: string;
+  timeLimit: number;
+  timeRemaining: number;
+  targetScore: number;
+  items: PlacedItem[];
+  playerAId: string;
+  playerBId: string;
+  hookA: HookData;
+  hookB: HookData;
+  scoreA: number;
+  scoreB: number;
+  finished: boolean;
+  winnerId: string | null;
+  endReason: EndReason;
+  strengthBuffA: number;
+  strengthBuffB: number;
 }
 
 export interface GameState {
@@ -76,9 +118,11 @@ export interface GameState {
   hostId: string;
   players: PlayerInfo[];
   challenges: DualChallenges;
+  battle: BattleArenaState | null;
   winnerId: string | null;
   endReason: EndReason;
   countdown: number;
+  fairMode: FairModeConfig;
 }
 
 export interface RoomSummary {
@@ -89,4 +133,5 @@ export interface RoomSummary {
   levelId: string;
   hostName: string;
   players: string[];
+  fairMode: FairModeConfig;
 }

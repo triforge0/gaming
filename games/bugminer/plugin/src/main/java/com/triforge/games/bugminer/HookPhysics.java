@@ -49,8 +49,8 @@ public class HookPhysics {
         hook.length = Math.min(hook.length + HOOK_EXTEND_SPEED * deltaSec, HOOK_MAX_LENGTH);
     }
 
-    public static void updateRetract(HookData hook, float deltaSec, float attachedWeight) {
-        float speed = 320f / Math.max(attachedWeight, 0.5f);
+    public static void updateRetract(HookData hook, float deltaSec, float attachedWeight, float strengthMultiplier) {
+        float speed = (320f / Math.max(attachedWeight, 0.5f)) * strengthMultiplier;
         hook.length = Math.max(hook.length - speed * deltaSec, HOOK_MIN_LENGTH);
         
         if (hook.length <= HOOK_MIN_LENGTH + 1f) {
