@@ -6,6 +6,7 @@ import { UtilityArt, EducationArt, ArcadeArt } from './art/PlaceholderArt';
 import { SudokuCubeArt } from './art/SudokuCubeArt';
 import { BugMinerArt } from './art/BugMinerArt';
 import { F1RacingArt } from './art/F1RacingArt';
+import { TopdownAdventureArt } from './art/TopdownAdventureArt';
 
 export const REGISTRY: CatalogEntry[] = [
   {
@@ -70,6 +71,18 @@ export const REGISTRY: CatalogEntry[] = [
     pluginId: 'f1racing',
     badge: 'NEW',
     Art: F1RacingArt,
+  },
+  {
+    id: 'topdownadventure',
+    title: 'Topdown Adventure',
+    description: 'Game phiêu lưu góc nhìn từ trên xuống (Web HTML5).',
+    category: 'game',
+    path: '/?play=topdownadventure',
+    accent: '#4ade80',
+    isHtmlEmbed: true,
+    externalUrl: 'https://nhanptn1.github.io/topdownadventure/',
+    badge: 'HOT',
+    Art: TopdownAdventureArt,
   },
   {
     id: 'scoreboard',

@@ -14,7 +14,7 @@ export function GameCard({ entry, stats }: { entry: CatalogEntry; stats?: Plugin
   const Art = entry.Art;
   const style = { '--accent': entry.accent } as CSSProperties;
 
-  const handlePlayClick = () => {
+  const handlePlayClick = (e: React.MouseEvent) => {
     trackEvent('Game Clicked', {
       gameId: entry.id,
       gameTitle: entry.title,
@@ -22,6 +22,13 @@ export function GameCard({ entry, stats }: { entry: CatalogEntry; stats?: Plugin
       path: entry.path,
       source: 'card',
     }, { transport: 'sendBeacon' });
+
+    if (entry.isHtmlEmbed) {
+      e.preventDefault();
+      window.history.pushState({}, '', entry.path);
+      const navEvent = new PopStateEvent('popstate');
+      window.dispatchEvent(navEvent);
+    }
   };
 
   const body = (

@@ -6,7 +6,7 @@ import { trackEvent } from '../lib/mixpanel';
 export function HeroBanner({ entry, stats }: { entry: CatalogEntry; stats?: PluginLiveStats }) {
   const Art = entry.Art;
 
-  const handlePlayClick = () => {
+  const handlePlayClick = (e: React.MouseEvent) => {
     trackEvent('Game Clicked', {
       gameId: entry.id,
       gameTitle: entry.title,
@@ -14,6 +14,13 @@ export function HeroBanner({ entry, stats }: { entry: CatalogEntry; stats?: Plug
       path: entry.path,
       source: 'hero',
     }, { transport: 'sendBeacon' });
+
+    if (entry.isHtmlEmbed) {
+      e.preventDefault();
+      window.history.pushState({}, '', entry.path);
+      const navEvent = new PopStateEvent('popstate');
+      window.dispatchEvent(navEvent);
+    }
   };
 
   return (

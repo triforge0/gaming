@@ -10,6 +10,10 @@ export interface CatalogEntry {
   path: string;
   /** Màu đặc trưng của entry, dùng cho glow/hover (CSS var --accent). */
   accent: string;
+  /** Nếu true, launcher sẽ mở qua Iframe wrapper thay vì điều hướng thẳng */
+  isHtmlEmbed?: boolean;
+  /** Đường dẫn external nếu game host ở ngoài (isHtmlEmbed = true) */
+  externalUrl?: string;
   /** Chỉ game plugin có — khoá merge dữ liệu live theo gamePluginId. */
   pluginId?: string;
   /** Placeholder: render mờ, không click được. */
