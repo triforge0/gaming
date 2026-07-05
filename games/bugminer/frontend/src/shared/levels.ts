@@ -10,6 +10,7 @@ const DEFAULT_COUNTS: Record<ItemType, number> = {
   mouse: 0,
   pig: 0,
   strengthDrink: 0,
+  bedrock: 0,
 };
 
 export const LEVELS: LevelConfig[] = [

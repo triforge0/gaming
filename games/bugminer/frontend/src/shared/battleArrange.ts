@@ -26,6 +26,7 @@ function jackpotPriority(item: PlacedItem): number {
     mouse: 0,
     pig: 0,
     strengthDrink: 0,
+    bedrock: 0,
   };
   return typeRank[item.type] + value;
 }

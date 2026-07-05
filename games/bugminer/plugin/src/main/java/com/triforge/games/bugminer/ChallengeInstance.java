@@ -375,13 +375,7 @@ public class ChallengeInstance {
         }
             
         for (PlacedItem item : items) {
-            builder.addItems(BugMinerPlacedItem.newBuilder()
-                .setId(item.id)
-                .setType(item.type)
-                .setX(item.x)
-                .setY(item.y)
-                .setCollected(item.collected)
-                .setScale(item.scale));
+            builder.addItems(PlacedItemProto.toProto(item));
         }
         
         return builder.build();

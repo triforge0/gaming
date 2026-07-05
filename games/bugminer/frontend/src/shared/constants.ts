@@ -34,3 +34,5 @@ export const BATTLE_MINER_A = { x: -480, y: 0 };
 export const BATTLE_MINER_B = { x: 480, y: 0 };
 /** Hook tips closer than this (game units) trigger a clash bounce. */
 export const HOOK_CLASH_RADIUS = 32;
+export const BOMB_COOLDOWN = 10;
+export const BOMB_TTL = 1.2;

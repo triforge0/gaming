@@ -53,6 +53,18 @@ function handleBoardEvents(
       store.setError('😱 Đối thủ cướp mất vật phẩm bạn đang kéo!');
       setTimeout(() => store.setError(null), 2000);
     }
+    if (type === 'battle:bombLaunched' && playerId === myId) {
+      store.setError('💣 Đã ném bom!');
+      setTimeout(() => store.setError(null), 1200);
+    }
+    if (type === 'battle:bombHit' && victimId === myId) {
+      store.setError('💥 Trúng bom! Móc bị đứt!');
+      setTimeout(() => store.setError(null), 1800);
+    }
+    if (type === 'battle:ropeCut' && victimId === myId) {
+      store.setError('⛓️‍💥 Dây câu đứt — vật phẩm rơi!');
+      setTimeout(() => store.setError(null), 2000);
+    }
   }
 }
 
@@ -272,7 +284,7 @@ export function useSocket() {
 
         const itemTypeMap: Record<number, ItemType> = {
           1: 'gold', 2: 'bigGold', 3: 'diamond', 4: 'rock', 5: 'mysteryBag', 6: 'poison',
-          7: 'mouse', 8: 'pig', 9: 'strengthDrink',
+          7: 'mouse', 8: 'pig', 9: 'strengthDrink', 10: 'bedrock',
         };
         const hookStateMap: Record<number, 'swinging' | 'extending' | 'retracting'> = {
           0: 'swinging', 1: 'swinging', 2: 'extending', 3: 'retracting',
@@ -286,13 +298,15 @@ export function useSocket() {
           swingDirection: (hook?.swingDirection || 1) as 1 | -1,
         });
 
-        const mapItems = (items?: Array<{ id?: string | null; type?: number | null; x?: number | null; y?: number | null; collected?: boolean | null; scale?: number | null }> | null) =>
+        const mapItems = (items?: Array<{ id?: string | null; type?: number | null; x?: number | null; y?: number | null; collected?: boolean | null; scale?: number | null; moving?: boolean | null; vx?: number | null; vy?: number | null }> | null) =>
           items?.map((item) => ({
             id: item.id || '',
             type: itemTypeMap[item.type ?? 0] || 'gold',
             position: { x: item.x ?? 0, y: item.y ?? 0 },
             collected: item.collected || false,
             scale: item.scale ?? 1,
+            moving: item.moving || false,
+            velocity: item.moving ? { x: item.vx ?? 0, y: item.vy ?? 0 } : undefined,
           })) || [];
 
         const emptyChallenge = (playerAId: string, playerBId: string) => ({
@@ -349,6 +363,16 @@ export function useSocket() {
             endReason: (battleProto.endReason as GameState['endReason']) || null,
             strengthBuffA: battleProto.strengthBuffA || 0,
             strengthBuffB: battleProto.strengthBuffB || 0,
+            bombCooldownA: battleProto.bombCooldownA || 0,
+            bombCooldownB: battleProto.bombCooldownB || 0,
+            bombs: battleProto.bombs?.map((b) => ({
+              id: b.id || '',
+              ownerId: String(toNum(b.ownerId)),
+              targetPlayerId: String(toNum(b.targetPlayerId)),
+              position: { x: b.x ?? 0, y: b.y ?? 0 },
+              velocity: { x: b.vx ?? 0, y: b.vy ?? 0 },
+              ttl: b.ttl ?? 0,
+            })) || [],
           };
         };
 
@@ -456,6 +480,7 @@ export function useSocket() {
     lockMap: () => clientRef.current?.sendBugMinerMessage({ lockMap: {} }),
     autoArrange: () => clientRef.current?.sendBugMinerMessage({ autoArrange: {} }),
     fireHook: () => clientRef.current?.sendBugMinerMessage({ fireHook: {} }),
+    throwBomb: () => clientRef.current?.sendBugMinerMessage({ throwBomb: {} }),
     pause: (paused: boolean) => clientRef.current?.sendBugMinerMessage({ pause: { paused } }),
     restart: () => clientRef.current?.sendBugMinerMessage({ restart: {} }),
     leave: () => clientRef.current?.close(),

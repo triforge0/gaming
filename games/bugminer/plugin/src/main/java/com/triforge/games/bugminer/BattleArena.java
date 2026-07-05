@@ -19,6 +19,10 @@ public class BattleArena {
     private int scoreB = 0;
     private float strengthBuffA = 0f;
     private float strengthBuffB = 0f;
+    private float bombCooldownA = 0f;
+    private float bombCooldownB = 0f;
+    private final List<BombProjectile> bombs = new ArrayList<>();
+    private int bombSeq = 0;
     private boolean finished = false;
     private Long winnerId = null;
     private String endReason = null;
@@ -47,6 +51,44 @@ public class BattleArena {
         }
     }
 
+    public boolean throwBomb(long playerId) {
+        if (finished) return false;
+        char side = playerId == playerAId ? 'A' : (playerId == playerBId ? 'B' : 0);
+        if (side == 0) return false;
+
+        HookPhysics.HookData ownHook = side == 'A' ? hookA : hookB;
+        if (ownHook.state != BugMinerHookState.BM_HOOK_SWINGING) return false;
+
+        float cooldown = side == 'A' ? bombCooldownA : bombCooldownB;
+        if (cooldown > 0f) return false;
+
+        long targetId = side == 'A' ? playerBId : playerAId;
+        BattleHookAnchor ownAnchor = side == 'A' ? ANCHOR_A : ANCHOR_B;
+        float dir = side == 'A' ? 1f : -1f;
+        float startX = ownAnchor.origin.x + dir * 40f;
+        float startY = ownAnchor.origin.y + 80f;
+        float vx = dir * GameConstants.BOMB_SPEED;
+        float vy = -60f;
+
+        bombs.add(new BombProjectile(
+                "bomb-" + (++bombSeq),
+                playerId,
+                targetId,
+                startX,
+                startY,
+                vx,
+                vy,
+                GameConstants.BOMB_TTL));
+
+        if (side == 'A') bombCooldownA = GameConstants.BOMB_COOLDOWN;
+        else bombCooldownB = GameConstants.BOMB_COOLDOWN;
+
+        BugMinerClientEvent launched = new BugMinerClientEvent("battle:bombLaunched");
+        launched.playerId = playerId;
+        pendingEvents.add(launched);
+        return true;
+    }
+
     public boolean fireHook(long playerId) {
         if (finished) return false;
         if (playerId == playerAId && hookA.state == BugMinerHookState.BM_HOOK_SWINGING) {
@@ -65,6 +107,8 @@ public class BattleArena {
 
         strengthBuffA = Math.max(0f, strengthBuffA - deltaSec);
         strengthBuffB = Math.max(0f, strengthBuffB - deltaSec);
+        bombCooldownA = Math.max(0f, bombCooldownA - deltaSec);
+        bombCooldownB = Math.max(0f, bombCooldownB - deltaSec);
 
         timeRemaining -= deltaSec;
         if (timeRemaining <= 0) {
@@ -74,6 +118,7 @@ public class BattleArena {
         }
 
         updateMovingItems(deltaSec);
+        tickBombs(deltaSec);
         hookA = stepHook(hookA, ANCHOR_A, 'A', deltaSec);
         hookB = stepHook(hookB, ANCHOR_B, 'B', deltaSec);
         resolveHookClash();
@@ -81,6 +126,82 @@ public class BattleArena {
         int target = LevelCatalog.targetScore(levelId);
         if (scoreA >= target) finish(playerAId, "target");
         else if (scoreB >= target) finish(playerBId, "target");
+    }
+
+    private void tickBombs(float deltaSec) {
+        List<BombProjectile> expired = new ArrayList<>();
+        for (BombProjectile bomb : bombs) {
+            bomb.ttl -= deltaSec;
+            bomb.x += bomb.vx * deltaSec;
+            bomb.y += bomb.vy * deltaSec;
+            bomb.vy += 180f * deltaSec;
+
+            if (bomb.ttl <= 0f) {
+                expired.add(bomb);
+                continue;
+            }
+
+            char victimSide = bomb.targetPlayerId == playerAId ? 'A' : 'B';
+            if (checkBombHit(bomb, victimSide)) {
+                applyBombHit(bomb, victimSide);
+                expired.add(bomb);
+            }
+        }
+        bombs.removeAll(expired);
+    }
+
+    private boolean checkBombHit(BombProjectile bomb, char victimSide) {
+        BattleHookAnchor anchor = victimSide == 'A' ? ANCHOR_A : ANCHOR_B;
+        HookPhysics.HookData hook = victimSide == 'A' ? hookA : hookB;
+
+        if (hook.state == BugMinerHookState.BM_HOOK_SWINGING) {
+            return false;
+        }
+
+        Vec2 tip = HookPhysics.getHookTipAt(anchor, hook);
+        float dx = bomb.x - tip.x;
+        float dy = bomb.y - tip.y;
+        if (Math.hypot(dx, dy) <= GameConstants.BOMB_HIT_RADIUS) {
+            return true;
+        }
+
+        if (hook.attachedItemId != null) {
+            PlacedItem attached = findItem(hook.attachedItemId);
+            if (attached != null && !attached.collected) {
+                dx = bomb.x - attached.x;
+                dy = bomb.y - attached.y;
+                if (Math.hypot(dx, dy) <= GameConstants.BOMB_HIT_RADIUS + 12f) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void applyBombHit(BombProjectile bomb, char victimSide) {
+        BattleHookAnchor anchor = victimSide == 'A' ? ANCHOR_A : ANCHOR_B;
+        HookPhysics.HookData hook = victimSide == 'A' ? hookA : hookB;
+        long victimId = victimSide == 'A' ? playerAId : playerBId;
+
+        BugMinerClientEvent hit = new BugMinerClientEvent("battle:bombHit");
+        hit.playerId = victimId;
+        hit.victimId = victimId;
+        pendingEvents.add(hit);
+
+        if (hook.state == BugMinerHookState.BM_HOOK_RETRACTING && hook.attachedItemId != null) {
+            PlacedItem attached = findItem(hook.attachedItemId);
+            if (attached != null && !attached.collected) {
+                BugMinerClientEvent cut = new BugMinerClientEvent("battle:ropeCut");
+                cut.playerId = victimId;
+                cut.victimId = victimId;
+                cut.itemId = attached.id;
+                pendingEvents.add(cut);
+            }
+            hook.attachedItemId = null;
+        }
+
+        if (victimSide == 'A') hookA = HookPhysics.bounceHook(hook);
+        else hookB = HookPhysics.bounceHook(hook);
     }
 
     private void updateMovingItems(float deltaSec) {
@@ -282,17 +403,16 @@ public class BattleArena {
                         .setScoreB(scoreB)
                         .setFinished(finished)
                         .setStrengthBuffA((int) Math.ceil(strengthBuffA))
-                        .setStrengthBuffB((int) Math.ceil(strengthBuffB));
+                        .setStrengthBuffB((int) Math.ceil(strengthBuffB))
+                        .setBombCooldownA((int) Math.ceil(bombCooldownA))
+                        .setBombCooldownB((int) Math.ceil(bombCooldownB));
         if (winnerId != null) b.setWinnerId(winnerId);
         if (endReason != null) b.setEndReason(endReason);
         for (PlacedItem item : items) {
-            b.addItems(com.triforge.protocol.proto.BugMinerPlacedItem.newBuilder()
-                    .setId(item.id)
-                    .setType(item.type)
-                    .setX(item.x)
-                    .setY(item.y)
-                    .setCollected(item.collected)
-                    .setScale(item.scale));
+            b.addItems(PlacedItemProto.toProto(item));
+        }
+        for (BombProjectile bomb : bombs) {
+            b.addBombs(bomb.toProto());
         }
         return b.build();
     }

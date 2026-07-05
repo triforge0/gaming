@@ -22440,6 +22440,7 @@ export const com = $root.com = (() => {
                  * @property {number} BM_ITEM_MOUSE=7 BM_ITEM_MOUSE value
                  * @property {number} BM_ITEM_PIG=8 BM_ITEM_PIG value
                  * @property {number} BM_ITEM_STRENGTH_DRINK=9 BM_ITEM_STRENGTH_DRINK value
+                 * @property {number} BM_ITEM_BEDROCK=10 BM_ITEM_BEDROCK value
                  */
                 proto.BugMinerItemType = (function() {
                     const valuesById = {}, values = Object.create(valuesById);
@@ -22453,6 +22454,7 @@ export const com = $root.com = (() => {
                     values[valuesById[7] = "BM_ITEM_MOUSE"] = 7;
                     values[valuesById[8] = "BM_ITEM_PIG"] = 8;
                     values[valuesById[9] = "BM_ITEM_STRENGTH_DRINK"] = 9;
+                    values[valuesById[10] = "BM_ITEM_BEDROCK"] = 10;
                     return values;
                 })();
 
@@ -22486,6 +22488,9 @@ export const com = $root.com = (() => {
                      * @property {number|null} [y] BugMinerPlacedItem y
                      * @property {boolean|null} [collected] BugMinerPlacedItem collected
                      * @property {number|null} [scale] BugMinerPlacedItem scale
+                     * @property {boolean|null} [moving] BugMinerPlacedItem moving
+                     * @property {number|null} [vx] BugMinerPlacedItem vx
+                     * @property {number|null} [vy] BugMinerPlacedItem vy
                      */
 
                     /**
@@ -22552,6 +22557,30 @@ export const com = $root.com = (() => {
                     BugMinerPlacedItem.prototype.scale = 0;
 
                     /**
+                     * BugMinerPlacedItem moving.
+                     * @member {boolean} moving
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @instance
+                     */
+                    BugMinerPlacedItem.prototype.moving = false;
+
+                    /**
+                     * BugMinerPlacedItem vx.
+                     * @member {number} vx
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @instance
+                     */
+                    BugMinerPlacedItem.prototype.vx = 0;
+
+                    /**
+                     * BugMinerPlacedItem vy.
+                     * @member {number} vy
+                     * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
+                     * @instance
+                     */
+                    BugMinerPlacedItem.prototype.vy = 0;
+
+                    /**
                      * Creates a new BugMinerPlacedItem instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.BugMinerPlacedItem
@@ -22591,6 +22620,12 @@ export const com = $root.com = (() => {
                             writer.uint32(/* id 5, wireType 0 =*/40).bool(message.collected);
                         if (message.scale != null && Object.hasOwnProperty.call(message, "scale"))
                             writer.uint32(/* id 6, wireType 5 =*/53).float(message.scale);
+                        if (message.moving != null && Object.hasOwnProperty.call(message, "moving"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).bool(message.moving);
+                        if (message.vx != null && Object.hasOwnProperty.call(message, "vx"))
+                            writer.uint32(/* id 8, wireType 5 =*/69).float(message.vx);
+                        if (message.vy != null && Object.hasOwnProperty.call(message, "vy"))
+                            writer.uint32(/* id 9, wireType 5 =*/77).float(message.vy);
                         return writer;
                     };
 
@@ -22655,6 +22690,18 @@ export const com = $root.com = (() => {
                                     message.scale = reader.float();
                                     break;
                                 }
+                            case 7: {
+                                    message.moving = reader.bool();
+                                    break;
+                                }
+                            case 8: {
+                                    message.vx = reader.float();
+                                    break;
+                                }
+                            case 9: {
+                                    message.vy = reader.float();
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7, long);
                                 break;
@@ -22711,6 +22758,7 @@ export const com = $root.com = (() => {
                             case 7:
                             case 8:
                             case 9:
+                            case 10:
                                 break;
                             }
                         if (message.x != null && Object.hasOwnProperty.call(message, "x"))
@@ -22725,6 +22773,15 @@ export const com = $root.com = (() => {
                         if (message.scale != null && Object.hasOwnProperty.call(message, "scale"))
                             if (typeof message.scale !== "number")
                                 return "scale: number expected";
+                        if (message.moving != null && Object.hasOwnProperty.call(message, "moving"))
+                            if (typeof message.moving !== "boolean")
+                                return "moving: boolean expected";
+                        if (message.vx != null && Object.hasOwnProperty.call(message, "vx"))
+                            if (typeof message.vx !== "number")
+                                return "vx: number expected";
+                        if (message.vy != null && Object.hasOwnProperty.call(message, "vy"))
+                            if (typeof message.vy !== "number")
+                                return "vy: number expected";
                         return null;
                     };
 
@@ -22795,6 +22852,10 @@ export const com = $root.com = (() => {
                         case 9:
                             message.type = 9;
                             break;
+                        case "BM_ITEM_BEDROCK":
+                        case 10:
+                            message.type = 10;
+                            break;
                         }
                         if (object.x != null)
                             message.x = Number(object.x);
@@ -22804,6 +22865,12 @@ export const com = $root.com = (() => {
                             message.collected = Boolean(object.collected);
                         if (object.scale != null)
                             message.scale = Number(object.scale);
+                        if (object.moving != null)
+                            message.moving = Boolean(object.moving);
+                        if (object.vx != null)
+                            message.vx = Number(object.vx);
+                        if (object.vy != null)
+                            message.vy = Number(object.vy);
                         return message;
                     };
 
@@ -22831,6 +22898,9 @@ export const com = $root.com = (() => {
                             object.y = 0;
                             object.collected = false;
                             object.scale = 0;
+                            object.moving = false;
+                            object.vx = 0;
+                            object.vy = 0;
                         }
                         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
                             object.id = message.id;
@@ -22844,6 +22914,12 @@ export const com = $root.com = (() => {
                             object.collected = message.collected;
                         if (message.scale != null && Object.hasOwnProperty.call(message, "scale"))
                             object.scale = options.json && !isFinite(message.scale) ? String(message.scale) : message.scale;
+                        if (message.moving != null && Object.hasOwnProperty.call(message, "moving"))
+                            object.moving = message.moving;
+                        if (message.vx != null && Object.hasOwnProperty.call(message, "vx"))
+                            object.vx = options.json && !isFinite(message.vx) ? String(message.vx) : message.vx;
+                        if (message.vy != null && Object.hasOwnProperty.call(message, "vy"))
+                            object.vy = options.json && !isFinite(message.vy) ? String(message.vy) : message.vy;
                         return object;
                     };
 
@@ -24348,11 +24424,11 @@ export const com = $root.com = (() => {
 
                     /**
                      * BugMinerBoardState winnerId.
-                     * @member {number|Long} winnerId
+                     * @member {number|Long|null|undefined} winnerId
                      * @memberof com.triforge.protocol.proto.BugMinerBoardState
                      * @instance
                      */
-                    BugMinerBoardState.prototype.winnerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+                    BugMinerBoardState.prototype.winnerId = null;
 
                     /**
                      * BugMinerBoardState matchEndReason.
@@ -24361,6 +24437,15 @@ export const com = $root.com = (() => {
                      * @instance
                      */
                     BugMinerBoardState.prototype.matchEndReason = "";
+
+                    // OneOf field names bound to virtual getters and setters
+                    let $oneOfFields;
+
+                    // Virtual OneOf for proto3 optional field
+                    Object.defineProperty(BugMinerBoardState.prototype, "_winnerId", {
+                        get: $util.oneOfGetter($oneOfFields = ["winnerId"]),
+                        set: $util.oneOfSetter($oneOfFields)
+                    });
 
                     /**
                      * Creates a new BugMinerBoardState instance using the specified properties.
@@ -24526,6 +24611,7 @@ export const com = $root.com = (() => {
                             long = 0;
                         if (long > $util.recursionLimit)
                             return "maximum nesting depth exceeded";
+                        let properties = {};
                         if (message.forPlayerA != null && Object.hasOwnProperty.call(message, "forPlayerA")) {
                             let error = $root.com.triforge.protocol.proto.BugMinerChallengeState.verify(message.forPlayerA, long + 1);
                             if (error)
@@ -24561,9 +24647,11 @@ export const com = $root.com = (() => {
                         if (message.paused != null && Object.hasOwnProperty.call(message, "paused"))
                             if (typeof message.paused !== "boolean")
                                 return "paused: boolean expected";
-                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId"))
+                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId")) {
+                            properties._winnerId = 1;
                             if (!$util.isInteger(message.winnerId) && !(message.winnerId && $util.isInteger(message.winnerId.low) && $util.isInteger(message.winnerId.high)))
                                 return "winnerId: integer|Long expected";
+                        }
                         if (message.matchEndReason != null && Object.hasOwnProperty.call(message, "matchEndReason"))
                             if (!$util.isString(message.matchEndReason))
                                 return "matchEndReason: string expected";
@@ -24662,11 +24750,6 @@ export const com = $root.com = (() => {
                             object.battle = null;
                             object.playCountdown = 0;
                             object.paused = false;
-                            if ($util.Long) {
-                                let long = new $util.Long(0, 0, true);
-                                object.winnerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
-                            } else
-                                object.winnerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
                             object.matchEndReason = "";
                         }
                         if (message.forPlayerA != null && Object.hasOwnProperty.call(message, "forPlayerA"))
@@ -24686,13 +24769,16 @@ export const com = $root.com = (() => {
                             object.playCountdown = message.playCountdown;
                         if (message.paused != null && Object.hasOwnProperty.call(message, "paused"))
                             object.paused = message.paused;
-                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId"))
+                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId")) {
                             if (typeof BigInt !== "undefined" && options.longs === BigInt)
                                 object.winnerId = typeof message.winnerId === "number" ? BigInt(message.winnerId) : $util.Long.fromBits(message.winnerId.low >>> 0, message.winnerId.high >>> 0, true).toBigInt();
                             else if (typeof message.winnerId === "number")
                                 object.winnerId = options.longs === String ? String(message.winnerId) : message.winnerId;
                             else
                                 object.winnerId = options.longs === String ? $util.Long.prototype.toString.call(message.winnerId) : options.longs === Number ? new $util.LongBits(message.winnerId.low >>> 0, message.winnerId.high >>> 0).toNumber(true) : message.winnerId;
+                            if (options.oneofs)
+                                object._winnerId = "winnerId";
+                        }
                         if (message.matchEndReason != null && Object.hasOwnProperty.call(message, "matchEndReason"))
                             object.matchEndReason = message.matchEndReason;
                         return object;
@@ -25024,6 +25110,427 @@ export const com = $root.com = (() => {
                     return BugMinerFairModeConfig;
                 })();
 
+                proto.BugMinerBombProjectile = (function() {
+
+                    /**
+                     * Properties of a BugMinerBombProjectile.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBugMinerBombProjectile
+                     * @property {string|null} [id] BugMinerBombProjectile id
+                     * @property {number|Long|null} [ownerId] BugMinerBombProjectile ownerId
+                     * @property {number|Long|null} [targetPlayerId] BugMinerBombProjectile targetPlayerId
+                     * @property {number|null} [x] BugMinerBombProjectile x
+                     * @property {number|null} [y] BugMinerBombProjectile y
+                     * @property {number|null} [vx] BugMinerBombProjectile vx
+                     * @property {number|null} [vy] BugMinerBombProjectile vy
+                     * @property {number|null} [ttl] BugMinerBombProjectile ttl
+                     */
+
+                    /**
+                     * Constructs a new BugMinerBombProjectile.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BugMinerBombProjectile.
+                     * @implements IBugMinerBombProjectile
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBugMinerBombProjectile=} [properties] Properties to set
+                     */
+                    function BugMinerBombProjectile(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * BugMinerBombProjectile id.
+                     * @member {string} id
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @instance
+                     */
+                    BugMinerBombProjectile.prototype.id = "";
+
+                    /**
+                     * BugMinerBombProjectile ownerId.
+                     * @member {number|Long} ownerId
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @instance
+                     */
+                    BugMinerBombProjectile.prototype.ownerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * BugMinerBombProjectile targetPlayerId.
+                     * @member {number|Long} targetPlayerId
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @instance
+                     */
+                    BugMinerBombProjectile.prototype.targetPlayerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * BugMinerBombProjectile x.
+                     * @member {number} x
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @instance
+                     */
+                    BugMinerBombProjectile.prototype.x = 0;
+
+                    /**
+                     * BugMinerBombProjectile y.
+                     * @member {number} y
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @instance
+                     */
+                    BugMinerBombProjectile.prototype.y = 0;
+
+                    /**
+                     * BugMinerBombProjectile vx.
+                     * @member {number} vx
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @instance
+                     */
+                    BugMinerBombProjectile.prototype.vx = 0;
+
+                    /**
+                     * BugMinerBombProjectile vy.
+                     * @member {number} vy
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @instance
+                     */
+                    BugMinerBombProjectile.prototype.vy = 0;
+
+                    /**
+                     * BugMinerBombProjectile ttl.
+                     * @member {number} ttl
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @instance
+                     */
+                    BugMinerBombProjectile.prototype.ttl = 0;
+
+                    /**
+                     * Creates a new BugMinerBombProjectile instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerBombProjectile=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BugMinerBombProjectile} BugMinerBombProjectile instance
+                     */
+                    BugMinerBombProjectile.create = function create(properties) {
+                        return new BugMinerBombProjectile(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerBombProjectile message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerBombProjectile.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerBombProjectile} message BugMinerBombProjectile message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerBombProjectile.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+                        if (message.ownerId != null && Object.hasOwnProperty.call(message, "ownerId"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ownerId);
+                        if (message.targetPlayerId != null && Object.hasOwnProperty.call(message, "targetPlayerId"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.targetPlayerId);
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            writer.uint32(/* id 4, wireType 5 =*/37).float(message.x);
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            writer.uint32(/* id 5, wireType 5 =*/45).float(message.y);
+                        if (message.vx != null && Object.hasOwnProperty.call(message, "vx"))
+                            writer.uint32(/* id 6, wireType 5 =*/53).float(message.vx);
+                        if (message.vy != null && Object.hasOwnProperty.call(message, "vy"))
+                            writer.uint32(/* id 7, wireType 5 =*/61).float(message.vy);
+                        if (message.ttl != null && Object.hasOwnProperty.call(message, "ttl"))
+                            writer.uint32(/* id 8, wireType 5 =*/69).float(message.ttl);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BugMinerBombProjectile message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerBombProjectile.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBugMinerBombProjectile} message BugMinerBombProjectile message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BugMinerBombProjectile.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BugMinerBombProjectile message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BugMinerBombProjectile} BugMinerBombProjectile
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerBombProjectile.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BugMinerBombProjectile();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.id = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.ownerId = reader.uint64();
+                                    break;
+                                }
+                            case 3: {
+                                    message.targetPlayerId = reader.uint64();
+                                    break;
+                                }
+                            case 4: {
+                                    message.x = reader.float();
+                                    break;
+                                }
+                            case 5: {
+                                    message.y = reader.float();
+                                    break;
+                                }
+                            case 6: {
+                                    message.vx = reader.float();
+                                    break;
+                                }
+                            case 7: {
+                                    message.vy = reader.float();
+                                    break;
+                                }
+                            case 8: {
+                                    message.ttl = reader.float();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BugMinerBombProjectile message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BugMinerBombProjectile} BugMinerBombProjectile
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BugMinerBombProjectile.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BugMinerBombProjectile message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BugMinerBombProjectile.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                            if (!$util.isString(message.id))
+                                return "id: string expected";
+                        if (message.ownerId != null && Object.hasOwnProperty.call(message, "ownerId"))
+                            if (!$util.isInteger(message.ownerId) && !(message.ownerId && $util.isInteger(message.ownerId.low) && $util.isInteger(message.ownerId.high)))
+                                return "ownerId: integer|Long expected";
+                        if (message.targetPlayerId != null && Object.hasOwnProperty.call(message, "targetPlayerId"))
+                            if (!$util.isInteger(message.targetPlayerId) && !(message.targetPlayerId && $util.isInteger(message.targetPlayerId.low) && $util.isInteger(message.targetPlayerId.high)))
+                                return "targetPlayerId: integer|Long expected";
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            if (typeof message.x !== "number")
+                                return "x: number expected";
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            if (typeof message.y !== "number")
+                                return "y: number expected";
+                        if (message.vx != null && Object.hasOwnProperty.call(message, "vx"))
+                            if (typeof message.vx !== "number")
+                                return "vx: number expected";
+                        if (message.vy != null && Object.hasOwnProperty.call(message, "vy"))
+                            if (typeof message.vy !== "number")
+                                return "vy: number expected";
+                        if (message.ttl != null && Object.hasOwnProperty.call(message, "ttl"))
+                            if (typeof message.ttl !== "number")
+                                return "ttl: number expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BugMinerBombProjectile message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BugMinerBombProjectile} BugMinerBombProjectile
+                     */
+                    BugMinerBombProjectile.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BugMinerBombProjectile)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.BugMinerBombProjectile: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.BugMinerBombProjectile();
+                        if (object.id != null)
+                            message.id = String(object.id);
+                        if (object.ownerId != null)
+                            if ($util.Long)
+                                message.ownerId = $util.Long.fromValue(object.ownerId, true);
+                            else if (typeof object.ownerId === "string")
+                                message.ownerId = parseInt(object.ownerId, 10);
+                            else if (typeof object.ownerId === "number")
+                                message.ownerId = object.ownerId;
+                            else if (typeof object.ownerId === "object")
+                                message.ownerId = new $util.LongBits(object.ownerId.low >>> 0, object.ownerId.high >>> 0).toNumber(true);
+                        if (object.targetPlayerId != null)
+                            if ($util.Long)
+                                message.targetPlayerId = $util.Long.fromValue(object.targetPlayerId, true);
+                            else if (typeof object.targetPlayerId === "string")
+                                message.targetPlayerId = parseInt(object.targetPlayerId, 10);
+                            else if (typeof object.targetPlayerId === "number")
+                                message.targetPlayerId = object.targetPlayerId;
+                            else if (typeof object.targetPlayerId === "object")
+                                message.targetPlayerId = new $util.LongBits(object.targetPlayerId.low >>> 0, object.targetPlayerId.high >>> 0).toNumber(true);
+                        if (object.x != null)
+                            message.x = Number(object.x);
+                        if (object.y != null)
+                            message.y = Number(object.y);
+                        if (object.vx != null)
+                            message.vx = Number(object.vx);
+                        if (object.vy != null)
+                            message.vy = Number(object.vy);
+                        if (object.ttl != null)
+                            message.ttl = Number(object.ttl);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a BugMinerBombProjectile message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @static
+                     * @param {com.triforge.protocol.proto.BugMinerBombProjectile} message BugMinerBombProjectile
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BugMinerBombProjectile.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.id = "";
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.ownerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.ownerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.targetPlayerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.targetPlayerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.x = 0;
+                            object.y = 0;
+                            object.vx = 0;
+                            object.vy = 0;
+                            object.ttl = 0;
+                        }
+                        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                            object.id = message.id;
+                        if (message.ownerId != null && Object.hasOwnProperty.call(message, "ownerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.ownerId = typeof message.ownerId === "number" ? BigInt(message.ownerId) : $util.Long.fromBits(message.ownerId.low >>> 0, message.ownerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.ownerId === "number")
+                                object.ownerId = options.longs === String ? String(message.ownerId) : message.ownerId;
+                            else
+                                object.ownerId = options.longs === String ? $util.Long.prototype.toString.call(message.ownerId) : options.longs === Number ? new $util.LongBits(message.ownerId.low >>> 0, message.ownerId.high >>> 0).toNumber(true) : message.ownerId;
+                        if (message.targetPlayerId != null && Object.hasOwnProperty.call(message, "targetPlayerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.targetPlayerId = typeof message.targetPlayerId === "number" ? BigInt(message.targetPlayerId) : $util.Long.fromBits(message.targetPlayerId.low >>> 0, message.targetPlayerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.targetPlayerId === "number")
+                                object.targetPlayerId = options.longs === String ? String(message.targetPlayerId) : message.targetPlayerId;
+                            else
+                                object.targetPlayerId = options.longs === String ? $util.Long.prototype.toString.call(message.targetPlayerId) : options.longs === Number ? new $util.LongBits(message.targetPlayerId.low >>> 0, message.targetPlayerId.high >>> 0).toNumber(true) : message.targetPlayerId;
+                        if (message.x != null && Object.hasOwnProperty.call(message, "x"))
+                            object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
+                        if (message.y != null && Object.hasOwnProperty.call(message, "y"))
+                            object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
+                        if (message.vx != null && Object.hasOwnProperty.call(message, "vx"))
+                            object.vx = options.json && !isFinite(message.vx) ? String(message.vx) : message.vx;
+                        if (message.vy != null && Object.hasOwnProperty.call(message, "vy"))
+                            object.vy = options.json && !isFinite(message.vy) ? String(message.vy) : message.vy;
+                        if (message.ttl != null && Object.hasOwnProperty.call(message, "ttl"))
+                            object.ttl = options.json && !isFinite(message.ttl) ? String(message.ttl) : message.ttl;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this BugMinerBombProjectile to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BugMinerBombProjectile.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BugMinerBombProjectile
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BugMinerBombProjectile
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BugMinerBombProjectile.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BugMinerBombProjectile";
+                    };
+
+                    return BugMinerBombProjectile;
+                })();
+
                 proto.BugMinerBattleState = (function() {
 
                     /**
@@ -25046,6 +25553,9 @@ export const com = $root.com = (() => {
                      * @property {string|null} [endReason] BugMinerBattleState endReason
                      * @property {number|null} [strengthBuffA] BugMinerBattleState strengthBuffA
                      * @property {number|null} [strengthBuffB] BugMinerBattleState strengthBuffB
+                     * @property {number|null} [bombCooldownA] BugMinerBattleState bombCooldownA
+                     * @property {number|null} [bombCooldownB] BugMinerBattleState bombCooldownB
+                     * @property {Array.<com.triforge.protocol.proto.IBugMinerBombProjectile>|null} [bombs] BugMinerBattleState bombs
                      */
 
                     /**
@@ -25058,6 +25568,7 @@ export const com = $root.com = (() => {
                      */
                     function BugMinerBattleState(properties) {
                         this.items = [];
+                        this.bombs = [];
                         if (properties)
                             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                                 if (properties[keys[i]] != null && keys[i] !== "__proto__")
@@ -25193,6 +25704,30 @@ export const com = $root.com = (() => {
                     BugMinerBattleState.prototype.strengthBuffB = 0;
 
                     /**
+                     * BugMinerBattleState bombCooldownA.
+                     * @member {number} bombCooldownA
+                     * @memberof com.triforge.protocol.proto.BugMinerBattleState
+                     * @instance
+                     */
+                    BugMinerBattleState.prototype.bombCooldownA = 0;
+
+                    /**
+                     * BugMinerBattleState bombCooldownB.
+                     * @member {number} bombCooldownB
+                     * @memberof com.triforge.protocol.proto.BugMinerBattleState
+                     * @instance
+                     */
+                    BugMinerBattleState.prototype.bombCooldownB = 0;
+
+                    /**
+                     * BugMinerBattleState bombs.
+                     * @member {Array.<com.triforge.protocol.proto.IBugMinerBombProjectile>} bombs
+                     * @memberof com.triforge.protocol.proto.BugMinerBattleState
+                     * @instance
+                     */
+                    BugMinerBattleState.prototype.bombs = $util.emptyArray;
+
+                    /**
                      * Creates a new BugMinerBattleState instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.BugMinerBattleState
@@ -25253,6 +25788,13 @@ export const com = $root.com = (() => {
                             writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.strengthBuffA);
                         if (message.strengthBuffB != null && Object.hasOwnProperty.call(message, "strengthBuffB"))
                             writer.uint32(/* id 16, wireType 0 =*/128).uint32(message.strengthBuffB);
+                        if (message.bombCooldownA != null && Object.hasOwnProperty.call(message, "bombCooldownA"))
+                            writer.uint32(/* id 17, wireType 0 =*/136).uint32(message.bombCooldownA);
+                        if (message.bombCooldownB != null && Object.hasOwnProperty.call(message, "bombCooldownB"))
+                            writer.uint32(/* id 18, wireType 0 =*/144).uint32(message.bombCooldownB);
+                        if (message.bombs != null && message.bombs.length)
+                            for (let i = 0; i < message.bombs.length; ++i)
+                                $root.com.triforge.protocol.proto.BugMinerBombProjectile.encode(message.bombs[i], writer.uint32(/* id 19, wireType 2 =*/154).fork(), q + 1).ldelim();
                         return writer;
                     };
 
@@ -25359,6 +25901,20 @@ export const com = $root.com = (() => {
                                     message.strengthBuffB = reader.uint32();
                                     break;
                                 }
+                            case 17: {
+                                    message.bombCooldownA = reader.uint32();
+                                    break;
+                                }
+                            case 18: {
+                                    message.bombCooldownB = reader.uint32();
+                                    break;
+                                }
+                            case 19: {
+                                    if (!(message.bombs && message.bombs.length))
+                                        message.bombs = [];
+                                    message.bombs.push($root.com.triforge.protocol.proto.BugMinerBombProjectile.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
                             default:
                                 reader.skipType(tag & 7, long);
                                 break;
@@ -25456,6 +26012,21 @@ export const com = $root.com = (() => {
                         if (message.strengthBuffB != null && Object.hasOwnProperty.call(message, "strengthBuffB"))
                             if (!$util.isInteger(message.strengthBuffB))
                                 return "strengthBuffB: integer expected";
+                        if (message.bombCooldownA != null && Object.hasOwnProperty.call(message, "bombCooldownA"))
+                            if (!$util.isInteger(message.bombCooldownA))
+                                return "bombCooldownA: integer expected";
+                        if (message.bombCooldownB != null && Object.hasOwnProperty.call(message, "bombCooldownB"))
+                            if (!$util.isInteger(message.bombCooldownB))
+                                return "bombCooldownB: integer expected";
+                        if (message.bombs != null && Object.hasOwnProperty.call(message, "bombs")) {
+                            if (!Array.isArray(message.bombs))
+                                return "bombs: array expected";
+                            for (let i = 0; i < message.bombs.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.BugMinerBombProjectile.verify(message.bombs[i], long + 1);
+                                if (error)
+                                    return "bombs." + error;
+                            }
+                        }
                         return null;
                     };
 
@@ -25544,6 +26115,20 @@ export const com = $root.com = (() => {
                             message.strengthBuffA = object.strengthBuffA >>> 0;
                         if (object.strengthBuffB != null)
                             message.strengthBuffB = object.strengthBuffB >>> 0;
+                        if (object.bombCooldownA != null)
+                            message.bombCooldownA = object.bombCooldownA >>> 0;
+                        if (object.bombCooldownB != null)
+                            message.bombCooldownB = object.bombCooldownB >>> 0;
+                        if (object.bombs) {
+                            if (!Array.isArray(object.bombs))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerBattleState.bombs: array expected");
+                            message.bombs = [];
+                            for (let i = 0; i < object.bombs.length; ++i) {
+                                if (!$util.isObject(object.bombs[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.BugMinerBattleState.bombs: object expected");
+                                message.bombs[i] = $root.com.triforge.protocol.proto.BugMinerBombProjectile.fromObject(object.bombs[i], long + 1);
+                            }
+                        }
                         return message;
                     };
 
@@ -25564,8 +26149,10 @@ export const com = $root.com = (() => {
                         if (q > $util.recursionLimit)
                             throw Error("max depth exceeded");
                         let object = {};
-                        if (options.arrays || options.defaults)
+                        if (options.arrays || options.defaults) {
                             object.items = [];
+                            object.bombs = [];
+                        }
                         if (options.defaults) {
                             object.levelId = "";
                             object.timeLimit = 0;
@@ -25594,6 +26181,8 @@ export const com = $root.com = (() => {
                             object.endReason = "";
                             object.strengthBuffA = 0;
                             object.strengthBuffB = 0;
+                            object.bombCooldownA = 0;
+                            object.bombCooldownB = 0;
                         }
                         if (message.levelId != null && Object.hasOwnProperty.call(message, "levelId"))
                             object.levelId = message.levelId;
@@ -25645,6 +26234,15 @@ export const com = $root.com = (() => {
                             object.strengthBuffA = message.strengthBuffA;
                         if (message.strengthBuffB != null && Object.hasOwnProperty.call(message, "strengthBuffB"))
                             object.strengthBuffB = message.strengthBuffB;
+                        if (message.bombCooldownA != null && Object.hasOwnProperty.call(message, "bombCooldownA"))
+                            object.bombCooldownA = message.bombCooldownA;
+                        if (message.bombCooldownB != null && Object.hasOwnProperty.call(message, "bombCooldownB"))
+                            object.bombCooldownB = message.bombCooldownB;
+                        if (message.bombs && message.bombs.length) {
+                            object.bombs = [];
+                            for (let j = 0; j < message.bombs.length; ++j)
+                                object.bombs[j] = $root.com.triforge.protocol.proto.BugMinerBombProjectile.toObject(message.bombs[j], options, q + 1);
+                        }
                         return object;
                     };
 
@@ -27727,6 +28325,195 @@ export const com = $root.com = (() => {
                     return BMRestartCommand;
                 })();
 
+                proto.BMThrowBombCommand = (function() {
+
+                    /**
+                     * Properties of a BMThrowBombCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IBMThrowBombCommand
+                     */
+
+                    /**
+                     * Constructs a new BMThrowBombCommand.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a BMThrowBombCommand.
+                     * @implements IBMThrowBombCommand
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IBMThrowBombCommand=} [properties] Properties to set
+                     */
+                    function BMThrowBombCommand(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Creates a new BMThrowBombCommand instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.BMThrowBombCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMThrowBombCommand=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.BMThrowBombCommand} BMThrowBombCommand instance
+                     */
+                    BMThrowBombCommand.create = function create(properties) {
+                        return new BMThrowBombCommand(properties);
+                    };
+
+                    /**
+                     * Encodes the specified BMThrowBombCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMThrowBombCommand.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.BMThrowBombCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMThrowBombCommand} message BMThrowBombCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMThrowBombCommand.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified BMThrowBombCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMThrowBombCommand.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMThrowBombCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.IBMThrowBombCommand} message BMThrowBombCommand message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    BMThrowBombCommand.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a BMThrowBombCommand message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.BMThrowBombCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.BMThrowBombCommand} BMThrowBombCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMThrowBombCommand.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.BMThrowBombCommand();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a BMThrowBombCommand message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.BMThrowBombCommand
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.BMThrowBombCommand} BMThrowBombCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    BMThrowBombCommand.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a BMThrowBombCommand message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.BMThrowBombCommand
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    BMThrowBombCommand.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a BMThrowBombCommand message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.BMThrowBombCommand
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.BMThrowBombCommand} BMThrowBombCommand
+                     */
+                    BMThrowBombCommand.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.BMThrowBombCommand)
+                            return object;
+                        return new $root.com.triforge.protocol.proto.BMThrowBombCommand();
+                    };
+
+                    /**
+                     * Creates a plain object from a BMThrowBombCommand message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.BMThrowBombCommand
+                     * @static
+                     * @param {com.triforge.protocol.proto.BMThrowBombCommand} message BMThrowBombCommand
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    BMThrowBombCommand.toObject = function toObject() {
+                        return {};
+                    };
+
+                    /**
+                     * Converts this BMThrowBombCommand to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.BMThrowBombCommand
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    BMThrowBombCommand.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for BMThrowBombCommand
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.BMThrowBombCommand
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    BMThrowBombCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.BMThrowBombCommand";
+                    };
+
+                    return BMThrowBombCommand;
+                })();
+
                 proto.BugMinerMessage = (function() {
 
                     /**
@@ -27743,6 +28530,7 @@ export const com = $root.com = (() => {
                      * @property {com.triforge.protocol.proto.IBMConfigureFairModeCommand|null} [configureFairMode] BugMinerMessage configureFairMode
                      * @property {com.triforge.protocol.proto.IBMPauseCommand|null} [pause] BugMinerMessage pause
                      * @property {com.triforge.protocol.proto.IBMRestartCommand|null} [restart] BugMinerMessage restart
+                     * @property {com.triforge.protocol.proto.IBMThrowBombCommand|null} [throwBomb] BugMinerMessage throwBomb
                      */
 
                     /**
@@ -27840,17 +28628,25 @@ export const com = $root.com = (() => {
                      */
                     BugMinerMessage.prototype.restart = null;
 
+                    /**
+                     * BugMinerMessage throwBomb.
+                     * @member {com.triforge.protocol.proto.IBMThrowBombCommand|null|undefined} throwBomb
+                     * @memberof com.triforge.protocol.proto.BugMinerMessage
+                     * @instance
+                     */
+                    BugMinerMessage.prototype.throwBomb = null;
+
                     // OneOf field names bound to virtual getters and setters
                     let $oneOfFields;
 
                     /**
                      * BugMinerMessage content.
-                     * @member {"setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board"|"configureFairMode"|"pause"|"restart"|undefined} content
+                     * @member {"setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board"|"configureFairMode"|"pause"|"restart"|"throwBomb"|undefined} content
                      * @memberof com.triforge.protocol.proto.BugMinerMessage
                      * @instance
                      */
                     Object.defineProperty(BugMinerMessage.prototype, "content", {
-                        get: $util.oneOfGetter($oneOfFields = ["setLevel", "setTimeLimit", "placeItem", "autoArrange", "lockMap", "fireHook", "board", "configureFairMode", "pause", "restart"]),
+                        get: $util.oneOfGetter($oneOfFields = ["setLevel", "setTimeLimit", "placeItem", "autoArrange", "lockMap", "fireHook", "board", "configureFairMode", "pause", "restart", "throwBomb"]),
                         set: $util.oneOfSetter($oneOfFields)
                     });
 
@@ -27902,6 +28698,8 @@ export const com = $root.com = (() => {
                             $root.com.triforge.protocol.proto.BMPauseCommand.encode(message.pause, writer.uint32(/* id 9, wireType 2 =*/74).fork(), q + 1).ldelim();
                         if (message.restart != null && Object.hasOwnProperty.call(message, "restart"))
                             $root.com.triforge.protocol.proto.BMRestartCommand.encode(message.restart, writer.uint32(/* id 10, wireType 2 =*/82).fork(), q + 1).ldelim();
+                        if (message.throwBomb != null && Object.hasOwnProperty.call(message, "throwBomb"))
+                            $root.com.triforge.protocol.proto.BMThrowBombCommand.encode(message.throwBomb, writer.uint32(/* id 11, wireType 2 =*/90).fork(), q + 1).ldelim();
                         return writer;
                     };
 
@@ -27980,6 +28778,10 @@ export const com = $root.com = (() => {
                                 }
                             case 10: {
                                     message.restart = $root.com.triforge.protocol.proto.BMRestartCommand.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 11: {
+                                    message.throwBomb = $root.com.triforge.protocol.proto.BMThrowBombCommand.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 }
                             default:
@@ -28120,6 +28922,16 @@ export const com = $root.com = (() => {
                                     return "restart." + error;
                             }
                         }
+                        if (message.throwBomb != null && Object.hasOwnProperty.call(message, "throwBomb")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.BMThrowBombCommand.verify(message.throwBomb, long + 1);
+                                if (error)
+                                    return "throwBomb." + error;
+                            }
+                        }
                         return null;
                     };
 
@@ -28191,6 +29003,11 @@ export const com = $root.com = (() => {
                                 throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.restart: object expected");
                             message.restart = $root.com.triforge.protocol.proto.BMRestartCommand.fromObject(object.restart, long + 1);
                         }
+                        if (object.throwBomb != null) {
+                            if (!$util.isObject(object.throwBomb))
+                                throw TypeError(".com.triforge.protocol.proto.BugMinerMessage.throwBomb: object expected");
+                            message.throwBomb = $root.com.triforge.protocol.proto.BMThrowBombCommand.fromObject(object.throwBomb, long + 1);
+                        }
                         return message;
                     };
 
@@ -28260,6 +29077,11 @@ export const com = $root.com = (() => {
                             object.restart = $root.com.triforge.protocol.proto.BMRestartCommand.toObject(message.restart, options, q + 1);
                             if (options.oneofs)
                                 object.content = "restart";
+                        }
+                        if (message.throwBomb != null && Object.hasOwnProperty.call(message, "throwBomb")) {
+                            object.throwBomb = $root.com.triforge.protocol.proto.BMThrowBombCommand.toObject(message.throwBomb, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "throwBomb";
                         }
                         return object;
                     };

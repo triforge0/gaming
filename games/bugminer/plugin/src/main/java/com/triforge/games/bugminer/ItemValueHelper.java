@@ -9,6 +9,7 @@ final class ItemValueHelper {
     private ItemValueHelper() {}
 
     static float pickScale(BugMinerItemType type, String seed) {
+        if (type == BugMinerItemType.BM_ITEM_BEDROCK) return 2.2f;
         if (!hasVariableSize(type)) return 1f;
         SeededRng rng = new SeededRng("scale:" + seed);
         float roll = rng.next();

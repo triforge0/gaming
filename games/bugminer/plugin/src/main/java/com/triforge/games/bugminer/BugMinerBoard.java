@@ -158,6 +158,12 @@ public class BugMinerBoard {
         return c != null && c.fireHook(playerId);
     }
 
+    public boolean throwBomb(long playerId) {
+        if (paused || !isGameplayActive()) return false;
+        if (battleArena != null) return battleArena.throwBomb(playerId);
+        return false;
+    }
+
     public void setPaused(boolean value) {
         this.paused = value;
     }

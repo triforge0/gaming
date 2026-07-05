@@ -54,10 +54,15 @@ final class MapLayoutEngine {
             ChallengeInstance temp = new ChallengeInstance(1, 2, levelId);
             List<PlacedItem> items = new ArrayList<>(temp.copyItemsLayout());
             if (arrangeBattleInPlace(items, rng)) {
+                BattleBedrockSpawner.injectIntoLayout(items, roomSeed, levelId);
+                BattleLootDrift.applyToLayout(items, new SeededRng("drift:" + roomSeed + ":" + levelId));
                 return copyLayout(items);
             }
         }
-        return new ChallengeInstance(1, 2, levelId).copyItemsLayout();
+        List<PlacedItem> fallback = new ChallengeInstance(1, 2, levelId).copyItemsLayout();
+        BattleBedrockSpawner.injectIntoLayout(fallback, roomSeed, levelId);
+        BattleLootDrift.applyToLayout(fallback, new SeededRng("drift:" + roomSeed + ":" + levelId));
+        return fallback;
     }
 
     private static boolean arrangeFairInPlace(List<PlacedItem> items, SeededRng rng) {

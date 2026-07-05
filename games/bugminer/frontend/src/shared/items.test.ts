@@ -20,6 +20,7 @@ const ALL_TYPES: ItemType[] = [
   'mouse',
   'pig',
   'strengthDrink',
+  'bedrock',
 ];
 
 describe('Items (GDD §3)', () => {
@@ -27,6 +28,8 @@ describe('Items (GDD §3)', () => {
     expect(Object.keys(ITEM_DEFINITIONS).sort()).toEqual([...ALL_TYPES].sort());
     expect(ITEM_DEFINITIONS.poison.label).toBe('Bẫy chuột');
     expect(ITEM_DEFINITIONS.strengthDrink.label).toBe('Nước tăng lực');
+    expect(ITEM_DEFINITIONS.bedrock.label).toBe('Đá tảng');
+    expect(ITEM_DEFINITIONS.bedrock.weight).toBe(14);
     expect(ITEM_DEFINITIONS.mouse.moving).toBe(true);
     expect(ITEM_DEFINITIONS.pig.moving).toBe(true);
   });
@@ -41,6 +44,7 @@ describe('Items (GDD §3)', () => {
     ['mouse', 40, 0.6],
     ['pig', 120, 2.2],
     ['strengthDrink', 0, 0.5],
+    ['bedrock', 0, 14],
   ] as const)('%s has base value=%i weight=%s', (type, value, weight) => {
     expect(ITEM_DEFINITIONS[type].value).toBe(value);
     expect(ITEM_DEFINITIONS[type].weight).toBe(weight);

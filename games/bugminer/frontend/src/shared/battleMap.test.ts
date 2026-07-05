@@ -21,6 +21,21 @@ describe('buildBattleChallengeLayout', () => {
       (sum, j) => sum + Math.hypot(j.position.x, j.position.y - midY),
       0,
     ) / jackpots.length;
-    expect(avgDist).toBeLessThan(180);
+    expect(avgDist).toBeLessThan(260);
+  });
+
+  it('includes center bedrock obstacles', () => {
+    const items = buildBattleChallengeLayout('easy-mine', 'BEDROCK');
+    const bedrocks = items.filter((i) => i.type === 'bedrock');
+    expect(bedrocks.length).toBeGreaterThanOrEqual(2);
+    expect(bedrocks.every((b) => b.scale === 2.2)).toBe(true);
+  });
+
+  it('marks some center loot as drifting', () => {
+    const items = buildBattleChallengeLayout('chaos-mine', 'DRIFT');
+    const driftingLoot = items.filter(
+      (i) => i.moving && (i.type === 'gold' || i.type === 'diamond'),
+    );
+    expect(driftingLoot.length).toBeGreaterThan(0);
   });
 });

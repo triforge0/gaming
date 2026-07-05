@@ -1100,6 +1100,42 @@ input {
   letter-spacing: 0.5px;
 }
 
+.battle-hud-bomb {
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.battle-hud-bomb.ready {
+  color: #ffeb3b;
+  border: 1px solid #ff9800;
+}
+
+.battle-hud-bomb.cooldown {
+  color: #bbb;
+  opacity: 0.75;
+}
+
+.battle-bomb-btn {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 20;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  border: 2px solid #ff5722;
+  background: rgba(40, 20, 10, 0.85);
+  color: #ffeb3b;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.battle-bomb-btn:hover {
+  background: rgba(80, 30, 10, 0.9);
+}
+
 .battle-hud-hint {
   font-size: 0.65rem;
   color: #3d2b1f;

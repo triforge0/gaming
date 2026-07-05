@@ -1,4 +1,6 @@
 import { applyBattleJackpotScales, autoArrangeBattleInPlace, BATTLE_JACKPOT_TYPES } from './battleArrange';
+import { injectBattleBedrock } from './battleBedrock';
+import { applyBattleLootDrift } from './battleDrift';
 import { autoArrangeItemsInPlace } from './autoArrange';
 import { createAnimalVelocity, ITEM_DEFINITIONS, pickItemScale } from './items';
 import { createDefaultItems } from './levels';
@@ -48,10 +50,13 @@ export function buildBattleChallengeLayout(levelId: string, roomSeed: string): P
     applyBattleJackpotScales(items, rng);
 
     if (autoArrangeBattleInPlace(items, rng)) {
+      injectBattleBedrock(items, roomSeed, levelId);
+      applyBattleLootDrift(items, roomSeed);
       return items.map((item) => ({
         ...item,
         position: { ...item.position },
         velocity: item.velocity ? { ...item.velocity } : undefined,
+        moving: item.moving,
       }));
     }
   }
@@ -63,10 +68,13 @@ export function buildBattleChallengeLayout(levelId: string, roomSeed: string): P
     throw new Error('Không thể sắp xếp map Battle mode.');
   }
   nudgeJackpotsToCenter(items, rng);
+  injectBattleBedrock(items, roomSeed, levelId);
+  applyBattleLootDrift(items, roomSeed);
 
   return items.map((item) => ({
     ...item,
     position: { ...item.position },
     velocity: item.velocity ? { ...item.velocity } : undefined,
+    moving: item.moving,
   }));
 }

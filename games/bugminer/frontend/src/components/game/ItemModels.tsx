@@ -81,6 +81,30 @@ export function RockModel({ def, onPointerDown }: ModelProps) {
   );
 }
 
+export function BedrockModel({ def, onPointerDown }: ModelProps) {
+  const r = def.radius;
+  return (
+    <group onPointerDown={onPointerDown}>
+      <mesh castShadow>
+        <dodecahedronGeometry args={[r * 0.95, 0]} />
+        <meshStandardMaterial color="#3e3e3e" roughness={1} metalness={0.02} />
+      </mesh>
+      <mesh castShadow position={[r * 0.55, r * 0.15, r * 0.2]}>
+        <dodecahedronGeometry args={[r * 0.5, 0]} />
+        <meshStandardMaterial color="#525252" roughness={0.98} />
+      </mesh>
+      <mesh castShadow position={[-r * 0.45, -r * 0.1, -r * 0.15]}>
+        <dodecahedronGeometry args={[r * 0.42, 0]} />
+        <meshStandardMaterial color="#616161" roughness={1} />
+      </mesh>
+      <mesh position={[0, -r * 0.35, 0]}>
+        <cylinderGeometry args={[r * 0.7, r * 0.85, r * 0.2, 10]} />
+        <meshStandardMaterial color="#2e2e2e" roughness={1} />
+      </mesh>
+    </group>
+  );
+}
+
 export function MysteryBagModel({ def, onPointerDown }: ModelProps) {
   const r = def.radius;
   return (
@@ -421,6 +445,8 @@ export function renderItemModel(
       return <DiamondModel {...props} />;
     case 'rock':
       return <RockModel {...props} />;
+    case 'bedrock':
+      return <BedrockModel {...props} />;
     case 'mysteryBag':
       return <MysteryBagModel {...props} />;
     case 'poison':
@@ -442,6 +468,8 @@ export function getHighlightScale(type: ItemType): number {
       return 1.2;
     case 'poison':
       return 1.15;
+    case 'bedrock':
+      return 1.35;
     case 'pig':
       return 1.2;
     case 'mouse':

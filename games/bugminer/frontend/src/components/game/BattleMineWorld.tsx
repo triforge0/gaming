@@ -13,6 +13,7 @@ import {
 import { gameYToWorldY, MINER_Y } from '../../constants/scene';
 import BattleHook from './BattleHook';
 import BattleMinerCart from './BattleMinerCart';
+import BattleBomb from './BattleBomb';
 import MineItem from './MineItem';
 
 interface Props {
@@ -20,6 +21,7 @@ interface Props {
   items: PlacedItem[];
   hookA: HookData;
   hookB: HookData;
+  bombs?: import('../../shared').BombProjectileState[];
   phase: string;
 }
 
@@ -36,6 +38,7 @@ export default function BattleMineWorld({
   items,
   hookA,
   hookB,
+  bombs = [],
   phase,
 }: Props) {
   const tune = THEME_TUNING[theme];
@@ -111,11 +114,14 @@ export default function BattleMineWorld({
         </>
       )}
 
+      <BattleBomb bombs={bombs} />
+
       {visibleItems.map((item) => (
         <MineItem
           key={item.id}
           item={item}
           hookAttached={hookA.attachedItemId === item.id || hookB.attachedItemId === item.id}
+          moving={item.moving}
         />
       ))}
     </>

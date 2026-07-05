@@ -8,6 +8,10 @@ final class GameConstants {
     static final float HOOK_ANGLE_MIN = (float) (-Math.PI * 0.85);
     static final float HOOK_ANGLE_MAX = (float) (Math.PI * 0.85);
     static final float HOOK_CLASH_RADIUS = 32f;
+    static final float BOMB_COOLDOWN = 10f;
+    static final float BOMB_TTL = 1.2f;
+    static final float BOMB_SPEED = 420f;
+    static final float BOMB_HIT_RADIUS = 48f;
     static final float STRENGTH_BUFF_DURATION = 15f;
     static final float STRENGTH_BUFF_MULTIPLIER = 2.5f;
 

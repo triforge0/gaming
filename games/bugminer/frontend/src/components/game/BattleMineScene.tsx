@@ -30,6 +30,7 @@ export default function BattleMineScene({ battle, phase }: Props) {
           items={battle.items}
           hookA={battle.hookA}
           hookB={battle.hookB}
+          bombs={battle.bombs}
           phase={phase}
         />
       </Suspense>

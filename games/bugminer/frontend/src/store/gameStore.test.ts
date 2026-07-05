@@ -143,6 +143,9 @@ describe('gameStore — Screen routing (mode flows)', () => {
         endReason: null,
         strengthBuffA: 0,
         strengthBuffB: 0,
+        bombCooldownA: 0,
+        bombCooldownB: 0,
+        bombs: [],
       },
     }));
     expect(useGameStore.getState().screen).toBe('game');
