@@ -90,6 +90,9 @@ describe('challenge helpers — designerId based lookup', () => {
         endReason: null,
         strengthBuffA: 0,
         strengthBuffB: 0,
+        bombCooldownA: 0,
+        bombCooldownB: 0,
+        bombs: [],
       },
     };
 

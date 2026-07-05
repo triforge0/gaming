@@ -11,6 +11,12 @@ final class MapLayoutEngine {
 
     private MapLayoutEngine() {}
 
+    static boolean autoArrangeInPlace(List<PlacedItem> items, long seed) {
+        resetPositions(items);
+        SeededRng rng = new SeededRng("free-auto:" + seed);
+        return placeInterleaved(new ArrayList<>(items), items, rng, 0);
+    }
+
     static boolean isValidPlacement(String itemId, float x, float y, List<PlacedItem> items) {
         if (x < GameConstants.SETUP_MIN_X || x > GameConstants.SETUP_MAX_X
                 || y < GameConstants.SETUP_MIN_Y || y > GameConstants.SETUP_MAX_Y) {
@@ -48,10 +54,15 @@ final class MapLayoutEngine {
             ChallengeInstance temp = new ChallengeInstance(1, 2, levelId);
             List<PlacedItem> items = new ArrayList<>(temp.copyItemsLayout());
             if (arrangeBattleInPlace(items, rng)) {
+                BattleBedrockSpawner.injectIntoLayout(items, roomSeed, levelId);
+                BattleLootDrift.applyToLayout(items, new SeededRng("drift:" + roomSeed + ":" + levelId));
                 return copyLayout(items);
             }
         }
-        return new ChallengeInstance(1, 2, levelId).copyItemsLayout();
+        List<PlacedItem> fallback = new ChallengeInstance(1, 2, levelId).copyItemsLayout();
+        BattleBedrockSpawner.injectIntoLayout(fallback, roomSeed, levelId);
+        BattleLootDrift.applyToLayout(fallback, new SeededRng("drift:" + roomSeed + ":" + levelId));
+        return fallback;
     }
 
     private static boolean arrangeFairInPlace(List<PlacedItem> items, SeededRng rng) {
@@ -230,17 +241,25 @@ final class MapLayoutEngine {
 
     private static List<Vec2> mixedGridCandidates(SeededRng rng) {
         List<Vec2> candidates = new ArrayList<>();
-        int cols = 16;
-        float colSpacing = 72f;
-        float rowSpacing = 44f;
-        float startX = GameConstants.SETUP_MIN_X + 24f;
-        float startY = GameConstants.SETUP_MIN_Y + 6f;
-        for (int row = 0; row < 12; row++) {
-            for (int col = 0; col < cols; col++) {
-                float x = startX + col * colSpacing;
-                float y = startY + row * rowSpacing;
-                if (x <= GameConstants.SETUP_MAX_X - 20f && y <= GameConstants.SETUP_MAX_Y - 20f) {
-                    candidates.add(new Vec2(x, y));
+        int rows = 17;
+        int cols = 15;
+        float innerW = GameConstants.SETUP_MAX_X - GameConstants.SETUP_MIN_X - 40f;
+        float innerH = GameConstants.SETUP_MAX_Y - GameConstants.SETUP_MIN_Y - 12f;
+        for (int row = 0; row < rows; row++) {
+            float ty = rows <= 1 ? 0.5f : row / (float) (rows - 1);
+            float y = GameConstants.SETUP_MIN_Y + 6f + ty * innerH;
+            int[] colOrder = new int[cols];
+            for (int i = 0; i < cols; i++) {
+                colOrder[i] = row % 2 == 0 ? i : cols - 1 - i;
+            }
+            for (int col : colOrder) {
+                float tx = cols <= 1 ? 0.5f : col / (float) (cols - 1);
+                float x = GameConstants.SETUP_MIN_X + 20f + tx * innerW;
+                x += (rng.next() - 0.5f) * 10f;
+                float jitterY = y + (rng.next() - 0.5f) * 8f;
+                if (x >= GameConstants.SETUP_MIN_X && x <= GameConstants.SETUP_MAX_X
+                        && jitterY >= GameConstants.SETUP_MIN_Y && jitterY <= GameConstants.SETUP_MAX_Y) {
+                    candidates.add(new Vec2(x, jitterY));
                 }
             }
         }

@@ -22,11 +22,21 @@ export default function BattleGameScreen({ socket }: Props) {
     }
   }, [gameState?.phase, socket]);
 
+  const handleThrowBomb = useCallback(() => {
+    if (gameState?.phase === 'playing') {
+      socket.throwBomb();
+    }
+  }, [gameState?.phase, socket]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.code === 'Space' || e.code === 'Enter') {
         e.preventDefault();
         handleFire();
+      }
+      if (e.code === 'KeyB') {
+        e.preventDefault();
+        handleThrowBomb();
       }
       if (e.code === 'KeyP') {
         const paused = !useGameStore.getState().isPaused;
@@ -36,7 +46,7 @@ export default function BattleGameScreen({ socket }: Props) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [handleFire, socket]);
+  }, [handleFire, handleThrowBomb, socket]);
 
   if (!gameState || !playerId || !gameState.battle) {
     return (
@@ -97,9 +107,15 @@ export default function BattleGameScreen({ socket }: Props) {
           )}
         </div>
         {isPlaying && (
-          <p className="dual-panel-hint">Click / Space — thả móc vào vùng chiến giữa map</p>
+          <p className="dual-panel-hint">Click / Space — móc · B — ném bom sang đối thủ</p>
         )}
       </div>
+
+      {isPlaying && (
+        <button type="button" className="battle-bomb-btn" onClick={handleThrowBomb}>
+          💣 Ném bom (B)
+        </button>
+      )}
 
       {isPaused && gameState.phase === 'paused' && (
         <PauseOverlay onResume={() => {

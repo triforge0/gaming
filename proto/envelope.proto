@@ -638,6 +638,7 @@ enum BugMinerItemType {
   BM_ITEM_MOUSE = 7;
   BM_ITEM_PIG = 8;
   BM_ITEM_STRENGTH_DRINK = 9;
+  BM_ITEM_BEDROCK = 10;
 }
 
 enum BugMinerHookState {
@@ -654,6 +655,9 @@ message BugMinerPlacedItem {
   float y = 4;
   bool collected = 5;
   float scale = 6;
+  bool moving = 7;
+  float vx = 8;
+  float vy = 9;
 }
 
 message BugMinerHookData {
@@ -710,6 +714,17 @@ message BugMinerFairModeConfig {
   uint32 timeLimit = 4;
 }
 
+message BugMinerBombProjectile {
+  string id = 1;
+  uint64 ownerId = 2;
+  uint64 targetPlayerId = 3;
+  float x = 4;
+  float y = 5;
+  float vx = 6;
+  float vy = 7;
+  float ttl = 8;
+}
+
 message BugMinerBattleState {
   string levelId = 1;
   uint32 timeLimit = 2;
@@ -727,6 +742,9 @@ message BugMinerBattleState {
   string endReason = 14;
   uint32 strengthBuffA = 15;
   uint32 strengthBuffB = 16;
+  uint32 bombCooldownA = 17;
+  uint32 bombCooldownB = 18;
+  repeated BugMinerBombProjectile bombs = 19;
 }
 
 // Client Commands
@@ -748,6 +766,7 @@ message BMConfigureFairModeCommand {
 }
 message BMPauseCommand { bool paused = 1; }
 message BMRestartCommand {}
+message BMThrowBombCommand {}
 
 message BugMinerMessage {
   oneof content {
@@ -761,6 +780,7 @@ message BugMinerMessage {
     BMConfigureFairModeCommand configureFairMode = 8;
     BMPauseCommand pause = 9;
     BMRestartCommand restart = 10;
+    BMThrowBombCommand throwBomb = 11;
   }
 }
 

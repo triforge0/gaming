@@ -9,7 +9,8 @@ export type ItemType =
   | 'poison'
   | 'mouse'
   | 'pig'
-  | 'strengthDrink';
+  | 'strengthDrink'
+  | 'bedrock';
 
 export type EndReason = 'timeout' | 'target' | 'poison' | null;
 
@@ -35,8 +36,9 @@ export interface PlacedItem {
   collected: boolean;
   /** Visual/collision scale — larger = more points & heavier pull (variable-size items). */
   scale?: number;
-  /** Patrol velocity for moving animals (mouse, pig). */
+  /** Patrol velocity for moving animals or drifting battle loot. */
   velocity?: Vec2;
+  moving?: boolean;
 }
 
 export interface LevelConfig {
@@ -93,6 +95,15 @@ export interface FairModeConfig {
   timeLimit: number;
 }
 
+export interface BombProjectileState {
+  id: string;
+  ownerId: string;
+  targetPlayerId: string;
+  position: Vec2;
+  velocity: Vec2;
+  ttl: number;
+}
+
 export interface BattleArenaState {
   levelId: string;
   timeLimit: number;
@@ -110,6 +121,9 @@ export interface BattleArenaState {
   endReason: EndReason;
   strengthBuffA: number;
   strengthBuffB: number;
+  bombCooldownA: number;
+  bombCooldownB: number;
+  bombs: BombProjectileState[];
 }
 
 export interface GameState {

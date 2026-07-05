@@ -65,6 +65,9 @@ describe('resolveGamePhase', () => {
       endReason: null,
       strengthBuffA: 0,
       strengthBuffB: 0,
+      bombCooldownA: 0,
+      bombCooldownB: 0,
+      bombs: [],
     };
     expect(resolveGamePhase(battleMode, battle, null, null, 3)).toBe('countdown');
     expect(resolveGamePhase(battleMode, battle, null, null, 0)).toBe('playing');

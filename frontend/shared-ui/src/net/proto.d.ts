@@ -7597,7 +7597,8 @@ export namespace com {
                     BM_ITEM_POISON = 6,
                     BM_ITEM_MOUSE = 7,
                     BM_ITEM_PIG = 8,
-                    BM_ITEM_STRENGTH_DRINK = 9
+                    BM_ITEM_STRENGTH_DRINK = 9,
+                    BM_ITEM_BEDROCK = 10
                 }
 
                 /** BugMinerHookState enum. */
@@ -7628,6 +7629,15 @@ export namespace com {
 
                     /** BugMinerPlacedItem scale */
                     scale?: (number|null);
+
+                    /** BugMinerPlacedItem moving */
+                    moving?: (boolean|null);
+
+                    /** BugMinerPlacedItem vx */
+                    vx?: (number|null);
+
+                    /** BugMinerPlacedItem vy */
+                    vy?: (number|null);
                 }
 
                 /** Represents a BugMinerPlacedItem. */
@@ -7656,6 +7666,15 @@ export namespace com {
 
                     /** BugMinerPlacedItem scale. */
                     public scale: number;
+
+                    /** BugMinerPlacedItem moving. */
+                    public moving: boolean;
+
+                    /** BugMinerPlacedItem vx. */
+                    public vx: number;
+
+                    /** BugMinerPlacedItem vy. */
+                    public vy: number;
 
                     /**
                      * Creates a new BugMinerPlacedItem instance using the specified properties.
@@ -8424,6 +8443,145 @@ export namespace com {
                     public static getTypeUrl(typeUrlPrefix?: string): string;
                 }
 
+                /** Properties of a BugMinerBombProjectile. */
+                interface IBugMinerBombProjectile {
+
+                    /** BugMinerBombProjectile id */
+                    id?: (string|null);
+
+                    /** BugMinerBombProjectile ownerId */
+                    ownerId?: (number|Long|null);
+
+                    /** BugMinerBombProjectile targetPlayerId */
+                    targetPlayerId?: (number|Long|null);
+
+                    /** BugMinerBombProjectile x */
+                    x?: (number|null);
+
+                    /** BugMinerBombProjectile y */
+                    y?: (number|null);
+
+                    /** BugMinerBombProjectile vx */
+                    vx?: (number|null);
+
+                    /** BugMinerBombProjectile vy */
+                    vy?: (number|null);
+
+                    /** BugMinerBombProjectile ttl */
+                    ttl?: (number|null);
+                }
+
+                /** Represents a BugMinerBombProjectile. */
+                class BugMinerBombProjectile implements IBugMinerBombProjectile {
+
+                    /**
+                     * Constructs a new BugMinerBombProjectile.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBugMinerBombProjectile);
+
+                    /** BugMinerBombProjectile id. */
+                    public id: string;
+
+                    /** BugMinerBombProjectile ownerId. */
+                    public ownerId: (number|Long);
+
+                    /** BugMinerBombProjectile targetPlayerId. */
+                    public targetPlayerId: (number|Long);
+
+                    /** BugMinerBombProjectile x. */
+                    public x: number;
+
+                    /** BugMinerBombProjectile y. */
+                    public y: number;
+
+                    /** BugMinerBombProjectile vx. */
+                    public vx: number;
+
+                    /** BugMinerBombProjectile vy. */
+                    public vy: number;
+
+                    /** BugMinerBombProjectile ttl. */
+                    public ttl: number;
+
+                    /**
+                     * Creates a new BugMinerBombProjectile instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BugMinerBombProjectile instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBugMinerBombProjectile): com.triforge.protocol.proto.BugMinerBombProjectile;
+
+                    /**
+                     * Encodes the specified BugMinerBombProjectile message. Does not implicitly {@link com.triforge.protocol.proto.BugMinerBombProjectile.verify|verify} messages.
+                     * @param message BugMinerBombProjectile message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBugMinerBombProjectile, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BugMinerBombProjectile message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BugMinerBombProjectile.verify|verify} messages.
+                     * @param message BugMinerBombProjectile message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBugMinerBombProjectile, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BugMinerBombProjectile message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BugMinerBombProjectile
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BugMinerBombProjectile;
+
+                    /**
+                     * Decodes a BugMinerBombProjectile message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BugMinerBombProjectile
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BugMinerBombProjectile;
+
+                    /**
+                     * Verifies a BugMinerBombProjectile message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BugMinerBombProjectile message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BugMinerBombProjectile
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BugMinerBombProjectile;
+
+                    /**
+                     * Creates a plain object from a BugMinerBombProjectile message. Also converts values to other types if specified.
+                     * @param message BugMinerBombProjectile
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BugMinerBombProjectile, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BugMinerBombProjectile to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BugMinerBombProjectile
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
                 /** Properties of a BugMinerBattleState. */
                 interface IBugMinerBattleState {
 
@@ -8474,6 +8632,15 @@ export namespace com {
 
                     /** BugMinerBattleState strengthBuffB */
                     strengthBuffB?: (number|null);
+
+                    /** BugMinerBattleState bombCooldownA */
+                    bombCooldownA?: (number|null);
+
+                    /** BugMinerBattleState bombCooldownB */
+                    bombCooldownB?: (number|null);
+
+                    /** BugMinerBattleState bombs */
+                    bombs?: (com.triforge.protocol.proto.IBugMinerBombProjectile[]|null);
                 }
 
                 /** Represents a BugMinerBattleState. */
@@ -8532,6 +8699,15 @@ export namespace com {
 
                     /** BugMinerBattleState strengthBuffB. */
                     public strengthBuffB: number;
+
+                    /** BugMinerBattleState bombCooldownA. */
+                    public bombCooldownA: number;
+
+                    /** BugMinerBattleState bombCooldownB. */
+                    public bombCooldownB: number;
+
+                    /** BugMinerBattleState bombs. */
+                    public bombs: com.triforge.protocol.proto.IBugMinerBombProjectile[];
 
                     /**
                      * Creates a new BugMinerBattleState instance using the specified properties.
@@ -9490,6 +9666,97 @@ export namespace com {
                     public static getTypeUrl(typeUrlPrefix?: string): string;
                 }
 
+                /** Properties of a BMThrowBombCommand. */
+                interface IBMThrowBombCommand {
+                }
+
+                /** Represents a BMThrowBombCommand. */
+                class BMThrowBombCommand implements IBMThrowBombCommand {
+
+                    /**
+                     * Constructs a new BMThrowBombCommand.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IBMThrowBombCommand);
+
+                    /**
+                     * Creates a new BMThrowBombCommand instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns BMThrowBombCommand instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IBMThrowBombCommand): com.triforge.protocol.proto.BMThrowBombCommand;
+
+                    /**
+                     * Encodes the specified BMThrowBombCommand message. Does not implicitly {@link com.triforge.protocol.proto.BMThrowBombCommand.verify|verify} messages.
+                     * @param message BMThrowBombCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IBMThrowBombCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified BMThrowBombCommand message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.BMThrowBombCommand.verify|verify} messages.
+                     * @param message BMThrowBombCommand message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IBMThrowBombCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a BMThrowBombCommand message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns BMThrowBombCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.BMThrowBombCommand;
+
+                    /**
+                     * Decodes a BMThrowBombCommand message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns BMThrowBombCommand
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.BMThrowBombCommand;
+
+                    /**
+                     * Verifies a BMThrowBombCommand message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a BMThrowBombCommand message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns BMThrowBombCommand
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.BMThrowBombCommand;
+
+                    /**
+                     * Creates a plain object from a BMThrowBombCommand message. Also converts values to other types if specified.
+                     * @param message BMThrowBombCommand
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.BMThrowBombCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this BMThrowBombCommand to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for BMThrowBombCommand
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
                 /** Properties of a BugMinerMessage. */
                 interface IBugMinerMessage {
 
@@ -9522,6 +9789,9 @@ export namespace com {
 
                     /** BugMinerMessage restart */
                     restart?: (com.triforge.protocol.proto.IBMRestartCommand|null);
+
+                    /** BugMinerMessage throwBomb */
+                    throwBomb?: (com.triforge.protocol.proto.IBMThrowBombCommand|null);
                 }
 
                 /** Represents a BugMinerMessage. */
@@ -9563,8 +9833,11 @@ export namespace com {
                     /** BugMinerMessage restart. */
                     public restart?: (com.triforge.protocol.proto.IBMRestartCommand|null);
 
+                    /** BugMinerMessage throwBomb. */
+                    public throwBomb?: (com.triforge.protocol.proto.IBMThrowBombCommand|null);
+
                     /** BugMinerMessage content. */
-                    public content?: ("setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board"|"configureFairMode"|"pause"|"restart");
+                    public content?: ("setLevel"|"setTimeLimit"|"placeItem"|"autoArrange"|"lockMap"|"fireHook"|"board"|"configureFairMode"|"pause"|"restart"|"throwBomb");
 
                     /**
                      * Creates a new BugMinerMessage instance using the specified properties.

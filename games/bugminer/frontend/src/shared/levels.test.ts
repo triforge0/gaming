@@ -55,12 +55,12 @@ describe('Map Generation Rule (GDD §6 — fixed item counts)', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
     const items = createDefaultItems('easy-mine');
     const counts = countByType(items);
-    expect(counts.gold).toBe(12);
-    expect(counts.bigGold).toBe(7);
-    expect(counts.diamond).toBe(3);
-    expect(counts.rock).toBe(10);
-    expect(counts.mysteryBag).toBe(6);
-    expect(counts.poison).toBe(1);
+    expect(counts.gold).toBe(15);
+    expect(counts.bigGold).toBe(9);
+    expect(counts.diamond).toBe(4);
+    expect(counts.rock).toBe(13);
+    expect(counts.mysteryBag).toBe(8);
+    expect(counts.poison).toBe(2);
     expect(counts.mouse).toBeGreaterThanOrEqual(4);
     expect(counts.pig).toBeGreaterThanOrEqual(5);
     expect(counts.strengthDrink).toBeGreaterThanOrEqual(2);

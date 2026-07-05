@@ -103,11 +103,21 @@ export const ITEM_DEFINITIONS: Record<ItemType, ItemDefinition> = {
     radius: 16,
     color: '#FF5722',
   },
+  bedrock: {
+    type: 'bedrock',
+    label: 'Đá tảng',
+    emoji: '🗿',
+    value: 0,
+    weight: 14,
+    radius: 38,
+    color: '#424242',
+  },
 };
 
 export const SIZE_SCALES = [0.75, 1.0, 1.35] as const;
 
 export function pickItemScale(type: ItemType, rng: () => number = Math.random): number {
+  if (type === 'bedrock') return 2.2;
   if (!ITEM_DEFINITIONS[type].variableSize) return 1;
   const roll = rng();
   if (roll < 0.34) return SIZE_SCALES[0];
@@ -141,6 +151,15 @@ export function createAnimalVelocity(seed: number): { x: number; y: number } {
   return {
     x: Math.cos(angle) * speed,
     y: Math.sin(angle) * speed * 0.55,
+  };
+}
+
+export function createDriftVelocity(seed: number): { x: number; y: number } {
+  const speed = 22 + (seed % 10);
+  const angle = ((seed * 31) % 360) * (Math.PI / 180);
+  return {
+    x: Math.cos(angle) * speed,
+    y: Math.sin(angle) * speed * 0.45,
   };
 }
 

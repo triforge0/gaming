@@ -127,6 +127,7 @@ export default function MineWorld({
           highlighted={item.id === selectedItemId}
           draggable={interactive && item.id !== draggingItemId}
           onDragStart={onItemDragStart}
+          hookAttached={hook?.attachedItemId === item.id}
         />
       ))}
 

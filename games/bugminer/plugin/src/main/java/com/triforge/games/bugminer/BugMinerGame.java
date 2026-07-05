@@ -410,6 +410,9 @@ public class BugMinerGame implements Game {
             case FIREHOOK -> {
                 if (board.fireHook(playerId)) broadcastBoardState();
             }
+            case THROWBOMB -> {
+                if (board.throwBomb(playerId)) broadcastBoardState();
+            }
             case PAUSE -> {
                 if (matchPhase.phase() != MatchPhase.PLAYING) break;
                 board.setPaused(bm.getPause().getPaused());

@@ -29,6 +29,7 @@ export default function BattleHUD({
   const myName = isA ? playerAName : playerBName;
   const oppName = isA ? playerBName : playerAName;
   const myBuff = isA ? battle.strengthBuffA : battle.strengthBuffB;
+  const myBombCd = isA ? battle.bombCooldownA : battle.bombCooldownB;
   const danger = battle.timeRemaining <= 15;
 
   return (
@@ -37,6 +38,11 @@ export default function BattleHUD({
         <span className="battle-hud-name">{myName} (You)</span>
         <span className="battle-hud-score">{myScore}</span>
         {myBuff > 0 && <span className="battle-hud-buff">💪 {myBuff}s</span>}
+        {phase === 'playing' && (
+          <span className={`battle-hud-bomb ${myBombCd > 0 ? 'cooldown' : 'ready'}`}>
+            💣 {myBombCd > 0 ? `${myBombCd}s` : 'B'}
+          </span>
+        )}
       </div>
 
       <div className="battle-hud-center">
@@ -46,7 +52,7 @@ export default function BattleHUD({
         </span>
         <span className="battle-hud-mode">⚔️ BATTLE · {level.name}</span>
         {phase === 'playing' && (
-          <span className="battle-hud-hint">Va chạm móc = mất lượt · Gắm vào vật đối thủ đang kéo = cướp</span>
+          <span className="battle-hud-hint">Space: móc · B: bom · Va chạm móc = mất lượt · Cướp vật đang kéo = steal</span>
         )}
       </div>
 
