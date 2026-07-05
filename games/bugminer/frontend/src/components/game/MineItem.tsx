@@ -11,6 +11,7 @@ interface Props {
   highlighted?: boolean;
   draggable?: boolean;
   onDragStart?: (itemId: string) => void;
+  hookAttached?: boolean;
 }
 
 function SparkleRing({ radius, color, speed = 1 }: { radius: number; color: string; speed?: number }) {
@@ -42,7 +43,7 @@ function SparkleRing({ radius, color, speed = 1 }: { radius: number; color: stri
   );
 }
 
-export default function MineItem({ item, highlighted, draggable, onDragStart }: Props) {
+export default function MineItem({ item, highlighted, draggable, onDragStart, hookAttached }: Props) {
   const groupRef = useRef<THREE.Group>(null);
   const animRef = useRef<THREE.Group>(null);
   const def = ITEM_DEFINITIONS[item.type];
@@ -57,10 +58,10 @@ export default function MineItem({ item, highlighted, draggable, onDragStart }: 
   useFrame(({ clock }) => {
     const t = clock.elapsedTime + seed * 0.01;
     if (groupRef.current) {
-      const bob = Math.sin(t * 2.2) * 3;
+      const bob = hookAttached ? 0 : Math.sin(t * 2.2) * 3;
       groupRef.current.position.y = gameYToWorldY(item.position.y) + bob;
     }
-    if (!animRef.current) return;
+    if (!animRef.current || hookAttached) return;
 
     switch (item.type) {
       case 'gold':

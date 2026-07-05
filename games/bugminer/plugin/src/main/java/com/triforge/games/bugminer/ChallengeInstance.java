@@ -50,53 +50,54 @@ public class ChallengeInstance {
         if (levelId.equals("easy-mine")) {
             target = 800;
             time = 90;
-            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 12);
-            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 7);
-            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 3);
-            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 10);
-            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 6);
-            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 1);
+            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 15);
+            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 9);
+            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 4);
+            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 13);
+            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 8);
+            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 2);
         } else if (levelId.equals("rock-mine")) {
             target = 1000;
             time = 80;
-            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 10);
-            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 7);
-            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 2);
-            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 22);
-            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 6);
-            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 2);
+            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 13);
+            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 9);
+            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 3);
+            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 28);
+            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 8);
+            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 3);
         } else if (levelId.equals("diamond-cave")) {
             target = 1200;
             time = 75;
-            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 10);
-            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 5);
-            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 2);
-            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 20);
-            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 6);
-            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 3);
+            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 13);
+            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 7);
+            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 3);
+            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 25);
+            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 8);
+            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 4);
         } else if (levelId.equals("chaos-mine")) {
             target = 1500;
             time = 70;
-            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 14);
-            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 6);
-            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 3);
-            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 18);
-            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 7);
-            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 3);
+            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 18);
+            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 8);
+            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 4);
+            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 23);
+            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 9);
+            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 4);
         } else if (levelId.equals("night-mine")) {
             target = 1800;
             time = 60;
-            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 12);
-            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 6);
-            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 2);
-            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 24);
-            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 6);
-            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 4);
+            addItemsOfType(BugMinerItemType.BM_ITEM_GOLD, 15);
+            addItemsOfType(BugMinerItemType.BM_ITEM_BIG_GOLD, 8);
+            addItemsOfType(BugMinerItemType.BM_ITEM_DIAMOND, 3);
+            addItemsOfType(BugMinerItemType.BM_ITEM_ROCK, 30);
+            addItemsOfType(BugMinerItemType.BM_ITEM_MYSTERY_BAG, 8);
+            addItemsOfType(BugMinerItemType.BM_ITEM_POISON, 5);
         }
         
-        int mouseCount = 4;
-        int pigCount = 5;
-        int strengthDrinkCount = 2;
+        double rng = Math.random();
+        int mouseCount = 4 + (int) (rng * 6);
+        int pigCount = 5 + (int) (rng * 8);
+        int strengthDrinkCount = 2 + (int) (rng * 3);
         
         addItemsOfType(BugMinerItemType.BM_ITEM_MOUSE, mouseCount);
         addItemsOfType(BugMinerItemType.BM_ITEM_PIG, pigCount);
@@ -297,8 +298,9 @@ public class ChallengeInstance {
                 HookPhysics.updateRetract(hook, deltaSec, weight, strengthMultiplier);
                 
                 if (attached != null && !attached.collected) {
-                    attached.x = (float)(Math.sin(hook.angle) * hook.length);
-                    attached.y = -(float)(Math.cos(hook.angle) * hook.length); // Negative Y because of how tipY maps to gameY
+                    Vec2 tip = HookPhysics.getHookTip(hook);
+                    attached.x = tip.x;
+                    attached.y = -tip.y;
                 }
                 
                 if (hook.state == BugMinerHookState.BM_HOOK_SWINGING && attached != null) {

@@ -112,7 +112,11 @@ export default function BattleMineWorld({
       )}
 
       {visibleItems.map((item) => (
-        <MineItem key={item.id} item={item} />
+        <MineItem
+          key={item.id}
+          item={item}
+          hookAttached={hookA.attachedItemId === item.id || hookB.attachedItemId === item.id}
+        />
       ))}
     </>
   );

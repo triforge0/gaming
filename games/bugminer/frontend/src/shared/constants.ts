@@ -16,8 +16,8 @@ export const MAP_BOUNDS = {
 export const SETUP_ZONE = {
   minX: -560,
   maxX: 560,
-  minY: 102,
-  maxY: 368,
+  minY: 88,
+  maxY: 395,
 };
 /** Three.js mine backdrop width (game zone + side margins). */
 export const MINE_VISUAL_WIDTH = SETUP_ZONE.maxX - SETUP_ZONE.minX + 200;

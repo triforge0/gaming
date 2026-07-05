@@ -1,12 +1,12 @@
 import type { ItemType, LevelConfig } from './types';
 
 const DEFAULT_COUNTS: Record<ItemType, number> = {
-  gold: 14,
-  bigGold: 7,
-  diamond: 3,
-  rock: 18,
-  mysteryBag: 6,
-  poison: 2,
+  gold: 18,
+  bigGold: 9,
+  diamond: 4,
+  rock: 23,
+  mysteryBag: 8,
+  poison: 3,
   mouse: 0,
   pig: 0,
   strengthDrink: 0,
@@ -18,7 +18,7 @@ export const LEVELS: LevelConfig[] = [
     name: 'Easy Mine',
     targetScore: 800,
     timeLimit: 90,
-    itemCounts: { ...DEFAULT_COUNTS, rock: 10, gold: 12, poison: 1 },
+    itemCounts: { ...DEFAULT_COUNTS, rock: 13, gold: 15, poison: 2 },
     theme: 'day',
   },
   {
@@ -26,7 +26,7 @@ export const LEVELS: LevelConfig[] = [
     name: 'Rock Mine',
     targetScore: 1000,
     timeLimit: 80,
-    itemCounts: { ...DEFAULT_COUNTS, rock: 22, diamond: 2, gold: 10, poison: 2 },
+    itemCounts: { ...DEFAULT_COUNTS, rock: 28, diamond: 3, gold: 13, poison: 3 },
     theme: 'day',
   },
   {
@@ -34,7 +34,7 @@ export const LEVELS: LevelConfig[] = [
     name: 'Diamond Cave',
     targetScore: 1200,
     timeLimit: 75,
-    itemCounts: { ...DEFAULT_COUNTS, diamond: 2, rock: 20, gold: 10, bigGold: 5, poison: 3 },
+    itemCounts: { ...DEFAULT_COUNTS, diamond: 3, rock: 25, gold: 13, bigGold: 7, poison: 4 },
     theme: 'cave',
   },
   {
@@ -42,7 +42,7 @@ export const LEVELS: LevelConfig[] = [
     name: 'Chaos Mine',
     targetScore: 1500,
     timeLimit: 70,
-    itemCounts: { ...DEFAULT_COUNTS, rock: 18, mysteryBag: 7, gold: 14, bigGold: 6, poison: 3 },
+    itemCounts: { ...DEFAULT_COUNTS, rock: 23, mysteryBag: 9, gold: 18, bigGold: 8, poison: 4 },
     theme: 'day',
   },
   {
@@ -50,7 +50,7 @@ export const LEVELS: LevelConfig[] = [
     name: 'Night Mine',
     targetScore: 1800,
     timeLimit: 60,
-    itemCounts: { ...DEFAULT_COUNTS, rock: 24, diamond: 2, bigGold: 6, gold: 12, poison: 4 },
+    itemCounts: { ...DEFAULT_COUNTS, rock: 30, diamond: 3, bigGold: 8, gold: 15, poison: 5 },
     theme: 'night',
   },
 ];
