@@ -11,3 +11,4 @@ When creating commits in this repository:
 - Do **not** set author/committer to Cursor, Auto, Copilot, or any AI agent name.
 - Do **not** add `Co-authored-by` trailers for the AI.
 - Run normal `git commit` — do not invent alternate author env vars unless the user explicitly asks to change identity.
+- Project `.cursor/cli.json` sets `attributeCommitsToAgent: false` so Cursor must not append `Co-authored-by` trailers.
