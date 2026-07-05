@@ -1,0 +1,13 @@
+---
+description: Git commits must use the repo owner's identity, never Cursor/agent.
+alwaysApply: true
+---
+
+# Git commit identity
+
+When creating commits in this repository:
+
+- Use the **local** git config already set in this repo (`Trang DTH <dangthihuyentrang.91@gmail.com>`).
+- Do **not** set author/committer to Cursor, Auto, Copilot, or any AI agent name.
+- Do **not** add `Co-authored-by` trailers for the AI.
+- Run normal `git commit` — do not invent alternate author env vars unless the user explicitly asks to change identity.
