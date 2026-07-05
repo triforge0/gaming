@@ -23069,11 +23069,11 @@ export const com = $root.com = (() => {
 
                     /**
                      * BugMinerHookData attachedItemId.
-                     * @member {string} attachedItemId
+                     * @member {string|null|undefined} attachedItemId
                      * @memberof com.triforge.protocol.proto.BugMinerHookData
                      * @instance
                      */
-                    BugMinerHookData.prototype.attachedItemId = "";
+                    BugMinerHookData.prototype.attachedItemId = null;
 
                     /**
                      * BugMinerHookData swingDirection.
@@ -23082,6 +23082,15 @@ export const com = $root.com = (() => {
                      * @instance
                      */
                     BugMinerHookData.prototype.swingDirection = 0;
+
+                    // OneOf field names bound to virtual getters and setters
+                    let $oneOfFields;
+
+                    // Virtual OneOf for proto3 optional field
+                    Object.defineProperty(BugMinerHookData.prototype, "_attachedItemId", {
+                        get: $util.oneOfGetter($oneOfFields = ["attachedItemId"]),
+                        set: $util.oneOfSetter($oneOfFields)
+                    });
 
                     /**
                      * Creates a new BugMinerHookData instance using the specified properties.
@@ -23220,6 +23229,7 @@ export const com = $root.com = (() => {
                             long = 0;
                         if (long > $util.recursionLimit)
                             return "maximum nesting depth exceeded";
+                        let properties = {};
                         if (message.angle != null && Object.hasOwnProperty.call(message, "angle"))
                             if (typeof message.angle !== "number")
                                 return "angle: number expected";
@@ -23236,9 +23246,11 @@ export const com = $root.com = (() => {
                             case 3:
                                 break;
                             }
-                        if (message.attachedItemId != null && Object.hasOwnProperty.call(message, "attachedItemId"))
+                        if (message.attachedItemId != null && Object.hasOwnProperty.call(message, "attachedItemId")) {
+                            properties._attachedItemId = 1;
                             if (!$util.isString(message.attachedItemId))
                                 return "attachedItemId: string expected";
+                        }
                         if (message.swingDirection != null && Object.hasOwnProperty.call(message, "swingDirection"))
                             if (!$util.isInteger(message.swingDirection))
                                 return "swingDirection: integer expected";
@@ -23319,7 +23331,6 @@ export const com = $root.com = (() => {
                             object.angle = 0;
                             object.length = 0;
                             object.state = options.enums === String ? "BM_HOOK_RETRACTED" : 0;
-                            object.attachedItemId = "";
                             object.swingDirection = 0;
                         }
                         if (message.angle != null && Object.hasOwnProperty.call(message, "angle"))
@@ -23328,8 +23339,11 @@ export const com = $root.com = (() => {
                             object.length = options.json && !isFinite(message.length) ? String(message.length) : message.length;
                         if (message.state != null && Object.hasOwnProperty.call(message, "state"))
                             object.state = options.enums === String ? $root.com.triforge.protocol.proto.BugMinerHookState[message.state] === undefined ? message.state : $root.com.triforge.protocol.proto.BugMinerHookState[message.state] : message.state;
-                        if (message.attachedItemId != null && Object.hasOwnProperty.call(message, "attachedItemId"))
+                        if (message.attachedItemId != null && Object.hasOwnProperty.call(message, "attachedItemId")) {
                             object.attachedItemId = message.attachedItemId;
+                            if (options.oneofs)
+                                object._attachedItemId = "attachedItemId";
+                        }
                         if (message.swingDirection != null && Object.hasOwnProperty.call(message, "swingDirection"))
                             object.swingDirection = message.swingDirection;
                         return object;

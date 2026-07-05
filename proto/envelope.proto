@@ -664,7 +664,7 @@ message BugMinerHookData {
   float angle = 1;
   float length = 2;
   BugMinerHookState state = 3;
-  string attachedItemId = 4;
+  optional string attachedItemId = 4;
   int32 swingDirection = 5;
 }
 

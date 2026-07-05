@@ -21,6 +21,7 @@ export const PLACEMENT_DEPTH: Record<ItemType, 'shallow' | 'mid' | 'deep'> = {
   mouse: 'mid',
   pig: 'mid',
   strengthDrink: 'shallow',
+  bedrock: 'deep',
 };
 
 /** Surface line in game coords — gap between winch and first items. */

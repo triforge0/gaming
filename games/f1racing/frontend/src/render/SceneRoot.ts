@@ -43,6 +43,7 @@ export class SceneRoot {
   private roll = 0;
   private shakeT = 0;
   private prevPhase = -1;
+  private frameErrorLogged = false;
   private readonly input: ControlState = { steer: 0, throttle: 0, brake: 0, handbrake: false, nitro: false };
   private readonly speedLines: HTMLDivElement;
 
@@ -206,16 +207,28 @@ export class SceneRoot {
     const dtMs = Math.min(100, now - this.lastTime);
     this.lastTime = now;
 
-    this.syncCars(dtMs);
-    this.updatePhaseEffects();
-    this.updateCamera(dtMs);
-    if (this.composer) {
-      this.composer.render();
-    } else {
-      this.renderer.render(this.scene, this.camera);
+    // Each step is isolated: a throw in the (non-essential) phase/camera effects must never stop
+    // syncCars or render, or every car on screen would freeze.
+    try { this.syncCars(dtMs); } catch (err) { this.logFrameError('syncCars', err); }
+    try { this.updatePhaseEffects(); } catch (err) { this.logFrameError('updatePhaseEffects', err); }
+    try { this.updateCamera(dtMs); } catch (err) { this.logFrameError('updateCamera', err); }
+    try {
+      if (this.composer) {
+        this.composer.render();
+      } else {
+        this.renderer.render(this.scene, this.camera);
+      }
+    } catch (err) {
+      this.logFrameError('render', err);
     }
     requestAnimationFrame(this.frame);
   };
+
+  private logFrameError(step: string, err: unknown): void {
+    if (this.frameErrorLogged) return;
+    this.frameErrorLogged = true;
+    console.error(`[f1] render frame error in ${step} (loop kept alive):`, err);
+  }
 
   private syncCars(dtMs: number): void {
     const { world } = this.bridge;

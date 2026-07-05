@@ -7792,7 +7792,7 @@ export namespace com {
                     public state: com.triforge.protocol.proto.BugMinerHookState;
 
                     /** BugMinerHookData attachedItemId. */
-                    public attachedItemId: string;
+                    public attachedItemId?: (string|null);
 
                     /** BugMinerHookData swingDirection. */
                     public swingDirection: number;
