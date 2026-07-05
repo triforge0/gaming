@@ -346,27 +346,61 @@ export function StrengthDrinkModel({ def, onPointerDown }: ModelProps) {
 
   useFrame(({ clock }) => {
     if (glowRef.current) {
-      glowRef.current.scale.setScalar(1 + Math.sin(clock.elapsedTime * 4) * 0.08);
+      glowRef.current.scale.setScalar(1 + Math.sin(clock.elapsedTime * 4) * 0.06);
     }
   });
 
+  const bodyRed = '#C62828';
+  const bodyDark = '#8E0000';
+  const labelGold = '#FFD54F';
+  const capSilver = '#ECEFF1';
+
   return (
     <group onPointerDown={onPointerDown}>
-      <mesh castShadow>
-        <cylinderGeometry args={[r * 0.45, r * 0.55, r * 1.1, 12]} />
-        <meshStandardMaterial color="#FF5722" emissive="#E64A19" emissiveIntensity={0.35} roughness={0.4} />
+      {/* Sting-style slim red bottle body */}
+      <mesh castShadow position={[0, -r * 0.05, 0]}>
+        <cylinderGeometry args={[r * 0.38, r * 0.48, r * 1.05, 16]} />
+        <meshStandardMaterial color={bodyRed} emissive="#7F0000" emissiveIntensity={0.18} roughness={0.35} metalness={0.08} />
       </mesh>
-      <mesh position={[0, r * 0.65, 0]}>
-        <cylinderGeometry args={[r * 0.48, r * 0.48, r * 0.12, 12]} />
-        <meshStandardMaterial color="#BF360C" metalness={0.5} />
+      <mesh castShadow position={[0, -r * 0.62, 0]}>
+        <cylinderGeometry args={[r * 0.5, r * 0.42, r * 0.18, 16]} />
+        <meshStandardMaterial color={bodyDark} roughness={0.45} />
       </mesh>
-      <mesh ref={glowRef} position={[0, r * 0.15, r * 0.52]}>
-        <planeGeometry args={[r * 0.7, r * 0.9]} />
-        <meshBasicMaterial color="#FFEB3B" transparent opacity={0.85} />
+
+      {/* Tapered neck */}
+      <mesh castShadow position={[0, r * 0.48, 0]}>
+        <cylinderGeometry args={[r * 0.22, r * 0.34, r * 0.28, 12]} />
+        <meshStandardMaterial color={bodyRed} roughness={0.3} />
       </mesh>
-      <mesh position={[0, -r * 0.35, 0]}>
-        <cylinderGeometry args={[r * 0.35, r * 0.35, r * 0.08, 12]} />
-        <meshStandardMaterial color="#fff" emissive="#fff" emissiveIntensity={0.2} />
+
+      {/* Screw cap */}
+      <mesh castShadow position={[0, r * 0.72, 0]}>
+        <cylinderGeometry args={[r * 0.24, r * 0.24, r * 0.14, 12]} />
+        <meshStandardMaterial color={capSilver} metalness={0.85} roughness={0.2} />
+      </mesh>
+      <mesh position={[0, r * 0.8, 0]}>
+        <cylinderGeometry args={[r * 0.2, r * 0.2, r * 0.05, 12]} />
+        <meshStandardMaterial color="#B0BEC5" metalness={0.9} roughness={0.15} />
+      </mesh>
+
+      {/* Front label + lightning bolt */}
+      <mesh ref={glowRef} position={[0, r * 0.05, r * 0.5]}>
+        <planeGeometry args={[r * 0.55, r * 0.72]} />
+        <meshStandardMaterial color={labelGold} emissive="#FFB300" emissiveIntensity={0.35} roughness={0.5} />
+      </mesh>
+      <mesh position={[0, r * 0.08, r * 0.54]} rotation={[0, 0, -0.15]}>
+        <coneGeometry args={[r * 0.08, r * 0.22, 3]} />
+        <meshBasicMaterial color="#FFF176" />
+      </mesh>
+      <mesh position={[0, -r * 0.08, r * 0.54]} rotation={[0, 0, 2.6]}>
+        <coneGeometry args={[r * 0.08, r * 0.22, 3]} />
+        <meshBasicMaterial color="#FFF176" />
+      </mesh>
+
+      {/* Bottom highlight ring */}
+      <mesh position={[0, -r * 0.52, r * 0.46]}>
+        <torusGeometry args={[r * 0.42, r * 0.04, 8, 20]} />
+        <meshStandardMaterial color="#EF5350" metalness={0.4} roughness={0.35} />
       </mesh>
     </group>
   );

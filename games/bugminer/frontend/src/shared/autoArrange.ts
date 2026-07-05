@@ -26,12 +26,6 @@ export const PLACEMENT_DEPTH: Record<ItemType, 'shallow' | 'mid' | 'deep'> = {
 /** Surface line in game coords — gap between winch and first items. */
 export const SURFACE_LINE_Y = 58;
 
-const COLS = 16;
-const COL_SPACING = 72;
-const ROW_SPACING = 44;
-const START_X = SETUP_ZONE.minX + 24;
-const START_Y = SETUP_ZONE.minY + 6;
-
 export function depthBand(depth: 'shallow' | 'mid' | 'deep'): { minY: number; maxY: number } {
   const span = SETUP_ZONE.maxY - SETUP_ZONE.minY;
   const shallowEnd = SETUP_ZONE.minY + span * 0.3;
@@ -63,12 +57,18 @@ export function generateTieredPlacementCandidates(type: ItemType): Vec2[] {
 /** Scan grid candidates for auto-arrange (fits large levels e.g. Chaos Mine). */
 export function generatePlacementCandidates(): Vec2[] {
   const candidates: Vec2[] = [];
-  for (let row = 0; row < 18; row++) {
-    for (let col = 0; col < COLS; col++) {
-      const pos = {
-        x: START_X + col * COL_SPACING,
-        y: START_Y + row * ROW_SPACING,
-      };
+  const rows = 17;
+  const cols = 15;
+  const innerW = SETUP_ZONE.maxX - SETUP_ZONE.minX - 40;
+  const innerH = SETUP_ZONE.maxY - SETUP_ZONE.minY - 12;
+
+  for (let row = 0; row < rows; row++) {
+    const ty = rows <= 1 ? 0.5 : row / (rows - 1);
+    const y = SETUP_ZONE.minY + 6 + ty * innerH;
+    for (let col = 0; col < cols; col++) {
+      const tx = cols <= 1 ? 0.5 : col / (cols - 1);
+      const x = SETUP_ZONE.minX + 20 + tx * innerW;
+      const pos = { x, y };
       if (isInsideSetupZone(pos)) {
         candidates.push(pos);
       }

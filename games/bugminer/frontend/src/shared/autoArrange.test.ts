@@ -20,10 +20,10 @@ describe('autoArrange', () => {
     }
   });
 
-  it('has enough candidates for chaos mine item count (36)', () => {
-    const ids = Array.from({ length: 36 }, (_, i) => `item-${i}`);
+  it('has enough candidates for chaos mine item count (70)', () => {
+    const ids = Array.from({ length: 70 }, (_, i) => `item-${i}`);
     const positions = computeAutoArrangePositions(ids);
-    expect(positions.size).toBe(36);
+    expect(positions.size).toBe(70);
     for (const pos of positions.values()) {
       expect(isInsideSetupZone(pos)).toBe(true);
       expect(pos.y).toBeLessThanOrEqual(SETUP_ZONE.maxY);

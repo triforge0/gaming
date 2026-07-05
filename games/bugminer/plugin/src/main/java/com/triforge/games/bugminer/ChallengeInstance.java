@@ -133,34 +133,7 @@ public class ChallengeInstance {
 
     public boolean autoArrangeSeeded(long socketId, long seed) {
         if (socketId != designerId || setupLocked) return false;
-
-        int cols = 9;
-        float colSpacing = 78;
-        float rowSpacing = 52;
-        float startX = -312;
-        float startY = 28;
-
-        List<Vec2> candidates = new ArrayList<>();
-        for (int row = 0; row < 12; row++) {
-            for (int col = 0; col < cols; col++) {
-                float px = startX + col * colSpacing;
-                float py = startY + row * rowSpacing;
-                if (px >= -360 && px <= 360 && py >= 20 && py <= 300) {
-                    candidates.add(new Vec2(px, py));
-                }
-            }
-        }
-
-        int offset = candidates.isEmpty() ? 0 : (int) (Math.floorMod(seed, candidates.size()));
-        int idx = offset;
-        for (PlacedItem item : items) {
-            if (idx >= candidates.size()) idx = 0;
-            Vec2 pos = candidates.get(idx);
-            item.x = pos.x;
-            item.y = pos.y;
-            idx++;
-        }
-        return true;
+        return MapLayoutEngine.autoArrangeInPlace(items, seed);
     }
     
     public boolean lockSetup(long socketId) {
