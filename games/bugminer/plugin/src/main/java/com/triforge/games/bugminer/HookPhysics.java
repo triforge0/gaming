@@ -48,7 +48,15 @@ public class HookPhysics {
     }
 
     public static void updateExtend(HookData hook, float deltaSec) {
-        hook.length = Math.min(hook.length + GameConstants.HOOK_EXTEND_SPEED * deltaSec, GameConstants.HOOK_MAX_LENGTH);
+        updateExtend(hook, deltaSec, GameConstants.HOOK_MAX_LENGTH);
+    }
+
+    public static void updateExtend(HookData hook, float deltaSec, float maxLength) {
+        hook.length = Math.min(hook.length + GameConstants.HOOK_EXTEND_SPEED * deltaSec, maxLength);
+    }
+
+    public static boolean isAtMaxLength(HookData hook, float maxLength) {
+        return hook.length >= maxLength - 0.5f;
     }
 
     public static void updateRetract(HookData hook, float deltaSec, float attachedWeight, float strengthMultiplier) {
@@ -91,9 +99,14 @@ public class HookPhysics {
     }
 
     public static boolean checkBoundsAt(BattleHookAnchor anchor, HookData hook) {
+        return checkBattleBoundsAt(anchor, hook);
+    }
+
+    /** Battle playfield — full shared width, depth from miner line through item zone. */
+    public static boolean checkBattleBoundsAt(BattleHookAnchor anchor, HookData hook) {
         Vec2 tip = getHookTipAt(anchor, hook);
-        return tip.x < GameConstants.MAP_MIN_X || tip.x > GameConstants.MAP_MAX_X
-                || tip.y < GameConstants.MAP_MIN_Y || tip.y > GameConstants.MAP_MAX_Y;
+        return tip.x < GameConstants.SETUP_MIN_X || tip.x > GameConstants.SETUP_MAX_X
+                || tip.y < -20f || tip.y > GameConstants.SETUP_MAX_Y + 20f;
     }
 
     public static boolean checkBounds(HookData hook) {

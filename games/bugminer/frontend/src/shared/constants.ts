@@ -3,6 +3,8 @@ export const HOOK_EXTEND_SPEED = 280;
 export const HOOK_RETRACT_SPEED_BASE = 320;
 export const HOOK_MIN_LENGTH = 40;
 export const HOOK_MAX_LENGTH = 640;
+/** Battle mode — longer reach so hooks can contest center and opponent half. */
+export const BATTLE_HOOK_MAX_LENGTH = 760;
 export const HOOK_ANGLE_MIN = -Math.PI * 0.85;
 export const HOOK_ANGLE_MAX = Math.PI * 0.85;
 export const ITEM_MIN_DISTANCE = 34;

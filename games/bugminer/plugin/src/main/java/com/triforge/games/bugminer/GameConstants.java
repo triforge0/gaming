@@ -5,6 +5,8 @@ final class GameConstants {
     static final float HOOK_EXTEND_SPEED = 280f;
     static final float HOOK_MIN_LENGTH = 40f;
     static final float HOOK_MAX_LENGTH = 640f;
+    /** Battle miners sit on opposite rims — need extra reach to contest center and opponent half. */
+    static final float BATTLE_HOOK_MAX_LENGTH = 760f;
     static final float HOOK_ANGLE_MIN = (float) (-Math.PI * 0.85);
     static final float HOOK_ANGLE_MAX = (float) (Math.PI * 0.85);
     static final float HOOK_CLASH_RADIUS = 32f;

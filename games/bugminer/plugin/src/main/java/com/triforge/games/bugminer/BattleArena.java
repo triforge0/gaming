@@ -241,9 +241,13 @@ public class BattleArena {
         }
 
         if (hook.state == BugMinerHookState.BM_HOOK_EXTENDING) {
-            HookPhysics.updateExtend(hook, deltaSec);
+            HookPhysics.updateExtend(hook, deltaSec, GameConstants.BATTLE_HOOK_MAX_LENGTH);
             PlacedItem hit = HookPhysics.checkCollisionAt(anchor, hook, items);
             if (hit != null) {
+                if (hit.type == BugMinerItemType.BM_ITEM_BEDROCK) {
+                    hook.state = BugMinerHookState.BM_HOOK_RETRACTING;
+                    return hook;
+                }
                 HookPhysics.HookData other = side == 'A' ? hookB : hookA;
                 if (hit.id.equals(other.attachedItemId)
                         && other.state == BugMinerHookState.BM_HOOK_RETRACTING) {
@@ -261,7 +265,8 @@ public class BattleArena {
                 } else {
                     hook.state = BugMinerHookState.BM_HOOK_RETRACTING;
                 }
-            } else if (HookPhysics.checkBoundsAt(anchor, hook)) {
+            } else if (HookPhysics.checkBoundsAt(anchor, hook)
+                    || HookPhysics.isAtMaxLength(hook, GameConstants.BATTLE_HOOK_MAX_LENGTH)) {
                 hook.state = BugMinerHookState.BM_HOOK_RETRACTING;
             }
             return hook;
