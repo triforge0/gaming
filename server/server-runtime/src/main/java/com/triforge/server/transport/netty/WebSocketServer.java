@@ -53,6 +53,7 @@ public final class WebSocketServer {
         LobbyHttpHandler lobbyHttpHandler = new LobbyHttpHandler(discoveryService, presenceService);
         PresenceHttpHandler presenceHttpHandler = new PresenceHttpHandler(presenceService);
         AdminHttpHandler adminHttpHandler = new AdminHttpHandler();
+        F1ReplayHttpHandler f1ReplayHttpHandler = new F1ReplayHttpHandler();
 
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
@@ -71,6 +72,7 @@ public final class WebSocketServer {
                  pipeline.addLast(lobbyHttpHandler);
                  pipeline.addLast(presenceHttpHandler);
                  pipeline.addLast(adminHttpHandler);
+                 pipeline.addLast(f1ReplayHttpHandler);
                  pipeline.addLast(new StaticFileHandler());
                  pipeline.addLast(new WebSocketServerProtocolHandler("/ws", null, true));
                  pipeline.addLast(envelopeCodec);

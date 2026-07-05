@@ -5,6 +5,7 @@ import { OAnQuanArt } from './art/OAnQuanArt';
 import { UtilityArt, EducationArt, ArcadeArt } from './art/PlaceholderArt';
 import { SudokuCubeArt } from './art/SudokuCubeArt';
 import { BugMinerArt } from './art/BugMinerArt';
+import { F1RacingArt } from './art/F1RacingArt';
 
 export const REGISTRY: CatalogEntry[] = [
   {
@@ -58,6 +59,17 @@ export const REGISTRY: CatalogEntry[] = [
     authorTag: 'Made with love by Trang',
     badge: 'NEW',
     Art: BugMinerArt,
+  },
+  {
+    id: 'f1racing',
+    title: 'F1 Racing',
+    description: 'Đua F1 LAN 3D — qualifying, grid theo best lap, tối đa 10 tay đua.',
+    category: 'game',
+    path: '/games/f1racing/',
+    accent: '#e10600',
+    pluginId: 'f1racing',
+    badge: 'NEW',
+    Art: F1RacingArt,
   },
   {
     id: 'scoreboard',

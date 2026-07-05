@@ -87,7 +87,7 @@ final class BugMinerGameTest {
             assertFalse(board.hasForPlayerA());
             assertFalse(board.hasForPlayerB());
             assertFalse(board.hasBattle());
-            assertFalse(board.hasWinnerId());
+            assertEquals(0L, board.getWinnerId());
         }
     }
 
@@ -390,7 +390,7 @@ final class BugMinerGameTest {
 
             tickPlaying(game, 400);
             tickUntilPhase(game, MatchPhase.ENDED);
-            assertTrue(host.latestBoard().hasWinnerId() || host.latestBoard().getBattle().getFinished());
+            assertTrue(host.latestBoard().getWinnerId() != 0L || host.latestBoard().getBattle().getFinished());
 
             tickUntilPhase(game, MatchPhase.LOBBY);
             host.clearBoards();
@@ -400,7 +400,7 @@ final class BugMinerGameTest {
             tickUntilPhase(game, MatchPhase.PLAYING);
 
             BugMinerBoardState rematch = host.latestBoard();
-            assertFalse(rematch.hasWinnerId(), "stale winner must not carry into rematch");
+            assertEquals(0L, rematch.getWinnerId(), "stale winner must not carry into rematch");
             assertTrue(rematch.hasBattle());
             assertFalse(rematch.getBattle().getFinished());
             assertTrue(rematch.getPlayCountdown() > 0);

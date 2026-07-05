@@ -42,6 +42,7 @@ public final class TriforgeServer {
         roomRegistry.ensureRoom("quest", "Treasure Quest", "treasurequest");
         roomRegistry.ensureRoom("oanquan", "Ô ăn quan", "oanquan");
         roomRegistry.ensureRoom("bugminer", "Bug Miner", "bugminer");
+        roomRegistry.ensureRoom("f1racing", "F1 Racing", "f1racing");
 
         boolean udpDiscoveryEnabled = discoveryConfig.enabled();
         if (!udpDiscoveryEnabled) {

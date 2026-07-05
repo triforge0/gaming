@@ -27,6 +27,7 @@
         <oanquan.frontend.dir>${project.basedir}/../../games/oanquan/frontend</oanquan.frontend.dir>
         <bugminer.frontend.dir>${project.basedir}/../../games/bugminer/frontend</bugminer.frontend.dir>
         <sudokucube.frontend.dir>${project.basedir}/../../games/sudokucube/frontend</sudokucube.frontend.dir>
+        <f1racing.frontend.dir>${project.basedir}/../../games/f1racing/frontend</f1racing.frontend.dir>
     </properties>
 
     <dependencies>
@@ -59,6 +60,11 @@
         <dependency>
             <groupId>com.triforge</groupId>
             <artifactId>bugminer-game</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
+            <artifactId>f1racing-game</artifactId>
         </dependency>
 
     </dependencies>
@@ -210,6 +216,18 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>f1racing-npm-ci</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${f1racing.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>sudokucube-npm-ci</id>
                         <phase>prepare-package</phase>
                         <goals>
@@ -219,6 +237,18 @@
                             <workingDirectory>${sudokucube.frontend.dir}</workingDirectory>
                             <installDirectory>${shared.ui.dir}</installDirectory>
                             <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>f1racing-npm-build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${f1racing.frontend.dir}</workingDirectory>
+                            <installDirectory>${shared.ui.dir}</installDirectory>
+                            <arguments>run build</arguments>
                         </configuration>
                     </execution>
                     <execution>
@@ -350,6 +380,23 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>copy-prebuilt-f1racing-assets</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/f1racing</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${f1racing.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-prebuilt-sudokucube-assets</id>
                         <phase>process-resources</phase>
                         <goals>
@@ -446,6 +493,23 @@
                             <resources>
                                 <resource>
                                     <directory>${bugminer.frontend.dir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-f1racing-assets</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.frontend}</skip>
+                            <outputDirectory>${project.build.outputDirectory}/static/games/f1racing</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${f1racing.frontend.dir}/dist</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>

@@ -47,6 +47,11 @@
 
         <dependency>
             <groupId>com.triforge</groupId>
+            <artifactId>f1racing-game</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.triforge</groupId>
             <artifactId>protocol</artifactId>
         </dependency>
 

@@ -505,6 +505,7 @@ export const com = $root.com = (() => {
                      * @property {com.triforge.protocol.proto.IChatMessage|null} [chatMessage] GameMessage chatMessage
                      * @property {com.triforge.protocol.proto.IOAnQuanMessage|null} [oaq] GameMessage oaq
                      * @property {com.triforge.protocol.proto.IBugMinerMessage|null} [bugminer] GameMessage bugminer
+                     * @property {com.triforge.protocol.proto.IF1Message|null} [f1] GameMessage f1
                      */
 
                     /**
@@ -658,17 +659,25 @@ export const com = $root.com = (() => {
                      */
                     GameMessage.prototype.bugminer = null;
 
+                    /**
+                     * GameMessage f1.
+                     * @member {com.triforge.protocol.proto.IF1Message|null|undefined} f1
+                     * @memberof com.triforge.protocol.proto.GameMessage
+                     * @instance
+                     */
+                    GameMessage.prototype.f1 = null;
+
                     // OneOf field names bound to virtual getters and setters
                     let $oneOfFields;
 
                     /**
                      * GameMessage content.
-                     * @member {"joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|"oaq"|"bugminer"|undefined} content
+                     * @member {"joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|"oaq"|"bugminer"|"f1"|undefined} content
                      * @memberof com.triforge.protocol.proto.GameMessage
                      * @instance
                      */
                     Object.defineProperty(GameMessage.prototype, "content", {
-                        get: $util.oneOfGetter($oneOfFields = ["joinRequest", "joinResponse", "fullSnapshot", "deltaSnapshot", "inputCommand", "gameEvent", "lobbyCommand", "roomLobbySnapshot", "matchPhaseUpdate", "matchResult", "mapSnapshot", "tq", "lobbyCommandRejected", "chatCommand", "chatMessage", "oaq", "bugminer"]),
+                        get: $util.oneOfGetter($oneOfFields = ["joinRequest", "joinResponse", "fullSnapshot", "deltaSnapshot", "inputCommand", "gameEvent", "lobbyCommand", "roomLobbySnapshot", "matchPhaseUpdate", "matchResult", "mapSnapshot", "tq", "lobbyCommandRejected", "chatCommand", "chatMessage", "oaq", "bugminer", "f1"]),
                         set: $util.oneOfSetter($oneOfFields)
                     });
 
@@ -734,6 +743,8 @@ export const com = $root.com = (() => {
                             $root.com.triforge.protocol.proto.OAnQuanMessage.encode(message.oaq, writer.uint32(/* id 16, wireType 2 =*/130).fork(), q + 1).ldelim();
                         if (message.bugminer != null && Object.hasOwnProperty.call(message, "bugminer"))
                             $root.com.triforge.protocol.proto.BugMinerMessage.encode(message.bugminer, writer.uint32(/* id 17, wireType 2 =*/138).fork(), q + 1).ldelim();
+                        if (message.f1 != null && Object.hasOwnProperty.call(message, "f1"))
+                            $root.com.triforge.protocol.proto.F1Message.encode(message.f1, writer.uint32(/* id 18, wireType 2 =*/146).fork(), q + 1).ldelim();
                         return writer;
                     };
 
@@ -840,6 +851,10 @@ export const com = $root.com = (() => {
                                 }
                             case 17: {
                                     message.bugminer = $root.com.triforge.protocol.proto.BugMinerMessage.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 18: {
+                                    message.f1 = $root.com.triforge.protocol.proto.F1Message.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 }
                             default:
@@ -1050,6 +1065,16 @@ export const com = $root.com = (() => {
                                     return "bugminer." + error;
                             }
                         }
+                        if (message.f1 != null && Object.hasOwnProperty.call(message, "f1")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1Message.verify(message.f1, long + 1);
+                                if (error)
+                                    return "f1." + error;
+                            }
+                        }
                         return null;
                     };
 
@@ -1156,6 +1181,11 @@ export const com = $root.com = (() => {
                                 throw TypeError(".com.triforge.protocol.proto.GameMessage.bugminer: object expected");
                             message.bugminer = $root.com.triforge.protocol.proto.BugMinerMessage.fromObject(object.bugminer, long + 1);
                         }
+                        if (object.f1 != null) {
+                            if (!$util.isObject(object.f1))
+                                throw TypeError(".com.triforge.protocol.proto.GameMessage.f1: object expected");
+                            message.f1 = $root.com.triforge.protocol.proto.F1Message.fromObject(object.f1, long + 1);
+                        }
                         return message;
                     };
 
@@ -1260,6 +1290,11 @@ export const com = $root.com = (() => {
                             object.bugminer = $root.com.triforge.protocol.proto.BugMinerMessage.toObject(message.bugminer, options, q + 1);
                             if (options.oneofs)
                                 object.content = "bugminer";
+                        }
+                        if (message.f1 != null && Object.hasOwnProperty.call(message, "f1")) {
+                            object.f1 = $root.com.triforge.protocol.proto.F1Message.toObject(message.f1, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "f1";
                         }
                         return object;
                     };
@@ -6409,6 +6444,7 @@ export const com = $root.com = (() => {
                      * @property {com.triforge.protocol.proto.IBulletComponentProto|null} [bullet] EntityProto bullet
                      * @property {com.triforge.protocol.proto.IQuestAvatarComponentProto|null} [questAvatar] EntityProto questAvatar
                      * @property {com.triforge.protocol.proto.IOrientationComponentProto|null} [orientation] EntityProto orientation
+                     * @property {com.triforge.protocol.proto.IVehicleComponentProto|null} [vehicle] EntityProto vehicle
                      */
 
                     /**
@@ -6491,6 +6527,14 @@ export const com = $root.com = (() => {
                     EntityProto.prototype.orientation = null;
 
                     /**
+                     * EntityProto vehicle.
+                     * @member {com.triforge.protocol.proto.IVehicleComponentProto|null|undefined} vehicle
+                     * @memberof com.triforge.protocol.proto.EntityProto
+                     * @instance
+                     */
+                    EntityProto.prototype.vehicle = null;
+
+                    /**
                      * Creates a new EntityProto instance using the specified properties.
                      * @function create
                      * @memberof com.triforge.protocol.proto.EntityProto
@@ -6534,6 +6578,8 @@ export const com = $root.com = (() => {
                             $root.com.triforge.protocol.proto.QuestAvatarComponentProto.encode(message.questAvatar, writer.uint32(/* id 7, wireType 2 =*/58).fork(), q + 1).ldelim();
                         if (message.orientation != null && Object.hasOwnProperty.call(message, "orientation"))
                             $root.com.triforge.protocol.proto.OrientationComponentProto.encode(message.orientation, writer.uint32(/* id 8, wireType 2 =*/66).fork(), q + 1).ldelim();
+                        if (message.vehicle != null && Object.hasOwnProperty.call(message, "vehicle"))
+                            $root.com.triforge.protocol.proto.VehicleComponentProto.encode(message.vehicle, writer.uint32(/* id 9, wireType 2 =*/74).fork(), q + 1).ldelim();
                         return writer;
                     };
 
@@ -6604,6 +6650,10 @@ export const com = $root.com = (() => {
                                 }
                             case 8: {
                                     message.orientation = $root.com.triforge.protocol.proto.OrientationComponentProto.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 9: {
+                                    message.vehicle = $root.com.triforge.protocol.proto.VehicleComponentProto.decode(reader, reader.uint32(), undefined, long + 1);
                                     break;
                                 }
                             default:
@@ -6683,6 +6733,11 @@ export const com = $root.com = (() => {
                             if (error)
                                 return "orientation." + error;
                         }
+                        if (message.vehicle != null && Object.hasOwnProperty.call(message, "vehicle")) {
+                            let error = $root.com.triforge.protocol.proto.VehicleComponentProto.verify(message.vehicle, long + 1);
+                            if (error)
+                                return "vehicle." + error;
+                        }
                         return null;
                     };
 
@@ -6748,6 +6803,11 @@ export const com = $root.com = (() => {
                                 throw TypeError(".com.triforge.protocol.proto.EntityProto.orientation: object expected");
                             message.orientation = $root.com.triforge.protocol.proto.OrientationComponentProto.fromObject(object.orientation, long + 1);
                         }
+                        if (object.vehicle != null) {
+                            if (!$util.isObject(object.vehicle))
+                                throw TypeError(".com.triforge.protocol.proto.EntityProto.vehicle: object expected");
+                            message.vehicle = $root.com.triforge.protocol.proto.VehicleComponentProto.fromObject(object.vehicle, long + 1);
+                        }
                         return message;
                     };
 
@@ -6781,6 +6841,7 @@ export const com = $root.com = (() => {
                             object.bullet = null;
                             object.questAvatar = null;
                             object.orientation = null;
+                            object.vehicle = null;
                         }
                         if (message.entityId != null && Object.hasOwnProperty.call(message, "entityId"))
                             if (typeof BigInt !== "undefined" && options.longs === BigInt)
@@ -6803,6 +6864,8 @@ export const com = $root.com = (() => {
                             object.questAvatar = $root.com.triforge.protocol.proto.QuestAvatarComponentProto.toObject(message.questAvatar, options, q + 1);
                         if (message.orientation != null && Object.hasOwnProperty.call(message, "orientation"))
                             object.orientation = $root.com.triforge.protocol.proto.OrientationComponentProto.toObject(message.orientation, options, q + 1);
+                        if (message.vehicle != null && Object.hasOwnProperty.call(message, "vehicle"))
+                            object.vehicle = $root.com.triforge.protocol.proto.VehicleComponentProto.toObject(message.vehicle, options, q + 1);
                         return object;
                     };
 
@@ -24348,11 +24411,11 @@ export const com = $root.com = (() => {
 
                     /**
                      * BugMinerBoardState winnerId.
-                     * @member {number|Long} winnerId
+                     * @member {number|Long|null|undefined} winnerId
                      * @memberof com.triforge.protocol.proto.BugMinerBoardState
                      * @instance
                      */
-                    BugMinerBoardState.prototype.winnerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+                    BugMinerBoardState.prototype.winnerId = null;
 
                     /**
                      * BugMinerBoardState matchEndReason.
@@ -24361,6 +24424,15 @@ export const com = $root.com = (() => {
                      * @instance
                      */
                     BugMinerBoardState.prototype.matchEndReason = "";
+
+                    // OneOf field names bound to virtual getters and setters
+                    let $oneOfFields;
+
+                    // Virtual OneOf for proto3 optional field
+                    Object.defineProperty(BugMinerBoardState.prototype, "_winnerId", {
+                        get: $util.oneOfGetter($oneOfFields = ["winnerId"]),
+                        set: $util.oneOfSetter($oneOfFields)
+                    });
 
                     /**
                      * Creates a new BugMinerBoardState instance using the specified properties.
@@ -24526,6 +24598,7 @@ export const com = $root.com = (() => {
                             long = 0;
                         if (long > $util.recursionLimit)
                             return "maximum nesting depth exceeded";
+                        let properties = {};
                         if (message.forPlayerA != null && Object.hasOwnProperty.call(message, "forPlayerA")) {
                             let error = $root.com.triforge.protocol.proto.BugMinerChallengeState.verify(message.forPlayerA, long + 1);
                             if (error)
@@ -24561,9 +24634,11 @@ export const com = $root.com = (() => {
                         if (message.paused != null && Object.hasOwnProperty.call(message, "paused"))
                             if (typeof message.paused !== "boolean")
                                 return "paused: boolean expected";
-                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId"))
+                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId")) {
+                            properties._winnerId = 1;
                             if (!$util.isInteger(message.winnerId) && !(message.winnerId && $util.isInteger(message.winnerId.low) && $util.isInteger(message.winnerId.high)))
                                 return "winnerId: integer|Long expected";
+                        }
                         if (message.matchEndReason != null && Object.hasOwnProperty.call(message, "matchEndReason"))
                             if (!$util.isString(message.matchEndReason))
                                 return "matchEndReason: string expected";
@@ -24662,11 +24737,6 @@ export const com = $root.com = (() => {
                             object.battle = null;
                             object.playCountdown = 0;
                             object.paused = false;
-                            if ($util.Long) {
-                                let long = new $util.Long(0, 0, true);
-                                object.winnerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
-                            } else
-                                object.winnerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
                             object.matchEndReason = "";
                         }
                         if (message.forPlayerA != null && Object.hasOwnProperty.call(message, "forPlayerA"))
@@ -24686,13 +24756,16 @@ export const com = $root.com = (() => {
                             object.playCountdown = message.playCountdown;
                         if (message.paused != null && Object.hasOwnProperty.call(message, "paused"))
                             object.paused = message.paused;
-                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId"))
+                        if (message.winnerId != null && Object.hasOwnProperty.call(message, "winnerId")) {
                             if (typeof BigInt !== "undefined" && options.longs === BigInt)
                                 object.winnerId = typeof message.winnerId === "number" ? BigInt(message.winnerId) : $util.Long.fromBits(message.winnerId.low >>> 0, message.winnerId.high >>> 0, true).toBigInt();
                             else if (typeof message.winnerId === "number")
                                 object.winnerId = options.longs === String ? String(message.winnerId) : message.winnerId;
                             else
                                 object.winnerId = options.longs === String ? $util.Long.prototype.toString.call(message.winnerId) : options.longs === Number ? new $util.LongBits(message.winnerId.low >>> 0, message.winnerId.high >>> 0).toNumber(true) : message.winnerId;
+                            if (options.oneofs)
+                                object._winnerId = "winnerId";
+                        }
                         if (message.matchEndReason != null && Object.hasOwnProperty.call(message, "matchEndReason"))
                             object.matchEndReason = message.matchEndReason;
                         return object;
@@ -28291,6 +28364,6826 @@ export const com = $root.com = (() => {
                     };
 
                     return BugMinerMessage;
+                })();
+
+                proto.F1Message = (function() {
+
+                    /**
+                     * Properties of a F1Message.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1Message
+                     * @property {com.triforge.protocol.proto.IF1VehicleInput|null} [vehicleInput] F1Message vehicleInput
+                     * @property {com.triforge.protocol.proto.IF1GarageLoadout|null} [garageLoadout] F1Message garageLoadout
+                     * @property {com.triforge.protocol.proto.IF1JoinRequest|null} [joinRequest] F1Message joinRequest
+                     * @property {com.triforge.protocol.proto.IF1SetRoomConfig|null} [setRoomConfig] F1Message setRoomConfig
+                     * @property {com.triforge.protocol.proto.IF1AddBot|null} [addBot] F1Message addBot
+                     * @property {com.triforge.protocol.proto.IF1KickPlayer|null} [kickPlayer] F1Message kickPlayer
+                     * @property {com.triforge.protocol.proto.IF1StartRace|null} [startRace] F1Message startRace
+                     * @property {com.triforge.protocol.proto.IF1SkipQualifying|null} [skipQualifying] F1Message skipQualifying
+                     * @property {com.triforge.protocol.proto.IF1RoomConfig|null} [roomConfig] F1Message roomConfig
+                     * @property {com.triforge.protocol.proto.IF1RaceState|null} [raceState] F1Message raceState
+                     * @property {com.triforge.protocol.proto.IF1LapEvent|null} [lapEvent] F1Message lapEvent
+                     * @property {com.triforge.protocol.proto.IF1SectorTime|null} [sectorTime] F1Message sectorTime
+                     * @property {com.triforge.protocol.proto.IF1RaceResult|null} [raceResult] F1Message raceResult
+                     * @property {com.triforge.protocol.proto.IF1StandingUpdate|null} [standings] F1Message standings
+                     * @property {com.triforge.protocol.proto.IF1QualifyingResult|null} [qualifyingResult] F1Message qualifyingResult
+                     */
+
+                    /**
+                     * Constructs a new F1Message.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1Message.
+                     * @implements IF1Message
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1Message=} [properties] Properties to set
+                     */
+                    function F1Message(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1Message vehicleInput.
+                     * @member {com.triforge.protocol.proto.IF1VehicleInput|null|undefined} vehicleInput
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.vehicleInput = null;
+
+                    /**
+                     * F1Message garageLoadout.
+                     * @member {com.triforge.protocol.proto.IF1GarageLoadout|null|undefined} garageLoadout
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.garageLoadout = null;
+
+                    /**
+                     * F1Message joinRequest.
+                     * @member {com.triforge.protocol.proto.IF1JoinRequest|null|undefined} joinRequest
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.joinRequest = null;
+
+                    /**
+                     * F1Message setRoomConfig.
+                     * @member {com.triforge.protocol.proto.IF1SetRoomConfig|null|undefined} setRoomConfig
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.setRoomConfig = null;
+
+                    /**
+                     * F1Message addBot.
+                     * @member {com.triforge.protocol.proto.IF1AddBot|null|undefined} addBot
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.addBot = null;
+
+                    /**
+                     * F1Message kickPlayer.
+                     * @member {com.triforge.protocol.proto.IF1KickPlayer|null|undefined} kickPlayer
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.kickPlayer = null;
+
+                    /**
+                     * F1Message startRace.
+                     * @member {com.triforge.protocol.proto.IF1StartRace|null|undefined} startRace
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.startRace = null;
+
+                    /**
+                     * F1Message skipQualifying.
+                     * @member {com.triforge.protocol.proto.IF1SkipQualifying|null|undefined} skipQualifying
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.skipQualifying = null;
+
+                    /**
+                     * F1Message roomConfig.
+                     * @member {com.triforge.protocol.proto.IF1RoomConfig|null|undefined} roomConfig
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.roomConfig = null;
+
+                    /**
+                     * F1Message raceState.
+                     * @member {com.triforge.protocol.proto.IF1RaceState|null|undefined} raceState
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.raceState = null;
+
+                    /**
+                     * F1Message lapEvent.
+                     * @member {com.triforge.protocol.proto.IF1LapEvent|null|undefined} lapEvent
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.lapEvent = null;
+
+                    /**
+                     * F1Message sectorTime.
+                     * @member {com.triforge.protocol.proto.IF1SectorTime|null|undefined} sectorTime
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.sectorTime = null;
+
+                    /**
+                     * F1Message raceResult.
+                     * @member {com.triforge.protocol.proto.IF1RaceResult|null|undefined} raceResult
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.raceResult = null;
+
+                    /**
+                     * F1Message standings.
+                     * @member {com.triforge.protocol.proto.IF1StandingUpdate|null|undefined} standings
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.standings = null;
+
+                    /**
+                     * F1Message qualifyingResult.
+                     * @member {com.triforge.protocol.proto.IF1QualifyingResult|null|undefined} qualifyingResult
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    F1Message.prototype.qualifyingResult = null;
+
+                    // OneOf field names bound to virtual getters and setters
+                    let $oneOfFields;
+
+                    /**
+                     * F1Message content.
+                     * @member {"vehicleInput"|"garageLoadout"|"joinRequest"|"setRoomConfig"|"addBot"|"kickPlayer"|"startRace"|"skipQualifying"|"roomConfig"|"raceState"|"lapEvent"|"sectorTime"|"raceResult"|"standings"|"qualifyingResult"|undefined} content
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     */
+                    Object.defineProperty(F1Message.prototype, "content", {
+                        get: $util.oneOfGetter($oneOfFields = ["vehicleInput", "garageLoadout", "joinRequest", "setRoomConfig", "addBot", "kickPlayer", "startRace", "skipQualifying", "roomConfig", "raceState", "lapEvent", "sectorTime", "raceResult", "standings", "qualifyingResult"]),
+                        set: $util.oneOfSetter($oneOfFields)
+                    });
+
+                    /**
+                     * Creates a new F1Message instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1Message=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1Message} F1Message instance
+                     */
+                    F1Message.create = function create(properties) {
+                        return new F1Message(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1Message message. Does not implicitly {@link com.triforge.protocol.proto.F1Message.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1Message} message F1Message message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1Message.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.vehicleInput != null && Object.hasOwnProperty.call(message, "vehicleInput"))
+                            $root.com.triforge.protocol.proto.F1VehicleInput.encode(message.vehicleInput, writer.uint32(/* id 1, wireType 2 =*/10).fork(), q + 1).ldelim();
+                        if (message.garageLoadout != null && Object.hasOwnProperty.call(message, "garageLoadout"))
+                            $root.com.triforge.protocol.proto.F1GarageLoadout.encode(message.garageLoadout, writer.uint32(/* id 2, wireType 2 =*/18).fork(), q + 1).ldelim();
+                        if (message.joinRequest != null && Object.hasOwnProperty.call(message, "joinRequest"))
+                            $root.com.triforge.protocol.proto.F1JoinRequest.encode(message.joinRequest, writer.uint32(/* id 3, wireType 2 =*/26).fork(), q + 1).ldelim();
+                        if (message.setRoomConfig != null && Object.hasOwnProperty.call(message, "setRoomConfig"))
+                            $root.com.triforge.protocol.proto.F1SetRoomConfig.encode(message.setRoomConfig, writer.uint32(/* id 4, wireType 2 =*/34).fork(), q + 1).ldelim();
+                        if (message.addBot != null && Object.hasOwnProperty.call(message, "addBot"))
+                            $root.com.triforge.protocol.proto.F1AddBot.encode(message.addBot, writer.uint32(/* id 5, wireType 2 =*/42).fork(), q + 1).ldelim();
+                        if (message.kickPlayer != null && Object.hasOwnProperty.call(message, "kickPlayer"))
+                            $root.com.triforge.protocol.proto.F1KickPlayer.encode(message.kickPlayer, writer.uint32(/* id 6, wireType 2 =*/50).fork(), q + 1).ldelim();
+                        if (message.startRace != null && Object.hasOwnProperty.call(message, "startRace"))
+                            $root.com.triforge.protocol.proto.F1StartRace.encode(message.startRace, writer.uint32(/* id 7, wireType 2 =*/58).fork(), q + 1).ldelim();
+                        if (message.roomConfig != null && Object.hasOwnProperty.call(message, "roomConfig"))
+                            $root.com.triforge.protocol.proto.F1RoomConfig.encode(message.roomConfig, writer.uint32(/* id 8, wireType 2 =*/66).fork(), q + 1).ldelim();
+                        if (message.raceState != null && Object.hasOwnProperty.call(message, "raceState"))
+                            $root.com.triforge.protocol.proto.F1RaceState.encode(message.raceState, writer.uint32(/* id 9, wireType 2 =*/74).fork(), q + 1).ldelim();
+                        if (message.lapEvent != null && Object.hasOwnProperty.call(message, "lapEvent"))
+                            $root.com.triforge.protocol.proto.F1LapEvent.encode(message.lapEvent, writer.uint32(/* id 10, wireType 2 =*/82).fork(), q + 1).ldelim();
+                        if (message.sectorTime != null && Object.hasOwnProperty.call(message, "sectorTime"))
+                            $root.com.triforge.protocol.proto.F1SectorTime.encode(message.sectorTime, writer.uint32(/* id 11, wireType 2 =*/90).fork(), q + 1).ldelim();
+                        if (message.raceResult != null && Object.hasOwnProperty.call(message, "raceResult"))
+                            $root.com.triforge.protocol.proto.F1RaceResult.encode(message.raceResult, writer.uint32(/* id 12, wireType 2 =*/98).fork(), q + 1).ldelim();
+                        if (message.standings != null && Object.hasOwnProperty.call(message, "standings"))
+                            $root.com.triforge.protocol.proto.F1StandingUpdate.encode(message.standings, writer.uint32(/* id 13, wireType 2 =*/106).fork(), q + 1).ldelim();
+                        if (message.skipQualifying != null && Object.hasOwnProperty.call(message, "skipQualifying"))
+                            $root.com.triforge.protocol.proto.F1SkipQualifying.encode(message.skipQualifying, writer.uint32(/* id 14, wireType 2 =*/114).fork(), q + 1).ldelim();
+                        if (message.qualifyingResult != null && Object.hasOwnProperty.call(message, "qualifyingResult"))
+                            $root.com.triforge.protocol.proto.F1QualifyingResult.encode(message.qualifyingResult, writer.uint32(/* id 15, wireType 2 =*/122).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1Message message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1Message.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1Message} message F1Message message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1Message.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1Message message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1Message} F1Message
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1Message.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1Message();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.vehicleInput = $root.com.triforge.protocol.proto.F1VehicleInput.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 2: {
+                                    message.garageLoadout = $root.com.triforge.protocol.proto.F1GarageLoadout.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 3: {
+                                    message.joinRequest = $root.com.triforge.protocol.proto.F1JoinRequest.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 4: {
+                                    message.setRoomConfig = $root.com.triforge.protocol.proto.F1SetRoomConfig.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 5: {
+                                    message.addBot = $root.com.triforge.protocol.proto.F1AddBot.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 6: {
+                                    message.kickPlayer = $root.com.triforge.protocol.proto.F1KickPlayer.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 7: {
+                                    message.startRace = $root.com.triforge.protocol.proto.F1StartRace.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 14: {
+                                    message.skipQualifying = $root.com.triforge.protocol.proto.F1SkipQualifying.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 8: {
+                                    message.roomConfig = $root.com.triforge.protocol.proto.F1RoomConfig.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 9: {
+                                    message.raceState = $root.com.triforge.protocol.proto.F1RaceState.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 10: {
+                                    message.lapEvent = $root.com.triforge.protocol.proto.F1LapEvent.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 11: {
+                                    message.sectorTime = $root.com.triforge.protocol.proto.F1SectorTime.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 12: {
+                                    message.raceResult = $root.com.triforge.protocol.proto.F1RaceResult.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 13: {
+                                    message.standings = $root.com.triforge.protocol.proto.F1StandingUpdate.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            case 15: {
+                                    message.qualifyingResult = $root.com.triforge.protocol.proto.F1QualifyingResult.decode(reader, reader.uint32(), undefined, long + 1);
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1Message message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1Message} F1Message
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1Message.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1Message message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1Message.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        let properties = {};
+                        if (message.vehicleInput != null && Object.hasOwnProperty.call(message, "vehicleInput")) {
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1VehicleInput.verify(message.vehicleInput, long + 1);
+                                if (error)
+                                    return "vehicleInput." + error;
+                            }
+                        }
+                        if (message.garageLoadout != null && Object.hasOwnProperty.call(message, "garageLoadout")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1GarageLoadout.verify(message.garageLoadout, long + 1);
+                                if (error)
+                                    return "garageLoadout." + error;
+                            }
+                        }
+                        if (message.joinRequest != null && Object.hasOwnProperty.call(message, "joinRequest")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1JoinRequest.verify(message.joinRequest, long + 1);
+                                if (error)
+                                    return "joinRequest." + error;
+                            }
+                        }
+                        if (message.setRoomConfig != null && Object.hasOwnProperty.call(message, "setRoomConfig")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1SetRoomConfig.verify(message.setRoomConfig, long + 1);
+                                if (error)
+                                    return "setRoomConfig." + error;
+                            }
+                        }
+                        if (message.addBot != null && Object.hasOwnProperty.call(message, "addBot")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1AddBot.verify(message.addBot, long + 1);
+                                if (error)
+                                    return "addBot." + error;
+                            }
+                        }
+                        if (message.kickPlayer != null && Object.hasOwnProperty.call(message, "kickPlayer")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1KickPlayer.verify(message.kickPlayer, long + 1);
+                                if (error)
+                                    return "kickPlayer." + error;
+                            }
+                        }
+                        if (message.startRace != null && Object.hasOwnProperty.call(message, "startRace")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1StartRace.verify(message.startRace, long + 1);
+                                if (error)
+                                    return "startRace." + error;
+                            }
+                        }
+                        if (message.skipQualifying != null && Object.hasOwnProperty.call(message, "skipQualifying")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1SkipQualifying.verify(message.skipQualifying, long + 1);
+                                if (error)
+                                    return "skipQualifying." + error;
+                            }
+                        }
+                        if (message.roomConfig != null && Object.hasOwnProperty.call(message, "roomConfig")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1RoomConfig.verify(message.roomConfig, long + 1);
+                                if (error)
+                                    return "roomConfig." + error;
+                            }
+                        }
+                        if (message.raceState != null && Object.hasOwnProperty.call(message, "raceState")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1RaceState.verify(message.raceState, long + 1);
+                                if (error)
+                                    return "raceState." + error;
+                            }
+                        }
+                        if (message.lapEvent != null && Object.hasOwnProperty.call(message, "lapEvent")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1LapEvent.verify(message.lapEvent, long + 1);
+                                if (error)
+                                    return "lapEvent." + error;
+                            }
+                        }
+                        if (message.sectorTime != null && Object.hasOwnProperty.call(message, "sectorTime")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1SectorTime.verify(message.sectorTime, long + 1);
+                                if (error)
+                                    return "sectorTime." + error;
+                            }
+                        }
+                        if (message.raceResult != null && Object.hasOwnProperty.call(message, "raceResult")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1RaceResult.verify(message.raceResult, long + 1);
+                                if (error)
+                                    return "raceResult." + error;
+                            }
+                        }
+                        if (message.standings != null && Object.hasOwnProperty.call(message, "standings")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1StandingUpdate.verify(message.standings, long + 1);
+                                if (error)
+                                    return "standings." + error;
+                            }
+                        }
+                        if (message.qualifyingResult != null && Object.hasOwnProperty.call(message, "qualifyingResult")) {
+                            if (properties.content === 1)
+                                return "content: multiple values";
+                            properties.content = 1;
+                            {
+                                let error = $root.com.triforge.protocol.proto.F1QualifyingResult.verify(message.qualifyingResult, long + 1);
+                                if (error)
+                                    return "qualifyingResult." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1Message message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1Message} F1Message
+                     */
+                    F1Message.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1Message)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1Message: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1Message();
+                        if (object.vehicleInput != null) {
+                            if (!$util.isObject(object.vehicleInput))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.vehicleInput: object expected");
+                            message.vehicleInput = $root.com.triforge.protocol.proto.F1VehicleInput.fromObject(object.vehicleInput, long + 1);
+                        }
+                        if (object.garageLoadout != null) {
+                            if (!$util.isObject(object.garageLoadout))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.garageLoadout: object expected");
+                            message.garageLoadout = $root.com.triforge.protocol.proto.F1GarageLoadout.fromObject(object.garageLoadout, long + 1);
+                        }
+                        if (object.joinRequest != null) {
+                            if (!$util.isObject(object.joinRequest))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.joinRequest: object expected");
+                            message.joinRequest = $root.com.triforge.protocol.proto.F1JoinRequest.fromObject(object.joinRequest, long + 1);
+                        }
+                        if (object.setRoomConfig != null) {
+                            if (!$util.isObject(object.setRoomConfig))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.setRoomConfig: object expected");
+                            message.setRoomConfig = $root.com.triforge.protocol.proto.F1SetRoomConfig.fromObject(object.setRoomConfig, long + 1);
+                        }
+                        if (object.addBot != null) {
+                            if (!$util.isObject(object.addBot))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.addBot: object expected");
+                            message.addBot = $root.com.triforge.protocol.proto.F1AddBot.fromObject(object.addBot, long + 1);
+                        }
+                        if (object.kickPlayer != null) {
+                            if (!$util.isObject(object.kickPlayer))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.kickPlayer: object expected");
+                            message.kickPlayer = $root.com.triforge.protocol.proto.F1KickPlayer.fromObject(object.kickPlayer, long + 1);
+                        }
+                        if (object.startRace != null) {
+                            if (!$util.isObject(object.startRace))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.startRace: object expected");
+                            message.startRace = $root.com.triforge.protocol.proto.F1StartRace.fromObject(object.startRace, long + 1);
+                        }
+                        if (object.skipQualifying != null) {
+                            if (!$util.isObject(object.skipQualifying))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.skipQualifying: object expected");
+                            message.skipQualifying = $root.com.triforge.protocol.proto.F1SkipQualifying.fromObject(object.skipQualifying, long + 1);
+                        }
+                        if (object.roomConfig != null) {
+                            if (!$util.isObject(object.roomConfig))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.roomConfig: object expected");
+                            message.roomConfig = $root.com.triforge.protocol.proto.F1RoomConfig.fromObject(object.roomConfig, long + 1);
+                        }
+                        if (object.raceState != null) {
+                            if (!$util.isObject(object.raceState))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.raceState: object expected");
+                            message.raceState = $root.com.triforge.protocol.proto.F1RaceState.fromObject(object.raceState, long + 1);
+                        }
+                        if (object.lapEvent != null) {
+                            if (!$util.isObject(object.lapEvent))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.lapEvent: object expected");
+                            message.lapEvent = $root.com.triforge.protocol.proto.F1LapEvent.fromObject(object.lapEvent, long + 1);
+                        }
+                        if (object.sectorTime != null) {
+                            if (!$util.isObject(object.sectorTime))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.sectorTime: object expected");
+                            message.sectorTime = $root.com.triforge.protocol.proto.F1SectorTime.fromObject(object.sectorTime, long + 1);
+                        }
+                        if (object.raceResult != null) {
+                            if (!$util.isObject(object.raceResult))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.raceResult: object expected");
+                            message.raceResult = $root.com.triforge.protocol.proto.F1RaceResult.fromObject(object.raceResult, long + 1);
+                        }
+                        if (object.standings != null) {
+                            if (!$util.isObject(object.standings))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.standings: object expected");
+                            message.standings = $root.com.triforge.protocol.proto.F1StandingUpdate.fromObject(object.standings, long + 1);
+                        }
+                        if (object.qualifyingResult != null) {
+                            if (!$util.isObject(object.qualifyingResult))
+                                throw TypeError(".com.triforge.protocol.proto.F1Message.qualifyingResult: object expected");
+                            message.qualifyingResult = $root.com.triforge.protocol.proto.F1QualifyingResult.fromObject(object.qualifyingResult, long + 1);
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1Message message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1Message} message F1Message
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1Message.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (message.vehicleInput != null && Object.hasOwnProperty.call(message, "vehicleInput")) {
+                            object.vehicleInput = $root.com.triforge.protocol.proto.F1VehicleInput.toObject(message.vehicleInput, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "vehicleInput";
+                        }
+                        if (message.garageLoadout != null && Object.hasOwnProperty.call(message, "garageLoadout")) {
+                            object.garageLoadout = $root.com.triforge.protocol.proto.F1GarageLoadout.toObject(message.garageLoadout, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "garageLoadout";
+                        }
+                        if (message.joinRequest != null && Object.hasOwnProperty.call(message, "joinRequest")) {
+                            object.joinRequest = $root.com.triforge.protocol.proto.F1JoinRequest.toObject(message.joinRequest, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "joinRequest";
+                        }
+                        if (message.setRoomConfig != null && Object.hasOwnProperty.call(message, "setRoomConfig")) {
+                            object.setRoomConfig = $root.com.triforge.protocol.proto.F1SetRoomConfig.toObject(message.setRoomConfig, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "setRoomConfig";
+                        }
+                        if (message.addBot != null && Object.hasOwnProperty.call(message, "addBot")) {
+                            object.addBot = $root.com.triforge.protocol.proto.F1AddBot.toObject(message.addBot, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "addBot";
+                        }
+                        if (message.kickPlayer != null && Object.hasOwnProperty.call(message, "kickPlayer")) {
+                            object.kickPlayer = $root.com.triforge.protocol.proto.F1KickPlayer.toObject(message.kickPlayer, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "kickPlayer";
+                        }
+                        if (message.startRace != null && Object.hasOwnProperty.call(message, "startRace")) {
+                            object.startRace = $root.com.triforge.protocol.proto.F1StartRace.toObject(message.startRace, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "startRace";
+                        }
+                        if (message.roomConfig != null && Object.hasOwnProperty.call(message, "roomConfig")) {
+                            object.roomConfig = $root.com.triforge.protocol.proto.F1RoomConfig.toObject(message.roomConfig, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "roomConfig";
+                        }
+                        if (message.raceState != null && Object.hasOwnProperty.call(message, "raceState")) {
+                            object.raceState = $root.com.triforge.protocol.proto.F1RaceState.toObject(message.raceState, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "raceState";
+                        }
+                        if (message.lapEvent != null && Object.hasOwnProperty.call(message, "lapEvent")) {
+                            object.lapEvent = $root.com.triforge.protocol.proto.F1LapEvent.toObject(message.lapEvent, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "lapEvent";
+                        }
+                        if (message.sectorTime != null && Object.hasOwnProperty.call(message, "sectorTime")) {
+                            object.sectorTime = $root.com.triforge.protocol.proto.F1SectorTime.toObject(message.sectorTime, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "sectorTime";
+                        }
+                        if (message.raceResult != null && Object.hasOwnProperty.call(message, "raceResult")) {
+                            object.raceResult = $root.com.triforge.protocol.proto.F1RaceResult.toObject(message.raceResult, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "raceResult";
+                        }
+                        if (message.standings != null && Object.hasOwnProperty.call(message, "standings")) {
+                            object.standings = $root.com.triforge.protocol.proto.F1StandingUpdate.toObject(message.standings, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "standings";
+                        }
+                        if (message.skipQualifying != null && Object.hasOwnProperty.call(message, "skipQualifying")) {
+                            object.skipQualifying = $root.com.triforge.protocol.proto.F1SkipQualifying.toObject(message.skipQualifying, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "skipQualifying";
+                        }
+                        if (message.qualifyingResult != null && Object.hasOwnProperty.call(message, "qualifyingResult")) {
+                            object.qualifyingResult = $root.com.triforge.protocol.proto.F1QualifyingResult.toObject(message.qualifyingResult, options, q + 1);
+                            if (options.oneofs)
+                                object.content = "qualifyingResult";
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1Message to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1Message.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1Message
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1Message
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1Message.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1Message";
+                    };
+
+                    return F1Message;
+                })();
+
+                proto.F1VehicleInput = (function() {
+
+                    /**
+                     * Properties of a F1VehicleInput.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1VehicleInput
+                     * @property {number|null} [steer] F1VehicleInput steer
+                     * @property {number|null} [throttle] F1VehicleInput throttle
+                     * @property {number|null} [brake] F1VehicleInput brake
+                     * @property {boolean|null} [handbrake] F1VehicleInput handbrake
+                     * @property {boolean|null} [nitro] F1VehicleInput nitro
+                     * @property {boolean|null} [resetCar] F1VehicleInput resetCar
+                     */
+
+                    /**
+                     * Constructs a new F1VehicleInput.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1VehicleInput.
+                     * @implements IF1VehicleInput
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1VehicleInput=} [properties] Properties to set
+                     */
+                    function F1VehicleInput(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1VehicleInput steer.
+                     * @member {number} steer
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @instance
+                     */
+                    F1VehicleInput.prototype.steer = 0;
+
+                    /**
+                     * F1VehicleInput throttle.
+                     * @member {number} throttle
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @instance
+                     */
+                    F1VehicleInput.prototype.throttle = 0;
+
+                    /**
+                     * F1VehicleInput brake.
+                     * @member {number} brake
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @instance
+                     */
+                    F1VehicleInput.prototype.brake = 0;
+
+                    /**
+                     * F1VehicleInput handbrake.
+                     * @member {boolean} handbrake
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @instance
+                     */
+                    F1VehicleInput.prototype.handbrake = false;
+
+                    /**
+                     * F1VehicleInput nitro.
+                     * @member {boolean} nitro
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @instance
+                     */
+                    F1VehicleInput.prototype.nitro = false;
+
+                    /**
+                     * F1VehicleInput resetCar.
+                     * @member {boolean} resetCar
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @instance
+                     */
+                    F1VehicleInput.prototype.resetCar = false;
+
+                    /**
+                     * Creates a new F1VehicleInput instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1VehicleInput=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1VehicleInput} F1VehicleInput instance
+                     */
+                    F1VehicleInput.create = function create(properties) {
+                        return new F1VehicleInput(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1VehicleInput message. Does not implicitly {@link com.triforge.protocol.proto.F1VehicleInput.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1VehicleInput} message F1VehicleInput message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1VehicleInput.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.steer != null && Object.hasOwnProperty.call(message, "steer"))
+                            writer.uint32(/* id 1, wireType 5 =*/13).float(message.steer);
+                        if (message.throttle != null && Object.hasOwnProperty.call(message, "throttle"))
+                            writer.uint32(/* id 2, wireType 5 =*/21).float(message.throttle);
+                        if (message.brake != null && Object.hasOwnProperty.call(message, "brake"))
+                            writer.uint32(/* id 3, wireType 5 =*/29).float(message.brake);
+                        if (message.handbrake != null && Object.hasOwnProperty.call(message, "handbrake"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).bool(message.handbrake);
+                        if (message.nitro != null && Object.hasOwnProperty.call(message, "nitro"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).bool(message.nitro);
+                        if (message.resetCar != null && Object.hasOwnProperty.call(message, "resetCar"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).bool(message.resetCar);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1VehicleInput message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1VehicleInput.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1VehicleInput} message F1VehicleInput message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1VehicleInput.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1VehicleInput message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1VehicleInput} F1VehicleInput
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1VehicleInput.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1VehicleInput();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.steer = reader.float();
+                                    break;
+                                }
+                            case 2: {
+                                    message.throttle = reader.float();
+                                    break;
+                                }
+                            case 3: {
+                                    message.brake = reader.float();
+                                    break;
+                                }
+                            case 4: {
+                                    message.handbrake = reader.bool();
+                                    break;
+                                }
+                            case 5: {
+                                    message.nitro = reader.bool();
+                                    break;
+                                }
+                            case 6: {
+                                    message.resetCar = reader.bool();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1VehicleInput message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1VehicleInput} F1VehicleInput
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1VehicleInput.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1VehicleInput message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1VehicleInput.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.steer != null && Object.hasOwnProperty.call(message, "steer"))
+                            if (typeof message.steer !== "number")
+                                return "steer: number expected";
+                        if (message.throttle != null && Object.hasOwnProperty.call(message, "throttle"))
+                            if (typeof message.throttle !== "number")
+                                return "throttle: number expected";
+                        if (message.brake != null && Object.hasOwnProperty.call(message, "brake"))
+                            if (typeof message.brake !== "number")
+                                return "brake: number expected";
+                        if (message.handbrake != null && Object.hasOwnProperty.call(message, "handbrake"))
+                            if (typeof message.handbrake !== "boolean")
+                                return "handbrake: boolean expected";
+                        if (message.nitro != null && Object.hasOwnProperty.call(message, "nitro"))
+                            if (typeof message.nitro !== "boolean")
+                                return "nitro: boolean expected";
+                        if (message.resetCar != null && Object.hasOwnProperty.call(message, "resetCar"))
+                            if (typeof message.resetCar !== "boolean")
+                                return "resetCar: boolean expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1VehicleInput message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1VehicleInput} F1VehicleInput
+                     */
+                    F1VehicleInput.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1VehicleInput)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1VehicleInput: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1VehicleInput();
+                        if (object.steer != null)
+                            message.steer = Number(object.steer);
+                        if (object.throttle != null)
+                            message.throttle = Number(object.throttle);
+                        if (object.brake != null)
+                            message.brake = Number(object.brake);
+                        if (object.handbrake != null)
+                            message.handbrake = Boolean(object.handbrake);
+                        if (object.nitro != null)
+                            message.nitro = Boolean(object.nitro);
+                        if (object.resetCar != null)
+                            message.resetCar = Boolean(object.resetCar);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1VehicleInput message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1VehicleInput} message F1VehicleInput
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1VehicleInput.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.steer = 0;
+                            object.throttle = 0;
+                            object.brake = 0;
+                            object.handbrake = false;
+                            object.nitro = false;
+                            object.resetCar = false;
+                        }
+                        if (message.steer != null && Object.hasOwnProperty.call(message, "steer"))
+                            object.steer = options.json && !isFinite(message.steer) ? String(message.steer) : message.steer;
+                        if (message.throttle != null && Object.hasOwnProperty.call(message, "throttle"))
+                            object.throttle = options.json && !isFinite(message.throttle) ? String(message.throttle) : message.throttle;
+                        if (message.brake != null && Object.hasOwnProperty.call(message, "brake"))
+                            object.brake = options.json && !isFinite(message.brake) ? String(message.brake) : message.brake;
+                        if (message.handbrake != null && Object.hasOwnProperty.call(message, "handbrake"))
+                            object.handbrake = message.handbrake;
+                        if (message.nitro != null && Object.hasOwnProperty.call(message, "nitro"))
+                            object.nitro = message.nitro;
+                        if (message.resetCar != null && Object.hasOwnProperty.call(message, "resetCar"))
+                            object.resetCar = message.resetCar;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1VehicleInput to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1VehicleInput.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1VehicleInput
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1VehicleInput
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1VehicleInput.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1VehicleInput";
+                    };
+
+                    return F1VehicleInput;
+                })();
+
+                proto.F1GarageLoadout = (function() {
+
+                    /**
+                     * Properties of a F1GarageLoadout.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1GarageLoadout
+                     * @property {string|null} [carId] F1GarageLoadout carId
+                     * @property {string|null} [liveryId] F1GarageLoadout liveryId
+                     * @property {string|null} [primaryColor] F1GarageLoadout primaryColor
+                     * @property {string|null} [wheelId] F1GarageLoadout wheelId
+                     * @property {string|null} [nitroFxId] F1GarageLoadout nitroFxId
+                     */
+
+                    /**
+                     * Constructs a new F1GarageLoadout.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1GarageLoadout.
+                     * @implements IF1GarageLoadout
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1GarageLoadout=} [properties] Properties to set
+                     */
+                    function F1GarageLoadout(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1GarageLoadout carId.
+                     * @member {string} carId
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @instance
+                     */
+                    F1GarageLoadout.prototype.carId = "";
+
+                    /**
+                     * F1GarageLoadout liveryId.
+                     * @member {string} liveryId
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @instance
+                     */
+                    F1GarageLoadout.prototype.liveryId = "";
+
+                    /**
+                     * F1GarageLoadout primaryColor.
+                     * @member {string} primaryColor
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @instance
+                     */
+                    F1GarageLoadout.prototype.primaryColor = "";
+
+                    /**
+                     * F1GarageLoadout wheelId.
+                     * @member {string} wheelId
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @instance
+                     */
+                    F1GarageLoadout.prototype.wheelId = "";
+
+                    /**
+                     * F1GarageLoadout nitroFxId.
+                     * @member {string} nitroFxId
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @instance
+                     */
+                    F1GarageLoadout.prototype.nitroFxId = "";
+
+                    /**
+                     * Creates a new F1GarageLoadout instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1GarageLoadout=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1GarageLoadout} F1GarageLoadout instance
+                     */
+                    F1GarageLoadout.create = function create(properties) {
+                        return new F1GarageLoadout(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1GarageLoadout message. Does not implicitly {@link com.triforge.protocol.proto.F1GarageLoadout.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1GarageLoadout} message F1GarageLoadout message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1GarageLoadout.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.carId != null && Object.hasOwnProperty.call(message, "carId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.carId);
+                        if (message.liveryId != null && Object.hasOwnProperty.call(message, "liveryId"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.liveryId);
+                        if (message.primaryColor != null && Object.hasOwnProperty.call(message, "primaryColor"))
+                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.primaryColor);
+                        if (message.wheelId != null && Object.hasOwnProperty.call(message, "wheelId"))
+                            writer.uint32(/* id 4, wireType 2 =*/34).string(message.wheelId);
+                        if (message.nitroFxId != null && Object.hasOwnProperty.call(message, "nitroFxId"))
+                            writer.uint32(/* id 5, wireType 2 =*/42).string(message.nitroFxId);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1GarageLoadout message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1GarageLoadout.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1GarageLoadout} message F1GarageLoadout message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1GarageLoadout.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1GarageLoadout message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1GarageLoadout} F1GarageLoadout
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1GarageLoadout.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1GarageLoadout();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.carId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.liveryId = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    message.primaryColor = reader.string();
+                                    break;
+                                }
+                            case 4: {
+                                    message.wheelId = reader.string();
+                                    break;
+                                }
+                            case 5: {
+                                    message.nitroFxId = reader.string();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1GarageLoadout message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1GarageLoadout} F1GarageLoadout
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1GarageLoadout.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1GarageLoadout message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1GarageLoadout.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.carId != null && Object.hasOwnProperty.call(message, "carId"))
+                            if (!$util.isString(message.carId))
+                                return "carId: string expected";
+                        if (message.liveryId != null && Object.hasOwnProperty.call(message, "liveryId"))
+                            if (!$util.isString(message.liveryId))
+                                return "liveryId: string expected";
+                        if (message.primaryColor != null && Object.hasOwnProperty.call(message, "primaryColor"))
+                            if (!$util.isString(message.primaryColor))
+                                return "primaryColor: string expected";
+                        if (message.wheelId != null && Object.hasOwnProperty.call(message, "wheelId"))
+                            if (!$util.isString(message.wheelId))
+                                return "wheelId: string expected";
+                        if (message.nitroFxId != null && Object.hasOwnProperty.call(message, "nitroFxId"))
+                            if (!$util.isString(message.nitroFxId))
+                                return "nitroFxId: string expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1GarageLoadout message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1GarageLoadout} F1GarageLoadout
+                     */
+                    F1GarageLoadout.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1GarageLoadout)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1GarageLoadout: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1GarageLoadout();
+                        if (object.carId != null)
+                            message.carId = String(object.carId);
+                        if (object.liveryId != null)
+                            message.liveryId = String(object.liveryId);
+                        if (object.primaryColor != null)
+                            message.primaryColor = String(object.primaryColor);
+                        if (object.wheelId != null)
+                            message.wheelId = String(object.wheelId);
+                        if (object.nitroFxId != null)
+                            message.nitroFxId = String(object.nitroFxId);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1GarageLoadout message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1GarageLoadout} message F1GarageLoadout
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1GarageLoadout.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.carId = "";
+                            object.liveryId = "";
+                            object.primaryColor = "";
+                            object.wheelId = "";
+                            object.nitroFxId = "";
+                        }
+                        if (message.carId != null && Object.hasOwnProperty.call(message, "carId"))
+                            object.carId = message.carId;
+                        if (message.liveryId != null && Object.hasOwnProperty.call(message, "liveryId"))
+                            object.liveryId = message.liveryId;
+                        if (message.primaryColor != null && Object.hasOwnProperty.call(message, "primaryColor"))
+                            object.primaryColor = message.primaryColor;
+                        if (message.wheelId != null && Object.hasOwnProperty.call(message, "wheelId"))
+                            object.wheelId = message.wheelId;
+                        if (message.nitroFxId != null && Object.hasOwnProperty.call(message, "nitroFxId"))
+                            object.nitroFxId = message.nitroFxId;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1GarageLoadout to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1GarageLoadout.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1GarageLoadout
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1GarageLoadout
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1GarageLoadout.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1GarageLoadout";
+                    };
+
+                    return F1GarageLoadout;
+                })();
+
+                proto.F1JoinRequest = (function() {
+
+                    /**
+                     * Properties of a F1JoinRequest.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1JoinRequest
+                     * @property {string|null} [password] F1JoinRequest password
+                     */
+
+                    /**
+                     * Constructs a new F1JoinRequest.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1JoinRequest.
+                     * @implements IF1JoinRequest
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1JoinRequest=} [properties] Properties to set
+                     */
+                    function F1JoinRequest(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1JoinRequest password.
+                     * @member {string} password
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @instance
+                     */
+                    F1JoinRequest.prototype.password = "";
+
+                    /**
+                     * Creates a new F1JoinRequest instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1JoinRequest=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1JoinRequest} F1JoinRequest instance
+                     */
+                    F1JoinRequest.create = function create(properties) {
+                        return new F1JoinRequest(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1JoinRequest message. Does not implicitly {@link com.triforge.protocol.proto.F1JoinRequest.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1JoinRequest} message F1JoinRequest message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1JoinRequest.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.password != null && Object.hasOwnProperty.call(message, "password"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.password);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1JoinRequest message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1JoinRequest.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1JoinRequest} message F1JoinRequest message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1JoinRequest.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1JoinRequest message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1JoinRequest} F1JoinRequest
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1JoinRequest.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1JoinRequest();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.password = reader.string();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1JoinRequest message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1JoinRequest} F1JoinRequest
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1JoinRequest.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1JoinRequest message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1JoinRequest.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.password != null && Object.hasOwnProperty.call(message, "password"))
+                            if (!$util.isString(message.password))
+                                return "password: string expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1JoinRequest message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1JoinRequest} F1JoinRequest
+                     */
+                    F1JoinRequest.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1JoinRequest)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1JoinRequest: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1JoinRequest();
+                        if (object.password != null)
+                            message.password = String(object.password);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1JoinRequest message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1JoinRequest} message F1JoinRequest
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1JoinRequest.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults)
+                            object.password = "";
+                        if (message.password != null && Object.hasOwnProperty.call(message, "password"))
+                            object.password = message.password;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1JoinRequest to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1JoinRequest.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1JoinRequest
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1JoinRequest
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1JoinRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1JoinRequest";
+                    };
+
+                    return F1JoinRequest;
+                })();
+
+                proto.F1SetRoomConfig = (function() {
+
+                    /**
+                     * Properties of a F1SetRoomConfig.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1SetRoomConfig
+                     * @property {string|null} [trackId] F1SetRoomConfig trackId
+                     * @property {number|null} [lapCount] F1SetRoomConfig lapCount
+                     * @property {number|null} [maxPlayers] F1SetRoomConfig maxPlayers
+                     * @property {number|null} [botCount] F1SetRoomConfig botCount
+                     * @property {string|null} [password] F1SetRoomConfig password
+                     * @property {com.triforge.protocol.proto.F1CollisionMode|null} [collision] F1SetRoomConfig collision
+                     * @property {com.triforge.protocol.proto.F1DamageMode|null} [damage] F1SetRoomConfig damage
+                     * @property {com.triforge.protocol.proto.F1Weather|null} [weather] F1SetRoomConfig weather
+                     * @property {com.triforge.protocol.proto.F1TimeOfDay|null} [timeOfDay] F1SetRoomConfig timeOfDay
+                     * @property {boolean|null} [enableQualifying] F1SetRoomConfig enableQualifying
+                     * @property {number|null} [qualifyingDurationSec] F1SetRoomConfig qualifyingDurationSec
+                     */
+
+                    /**
+                     * Constructs a new F1SetRoomConfig.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1SetRoomConfig.
+                     * @implements IF1SetRoomConfig
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1SetRoomConfig=} [properties] Properties to set
+                     */
+                    function F1SetRoomConfig(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1SetRoomConfig trackId.
+                     * @member {string} trackId
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.trackId = "";
+
+                    /**
+                     * F1SetRoomConfig lapCount.
+                     * @member {number} lapCount
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.lapCount = 0;
+
+                    /**
+                     * F1SetRoomConfig maxPlayers.
+                     * @member {number} maxPlayers
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.maxPlayers = 0;
+
+                    /**
+                     * F1SetRoomConfig botCount.
+                     * @member {number} botCount
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.botCount = 0;
+
+                    /**
+                     * F1SetRoomConfig password.
+                     * @member {string} password
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.password = "";
+
+                    /**
+                     * F1SetRoomConfig collision.
+                     * @member {com.triforge.protocol.proto.F1CollisionMode} collision
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.collision = 0;
+
+                    /**
+                     * F1SetRoomConfig damage.
+                     * @member {com.triforge.protocol.proto.F1DamageMode} damage
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.damage = 0;
+
+                    /**
+                     * F1SetRoomConfig weather.
+                     * @member {com.triforge.protocol.proto.F1Weather} weather
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.weather = 0;
+
+                    /**
+                     * F1SetRoomConfig timeOfDay.
+                     * @member {com.triforge.protocol.proto.F1TimeOfDay} timeOfDay
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.timeOfDay = 0;
+
+                    /**
+                     * F1SetRoomConfig enableQualifying.
+                     * @member {boolean} enableQualifying
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.enableQualifying = false;
+
+                    /**
+                     * F1SetRoomConfig qualifyingDurationSec.
+                     * @member {number} qualifyingDurationSec
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     */
+                    F1SetRoomConfig.prototype.qualifyingDurationSec = 0;
+
+                    /**
+                     * Creates a new F1SetRoomConfig instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1SetRoomConfig=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1SetRoomConfig} F1SetRoomConfig instance
+                     */
+                    F1SetRoomConfig.create = function create(properties) {
+                        return new F1SetRoomConfig(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1SetRoomConfig message. Does not implicitly {@link com.triforge.protocol.proto.F1SetRoomConfig.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1SetRoomConfig} message F1SetRoomConfig message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1SetRoomConfig.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.trackId != null && Object.hasOwnProperty.call(message, "trackId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.trackId);
+                        if (message.lapCount != null && Object.hasOwnProperty.call(message, "lapCount"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.lapCount);
+                        if (message.maxPlayers != null && Object.hasOwnProperty.call(message, "maxPlayers"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.maxPlayers);
+                        if (message.botCount != null && Object.hasOwnProperty.call(message, "botCount"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.botCount);
+                        if (message.password != null && Object.hasOwnProperty.call(message, "password"))
+                            writer.uint32(/* id 5, wireType 2 =*/42).string(message.password);
+                        if (message.collision != null && Object.hasOwnProperty.call(message, "collision"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).int32(message.collision);
+                        if (message.damage != null && Object.hasOwnProperty.call(message, "damage"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).int32(message.damage);
+                        if (message.weather != null && Object.hasOwnProperty.call(message, "weather"))
+                            writer.uint32(/* id 8, wireType 0 =*/64).int32(message.weather);
+                        if (message.timeOfDay != null && Object.hasOwnProperty.call(message, "timeOfDay"))
+                            writer.uint32(/* id 9, wireType 0 =*/72).int32(message.timeOfDay);
+                        if (message.enableQualifying != null && Object.hasOwnProperty.call(message, "enableQualifying"))
+                            writer.uint32(/* id 10, wireType 0 =*/80).bool(message.enableQualifying);
+                        if (message.qualifyingDurationSec != null && Object.hasOwnProperty.call(message, "qualifyingDurationSec"))
+                            writer.uint32(/* id 11, wireType 0 =*/88).uint32(message.qualifyingDurationSec);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1SetRoomConfig message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1SetRoomConfig.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1SetRoomConfig} message F1SetRoomConfig message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1SetRoomConfig.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1SetRoomConfig message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1SetRoomConfig} F1SetRoomConfig
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1SetRoomConfig.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1SetRoomConfig();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.trackId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.lapCount = reader.uint32();
+                                    break;
+                                }
+                            case 3: {
+                                    message.maxPlayers = reader.uint32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.botCount = reader.uint32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.password = reader.string();
+                                    break;
+                                }
+                            case 6: {
+                                    message.collision = reader.int32();
+                                    break;
+                                }
+                            case 7: {
+                                    message.damage = reader.int32();
+                                    break;
+                                }
+                            case 8: {
+                                    message.weather = reader.int32();
+                                    break;
+                                }
+                            case 9: {
+                                    message.timeOfDay = reader.int32();
+                                    break;
+                                }
+                            case 10: {
+                                    message.enableQualifying = reader.bool();
+                                    break;
+                                }
+                            case 11: {
+                                    message.qualifyingDurationSec = reader.uint32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1SetRoomConfig message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1SetRoomConfig} F1SetRoomConfig
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1SetRoomConfig.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1SetRoomConfig message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1SetRoomConfig.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.trackId != null && Object.hasOwnProperty.call(message, "trackId"))
+                            if (!$util.isString(message.trackId))
+                                return "trackId: string expected";
+                        if (message.lapCount != null && Object.hasOwnProperty.call(message, "lapCount"))
+                            if (!$util.isInteger(message.lapCount))
+                                return "lapCount: integer expected";
+                        if (message.maxPlayers != null && Object.hasOwnProperty.call(message, "maxPlayers"))
+                            if (!$util.isInteger(message.maxPlayers))
+                                return "maxPlayers: integer expected";
+                        if (message.botCount != null && Object.hasOwnProperty.call(message, "botCount"))
+                            if (!$util.isInteger(message.botCount))
+                                return "botCount: integer expected";
+                        if (message.password != null && Object.hasOwnProperty.call(message, "password"))
+                            if (!$util.isString(message.password))
+                                return "password: string expected";
+                        if (message.collision != null && Object.hasOwnProperty.call(message, "collision"))
+                            switch (message.collision) {
+                            default:
+                                return "collision: enum value expected";
+                            case 0:
+                            case 1:
+                                break;
+                            }
+                        if (message.damage != null && Object.hasOwnProperty.call(message, "damage"))
+                            switch (message.damage) {
+                            default:
+                                return "damage: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                                break;
+                            }
+                        if (message.weather != null && Object.hasOwnProperty.call(message, "weather"))
+                            switch (message.weather) {
+                            default:
+                                return "weather: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                                break;
+                            }
+                        if (message.timeOfDay != null && Object.hasOwnProperty.call(message, "timeOfDay"))
+                            switch (message.timeOfDay) {
+                            default:
+                                return "timeOfDay: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                                break;
+                            }
+                        if (message.enableQualifying != null && Object.hasOwnProperty.call(message, "enableQualifying"))
+                            if (typeof message.enableQualifying !== "boolean")
+                                return "enableQualifying: boolean expected";
+                        if (message.qualifyingDurationSec != null && Object.hasOwnProperty.call(message, "qualifyingDurationSec"))
+                            if (!$util.isInteger(message.qualifyingDurationSec))
+                                return "qualifyingDurationSec: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1SetRoomConfig message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1SetRoomConfig} F1SetRoomConfig
+                     */
+                    F1SetRoomConfig.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1SetRoomConfig)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1SetRoomConfig: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1SetRoomConfig();
+                        if (object.trackId != null)
+                            message.trackId = String(object.trackId);
+                        if (object.lapCount != null)
+                            message.lapCount = object.lapCount >>> 0;
+                        if (object.maxPlayers != null)
+                            message.maxPlayers = object.maxPlayers >>> 0;
+                        if (object.botCount != null)
+                            message.botCount = object.botCount >>> 0;
+                        if (object.password != null)
+                            message.password = String(object.password);
+                        switch (object.collision) {
+                        default:
+                            if (typeof object.collision === "number") {
+                                message.collision = object.collision;
+                                break;
+                            }
+                            break;
+                        case "F1_COLLISION_ON":
+                        case 0:
+                            message.collision = 0;
+                            break;
+                        case "F1_COLLISION_OFF":
+                        case 1:
+                            message.collision = 1;
+                            break;
+                        }
+                        switch (object.damage) {
+                        default:
+                            if (typeof object.damage === "number") {
+                                message.damage = object.damage;
+                                break;
+                            }
+                            break;
+                        case "F1_DAMAGE_NONE":
+                        case 0:
+                            message.damage = 0;
+                            break;
+                        case "F1_DAMAGE_VISUAL":
+                        case 1:
+                            message.damage = 1;
+                            break;
+                        case "F1_DAMAGE_FULL":
+                        case 2:
+                            message.damage = 2;
+                            break;
+                        }
+                        switch (object.weather) {
+                        default:
+                            if (typeof object.weather === "number") {
+                                message.weather = object.weather;
+                                break;
+                            }
+                            break;
+                        case "F1_WEATHER_SUNNY":
+                        case 0:
+                            message.weather = 0;
+                            break;
+                        case "F1_WEATHER_RAIN":
+                        case 1:
+                            message.weather = 1;
+                            break;
+                        case "F1_WEATHER_SNOW":
+                        case 2:
+                            message.weather = 2;
+                            break;
+                        case "F1_WEATHER_FOG":
+                        case 3:
+                            message.weather = 3;
+                            break;
+                        case "F1_WEATHER_RANDOM":
+                        case 4:
+                            message.weather = 4;
+                            break;
+                        }
+                        switch (object.timeOfDay) {
+                        default:
+                            if (typeof object.timeOfDay === "number") {
+                                message.timeOfDay = object.timeOfDay;
+                                break;
+                            }
+                            break;
+                        case "F1_TIME_MORNING":
+                        case 0:
+                            message.timeOfDay = 0;
+                            break;
+                        case "F1_TIME_NOON":
+                        case 1:
+                            message.timeOfDay = 1;
+                            break;
+                        case "F1_TIME_SUNSET":
+                        case 2:
+                            message.timeOfDay = 2;
+                            break;
+                        case "F1_TIME_NIGHT":
+                        case 3:
+                            message.timeOfDay = 3;
+                            break;
+                        }
+                        if (object.enableQualifying != null)
+                            message.enableQualifying = Boolean(object.enableQualifying);
+                        if (object.qualifyingDurationSec != null)
+                            message.qualifyingDurationSec = object.qualifyingDurationSec >>> 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1SetRoomConfig message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1SetRoomConfig} message F1SetRoomConfig
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1SetRoomConfig.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.trackId = "";
+                            object.lapCount = 0;
+                            object.maxPlayers = 0;
+                            object.botCount = 0;
+                            object.password = "";
+                            object.collision = options.enums === String ? "F1_COLLISION_ON" : 0;
+                            object.damage = options.enums === String ? "F1_DAMAGE_NONE" : 0;
+                            object.weather = options.enums === String ? "F1_WEATHER_SUNNY" : 0;
+                            object.timeOfDay = options.enums === String ? "F1_TIME_MORNING" : 0;
+                            object.enableQualifying = false;
+                            object.qualifyingDurationSec = 0;
+                        }
+                        if (message.trackId != null && Object.hasOwnProperty.call(message, "trackId"))
+                            object.trackId = message.trackId;
+                        if (message.lapCount != null && Object.hasOwnProperty.call(message, "lapCount"))
+                            object.lapCount = message.lapCount;
+                        if (message.maxPlayers != null && Object.hasOwnProperty.call(message, "maxPlayers"))
+                            object.maxPlayers = message.maxPlayers;
+                        if (message.botCount != null && Object.hasOwnProperty.call(message, "botCount"))
+                            object.botCount = message.botCount;
+                        if (message.password != null && Object.hasOwnProperty.call(message, "password"))
+                            object.password = message.password;
+                        if (message.collision != null && Object.hasOwnProperty.call(message, "collision"))
+                            object.collision = options.enums === String ? $root.com.triforge.protocol.proto.F1CollisionMode[message.collision] === undefined ? message.collision : $root.com.triforge.protocol.proto.F1CollisionMode[message.collision] : message.collision;
+                        if (message.damage != null && Object.hasOwnProperty.call(message, "damage"))
+                            object.damage = options.enums === String ? $root.com.triforge.protocol.proto.F1DamageMode[message.damage] === undefined ? message.damage : $root.com.triforge.protocol.proto.F1DamageMode[message.damage] : message.damage;
+                        if (message.weather != null && Object.hasOwnProperty.call(message, "weather"))
+                            object.weather = options.enums === String ? $root.com.triforge.protocol.proto.F1Weather[message.weather] === undefined ? message.weather : $root.com.triforge.protocol.proto.F1Weather[message.weather] : message.weather;
+                        if (message.timeOfDay != null && Object.hasOwnProperty.call(message, "timeOfDay"))
+                            object.timeOfDay = options.enums === String ? $root.com.triforge.protocol.proto.F1TimeOfDay[message.timeOfDay] === undefined ? message.timeOfDay : $root.com.triforge.protocol.proto.F1TimeOfDay[message.timeOfDay] : message.timeOfDay;
+                        if (message.enableQualifying != null && Object.hasOwnProperty.call(message, "enableQualifying"))
+                            object.enableQualifying = message.enableQualifying;
+                        if (message.qualifyingDurationSec != null && Object.hasOwnProperty.call(message, "qualifyingDurationSec"))
+                            object.qualifyingDurationSec = message.qualifyingDurationSec;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1SetRoomConfig to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1SetRoomConfig.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1SetRoomConfig
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1SetRoomConfig
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1SetRoomConfig.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1SetRoomConfig";
+                    };
+
+                    return F1SetRoomConfig;
+                })();
+
+                proto.F1AddBot = (function() {
+
+                    /**
+                     * Properties of a F1AddBot.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1AddBot
+                     */
+
+                    /**
+                     * Constructs a new F1AddBot.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1AddBot.
+                     * @implements IF1AddBot
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1AddBot=} [properties] Properties to set
+                     */
+                    function F1AddBot(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Creates a new F1AddBot instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1AddBot
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1AddBot=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1AddBot} F1AddBot instance
+                     */
+                    F1AddBot.create = function create(properties) {
+                        return new F1AddBot(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1AddBot message. Does not implicitly {@link com.triforge.protocol.proto.F1AddBot.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1AddBot
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1AddBot} message F1AddBot message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1AddBot.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1AddBot message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1AddBot.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1AddBot
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1AddBot} message F1AddBot message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1AddBot.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1AddBot message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1AddBot
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1AddBot} F1AddBot
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1AddBot.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1AddBot();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1AddBot message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1AddBot
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1AddBot} F1AddBot
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1AddBot.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1AddBot message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1AddBot
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1AddBot.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1AddBot message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1AddBot
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1AddBot} F1AddBot
+                     */
+                    F1AddBot.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1AddBot)
+                            return object;
+                        return new $root.com.triforge.protocol.proto.F1AddBot();
+                    };
+
+                    /**
+                     * Creates a plain object from a F1AddBot message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1AddBot
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1AddBot} message F1AddBot
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1AddBot.toObject = function toObject() {
+                        return {};
+                    };
+
+                    /**
+                     * Converts this F1AddBot to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1AddBot
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1AddBot.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1AddBot
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1AddBot
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1AddBot.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1AddBot";
+                    };
+
+                    return F1AddBot;
+                })();
+
+                proto.F1KickPlayer = (function() {
+
+                    /**
+                     * Properties of a F1KickPlayer.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1KickPlayer
+                     * @property {number|Long|null} [playerId] F1KickPlayer playerId
+                     */
+
+                    /**
+                     * Constructs a new F1KickPlayer.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1KickPlayer.
+                     * @implements IF1KickPlayer
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1KickPlayer=} [properties] Properties to set
+                     */
+                    function F1KickPlayer(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1KickPlayer playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @instance
+                     */
+                    F1KickPlayer.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * Creates a new F1KickPlayer instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1KickPlayer=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1KickPlayer} F1KickPlayer instance
+                     */
+                    F1KickPlayer.create = function create(properties) {
+                        return new F1KickPlayer(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1KickPlayer message. Does not implicitly {@link com.triforge.protocol.proto.F1KickPlayer.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1KickPlayer} message F1KickPlayer message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1KickPlayer.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.playerId);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1KickPlayer message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1KickPlayer.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1KickPlayer} message F1KickPlayer message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1KickPlayer.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1KickPlayer message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1KickPlayer} F1KickPlayer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1KickPlayer.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1KickPlayer();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1KickPlayer message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1KickPlayer} F1KickPlayer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1KickPlayer.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1KickPlayer message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1KickPlayer.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1KickPlayer message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1KickPlayer} F1KickPlayer
+                     */
+                    F1KickPlayer.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1KickPlayer)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1KickPlayer: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1KickPlayer();
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1KickPlayer message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1KickPlayer} message F1KickPlayer
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1KickPlayer.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults)
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1KickPlayer to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1KickPlayer.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1KickPlayer
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1KickPlayer
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1KickPlayer.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1KickPlayer";
+                    };
+
+                    return F1KickPlayer;
+                })();
+
+                proto.F1StartRace = (function() {
+
+                    /**
+                     * Properties of a F1StartRace.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1StartRace
+                     */
+
+                    /**
+                     * Constructs a new F1StartRace.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1StartRace.
+                     * @implements IF1StartRace
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1StartRace=} [properties] Properties to set
+                     */
+                    function F1StartRace(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Creates a new F1StartRace instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1StartRace
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1StartRace=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1StartRace} F1StartRace instance
+                     */
+                    F1StartRace.create = function create(properties) {
+                        return new F1StartRace(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1StartRace message. Does not implicitly {@link com.triforge.protocol.proto.F1StartRace.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1StartRace
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1StartRace} message F1StartRace message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1StartRace.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1StartRace message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1StartRace.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1StartRace
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1StartRace} message F1StartRace message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1StartRace.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1StartRace message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1StartRace
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1StartRace} F1StartRace
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1StartRace.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1StartRace();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1StartRace message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1StartRace
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1StartRace} F1StartRace
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1StartRace.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1StartRace message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1StartRace
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1StartRace.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1StartRace message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1StartRace
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1StartRace} F1StartRace
+                     */
+                    F1StartRace.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1StartRace)
+                            return object;
+                        return new $root.com.triforge.protocol.proto.F1StartRace();
+                    };
+
+                    /**
+                     * Creates a plain object from a F1StartRace message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1StartRace
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1StartRace} message F1StartRace
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1StartRace.toObject = function toObject() {
+                        return {};
+                    };
+
+                    /**
+                     * Converts this F1StartRace to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1StartRace
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1StartRace.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1StartRace
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1StartRace
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1StartRace.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1StartRace";
+                    };
+
+                    return F1StartRace;
+                })();
+
+                proto.F1SkipQualifying = (function() {
+
+                    /**
+                     * Properties of a F1SkipQualifying.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1SkipQualifying
+                     */
+
+                    /**
+                     * Constructs a new F1SkipQualifying.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1SkipQualifying.
+                     * @implements IF1SkipQualifying
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1SkipQualifying=} [properties] Properties to set
+                     */
+                    function F1SkipQualifying(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * Creates a new F1SkipQualifying instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1SkipQualifying
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1SkipQualifying=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1SkipQualifying} F1SkipQualifying instance
+                     */
+                    F1SkipQualifying.create = function create(properties) {
+                        return new F1SkipQualifying(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1SkipQualifying message. Does not implicitly {@link com.triforge.protocol.proto.F1SkipQualifying.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1SkipQualifying
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1SkipQualifying} message F1SkipQualifying message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1SkipQualifying.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1SkipQualifying message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1SkipQualifying.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1SkipQualifying
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1SkipQualifying} message F1SkipQualifying message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1SkipQualifying.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1SkipQualifying message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1SkipQualifying
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1SkipQualifying} F1SkipQualifying
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1SkipQualifying.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1SkipQualifying();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1SkipQualifying message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1SkipQualifying
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1SkipQualifying} F1SkipQualifying
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1SkipQualifying.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1SkipQualifying message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1SkipQualifying
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1SkipQualifying.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1SkipQualifying message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1SkipQualifying
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1SkipQualifying} F1SkipQualifying
+                     */
+                    F1SkipQualifying.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1SkipQualifying)
+                            return object;
+                        return new $root.com.triforge.protocol.proto.F1SkipQualifying();
+                    };
+
+                    /**
+                     * Creates a plain object from a F1SkipQualifying message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1SkipQualifying
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1SkipQualifying} message F1SkipQualifying
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1SkipQualifying.toObject = function toObject() {
+                        return {};
+                    };
+
+                    /**
+                     * Converts this F1SkipQualifying to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1SkipQualifying
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1SkipQualifying.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1SkipQualifying
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1SkipQualifying
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1SkipQualifying.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1SkipQualifying";
+                    };
+
+                    return F1SkipQualifying;
+                })();
+
+                /**
+                 * F1CollisionMode enum.
+                 * @name com.triforge.protocol.proto.F1CollisionMode
+                 * @enum {number}
+                 * @property {number} F1_COLLISION_ON=0 F1_COLLISION_ON value
+                 * @property {number} F1_COLLISION_OFF=1 F1_COLLISION_OFF value
+                 */
+                proto.F1CollisionMode = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "F1_COLLISION_ON"] = 0;
+                    values[valuesById[1] = "F1_COLLISION_OFF"] = 1;
+                    return values;
+                })();
+
+                /**
+                 * F1DamageMode enum.
+                 * @name com.triforge.protocol.proto.F1DamageMode
+                 * @enum {number}
+                 * @property {number} F1_DAMAGE_NONE=0 F1_DAMAGE_NONE value
+                 * @property {number} F1_DAMAGE_VISUAL=1 F1_DAMAGE_VISUAL value
+                 * @property {number} F1_DAMAGE_FULL=2 F1_DAMAGE_FULL value
+                 */
+                proto.F1DamageMode = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "F1_DAMAGE_NONE"] = 0;
+                    values[valuesById[1] = "F1_DAMAGE_VISUAL"] = 1;
+                    values[valuesById[2] = "F1_DAMAGE_FULL"] = 2;
+                    return values;
+                })();
+
+                /**
+                 * F1Weather enum.
+                 * @name com.triforge.protocol.proto.F1Weather
+                 * @enum {number}
+                 * @property {number} F1_WEATHER_SUNNY=0 F1_WEATHER_SUNNY value
+                 * @property {number} F1_WEATHER_RAIN=1 F1_WEATHER_RAIN value
+                 * @property {number} F1_WEATHER_SNOW=2 F1_WEATHER_SNOW value
+                 * @property {number} F1_WEATHER_FOG=3 F1_WEATHER_FOG value
+                 * @property {number} F1_WEATHER_RANDOM=4 F1_WEATHER_RANDOM value
+                 */
+                proto.F1Weather = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "F1_WEATHER_SUNNY"] = 0;
+                    values[valuesById[1] = "F1_WEATHER_RAIN"] = 1;
+                    values[valuesById[2] = "F1_WEATHER_SNOW"] = 2;
+                    values[valuesById[3] = "F1_WEATHER_FOG"] = 3;
+                    values[valuesById[4] = "F1_WEATHER_RANDOM"] = 4;
+                    return values;
+                })();
+
+                /**
+                 * F1TimeOfDay enum.
+                 * @name com.triforge.protocol.proto.F1TimeOfDay
+                 * @enum {number}
+                 * @property {number} F1_TIME_MORNING=0 F1_TIME_MORNING value
+                 * @property {number} F1_TIME_NOON=1 F1_TIME_NOON value
+                 * @property {number} F1_TIME_SUNSET=2 F1_TIME_SUNSET value
+                 * @property {number} F1_TIME_NIGHT=3 F1_TIME_NIGHT value
+                 */
+                proto.F1TimeOfDay = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "F1_TIME_MORNING"] = 0;
+                    values[valuesById[1] = "F1_TIME_NOON"] = 1;
+                    values[valuesById[2] = "F1_TIME_SUNSET"] = 2;
+                    values[valuesById[3] = "F1_TIME_NIGHT"] = 3;
+                    return values;
+                })();
+
+                /**
+                 * F1SessionPhase enum.
+                 * @name com.triforge.protocol.proto.F1SessionPhase
+                 * @enum {number}
+                 * @property {number} F1_SESSION_LOBBY=0 F1_SESSION_LOBBY value
+                 * @property {number} F1_SESSION_QUALIFYING=1 F1_SESSION_QUALIFYING value
+                 * @property {number} F1_SESSION_RACE=2 F1_SESSION_RACE value
+                 */
+                proto.F1SessionPhase = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "F1_SESSION_LOBBY"] = 0;
+                    values[valuesById[1] = "F1_SESSION_QUALIFYING"] = 1;
+                    values[valuesById[2] = "F1_SESSION_RACE"] = 2;
+                    return values;
+                })();
+
+                /**
+                 * F1AbortReason enum.
+                 * @name com.triforge.protocol.proto.F1AbortReason
+                 * @enum {number}
+                 * @property {number} F1_ABORT_NONE=0 F1_ABORT_NONE value
+                 * @property {number} F1_ABORT_HOST_DISCONNECTED=1 F1_ABORT_HOST_DISCONNECTED value
+                 * @property {number} F1_ABORT_TIME_CAP=2 F1_ABORT_TIME_CAP value
+                 */
+                proto.F1AbortReason = (function() {
+                    const valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "F1_ABORT_NONE"] = 0;
+                    values[valuesById[1] = "F1_ABORT_HOST_DISCONNECTED"] = 1;
+                    values[valuesById[2] = "F1_ABORT_TIME_CAP"] = 2;
+                    return values;
+                })();
+
+                proto.F1RoomConfig = (function() {
+
+                    /**
+                     * Properties of a F1RoomConfig.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1RoomConfig
+                     * @property {string|null} [trackId] F1RoomConfig trackId
+                     * @property {string|null} [trackDisplayName] F1RoomConfig trackDisplayName
+                     * @property {number|null} [lapCount] F1RoomConfig lapCount
+                     * @property {number|null} [maxPlayers] F1RoomConfig maxPlayers
+                     * @property {number|null} [botCount] F1RoomConfig botCount
+                     * @property {boolean|null} [passwordProtected] F1RoomConfig passwordProtected
+                     * @property {com.triforge.protocol.proto.F1CollisionMode|null} [collision] F1RoomConfig collision
+                     * @property {com.triforge.protocol.proto.F1DamageMode|null} [damage] F1RoomConfig damage
+                     * @property {com.triforge.protocol.proto.F1Weather|null} [weather] F1RoomConfig weather
+                     * @property {com.triforge.protocol.proto.F1TimeOfDay|null} [timeOfDay] F1RoomConfig timeOfDay
+                     * @property {boolean|null} [enableQualifying] F1RoomConfig enableQualifying
+                     * @property {number|null} [qualifyingDurationSec] F1RoomConfig qualifyingDurationSec
+                     */
+
+                    /**
+                     * Constructs a new F1RoomConfig.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1RoomConfig.
+                     * @implements IF1RoomConfig
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1RoomConfig=} [properties] Properties to set
+                     */
+                    function F1RoomConfig(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1RoomConfig trackId.
+                     * @member {string} trackId
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.trackId = "";
+
+                    /**
+                     * F1RoomConfig trackDisplayName.
+                     * @member {string} trackDisplayName
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.trackDisplayName = "";
+
+                    /**
+                     * F1RoomConfig lapCount.
+                     * @member {number} lapCount
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.lapCount = 0;
+
+                    /**
+                     * F1RoomConfig maxPlayers.
+                     * @member {number} maxPlayers
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.maxPlayers = 0;
+
+                    /**
+                     * F1RoomConfig botCount.
+                     * @member {number} botCount
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.botCount = 0;
+
+                    /**
+                     * F1RoomConfig passwordProtected.
+                     * @member {boolean} passwordProtected
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.passwordProtected = false;
+
+                    /**
+                     * F1RoomConfig collision.
+                     * @member {com.triforge.protocol.proto.F1CollisionMode} collision
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.collision = 0;
+
+                    /**
+                     * F1RoomConfig damage.
+                     * @member {com.triforge.protocol.proto.F1DamageMode} damage
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.damage = 0;
+
+                    /**
+                     * F1RoomConfig weather.
+                     * @member {com.triforge.protocol.proto.F1Weather} weather
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.weather = 0;
+
+                    /**
+                     * F1RoomConfig timeOfDay.
+                     * @member {com.triforge.protocol.proto.F1TimeOfDay} timeOfDay
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.timeOfDay = 0;
+
+                    /**
+                     * F1RoomConfig enableQualifying.
+                     * @member {boolean} enableQualifying
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.enableQualifying = false;
+
+                    /**
+                     * F1RoomConfig qualifyingDurationSec.
+                     * @member {number} qualifyingDurationSec
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     */
+                    F1RoomConfig.prototype.qualifyingDurationSec = 0;
+
+                    /**
+                     * Creates a new F1RoomConfig instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1RoomConfig=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1RoomConfig} F1RoomConfig instance
+                     */
+                    F1RoomConfig.create = function create(properties) {
+                        return new F1RoomConfig(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1RoomConfig message. Does not implicitly {@link com.triforge.protocol.proto.F1RoomConfig.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1RoomConfig} message F1RoomConfig message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1RoomConfig.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.trackId != null && Object.hasOwnProperty.call(message, "trackId"))
+                            writer.uint32(/* id 1, wireType 2 =*/10).string(message.trackId);
+                        if (message.trackDisplayName != null && Object.hasOwnProperty.call(message, "trackDisplayName"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.trackDisplayName);
+                        if (message.lapCount != null && Object.hasOwnProperty.call(message, "lapCount"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.lapCount);
+                        if (message.maxPlayers != null && Object.hasOwnProperty.call(message, "maxPlayers"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.maxPlayers);
+                        if (message.botCount != null && Object.hasOwnProperty.call(message, "botCount"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.botCount);
+                        if (message.passwordProtected != null && Object.hasOwnProperty.call(message, "passwordProtected"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).bool(message.passwordProtected);
+                        if (message.collision != null && Object.hasOwnProperty.call(message, "collision"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).int32(message.collision);
+                        if (message.damage != null && Object.hasOwnProperty.call(message, "damage"))
+                            writer.uint32(/* id 8, wireType 0 =*/64).int32(message.damage);
+                        if (message.weather != null && Object.hasOwnProperty.call(message, "weather"))
+                            writer.uint32(/* id 9, wireType 0 =*/72).int32(message.weather);
+                        if (message.timeOfDay != null && Object.hasOwnProperty.call(message, "timeOfDay"))
+                            writer.uint32(/* id 10, wireType 0 =*/80).int32(message.timeOfDay);
+                        if (message.enableQualifying != null && Object.hasOwnProperty.call(message, "enableQualifying"))
+                            writer.uint32(/* id 11, wireType 0 =*/88).bool(message.enableQualifying);
+                        if (message.qualifyingDurationSec != null && Object.hasOwnProperty.call(message, "qualifyingDurationSec"))
+                            writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.qualifyingDurationSec);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1RoomConfig message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1RoomConfig.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1RoomConfig} message F1RoomConfig message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1RoomConfig.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1RoomConfig message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1RoomConfig} F1RoomConfig
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1RoomConfig.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1RoomConfig();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.trackId = reader.string();
+                                    break;
+                                }
+                            case 2: {
+                                    message.trackDisplayName = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    message.lapCount = reader.uint32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.maxPlayers = reader.uint32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.botCount = reader.uint32();
+                                    break;
+                                }
+                            case 6: {
+                                    message.passwordProtected = reader.bool();
+                                    break;
+                                }
+                            case 7: {
+                                    message.collision = reader.int32();
+                                    break;
+                                }
+                            case 8: {
+                                    message.damage = reader.int32();
+                                    break;
+                                }
+                            case 9: {
+                                    message.weather = reader.int32();
+                                    break;
+                                }
+                            case 10: {
+                                    message.timeOfDay = reader.int32();
+                                    break;
+                                }
+                            case 11: {
+                                    message.enableQualifying = reader.bool();
+                                    break;
+                                }
+                            case 12: {
+                                    message.qualifyingDurationSec = reader.uint32();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1RoomConfig message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1RoomConfig} F1RoomConfig
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1RoomConfig.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1RoomConfig message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1RoomConfig.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.trackId != null && Object.hasOwnProperty.call(message, "trackId"))
+                            if (!$util.isString(message.trackId))
+                                return "trackId: string expected";
+                        if (message.trackDisplayName != null && Object.hasOwnProperty.call(message, "trackDisplayName"))
+                            if (!$util.isString(message.trackDisplayName))
+                                return "trackDisplayName: string expected";
+                        if (message.lapCount != null && Object.hasOwnProperty.call(message, "lapCount"))
+                            if (!$util.isInteger(message.lapCount))
+                                return "lapCount: integer expected";
+                        if (message.maxPlayers != null && Object.hasOwnProperty.call(message, "maxPlayers"))
+                            if (!$util.isInteger(message.maxPlayers))
+                                return "maxPlayers: integer expected";
+                        if (message.botCount != null && Object.hasOwnProperty.call(message, "botCount"))
+                            if (!$util.isInteger(message.botCount))
+                                return "botCount: integer expected";
+                        if (message.passwordProtected != null && Object.hasOwnProperty.call(message, "passwordProtected"))
+                            if (typeof message.passwordProtected !== "boolean")
+                                return "passwordProtected: boolean expected";
+                        if (message.collision != null && Object.hasOwnProperty.call(message, "collision"))
+                            switch (message.collision) {
+                            default:
+                                return "collision: enum value expected";
+                            case 0:
+                            case 1:
+                                break;
+                            }
+                        if (message.damage != null && Object.hasOwnProperty.call(message, "damage"))
+                            switch (message.damage) {
+                            default:
+                                return "damage: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                                break;
+                            }
+                        if (message.weather != null && Object.hasOwnProperty.call(message, "weather"))
+                            switch (message.weather) {
+                            default:
+                                return "weather: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                                break;
+                            }
+                        if (message.timeOfDay != null && Object.hasOwnProperty.call(message, "timeOfDay"))
+                            switch (message.timeOfDay) {
+                            default:
+                                return "timeOfDay: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                                break;
+                            }
+                        if (message.enableQualifying != null && Object.hasOwnProperty.call(message, "enableQualifying"))
+                            if (typeof message.enableQualifying !== "boolean")
+                                return "enableQualifying: boolean expected";
+                        if (message.qualifyingDurationSec != null && Object.hasOwnProperty.call(message, "qualifyingDurationSec"))
+                            if (!$util.isInteger(message.qualifyingDurationSec))
+                                return "qualifyingDurationSec: integer expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1RoomConfig message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1RoomConfig} F1RoomConfig
+                     */
+                    F1RoomConfig.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1RoomConfig)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1RoomConfig: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1RoomConfig();
+                        if (object.trackId != null)
+                            message.trackId = String(object.trackId);
+                        if (object.trackDisplayName != null)
+                            message.trackDisplayName = String(object.trackDisplayName);
+                        if (object.lapCount != null)
+                            message.lapCount = object.lapCount >>> 0;
+                        if (object.maxPlayers != null)
+                            message.maxPlayers = object.maxPlayers >>> 0;
+                        if (object.botCount != null)
+                            message.botCount = object.botCount >>> 0;
+                        if (object.passwordProtected != null)
+                            message.passwordProtected = Boolean(object.passwordProtected);
+                        switch (object.collision) {
+                        default:
+                            if (typeof object.collision === "number") {
+                                message.collision = object.collision;
+                                break;
+                            }
+                            break;
+                        case "F1_COLLISION_ON":
+                        case 0:
+                            message.collision = 0;
+                            break;
+                        case "F1_COLLISION_OFF":
+                        case 1:
+                            message.collision = 1;
+                            break;
+                        }
+                        switch (object.damage) {
+                        default:
+                            if (typeof object.damage === "number") {
+                                message.damage = object.damage;
+                                break;
+                            }
+                            break;
+                        case "F1_DAMAGE_NONE":
+                        case 0:
+                            message.damage = 0;
+                            break;
+                        case "F1_DAMAGE_VISUAL":
+                        case 1:
+                            message.damage = 1;
+                            break;
+                        case "F1_DAMAGE_FULL":
+                        case 2:
+                            message.damage = 2;
+                            break;
+                        }
+                        switch (object.weather) {
+                        default:
+                            if (typeof object.weather === "number") {
+                                message.weather = object.weather;
+                                break;
+                            }
+                            break;
+                        case "F1_WEATHER_SUNNY":
+                        case 0:
+                            message.weather = 0;
+                            break;
+                        case "F1_WEATHER_RAIN":
+                        case 1:
+                            message.weather = 1;
+                            break;
+                        case "F1_WEATHER_SNOW":
+                        case 2:
+                            message.weather = 2;
+                            break;
+                        case "F1_WEATHER_FOG":
+                        case 3:
+                            message.weather = 3;
+                            break;
+                        case "F1_WEATHER_RANDOM":
+                        case 4:
+                            message.weather = 4;
+                            break;
+                        }
+                        switch (object.timeOfDay) {
+                        default:
+                            if (typeof object.timeOfDay === "number") {
+                                message.timeOfDay = object.timeOfDay;
+                                break;
+                            }
+                            break;
+                        case "F1_TIME_MORNING":
+                        case 0:
+                            message.timeOfDay = 0;
+                            break;
+                        case "F1_TIME_NOON":
+                        case 1:
+                            message.timeOfDay = 1;
+                            break;
+                        case "F1_TIME_SUNSET":
+                        case 2:
+                            message.timeOfDay = 2;
+                            break;
+                        case "F1_TIME_NIGHT":
+                        case 3:
+                            message.timeOfDay = 3;
+                            break;
+                        }
+                        if (object.enableQualifying != null)
+                            message.enableQualifying = Boolean(object.enableQualifying);
+                        if (object.qualifyingDurationSec != null)
+                            message.qualifyingDurationSec = object.qualifyingDurationSec >>> 0;
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1RoomConfig message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1RoomConfig} message F1RoomConfig
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1RoomConfig.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.trackId = "";
+                            object.trackDisplayName = "";
+                            object.lapCount = 0;
+                            object.maxPlayers = 0;
+                            object.botCount = 0;
+                            object.passwordProtected = false;
+                            object.collision = options.enums === String ? "F1_COLLISION_ON" : 0;
+                            object.damage = options.enums === String ? "F1_DAMAGE_NONE" : 0;
+                            object.weather = options.enums === String ? "F1_WEATHER_SUNNY" : 0;
+                            object.timeOfDay = options.enums === String ? "F1_TIME_MORNING" : 0;
+                            object.enableQualifying = false;
+                            object.qualifyingDurationSec = 0;
+                        }
+                        if (message.trackId != null && Object.hasOwnProperty.call(message, "trackId"))
+                            object.trackId = message.trackId;
+                        if (message.trackDisplayName != null && Object.hasOwnProperty.call(message, "trackDisplayName"))
+                            object.trackDisplayName = message.trackDisplayName;
+                        if (message.lapCount != null && Object.hasOwnProperty.call(message, "lapCount"))
+                            object.lapCount = message.lapCount;
+                        if (message.maxPlayers != null && Object.hasOwnProperty.call(message, "maxPlayers"))
+                            object.maxPlayers = message.maxPlayers;
+                        if (message.botCount != null && Object.hasOwnProperty.call(message, "botCount"))
+                            object.botCount = message.botCount;
+                        if (message.passwordProtected != null && Object.hasOwnProperty.call(message, "passwordProtected"))
+                            object.passwordProtected = message.passwordProtected;
+                        if (message.collision != null && Object.hasOwnProperty.call(message, "collision"))
+                            object.collision = options.enums === String ? $root.com.triforge.protocol.proto.F1CollisionMode[message.collision] === undefined ? message.collision : $root.com.triforge.protocol.proto.F1CollisionMode[message.collision] : message.collision;
+                        if (message.damage != null && Object.hasOwnProperty.call(message, "damage"))
+                            object.damage = options.enums === String ? $root.com.triforge.protocol.proto.F1DamageMode[message.damage] === undefined ? message.damage : $root.com.triforge.protocol.proto.F1DamageMode[message.damage] : message.damage;
+                        if (message.weather != null && Object.hasOwnProperty.call(message, "weather"))
+                            object.weather = options.enums === String ? $root.com.triforge.protocol.proto.F1Weather[message.weather] === undefined ? message.weather : $root.com.triforge.protocol.proto.F1Weather[message.weather] : message.weather;
+                        if (message.timeOfDay != null && Object.hasOwnProperty.call(message, "timeOfDay"))
+                            object.timeOfDay = options.enums === String ? $root.com.triforge.protocol.proto.F1TimeOfDay[message.timeOfDay] === undefined ? message.timeOfDay : $root.com.triforge.protocol.proto.F1TimeOfDay[message.timeOfDay] : message.timeOfDay;
+                        if (message.enableQualifying != null && Object.hasOwnProperty.call(message, "enableQualifying"))
+                            object.enableQualifying = message.enableQualifying;
+                        if (message.qualifyingDurationSec != null && Object.hasOwnProperty.call(message, "qualifyingDurationSec"))
+                            object.qualifyingDurationSec = message.qualifyingDurationSec;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1RoomConfig to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1RoomConfig.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1RoomConfig
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1RoomConfig
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1RoomConfig.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1RoomConfig";
+                    };
+
+                    return F1RoomConfig;
+                })();
+
+                proto.F1RaceState = (function() {
+
+                    /**
+                     * Properties of a F1RaceState.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1RaceState
+                     * @property {number|null} [lapCount] F1RaceState lapCount
+                     * @property {number|Long|null} [raceElapsedMs] F1RaceState raceElapsedMs
+                     * @property {boolean|null} [raceStarted] F1RaceState raceStarted
+                     * @property {com.triforge.protocol.proto.F1SessionPhase|null} [sessionPhase] F1RaceState sessionPhase
+                     * @property {number|Long|null} [sessionRemainingMs] F1RaceState sessionRemainingMs
+                     */
+
+                    /**
+                     * Constructs a new F1RaceState.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1RaceState.
+                     * @implements IF1RaceState
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1RaceState=} [properties] Properties to set
+                     */
+                    function F1RaceState(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1RaceState lapCount.
+                     * @member {number} lapCount
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @instance
+                     */
+                    F1RaceState.prototype.lapCount = 0;
+
+                    /**
+                     * F1RaceState raceElapsedMs.
+                     * @member {number|Long} raceElapsedMs
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @instance
+                     */
+                    F1RaceState.prototype.raceElapsedMs = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1RaceState raceStarted.
+                     * @member {boolean} raceStarted
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @instance
+                     */
+                    F1RaceState.prototype.raceStarted = false;
+
+                    /**
+                     * F1RaceState sessionPhase.
+                     * @member {com.triforge.protocol.proto.F1SessionPhase} sessionPhase
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @instance
+                     */
+                    F1RaceState.prototype.sessionPhase = 0;
+
+                    /**
+                     * F1RaceState sessionRemainingMs.
+                     * @member {number|Long} sessionRemainingMs
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @instance
+                     */
+                    F1RaceState.prototype.sessionRemainingMs = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * Creates a new F1RaceState instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1RaceState=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1RaceState} F1RaceState instance
+                     */
+                    F1RaceState.create = function create(properties) {
+                        return new F1RaceState(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1RaceState message. Does not implicitly {@link com.triforge.protocol.proto.F1RaceState.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1RaceState} message F1RaceState message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1RaceState.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.lapCount != null && Object.hasOwnProperty.call(message, "lapCount"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.lapCount);
+                        if (message.raceElapsedMs != null && Object.hasOwnProperty.call(message, "raceElapsedMs"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.raceElapsedMs);
+                        if (message.raceStarted != null && Object.hasOwnProperty.call(message, "raceStarted"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).bool(message.raceStarted);
+                        if (message.sessionPhase != null && Object.hasOwnProperty.call(message, "sessionPhase"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.sessionPhase);
+                        if (message.sessionRemainingMs != null && Object.hasOwnProperty.call(message, "sessionRemainingMs"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.sessionRemainingMs);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1RaceState message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1RaceState.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1RaceState} message F1RaceState message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1RaceState.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1RaceState message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1RaceState} F1RaceState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1RaceState.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1RaceState();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.lapCount = reader.uint32();
+                                    break;
+                                }
+                            case 2: {
+                                    message.raceElapsedMs = reader.uint64();
+                                    break;
+                                }
+                            case 3: {
+                                    message.raceStarted = reader.bool();
+                                    break;
+                                }
+                            case 4: {
+                                    message.sessionPhase = reader.int32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.sessionRemainingMs = reader.uint64();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1RaceState message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1RaceState} F1RaceState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1RaceState.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1RaceState message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1RaceState.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.lapCount != null && Object.hasOwnProperty.call(message, "lapCount"))
+                            if (!$util.isInteger(message.lapCount))
+                                return "lapCount: integer expected";
+                        if (message.raceElapsedMs != null && Object.hasOwnProperty.call(message, "raceElapsedMs"))
+                            if (!$util.isInteger(message.raceElapsedMs) && !(message.raceElapsedMs && $util.isInteger(message.raceElapsedMs.low) && $util.isInteger(message.raceElapsedMs.high)))
+                                return "raceElapsedMs: integer|Long expected";
+                        if (message.raceStarted != null && Object.hasOwnProperty.call(message, "raceStarted"))
+                            if (typeof message.raceStarted !== "boolean")
+                                return "raceStarted: boolean expected";
+                        if (message.sessionPhase != null && Object.hasOwnProperty.call(message, "sessionPhase"))
+                            switch (message.sessionPhase) {
+                            default:
+                                return "sessionPhase: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                                break;
+                            }
+                        if (message.sessionRemainingMs != null && Object.hasOwnProperty.call(message, "sessionRemainingMs"))
+                            if (!$util.isInteger(message.sessionRemainingMs) && !(message.sessionRemainingMs && $util.isInteger(message.sessionRemainingMs.low) && $util.isInteger(message.sessionRemainingMs.high)))
+                                return "sessionRemainingMs: integer|Long expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1RaceState message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1RaceState} F1RaceState
+                     */
+                    F1RaceState.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1RaceState)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1RaceState: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1RaceState();
+                        if (object.lapCount != null)
+                            message.lapCount = object.lapCount >>> 0;
+                        if (object.raceElapsedMs != null)
+                            if ($util.Long)
+                                message.raceElapsedMs = $util.Long.fromValue(object.raceElapsedMs, true);
+                            else if (typeof object.raceElapsedMs === "string")
+                                message.raceElapsedMs = parseInt(object.raceElapsedMs, 10);
+                            else if (typeof object.raceElapsedMs === "number")
+                                message.raceElapsedMs = object.raceElapsedMs;
+                            else if (typeof object.raceElapsedMs === "object")
+                                message.raceElapsedMs = new $util.LongBits(object.raceElapsedMs.low >>> 0, object.raceElapsedMs.high >>> 0).toNumber(true);
+                        if (object.raceStarted != null)
+                            message.raceStarted = Boolean(object.raceStarted);
+                        switch (object.sessionPhase) {
+                        default:
+                            if (typeof object.sessionPhase === "number") {
+                                message.sessionPhase = object.sessionPhase;
+                                break;
+                            }
+                            break;
+                        case "F1_SESSION_LOBBY":
+                        case 0:
+                            message.sessionPhase = 0;
+                            break;
+                        case "F1_SESSION_QUALIFYING":
+                        case 1:
+                            message.sessionPhase = 1;
+                            break;
+                        case "F1_SESSION_RACE":
+                        case 2:
+                            message.sessionPhase = 2;
+                            break;
+                        }
+                        if (object.sessionRemainingMs != null)
+                            if ($util.Long)
+                                message.sessionRemainingMs = $util.Long.fromValue(object.sessionRemainingMs, true);
+                            else if (typeof object.sessionRemainingMs === "string")
+                                message.sessionRemainingMs = parseInt(object.sessionRemainingMs, 10);
+                            else if (typeof object.sessionRemainingMs === "number")
+                                message.sessionRemainingMs = object.sessionRemainingMs;
+                            else if (typeof object.sessionRemainingMs === "object")
+                                message.sessionRemainingMs = new $util.LongBits(object.sessionRemainingMs.low >>> 0, object.sessionRemainingMs.high >>> 0).toNumber(true);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1RaceState message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1RaceState} message F1RaceState
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1RaceState.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.lapCount = 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.raceElapsedMs = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.raceElapsedMs = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.raceStarted = false;
+                            object.sessionPhase = options.enums === String ? "F1_SESSION_LOBBY" : 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.sessionRemainingMs = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.sessionRemainingMs = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                        }
+                        if (message.lapCount != null && Object.hasOwnProperty.call(message, "lapCount"))
+                            object.lapCount = message.lapCount;
+                        if (message.raceElapsedMs != null && Object.hasOwnProperty.call(message, "raceElapsedMs"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.raceElapsedMs = typeof message.raceElapsedMs === "number" ? BigInt(message.raceElapsedMs) : $util.Long.fromBits(message.raceElapsedMs.low >>> 0, message.raceElapsedMs.high >>> 0, true).toBigInt();
+                            else if (typeof message.raceElapsedMs === "number")
+                                object.raceElapsedMs = options.longs === String ? String(message.raceElapsedMs) : message.raceElapsedMs;
+                            else
+                                object.raceElapsedMs = options.longs === String ? $util.Long.prototype.toString.call(message.raceElapsedMs) : options.longs === Number ? new $util.LongBits(message.raceElapsedMs.low >>> 0, message.raceElapsedMs.high >>> 0).toNumber(true) : message.raceElapsedMs;
+                        if (message.raceStarted != null && Object.hasOwnProperty.call(message, "raceStarted"))
+                            object.raceStarted = message.raceStarted;
+                        if (message.sessionPhase != null && Object.hasOwnProperty.call(message, "sessionPhase"))
+                            object.sessionPhase = options.enums === String ? $root.com.triforge.protocol.proto.F1SessionPhase[message.sessionPhase] === undefined ? message.sessionPhase : $root.com.triforge.protocol.proto.F1SessionPhase[message.sessionPhase] : message.sessionPhase;
+                        if (message.sessionRemainingMs != null && Object.hasOwnProperty.call(message, "sessionRemainingMs"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.sessionRemainingMs = typeof message.sessionRemainingMs === "number" ? BigInt(message.sessionRemainingMs) : $util.Long.fromBits(message.sessionRemainingMs.low >>> 0, message.sessionRemainingMs.high >>> 0, true).toBigInt();
+                            else if (typeof message.sessionRemainingMs === "number")
+                                object.sessionRemainingMs = options.longs === String ? String(message.sessionRemainingMs) : message.sessionRemainingMs;
+                            else
+                                object.sessionRemainingMs = options.longs === String ? $util.Long.prototype.toString.call(message.sessionRemainingMs) : options.longs === Number ? new $util.LongBits(message.sessionRemainingMs.low >>> 0, message.sessionRemainingMs.high >>> 0).toNumber(true) : message.sessionRemainingMs;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1RaceState to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1RaceState.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1RaceState
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1RaceState
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1RaceState.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1RaceState";
+                    };
+
+                    return F1RaceState;
+                })();
+
+                proto.F1LapEvent = (function() {
+
+                    /**
+                     * Properties of a F1LapEvent.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1LapEvent
+                     * @property {number|Long|null} [playerId] F1LapEvent playerId
+                     * @property {number|null} [lapNumber] F1LapEvent lapNumber
+                     * @property {number|Long|null} [lapTimeMs] F1LapEvent lapTimeMs
+                     * @property {boolean|null} [finished] F1LapEvent finished
+                     */
+
+                    /**
+                     * Constructs a new F1LapEvent.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1LapEvent.
+                     * @implements IF1LapEvent
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1LapEvent=} [properties] Properties to set
+                     */
+                    function F1LapEvent(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1LapEvent playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @instance
+                     */
+                    F1LapEvent.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1LapEvent lapNumber.
+                     * @member {number} lapNumber
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @instance
+                     */
+                    F1LapEvent.prototype.lapNumber = 0;
+
+                    /**
+                     * F1LapEvent lapTimeMs.
+                     * @member {number|Long} lapTimeMs
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @instance
+                     */
+                    F1LapEvent.prototype.lapTimeMs = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1LapEvent finished.
+                     * @member {boolean} finished
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @instance
+                     */
+                    F1LapEvent.prototype.finished = false;
+
+                    /**
+                     * Creates a new F1LapEvent instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1LapEvent=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1LapEvent} F1LapEvent instance
+                     */
+                    F1LapEvent.create = function create(properties) {
+                        return new F1LapEvent(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1LapEvent message. Does not implicitly {@link com.triforge.protocol.proto.F1LapEvent.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1LapEvent} message F1LapEvent message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1LapEvent.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.playerId);
+                        if (message.lapNumber != null && Object.hasOwnProperty.call(message, "lapNumber"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.lapNumber);
+                        if (message.lapTimeMs != null && Object.hasOwnProperty.call(message, "lapTimeMs"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.lapTimeMs);
+                        if (message.finished != null && Object.hasOwnProperty.call(message, "finished"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).bool(message.finished);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1LapEvent message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1LapEvent.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1LapEvent} message F1LapEvent message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1LapEvent.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1LapEvent message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1LapEvent} F1LapEvent
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1LapEvent.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1LapEvent();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.lapNumber = reader.uint32();
+                                    break;
+                                }
+                            case 3: {
+                                    message.lapTimeMs = reader.uint64();
+                                    break;
+                                }
+                            case 4: {
+                                    message.finished = reader.bool();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1LapEvent message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1LapEvent} F1LapEvent
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1LapEvent.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1LapEvent message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1LapEvent.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        if (message.lapNumber != null && Object.hasOwnProperty.call(message, "lapNumber"))
+                            if (!$util.isInteger(message.lapNumber))
+                                return "lapNumber: integer expected";
+                        if (message.lapTimeMs != null && Object.hasOwnProperty.call(message, "lapTimeMs"))
+                            if (!$util.isInteger(message.lapTimeMs) && !(message.lapTimeMs && $util.isInteger(message.lapTimeMs.low) && $util.isInteger(message.lapTimeMs.high)))
+                                return "lapTimeMs: integer|Long expected";
+                        if (message.finished != null && Object.hasOwnProperty.call(message, "finished"))
+                            if (typeof message.finished !== "boolean")
+                                return "finished: boolean expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1LapEvent message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1LapEvent} F1LapEvent
+                     */
+                    F1LapEvent.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1LapEvent)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1LapEvent: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1LapEvent();
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        if (object.lapNumber != null)
+                            message.lapNumber = object.lapNumber >>> 0;
+                        if (object.lapTimeMs != null)
+                            if ($util.Long)
+                                message.lapTimeMs = $util.Long.fromValue(object.lapTimeMs, true);
+                            else if (typeof object.lapTimeMs === "string")
+                                message.lapTimeMs = parseInt(object.lapTimeMs, 10);
+                            else if (typeof object.lapTimeMs === "number")
+                                message.lapTimeMs = object.lapTimeMs;
+                            else if (typeof object.lapTimeMs === "object")
+                                message.lapTimeMs = new $util.LongBits(object.lapTimeMs.low >>> 0, object.lapTimeMs.high >>> 0).toNumber(true);
+                        if (object.finished != null)
+                            message.finished = Boolean(object.finished);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1LapEvent message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1LapEvent} message F1LapEvent
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1LapEvent.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.lapNumber = 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.lapTimeMs = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.lapTimeMs = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.finished = false;
+                        }
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        if (message.lapNumber != null && Object.hasOwnProperty.call(message, "lapNumber"))
+                            object.lapNumber = message.lapNumber;
+                        if (message.lapTimeMs != null && Object.hasOwnProperty.call(message, "lapTimeMs"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.lapTimeMs = typeof message.lapTimeMs === "number" ? BigInt(message.lapTimeMs) : $util.Long.fromBits(message.lapTimeMs.low >>> 0, message.lapTimeMs.high >>> 0, true).toBigInt();
+                            else if (typeof message.lapTimeMs === "number")
+                                object.lapTimeMs = options.longs === String ? String(message.lapTimeMs) : message.lapTimeMs;
+                            else
+                                object.lapTimeMs = options.longs === String ? $util.Long.prototype.toString.call(message.lapTimeMs) : options.longs === Number ? new $util.LongBits(message.lapTimeMs.low >>> 0, message.lapTimeMs.high >>> 0).toNumber(true) : message.lapTimeMs;
+                        if (message.finished != null && Object.hasOwnProperty.call(message, "finished"))
+                            object.finished = message.finished;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1LapEvent to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1LapEvent.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1LapEvent
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1LapEvent
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1LapEvent.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1LapEvent";
+                    };
+
+                    return F1LapEvent;
+                })();
+
+                proto.F1SectorTime = (function() {
+
+                    /**
+                     * Properties of a F1SectorTime.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1SectorTime
+                     * @property {number|Long|null} [playerId] F1SectorTime playerId
+                     * @property {number|null} [sectorIndex] F1SectorTime sectorIndex
+                     * @property {number|Long|null} [sectorTimeMs] F1SectorTime sectorTimeMs
+                     */
+
+                    /**
+                     * Constructs a new F1SectorTime.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1SectorTime.
+                     * @implements IF1SectorTime
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1SectorTime=} [properties] Properties to set
+                     */
+                    function F1SectorTime(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1SectorTime playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @instance
+                     */
+                    F1SectorTime.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1SectorTime sectorIndex.
+                     * @member {number} sectorIndex
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @instance
+                     */
+                    F1SectorTime.prototype.sectorIndex = 0;
+
+                    /**
+                     * F1SectorTime sectorTimeMs.
+                     * @member {number|Long} sectorTimeMs
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @instance
+                     */
+                    F1SectorTime.prototype.sectorTimeMs = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * Creates a new F1SectorTime instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1SectorTime=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1SectorTime} F1SectorTime instance
+                     */
+                    F1SectorTime.create = function create(properties) {
+                        return new F1SectorTime(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1SectorTime message. Does not implicitly {@link com.triforge.protocol.proto.F1SectorTime.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1SectorTime} message F1SectorTime message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1SectorTime.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.playerId);
+                        if (message.sectorIndex != null && Object.hasOwnProperty.call(message, "sectorIndex"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.sectorIndex);
+                        if (message.sectorTimeMs != null && Object.hasOwnProperty.call(message, "sectorTimeMs"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.sectorTimeMs);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1SectorTime message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1SectorTime.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1SectorTime} message F1SectorTime message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1SectorTime.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1SectorTime message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1SectorTime} F1SectorTime
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1SectorTime.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1SectorTime();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.sectorIndex = reader.uint32();
+                                    break;
+                                }
+                            case 3: {
+                                    message.sectorTimeMs = reader.uint64();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1SectorTime message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1SectorTime} F1SectorTime
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1SectorTime.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1SectorTime message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1SectorTime.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        if (message.sectorIndex != null && Object.hasOwnProperty.call(message, "sectorIndex"))
+                            if (!$util.isInteger(message.sectorIndex))
+                                return "sectorIndex: integer expected";
+                        if (message.sectorTimeMs != null && Object.hasOwnProperty.call(message, "sectorTimeMs"))
+                            if (!$util.isInteger(message.sectorTimeMs) && !(message.sectorTimeMs && $util.isInteger(message.sectorTimeMs.low) && $util.isInteger(message.sectorTimeMs.high)))
+                                return "sectorTimeMs: integer|Long expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1SectorTime message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1SectorTime} F1SectorTime
+                     */
+                    F1SectorTime.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1SectorTime)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1SectorTime: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1SectorTime();
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        if (object.sectorIndex != null)
+                            message.sectorIndex = object.sectorIndex >>> 0;
+                        if (object.sectorTimeMs != null)
+                            if ($util.Long)
+                                message.sectorTimeMs = $util.Long.fromValue(object.sectorTimeMs, true);
+                            else if (typeof object.sectorTimeMs === "string")
+                                message.sectorTimeMs = parseInt(object.sectorTimeMs, 10);
+                            else if (typeof object.sectorTimeMs === "number")
+                                message.sectorTimeMs = object.sectorTimeMs;
+                            else if (typeof object.sectorTimeMs === "object")
+                                message.sectorTimeMs = new $util.LongBits(object.sectorTimeMs.low >>> 0, object.sectorTimeMs.high >>> 0).toNumber(true);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1SectorTime message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1SectorTime} message F1SectorTime
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1SectorTime.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.sectorIndex = 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.sectorTimeMs = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.sectorTimeMs = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                        }
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        if (message.sectorIndex != null && Object.hasOwnProperty.call(message, "sectorIndex"))
+                            object.sectorIndex = message.sectorIndex;
+                        if (message.sectorTimeMs != null && Object.hasOwnProperty.call(message, "sectorTimeMs"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.sectorTimeMs = typeof message.sectorTimeMs === "number" ? BigInt(message.sectorTimeMs) : $util.Long.fromBits(message.sectorTimeMs.low >>> 0, message.sectorTimeMs.high >>> 0, true).toBigInt();
+                            else if (typeof message.sectorTimeMs === "number")
+                                object.sectorTimeMs = options.longs === String ? String(message.sectorTimeMs) : message.sectorTimeMs;
+                            else
+                                object.sectorTimeMs = options.longs === String ? $util.Long.prototype.toString.call(message.sectorTimeMs) : options.longs === Number ? new $util.LongBits(message.sectorTimeMs.low >>> 0, message.sectorTimeMs.high >>> 0).toNumber(true) : message.sectorTimeMs;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1SectorTime to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1SectorTime.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1SectorTime
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1SectorTime
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1SectorTime.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1SectorTime";
+                    };
+
+                    return F1SectorTime;
+                })();
+
+                proto.F1StandingEntry = (function() {
+
+                    /**
+                     * Properties of a F1StandingEntry.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1StandingEntry
+                     * @property {number|Long|null} [playerId] F1StandingEntry playerId
+                     * @property {string|null} [displayName] F1StandingEntry displayName
+                     * @property {number|null} [position] F1StandingEntry position
+                     * @property {number|null} [lap] F1StandingEntry lap
+                     * @property {number|Long|null} [lastLapMs] F1StandingEntry lastLapMs
+                     * @property {number|Long|null} [bestLapMs] F1StandingEntry bestLapMs
+                     * @property {number|Long|null} [totalTimeMs] F1StandingEntry totalTimeMs
+                     * @property {boolean|null} [finished] F1StandingEntry finished
+                     * @property {boolean|null} [isBot] F1StandingEntry isBot
+                     */
+
+                    /**
+                     * Constructs a new F1StandingEntry.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1StandingEntry.
+                     * @implements IF1StandingEntry
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1StandingEntry=} [properties] Properties to set
+                     */
+                    function F1StandingEntry(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1StandingEntry playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @instance
+                     */
+                    F1StandingEntry.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1StandingEntry displayName.
+                     * @member {string} displayName
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @instance
+                     */
+                    F1StandingEntry.prototype.displayName = "";
+
+                    /**
+                     * F1StandingEntry position.
+                     * @member {number} position
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @instance
+                     */
+                    F1StandingEntry.prototype.position = 0;
+
+                    /**
+                     * F1StandingEntry lap.
+                     * @member {number} lap
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @instance
+                     */
+                    F1StandingEntry.prototype.lap = 0;
+
+                    /**
+                     * F1StandingEntry lastLapMs.
+                     * @member {number|Long} lastLapMs
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @instance
+                     */
+                    F1StandingEntry.prototype.lastLapMs = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1StandingEntry bestLapMs.
+                     * @member {number|Long} bestLapMs
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @instance
+                     */
+                    F1StandingEntry.prototype.bestLapMs = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1StandingEntry totalTimeMs.
+                     * @member {number|Long} totalTimeMs
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @instance
+                     */
+                    F1StandingEntry.prototype.totalTimeMs = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1StandingEntry finished.
+                     * @member {boolean} finished
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @instance
+                     */
+                    F1StandingEntry.prototype.finished = false;
+
+                    /**
+                     * F1StandingEntry isBot.
+                     * @member {boolean} isBot
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @instance
+                     */
+                    F1StandingEntry.prototype.isBot = false;
+
+                    /**
+                     * Creates a new F1StandingEntry instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1StandingEntry=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1StandingEntry} F1StandingEntry instance
+                     */
+                    F1StandingEntry.create = function create(properties) {
+                        return new F1StandingEntry(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1StandingEntry message. Does not implicitly {@link com.triforge.protocol.proto.F1StandingEntry.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1StandingEntry} message F1StandingEntry message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1StandingEntry.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.playerId);
+                        if (message.displayName != null && Object.hasOwnProperty.call(message, "displayName"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.displayName);
+                        if (message.position != null && Object.hasOwnProperty.call(message, "position"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.position);
+                        if (message.lap != null && Object.hasOwnProperty.call(message, "lap"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.lap);
+                        if (message.lastLapMs != null && Object.hasOwnProperty.call(message, "lastLapMs"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.lastLapMs);
+                        if (message.bestLapMs != null && Object.hasOwnProperty.call(message, "bestLapMs"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).uint64(message.bestLapMs);
+                        if (message.totalTimeMs != null && Object.hasOwnProperty.call(message, "totalTimeMs"))
+                            writer.uint32(/* id 7, wireType 0 =*/56).uint64(message.totalTimeMs);
+                        if (message.finished != null && Object.hasOwnProperty.call(message, "finished"))
+                            writer.uint32(/* id 8, wireType 0 =*/64).bool(message.finished);
+                        if (message.isBot != null && Object.hasOwnProperty.call(message, "isBot"))
+                            writer.uint32(/* id 9, wireType 0 =*/72).bool(message.isBot);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1StandingEntry message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1StandingEntry.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1StandingEntry} message F1StandingEntry message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1StandingEntry.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1StandingEntry message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1StandingEntry} F1StandingEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1StandingEntry.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1StandingEntry();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.displayName = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    message.position = reader.uint32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.lap = reader.uint32();
+                                    break;
+                                }
+                            case 5: {
+                                    message.lastLapMs = reader.uint64();
+                                    break;
+                                }
+                            case 6: {
+                                    message.bestLapMs = reader.uint64();
+                                    break;
+                                }
+                            case 7: {
+                                    message.totalTimeMs = reader.uint64();
+                                    break;
+                                }
+                            case 8: {
+                                    message.finished = reader.bool();
+                                    break;
+                                }
+                            case 9: {
+                                    message.isBot = reader.bool();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1StandingEntry message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1StandingEntry} F1StandingEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1StandingEntry.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1StandingEntry message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1StandingEntry.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        if (message.displayName != null && Object.hasOwnProperty.call(message, "displayName"))
+                            if (!$util.isString(message.displayName))
+                                return "displayName: string expected";
+                        if (message.position != null && Object.hasOwnProperty.call(message, "position"))
+                            if (!$util.isInteger(message.position))
+                                return "position: integer expected";
+                        if (message.lap != null && Object.hasOwnProperty.call(message, "lap"))
+                            if (!$util.isInteger(message.lap))
+                                return "lap: integer expected";
+                        if (message.lastLapMs != null && Object.hasOwnProperty.call(message, "lastLapMs"))
+                            if (!$util.isInteger(message.lastLapMs) && !(message.lastLapMs && $util.isInteger(message.lastLapMs.low) && $util.isInteger(message.lastLapMs.high)))
+                                return "lastLapMs: integer|Long expected";
+                        if (message.bestLapMs != null && Object.hasOwnProperty.call(message, "bestLapMs"))
+                            if (!$util.isInteger(message.bestLapMs) && !(message.bestLapMs && $util.isInteger(message.bestLapMs.low) && $util.isInteger(message.bestLapMs.high)))
+                                return "bestLapMs: integer|Long expected";
+                        if (message.totalTimeMs != null && Object.hasOwnProperty.call(message, "totalTimeMs"))
+                            if (!$util.isInteger(message.totalTimeMs) && !(message.totalTimeMs && $util.isInteger(message.totalTimeMs.low) && $util.isInteger(message.totalTimeMs.high)))
+                                return "totalTimeMs: integer|Long expected";
+                        if (message.finished != null && Object.hasOwnProperty.call(message, "finished"))
+                            if (typeof message.finished !== "boolean")
+                                return "finished: boolean expected";
+                        if (message.isBot != null && Object.hasOwnProperty.call(message, "isBot"))
+                            if (typeof message.isBot !== "boolean")
+                                return "isBot: boolean expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1StandingEntry message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1StandingEntry} F1StandingEntry
+                     */
+                    F1StandingEntry.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1StandingEntry)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1StandingEntry: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1StandingEntry();
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        if (object.displayName != null)
+                            message.displayName = String(object.displayName);
+                        if (object.position != null)
+                            message.position = object.position >>> 0;
+                        if (object.lap != null)
+                            message.lap = object.lap >>> 0;
+                        if (object.lastLapMs != null)
+                            if ($util.Long)
+                                message.lastLapMs = $util.Long.fromValue(object.lastLapMs, true);
+                            else if (typeof object.lastLapMs === "string")
+                                message.lastLapMs = parseInt(object.lastLapMs, 10);
+                            else if (typeof object.lastLapMs === "number")
+                                message.lastLapMs = object.lastLapMs;
+                            else if (typeof object.lastLapMs === "object")
+                                message.lastLapMs = new $util.LongBits(object.lastLapMs.low >>> 0, object.lastLapMs.high >>> 0).toNumber(true);
+                        if (object.bestLapMs != null)
+                            if ($util.Long)
+                                message.bestLapMs = $util.Long.fromValue(object.bestLapMs, true);
+                            else if (typeof object.bestLapMs === "string")
+                                message.bestLapMs = parseInt(object.bestLapMs, 10);
+                            else if (typeof object.bestLapMs === "number")
+                                message.bestLapMs = object.bestLapMs;
+                            else if (typeof object.bestLapMs === "object")
+                                message.bestLapMs = new $util.LongBits(object.bestLapMs.low >>> 0, object.bestLapMs.high >>> 0).toNumber(true);
+                        if (object.totalTimeMs != null)
+                            if ($util.Long)
+                                message.totalTimeMs = $util.Long.fromValue(object.totalTimeMs, true);
+                            else if (typeof object.totalTimeMs === "string")
+                                message.totalTimeMs = parseInt(object.totalTimeMs, 10);
+                            else if (typeof object.totalTimeMs === "number")
+                                message.totalTimeMs = object.totalTimeMs;
+                            else if (typeof object.totalTimeMs === "object")
+                                message.totalTimeMs = new $util.LongBits(object.totalTimeMs.low >>> 0, object.totalTimeMs.high >>> 0).toNumber(true);
+                        if (object.finished != null)
+                            message.finished = Boolean(object.finished);
+                        if (object.isBot != null)
+                            message.isBot = Boolean(object.isBot);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1StandingEntry message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1StandingEntry} message F1StandingEntry
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1StandingEntry.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.displayName = "";
+                            object.position = 0;
+                            object.lap = 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.lastLapMs = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.lastLapMs = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.bestLapMs = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.bestLapMs = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.totalTimeMs = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.totalTimeMs = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.finished = false;
+                            object.isBot = false;
+                        }
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        if (message.displayName != null && Object.hasOwnProperty.call(message, "displayName"))
+                            object.displayName = message.displayName;
+                        if (message.position != null && Object.hasOwnProperty.call(message, "position"))
+                            object.position = message.position;
+                        if (message.lap != null && Object.hasOwnProperty.call(message, "lap"))
+                            object.lap = message.lap;
+                        if (message.lastLapMs != null && Object.hasOwnProperty.call(message, "lastLapMs"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.lastLapMs = typeof message.lastLapMs === "number" ? BigInt(message.lastLapMs) : $util.Long.fromBits(message.lastLapMs.low >>> 0, message.lastLapMs.high >>> 0, true).toBigInt();
+                            else if (typeof message.lastLapMs === "number")
+                                object.lastLapMs = options.longs === String ? String(message.lastLapMs) : message.lastLapMs;
+                            else
+                                object.lastLapMs = options.longs === String ? $util.Long.prototype.toString.call(message.lastLapMs) : options.longs === Number ? new $util.LongBits(message.lastLapMs.low >>> 0, message.lastLapMs.high >>> 0).toNumber(true) : message.lastLapMs;
+                        if (message.bestLapMs != null && Object.hasOwnProperty.call(message, "bestLapMs"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.bestLapMs = typeof message.bestLapMs === "number" ? BigInt(message.bestLapMs) : $util.Long.fromBits(message.bestLapMs.low >>> 0, message.bestLapMs.high >>> 0, true).toBigInt();
+                            else if (typeof message.bestLapMs === "number")
+                                object.bestLapMs = options.longs === String ? String(message.bestLapMs) : message.bestLapMs;
+                            else
+                                object.bestLapMs = options.longs === String ? $util.Long.prototype.toString.call(message.bestLapMs) : options.longs === Number ? new $util.LongBits(message.bestLapMs.low >>> 0, message.bestLapMs.high >>> 0).toNumber(true) : message.bestLapMs;
+                        if (message.totalTimeMs != null && Object.hasOwnProperty.call(message, "totalTimeMs"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.totalTimeMs = typeof message.totalTimeMs === "number" ? BigInt(message.totalTimeMs) : $util.Long.fromBits(message.totalTimeMs.low >>> 0, message.totalTimeMs.high >>> 0, true).toBigInt();
+                            else if (typeof message.totalTimeMs === "number")
+                                object.totalTimeMs = options.longs === String ? String(message.totalTimeMs) : message.totalTimeMs;
+                            else
+                                object.totalTimeMs = options.longs === String ? $util.Long.prototype.toString.call(message.totalTimeMs) : options.longs === Number ? new $util.LongBits(message.totalTimeMs.low >>> 0, message.totalTimeMs.high >>> 0).toNumber(true) : message.totalTimeMs;
+                        if (message.finished != null && Object.hasOwnProperty.call(message, "finished"))
+                            object.finished = message.finished;
+                        if (message.isBot != null && Object.hasOwnProperty.call(message, "isBot"))
+                            object.isBot = message.isBot;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1StandingEntry to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1StandingEntry.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1StandingEntry
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1StandingEntry
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1StandingEntry.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1StandingEntry";
+                    };
+
+                    return F1StandingEntry;
+                })();
+
+                proto.F1StandingUpdate = (function() {
+
+                    /**
+                     * Properties of a F1StandingUpdate.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1StandingUpdate
+                     * @property {Array.<com.triforge.protocol.proto.IF1StandingEntry>|null} [entries] F1StandingUpdate entries
+                     */
+
+                    /**
+                     * Constructs a new F1StandingUpdate.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1StandingUpdate.
+                     * @implements IF1StandingUpdate
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1StandingUpdate=} [properties] Properties to set
+                     */
+                    function F1StandingUpdate(properties) {
+                        this.entries = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1StandingUpdate entries.
+                     * @member {Array.<com.triforge.protocol.proto.IF1StandingEntry>} entries
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @instance
+                     */
+                    F1StandingUpdate.prototype.entries = $util.emptyArray;
+
+                    /**
+                     * Creates a new F1StandingUpdate instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1StandingUpdate=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1StandingUpdate} F1StandingUpdate instance
+                     */
+                    F1StandingUpdate.create = function create(properties) {
+                        return new F1StandingUpdate(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1StandingUpdate message. Does not implicitly {@link com.triforge.protocol.proto.F1StandingUpdate.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1StandingUpdate} message F1StandingUpdate message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1StandingUpdate.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.entries != null && message.entries.length)
+                            for (let i = 0; i < message.entries.length; ++i)
+                                $root.com.triforge.protocol.proto.F1StandingEntry.encode(message.entries[i], writer.uint32(/* id 1, wireType 2 =*/10).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1StandingUpdate message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1StandingUpdate.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1StandingUpdate} message F1StandingUpdate message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1StandingUpdate.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1StandingUpdate message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1StandingUpdate} F1StandingUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1StandingUpdate.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1StandingUpdate();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    if (!(message.entries && message.entries.length))
+                                        message.entries = [];
+                                    message.entries.push($root.com.triforge.protocol.proto.F1StandingEntry.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1StandingUpdate message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1StandingUpdate} F1StandingUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1StandingUpdate.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1StandingUpdate message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1StandingUpdate.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.entries != null && Object.hasOwnProperty.call(message, "entries")) {
+                            if (!Array.isArray(message.entries))
+                                return "entries: array expected";
+                            for (let i = 0; i < message.entries.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.F1StandingEntry.verify(message.entries[i], long + 1);
+                                if (error)
+                                    return "entries." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1StandingUpdate message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1StandingUpdate} F1StandingUpdate
+                     */
+                    F1StandingUpdate.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1StandingUpdate)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1StandingUpdate: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1StandingUpdate();
+                        if (object.entries) {
+                            if (!Array.isArray(object.entries))
+                                throw TypeError(".com.triforge.protocol.proto.F1StandingUpdate.entries: array expected");
+                            message.entries = [];
+                            for (let i = 0; i < object.entries.length; ++i) {
+                                if (!$util.isObject(object.entries[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.F1StandingUpdate.entries: object expected");
+                                message.entries[i] = $root.com.triforge.protocol.proto.F1StandingEntry.fromObject(object.entries[i], long + 1);
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1StandingUpdate message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1StandingUpdate} message F1StandingUpdate
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1StandingUpdate.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.entries = [];
+                        if (message.entries && message.entries.length) {
+                            object.entries = [];
+                            for (let j = 0; j < message.entries.length; ++j)
+                                object.entries[j] = $root.com.triforge.protocol.proto.F1StandingEntry.toObject(message.entries[j], options, q + 1);
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1StandingUpdate to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1StandingUpdate.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1StandingUpdate
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1StandingUpdate
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1StandingUpdate.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1StandingUpdate";
+                    };
+
+                    return F1StandingUpdate;
+                })();
+
+                proto.F1QualifyingEntry = (function() {
+
+                    /**
+                     * Properties of a F1QualifyingEntry.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1QualifyingEntry
+                     * @property {number|Long|null} [playerId] F1QualifyingEntry playerId
+                     * @property {string|null} [displayName] F1QualifyingEntry displayName
+                     * @property {number|null} [gridSlot] F1QualifyingEntry gridSlot
+                     * @property {number|Long|null} [bestLapMs] F1QualifyingEntry bestLapMs
+                     * @property {boolean|null} [isBot] F1QualifyingEntry isBot
+                     */
+
+                    /**
+                     * Constructs a new F1QualifyingEntry.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1QualifyingEntry.
+                     * @implements IF1QualifyingEntry
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1QualifyingEntry=} [properties] Properties to set
+                     */
+                    function F1QualifyingEntry(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1QualifyingEntry playerId.
+                     * @member {number|Long} playerId
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @instance
+                     */
+                    F1QualifyingEntry.prototype.playerId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1QualifyingEntry displayName.
+                     * @member {string} displayName
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @instance
+                     */
+                    F1QualifyingEntry.prototype.displayName = "";
+
+                    /**
+                     * F1QualifyingEntry gridSlot.
+                     * @member {number} gridSlot
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @instance
+                     */
+                    F1QualifyingEntry.prototype.gridSlot = 0;
+
+                    /**
+                     * F1QualifyingEntry bestLapMs.
+                     * @member {number|Long} bestLapMs
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @instance
+                     */
+                    F1QualifyingEntry.prototype.bestLapMs = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1QualifyingEntry isBot.
+                     * @member {boolean} isBot
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @instance
+                     */
+                    F1QualifyingEntry.prototype.isBot = false;
+
+                    /**
+                     * Creates a new F1QualifyingEntry instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1QualifyingEntry=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1QualifyingEntry} F1QualifyingEntry instance
+                     */
+                    F1QualifyingEntry.create = function create(properties) {
+                        return new F1QualifyingEntry(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1QualifyingEntry message. Does not implicitly {@link com.triforge.protocol.proto.F1QualifyingEntry.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1QualifyingEntry} message F1QualifyingEntry message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1QualifyingEntry.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.playerId);
+                        if (message.displayName != null && Object.hasOwnProperty.call(message, "displayName"))
+                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.displayName);
+                        if (message.gridSlot != null && Object.hasOwnProperty.call(message, "gridSlot"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.gridSlot);
+                        if (message.bestLapMs != null && Object.hasOwnProperty.call(message, "bestLapMs"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.bestLapMs);
+                        if (message.isBot != null && Object.hasOwnProperty.call(message, "isBot"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).bool(message.isBot);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1QualifyingEntry message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1QualifyingEntry.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1QualifyingEntry} message F1QualifyingEntry message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1QualifyingEntry.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1QualifyingEntry message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1QualifyingEntry} F1QualifyingEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1QualifyingEntry.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1QualifyingEntry();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.playerId = reader.uint64();
+                                    break;
+                                }
+                            case 2: {
+                                    message.displayName = reader.string();
+                                    break;
+                                }
+                            case 3: {
+                                    message.gridSlot = reader.uint32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.bestLapMs = reader.uint64();
+                                    break;
+                                }
+                            case 5: {
+                                    message.isBot = reader.bool();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1QualifyingEntry message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1QualifyingEntry} F1QualifyingEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1QualifyingEntry.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1QualifyingEntry message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1QualifyingEntry.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (!$util.isInteger(message.playerId) && !(message.playerId && $util.isInteger(message.playerId.low) && $util.isInteger(message.playerId.high)))
+                                return "playerId: integer|Long expected";
+                        if (message.displayName != null && Object.hasOwnProperty.call(message, "displayName"))
+                            if (!$util.isString(message.displayName))
+                                return "displayName: string expected";
+                        if (message.gridSlot != null && Object.hasOwnProperty.call(message, "gridSlot"))
+                            if (!$util.isInteger(message.gridSlot))
+                                return "gridSlot: integer expected";
+                        if (message.bestLapMs != null && Object.hasOwnProperty.call(message, "bestLapMs"))
+                            if (!$util.isInteger(message.bestLapMs) && !(message.bestLapMs && $util.isInteger(message.bestLapMs.low) && $util.isInteger(message.bestLapMs.high)))
+                                return "bestLapMs: integer|Long expected";
+                        if (message.isBot != null && Object.hasOwnProperty.call(message, "isBot"))
+                            if (typeof message.isBot !== "boolean")
+                                return "isBot: boolean expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1QualifyingEntry message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1QualifyingEntry} F1QualifyingEntry
+                     */
+                    F1QualifyingEntry.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1QualifyingEntry)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1QualifyingEntry: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1QualifyingEntry();
+                        if (object.playerId != null)
+                            if ($util.Long)
+                                message.playerId = $util.Long.fromValue(object.playerId, true);
+                            else if (typeof object.playerId === "string")
+                                message.playerId = parseInt(object.playerId, 10);
+                            else if (typeof object.playerId === "number")
+                                message.playerId = object.playerId;
+                            else if (typeof object.playerId === "object")
+                                message.playerId = new $util.LongBits(object.playerId.low >>> 0, object.playerId.high >>> 0).toNumber(true);
+                        if (object.displayName != null)
+                            message.displayName = String(object.displayName);
+                        if (object.gridSlot != null)
+                            message.gridSlot = object.gridSlot >>> 0;
+                        if (object.bestLapMs != null)
+                            if ($util.Long)
+                                message.bestLapMs = $util.Long.fromValue(object.bestLapMs, true);
+                            else if (typeof object.bestLapMs === "string")
+                                message.bestLapMs = parseInt(object.bestLapMs, 10);
+                            else if (typeof object.bestLapMs === "number")
+                                message.bestLapMs = object.bestLapMs;
+                            else if (typeof object.bestLapMs === "object")
+                                message.bestLapMs = new $util.LongBits(object.bestLapMs.low >>> 0, object.bestLapMs.high >>> 0).toNumber(true);
+                        if (object.isBot != null)
+                            message.isBot = Boolean(object.isBot);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1QualifyingEntry message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1QualifyingEntry} message F1QualifyingEntry
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1QualifyingEntry.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.playerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.playerId = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.displayName = "";
+                            object.gridSlot = 0;
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.bestLapMs = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.bestLapMs = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.isBot = false;
+                        }
+                        if (message.playerId != null && Object.hasOwnProperty.call(message, "playerId"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.playerId = typeof message.playerId === "number" ? BigInt(message.playerId) : $util.Long.fromBits(message.playerId.low >>> 0, message.playerId.high >>> 0, true).toBigInt();
+                            else if (typeof message.playerId === "number")
+                                object.playerId = options.longs === String ? String(message.playerId) : message.playerId;
+                            else
+                                object.playerId = options.longs === String ? $util.Long.prototype.toString.call(message.playerId) : options.longs === Number ? new $util.LongBits(message.playerId.low >>> 0, message.playerId.high >>> 0).toNumber(true) : message.playerId;
+                        if (message.displayName != null && Object.hasOwnProperty.call(message, "displayName"))
+                            object.displayName = message.displayName;
+                        if (message.gridSlot != null && Object.hasOwnProperty.call(message, "gridSlot"))
+                            object.gridSlot = message.gridSlot;
+                        if (message.bestLapMs != null && Object.hasOwnProperty.call(message, "bestLapMs"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.bestLapMs = typeof message.bestLapMs === "number" ? BigInt(message.bestLapMs) : $util.Long.fromBits(message.bestLapMs.low >>> 0, message.bestLapMs.high >>> 0, true).toBigInt();
+                            else if (typeof message.bestLapMs === "number")
+                                object.bestLapMs = options.longs === String ? String(message.bestLapMs) : message.bestLapMs;
+                            else
+                                object.bestLapMs = options.longs === String ? $util.Long.prototype.toString.call(message.bestLapMs) : options.longs === Number ? new $util.LongBits(message.bestLapMs.low >>> 0, message.bestLapMs.high >>> 0).toNumber(true) : message.bestLapMs;
+                        if (message.isBot != null && Object.hasOwnProperty.call(message, "isBot"))
+                            object.isBot = message.isBot;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1QualifyingEntry to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1QualifyingEntry.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1QualifyingEntry
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1QualifyingEntry
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1QualifyingEntry.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1QualifyingEntry";
+                    };
+
+                    return F1QualifyingEntry;
+                })();
+
+                proto.F1QualifyingResult = (function() {
+
+                    /**
+                     * Properties of a F1QualifyingResult.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1QualifyingResult
+                     * @property {Array.<com.triforge.protocol.proto.IF1QualifyingEntry>|null} [entries] F1QualifyingResult entries
+                     */
+
+                    /**
+                     * Constructs a new F1QualifyingResult.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1QualifyingResult.
+                     * @implements IF1QualifyingResult
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1QualifyingResult=} [properties] Properties to set
+                     */
+                    function F1QualifyingResult(properties) {
+                        this.entries = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1QualifyingResult entries.
+                     * @member {Array.<com.triforge.protocol.proto.IF1QualifyingEntry>} entries
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @instance
+                     */
+                    F1QualifyingResult.prototype.entries = $util.emptyArray;
+
+                    /**
+                     * Creates a new F1QualifyingResult instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1QualifyingResult=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1QualifyingResult} F1QualifyingResult instance
+                     */
+                    F1QualifyingResult.create = function create(properties) {
+                        return new F1QualifyingResult(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1QualifyingResult message. Does not implicitly {@link com.triforge.protocol.proto.F1QualifyingResult.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1QualifyingResult} message F1QualifyingResult message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1QualifyingResult.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.entries != null && message.entries.length)
+                            for (let i = 0; i < message.entries.length; ++i)
+                                $root.com.triforge.protocol.proto.F1QualifyingEntry.encode(message.entries[i], writer.uint32(/* id 1, wireType 2 =*/10).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1QualifyingResult message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1QualifyingResult.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1QualifyingResult} message F1QualifyingResult message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1QualifyingResult.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1QualifyingResult message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1QualifyingResult} F1QualifyingResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1QualifyingResult.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1QualifyingResult();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    if (!(message.entries && message.entries.length))
+                                        message.entries = [];
+                                    message.entries.push($root.com.triforge.protocol.proto.F1QualifyingEntry.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1QualifyingResult message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1QualifyingResult} F1QualifyingResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1QualifyingResult.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1QualifyingResult message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1QualifyingResult.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.entries != null && Object.hasOwnProperty.call(message, "entries")) {
+                            if (!Array.isArray(message.entries))
+                                return "entries: array expected";
+                            for (let i = 0; i < message.entries.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.F1QualifyingEntry.verify(message.entries[i], long + 1);
+                                if (error)
+                                    return "entries." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1QualifyingResult message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1QualifyingResult} F1QualifyingResult
+                     */
+                    F1QualifyingResult.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1QualifyingResult)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1QualifyingResult: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1QualifyingResult();
+                        if (object.entries) {
+                            if (!Array.isArray(object.entries))
+                                throw TypeError(".com.triforge.protocol.proto.F1QualifyingResult.entries: array expected");
+                            message.entries = [];
+                            for (let i = 0; i < object.entries.length; ++i) {
+                                if (!$util.isObject(object.entries[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.F1QualifyingResult.entries: object expected");
+                                message.entries[i] = $root.com.triforge.protocol.proto.F1QualifyingEntry.fromObject(object.entries[i], long + 1);
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1QualifyingResult message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1QualifyingResult} message F1QualifyingResult
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1QualifyingResult.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults)
+                            object.entries = [];
+                        if (message.entries && message.entries.length) {
+                            object.entries = [];
+                            for (let j = 0; j < message.entries.length; ++j)
+                                object.entries[j] = $root.com.triforge.protocol.proto.F1QualifyingEntry.toObject(message.entries[j], options, q + 1);
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1QualifyingResult to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1QualifyingResult.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1QualifyingResult
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1QualifyingResult
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1QualifyingResult.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1QualifyingResult";
+                    };
+
+                    return F1QualifyingResult;
+                })();
+
+                proto.F1RaceResult = (function() {
+
+                    /**
+                     * Properties of a F1RaceResult.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IF1RaceResult
+                     * @property {Array.<com.triforge.protocol.proto.IF1StandingEntry>|null} [finalStandings] F1RaceResult finalStandings
+                     * @property {number|Long|null} [raceDurationMs] F1RaceResult raceDurationMs
+                     * @property {string|null} [replayFileName] F1RaceResult replayFileName
+                     * @property {com.triforge.protocol.proto.F1AbortReason|null} [abortReason] F1RaceResult abortReason
+                     * @property {Array.<com.triforge.protocol.proto.IF1QualifyingEntry>|null} [qualifyingGrid] F1RaceResult qualifyingGrid
+                     */
+
+                    /**
+                     * Constructs a new F1RaceResult.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a F1RaceResult.
+                     * @implements IF1RaceResult
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IF1RaceResult=} [properties] Properties to set
+                     */
+                    function F1RaceResult(properties) {
+                        this.finalStandings = [];
+                        this.qualifyingGrid = [];
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * F1RaceResult finalStandings.
+                     * @member {Array.<com.triforge.protocol.proto.IF1StandingEntry>} finalStandings
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @instance
+                     */
+                    F1RaceResult.prototype.finalStandings = $util.emptyArray;
+
+                    /**
+                     * F1RaceResult raceDurationMs.
+                     * @member {number|Long} raceDurationMs
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @instance
+                     */
+                    F1RaceResult.prototype.raceDurationMs = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+                    /**
+                     * F1RaceResult replayFileName.
+                     * @member {string} replayFileName
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @instance
+                     */
+                    F1RaceResult.prototype.replayFileName = "";
+
+                    /**
+                     * F1RaceResult abortReason.
+                     * @member {com.triforge.protocol.proto.F1AbortReason} abortReason
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @instance
+                     */
+                    F1RaceResult.prototype.abortReason = 0;
+
+                    /**
+                     * F1RaceResult qualifyingGrid.
+                     * @member {Array.<com.triforge.protocol.proto.IF1QualifyingEntry>} qualifyingGrid
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @instance
+                     */
+                    F1RaceResult.prototype.qualifyingGrid = $util.emptyArray;
+
+                    /**
+                     * Creates a new F1RaceResult instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1RaceResult=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.F1RaceResult} F1RaceResult instance
+                     */
+                    F1RaceResult.create = function create(properties) {
+                        return new F1RaceResult(properties);
+                    };
+
+                    /**
+                     * Encodes the specified F1RaceResult message. Does not implicitly {@link com.triforge.protocol.proto.F1RaceResult.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1RaceResult} message F1RaceResult message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1RaceResult.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.finalStandings != null && message.finalStandings.length)
+                            for (let i = 0; i < message.finalStandings.length; ++i)
+                                $root.com.triforge.protocol.proto.F1StandingEntry.encode(message.finalStandings[i], writer.uint32(/* id 1, wireType 2 =*/10).fork(), q + 1).ldelim();
+                        if (message.raceDurationMs != null && Object.hasOwnProperty.call(message, "raceDurationMs"))
+                            writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.raceDurationMs);
+                        if (message.replayFileName != null && Object.hasOwnProperty.call(message, "replayFileName"))
+                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.replayFileName);
+                        if (message.abortReason != null && Object.hasOwnProperty.call(message, "abortReason"))
+                            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.abortReason);
+                        if (message.qualifyingGrid != null && message.qualifyingGrid.length)
+                            for (let i = 0; i < message.qualifyingGrid.length; ++i)
+                                $root.com.triforge.protocol.proto.F1QualifyingEntry.encode(message.qualifyingGrid[i], writer.uint32(/* id 5, wireType 2 =*/42).fork(), q + 1).ldelim();
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified F1RaceResult message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1RaceResult.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.IF1RaceResult} message F1RaceResult message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    F1RaceResult.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a F1RaceResult message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.F1RaceResult} F1RaceResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1RaceResult.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.F1RaceResult();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    if (!(message.finalStandings && message.finalStandings.length))
+                                        message.finalStandings = [];
+                                    message.finalStandings.push($root.com.triforge.protocol.proto.F1StandingEntry.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            case 2: {
+                                    message.raceDurationMs = reader.uint64();
+                                    break;
+                                }
+                            case 3: {
+                                    message.replayFileName = reader.string();
+                                    break;
+                                }
+                            case 4: {
+                                    message.abortReason = reader.int32();
+                                    break;
+                                }
+                            case 5: {
+                                    if (!(message.qualifyingGrid && message.qualifyingGrid.length))
+                                        message.qualifyingGrid = [];
+                                    message.qualifyingGrid.push($root.com.triforge.protocol.proto.F1QualifyingEntry.decode(reader, reader.uint32(), undefined, long + 1));
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a F1RaceResult message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.F1RaceResult} F1RaceResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    F1RaceResult.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a F1RaceResult message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    F1RaceResult.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.finalStandings != null && Object.hasOwnProperty.call(message, "finalStandings")) {
+                            if (!Array.isArray(message.finalStandings))
+                                return "finalStandings: array expected";
+                            for (let i = 0; i < message.finalStandings.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.F1StandingEntry.verify(message.finalStandings[i], long + 1);
+                                if (error)
+                                    return "finalStandings." + error;
+                            }
+                        }
+                        if (message.raceDurationMs != null && Object.hasOwnProperty.call(message, "raceDurationMs"))
+                            if (!$util.isInteger(message.raceDurationMs) && !(message.raceDurationMs && $util.isInteger(message.raceDurationMs.low) && $util.isInteger(message.raceDurationMs.high)))
+                                return "raceDurationMs: integer|Long expected";
+                        if (message.replayFileName != null && Object.hasOwnProperty.call(message, "replayFileName"))
+                            if (!$util.isString(message.replayFileName))
+                                return "replayFileName: string expected";
+                        if (message.abortReason != null && Object.hasOwnProperty.call(message, "abortReason"))
+                            switch (message.abortReason) {
+                            default:
+                                return "abortReason: enum value expected";
+                            case 0:
+                            case 1:
+                            case 2:
+                                break;
+                            }
+                        if (message.qualifyingGrid != null && Object.hasOwnProperty.call(message, "qualifyingGrid")) {
+                            if (!Array.isArray(message.qualifyingGrid))
+                                return "qualifyingGrid: array expected";
+                            for (let i = 0; i < message.qualifyingGrid.length; ++i) {
+                                let error = $root.com.triforge.protocol.proto.F1QualifyingEntry.verify(message.qualifyingGrid[i], long + 1);
+                                if (error)
+                                    return "qualifyingGrid." + error;
+                            }
+                        }
+                        return null;
+                    };
+
+                    /**
+                     * Creates a F1RaceResult message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.F1RaceResult} F1RaceResult
+                     */
+                    F1RaceResult.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.F1RaceResult)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.F1RaceResult: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.F1RaceResult();
+                        if (object.finalStandings) {
+                            if (!Array.isArray(object.finalStandings))
+                                throw TypeError(".com.triforge.protocol.proto.F1RaceResult.finalStandings: array expected");
+                            message.finalStandings = [];
+                            for (let i = 0; i < object.finalStandings.length; ++i) {
+                                if (!$util.isObject(object.finalStandings[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.F1RaceResult.finalStandings: object expected");
+                                message.finalStandings[i] = $root.com.triforge.protocol.proto.F1StandingEntry.fromObject(object.finalStandings[i], long + 1);
+                            }
+                        }
+                        if (object.raceDurationMs != null)
+                            if ($util.Long)
+                                message.raceDurationMs = $util.Long.fromValue(object.raceDurationMs, true);
+                            else if (typeof object.raceDurationMs === "string")
+                                message.raceDurationMs = parseInt(object.raceDurationMs, 10);
+                            else if (typeof object.raceDurationMs === "number")
+                                message.raceDurationMs = object.raceDurationMs;
+                            else if (typeof object.raceDurationMs === "object")
+                                message.raceDurationMs = new $util.LongBits(object.raceDurationMs.low >>> 0, object.raceDurationMs.high >>> 0).toNumber(true);
+                        if (object.replayFileName != null)
+                            message.replayFileName = String(object.replayFileName);
+                        switch (object.abortReason) {
+                        default:
+                            if (typeof object.abortReason === "number") {
+                                message.abortReason = object.abortReason;
+                                break;
+                            }
+                            break;
+                        case "F1_ABORT_NONE":
+                        case 0:
+                            message.abortReason = 0;
+                            break;
+                        case "F1_ABORT_HOST_DISCONNECTED":
+                        case 1:
+                            message.abortReason = 1;
+                            break;
+                        case "F1_ABORT_TIME_CAP":
+                        case 2:
+                            message.abortReason = 2;
+                            break;
+                        }
+                        if (object.qualifyingGrid) {
+                            if (!Array.isArray(object.qualifyingGrid))
+                                throw TypeError(".com.triforge.protocol.proto.F1RaceResult.qualifyingGrid: array expected");
+                            message.qualifyingGrid = [];
+                            for (let i = 0; i < object.qualifyingGrid.length; ++i) {
+                                if (!$util.isObject(object.qualifyingGrid[i]))
+                                    throw TypeError(".com.triforge.protocol.proto.F1RaceResult.qualifyingGrid: object expected");
+                                message.qualifyingGrid[i] = $root.com.triforge.protocol.proto.F1QualifyingEntry.fromObject(object.qualifyingGrid[i], long + 1);
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a F1RaceResult message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @static
+                     * @param {com.triforge.protocol.proto.F1RaceResult} message F1RaceResult
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    F1RaceResult.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.arrays || options.defaults) {
+                            object.finalStandings = [];
+                            object.qualifyingGrid = [];
+                        }
+                        if (options.defaults) {
+                            if ($util.Long) {
+                                let long = new $util.Long(0, 0, true);
+                                object.raceDurationMs = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : typeof BigInt !== "undefined" && options.longs === BigInt ? long.toBigInt() : long;
+                            } else
+                                object.raceDurationMs = options.longs === String ? "0" : typeof BigInt !== "undefined" && options.longs === BigInt ? BigInt("0") : 0;
+                            object.replayFileName = "";
+                            object.abortReason = options.enums === String ? "F1_ABORT_NONE" : 0;
+                        }
+                        if (message.finalStandings && message.finalStandings.length) {
+                            object.finalStandings = [];
+                            for (let j = 0; j < message.finalStandings.length; ++j)
+                                object.finalStandings[j] = $root.com.triforge.protocol.proto.F1StandingEntry.toObject(message.finalStandings[j], options, q + 1);
+                        }
+                        if (message.raceDurationMs != null && Object.hasOwnProperty.call(message, "raceDurationMs"))
+                            if (typeof BigInt !== "undefined" && options.longs === BigInt)
+                                object.raceDurationMs = typeof message.raceDurationMs === "number" ? BigInt(message.raceDurationMs) : $util.Long.fromBits(message.raceDurationMs.low >>> 0, message.raceDurationMs.high >>> 0, true).toBigInt();
+                            else if (typeof message.raceDurationMs === "number")
+                                object.raceDurationMs = options.longs === String ? String(message.raceDurationMs) : message.raceDurationMs;
+                            else
+                                object.raceDurationMs = options.longs === String ? $util.Long.prototype.toString.call(message.raceDurationMs) : options.longs === Number ? new $util.LongBits(message.raceDurationMs.low >>> 0, message.raceDurationMs.high >>> 0).toNumber(true) : message.raceDurationMs;
+                        if (message.replayFileName != null && Object.hasOwnProperty.call(message, "replayFileName"))
+                            object.replayFileName = message.replayFileName;
+                        if (message.abortReason != null && Object.hasOwnProperty.call(message, "abortReason"))
+                            object.abortReason = options.enums === String ? $root.com.triforge.protocol.proto.F1AbortReason[message.abortReason] === undefined ? message.abortReason : $root.com.triforge.protocol.proto.F1AbortReason[message.abortReason] : message.abortReason;
+                        if (message.qualifyingGrid && message.qualifyingGrid.length) {
+                            object.qualifyingGrid = [];
+                            for (let j = 0; j < message.qualifyingGrid.length; ++j)
+                                object.qualifyingGrid[j] = $root.com.triforge.protocol.proto.F1QualifyingEntry.toObject(message.qualifyingGrid[j], options, q + 1);
+                        }
+                        return object;
+                    };
+
+                    /**
+                     * Converts this F1RaceResult to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    F1RaceResult.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for F1RaceResult
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.F1RaceResult
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    F1RaceResult.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.F1RaceResult";
+                    };
+
+                    return F1RaceResult;
+                })();
+
+                proto.VehicleComponentProto = (function() {
+
+                    /**
+                     * Properties of a VehicleComponentProto.
+                     * @memberof com.triforge.protocol.proto
+                     * @interface IVehicleComponentProto
+                     * @property {number|null} [speed] VehicleComponentProto speed
+                     * @property {number|null} [rpm] VehicleComponentProto rpm
+                     * @property {number|null} [gear] VehicleComponentProto gear
+                     * @property {number|null} [nitro] VehicleComponentProto nitro
+                     * @property {number|null} [currentLap] VehicleComponentProto currentLap
+                     * @property {number|null} [racePosition] VehicleComponentProto racePosition
+                     * @property {string|null} [carId] VehicleComponentProto carId
+                     * @property {string|null} [primaryColor] VehicleComponentProto primaryColor
+                     */
+
+                    /**
+                     * Constructs a new VehicleComponentProto.
+                     * @memberof com.triforge.protocol.proto
+                     * @classdesc Represents a VehicleComponentProto.
+                     * @implements IVehicleComponentProto
+                     * @constructor
+                     * @param {com.triforge.protocol.proto.IVehicleComponentProto=} [properties] Properties to set
+                     */
+                    function VehicleComponentProto(properties) {
+                        if (properties)
+                            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                                if (properties[keys[i]] != null && keys[i] !== "__proto__")
+                                    this[keys[i]] = properties[keys[i]];
+                    }
+
+                    /**
+                     * VehicleComponentProto speed.
+                     * @member {number} speed
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @instance
+                     */
+                    VehicleComponentProto.prototype.speed = 0;
+
+                    /**
+                     * VehicleComponentProto rpm.
+                     * @member {number} rpm
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @instance
+                     */
+                    VehicleComponentProto.prototype.rpm = 0;
+
+                    /**
+                     * VehicleComponentProto gear.
+                     * @member {number} gear
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @instance
+                     */
+                    VehicleComponentProto.prototype.gear = 0;
+
+                    /**
+                     * VehicleComponentProto nitro.
+                     * @member {number} nitro
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @instance
+                     */
+                    VehicleComponentProto.prototype.nitro = 0;
+
+                    /**
+                     * VehicleComponentProto currentLap.
+                     * @member {number} currentLap
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @instance
+                     */
+                    VehicleComponentProto.prototype.currentLap = 0;
+
+                    /**
+                     * VehicleComponentProto racePosition.
+                     * @member {number} racePosition
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @instance
+                     */
+                    VehicleComponentProto.prototype.racePosition = 0;
+
+                    /**
+                     * VehicleComponentProto carId.
+                     * @member {string} carId
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @instance
+                     */
+                    VehicleComponentProto.prototype.carId = "";
+
+                    /**
+                     * VehicleComponentProto primaryColor.
+                     * @member {string} primaryColor
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @instance
+                     */
+                    VehicleComponentProto.prototype.primaryColor = "";
+
+                    /**
+                     * Creates a new VehicleComponentProto instance using the specified properties.
+                     * @function create
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IVehicleComponentProto=} [properties] Properties to set
+                     * @returns {com.triforge.protocol.proto.VehicleComponentProto} VehicleComponentProto instance
+                     */
+                    VehicleComponentProto.create = function create(properties) {
+                        return new VehicleComponentProto(properties);
+                    };
+
+                    /**
+                     * Encodes the specified VehicleComponentProto message. Does not implicitly {@link com.triforge.protocol.proto.VehicleComponentProto.verify|verify} messages.
+                     * @function encode
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IVehicleComponentProto} message VehicleComponentProto message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    VehicleComponentProto.encode = function encode(message, writer, q) {
+                        if (!writer)
+                            writer = $Writer.create();
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        if (message.speed != null && Object.hasOwnProperty.call(message, "speed"))
+                            writer.uint32(/* id 1, wireType 5 =*/13).float(message.speed);
+                        if (message.rpm != null && Object.hasOwnProperty.call(message, "rpm"))
+                            writer.uint32(/* id 2, wireType 5 =*/21).float(message.rpm);
+                        if (message.gear != null && Object.hasOwnProperty.call(message, "gear"))
+                            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.gear);
+                        if (message.nitro != null && Object.hasOwnProperty.call(message, "nitro"))
+                            writer.uint32(/* id 4, wireType 5 =*/37).float(message.nitro);
+                        if (message.currentLap != null && Object.hasOwnProperty.call(message, "currentLap"))
+                            writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.currentLap);
+                        if (message.racePosition != null && Object.hasOwnProperty.call(message, "racePosition"))
+                            writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.racePosition);
+                        if (message.carId != null && Object.hasOwnProperty.call(message, "carId"))
+                            writer.uint32(/* id 7, wireType 2 =*/58).string(message.carId);
+                        if (message.primaryColor != null && Object.hasOwnProperty.call(message, "primaryColor"))
+                            writer.uint32(/* id 8, wireType 2 =*/66).string(message.primaryColor);
+                        return writer;
+                    };
+
+                    /**
+                     * Encodes the specified VehicleComponentProto message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.VehicleComponentProto.verify|verify} messages.
+                     * @function encodeDelimited
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.IVehicleComponentProto} message VehicleComponentProto message or plain object to encode
+                     * @param {$protobuf.Writer} [writer] Writer to encode to
+                     * @returns {$protobuf.Writer} Writer
+                     */
+                    VehicleComponentProto.encodeDelimited = function encodeDelimited(message, writer) {
+                        return this.encode(message, writer && writer.len ? writer.fork() : writer).ldelim();
+                    };
+
+                    /**
+                     * Decodes a VehicleComponentProto message from the specified reader or buffer.
+                     * @function decode
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @param {number} [length] Message length if known beforehand
+                     * @returns {com.triforge.protocol.proto.VehicleComponentProto} VehicleComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    VehicleComponentProto.decode = function decode(reader, length, error, long) {
+                        if (!(reader instanceof $Reader))
+                            reader = $Reader.create(reader);
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $Reader.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.com.triforge.protocol.proto.VehicleComponentProto();
+                        while (reader.pos < end) {
+                            let tag = reader.uint32();
+                            if (tag === error)
+                                break;
+                            switch (tag >>> 3) {
+                            case 1: {
+                                    message.speed = reader.float();
+                                    break;
+                                }
+                            case 2: {
+                                    message.rpm = reader.float();
+                                    break;
+                                }
+                            case 3: {
+                                    message.gear = reader.int32();
+                                    break;
+                                }
+                            case 4: {
+                                    message.nitro = reader.float();
+                                    break;
+                                }
+                            case 5: {
+                                    message.currentLap = reader.uint32();
+                                    break;
+                                }
+                            case 6: {
+                                    message.racePosition = reader.uint32();
+                                    break;
+                                }
+                            case 7: {
+                                    message.carId = reader.string();
+                                    break;
+                                }
+                            case 8: {
+                                    message.primaryColor = reader.string();
+                                    break;
+                                }
+                            default:
+                                reader.skipType(tag & 7, long);
+                                break;
+                            }
+                        }
+                        return message;
+                    };
+
+                    /**
+                     * Decodes a VehicleComponentProto message from the specified reader or buffer, length delimited.
+                     * @function decodeDelimited
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @static
+                     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                     * @returns {com.triforge.protocol.proto.VehicleComponentProto} VehicleComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    VehicleComponentProto.decodeDelimited = function decodeDelimited(reader) {
+                        if (!(reader instanceof $Reader))
+                            reader = new $Reader(reader);
+                        return this.decode(reader, reader.uint32());
+                    };
+
+                    /**
+                     * Verifies a VehicleComponentProto message.
+                     * @function verify
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @static
+                     * @param {Object.<string,*>} message Plain object to verify
+                     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                     */
+                    VehicleComponentProto.verify = function verify(message, long) {
+                        if (typeof message !== "object" || message === null)
+                            return "object expected";
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            return "maximum nesting depth exceeded";
+                        if (message.speed != null && Object.hasOwnProperty.call(message, "speed"))
+                            if (typeof message.speed !== "number")
+                                return "speed: number expected";
+                        if (message.rpm != null && Object.hasOwnProperty.call(message, "rpm"))
+                            if (typeof message.rpm !== "number")
+                                return "rpm: number expected";
+                        if (message.gear != null && Object.hasOwnProperty.call(message, "gear"))
+                            if (!$util.isInteger(message.gear))
+                                return "gear: integer expected";
+                        if (message.nitro != null && Object.hasOwnProperty.call(message, "nitro"))
+                            if (typeof message.nitro !== "number")
+                                return "nitro: number expected";
+                        if (message.currentLap != null && Object.hasOwnProperty.call(message, "currentLap"))
+                            if (!$util.isInteger(message.currentLap))
+                                return "currentLap: integer expected";
+                        if (message.racePosition != null && Object.hasOwnProperty.call(message, "racePosition"))
+                            if (!$util.isInteger(message.racePosition))
+                                return "racePosition: integer expected";
+                        if (message.carId != null && Object.hasOwnProperty.call(message, "carId"))
+                            if (!$util.isString(message.carId))
+                                return "carId: string expected";
+                        if (message.primaryColor != null && Object.hasOwnProperty.call(message, "primaryColor"))
+                            if (!$util.isString(message.primaryColor))
+                                return "primaryColor: string expected";
+                        return null;
+                    };
+
+                    /**
+                     * Creates a VehicleComponentProto message from a plain object. Also converts values to their respective internal types.
+                     * @function fromObject
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @static
+                     * @param {Object.<string,*>} object Plain object
+                     * @returns {com.triforge.protocol.proto.VehicleComponentProto} VehicleComponentProto
+                     */
+                    VehicleComponentProto.fromObject = function fromObject(object, long) {
+                        if (object instanceof $root.com.triforge.protocol.proto.VehicleComponentProto)
+                            return object;
+                        if (!$util.isObject(object))
+                            throw TypeError(".com.triforge.protocol.proto.VehicleComponentProto: object expected");
+                        if (long === undefined)
+                            long = 0;
+                        if (long > $util.recursionLimit)
+                            throw Error("maximum nesting depth exceeded");
+                        let message = new $root.com.triforge.protocol.proto.VehicleComponentProto();
+                        if (object.speed != null)
+                            message.speed = Number(object.speed);
+                        if (object.rpm != null)
+                            message.rpm = Number(object.rpm);
+                        if (object.gear != null)
+                            message.gear = object.gear | 0;
+                        if (object.nitro != null)
+                            message.nitro = Number(object.nitro);
+                        if (object.currentLap != null)
+                            message.currentLap = object.currentLap >>> 0;
+                        if (object.racePosition != null)
+                            message.racePosition = object.racePosition >>> 0;
+                        if (object.carId != null)
+                            message.carId = String(object.carId);
+                        if (object.primaryColor != null)
+                            message.primaryColor = String(object.primaryColor);
+                        return message;
+                    };
+
+                    /**
+                     * Creates a plain object from a VehicleComponentProto message. Also converts values to other types if specified.
+                     * @function toObject
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @static
+                     * @param {com.triforge.protocol.proto.VehicleComponentProto} message VehicleComponentProto
+                     * @param {$protobuf.IConversionOptions} [options] Conversion options
+                     * @returns {Object.<string,*>} Plain object
+                     */
+                    VehicleComponentProto.toObject = function toObject(message, options, q) {
+                        if (!options)
+                            options = {};
+                        if (q === undefined)
+                            q = 0;
+                        if (q > $util.recursionLimit)
+                            throw Error("max depth exceeded");
+                        let object = {};
+                        if (options.defaults) {
+                            object.speed = 0;
+                            object.rpm = 0;
+                            object.gear = 0;
+                            object.nitro = 0;
+                            object.currentLap = 0;
+                            object.racePosition = 0;
+                            object.carId = "";
+                            object.primaryColor = "";
+                        }
+                        if (message.speed != null && Object.hasOwnProperty.call(message, "speed"))
+                            object.speed = options.json && !isFinite(message.speed) ? String(message.speed) : message.speed;
+                        if (message.rpm != null && Object.hasOwnProperty.call(message, "rpm"))
+                            object.rpm = options.json && !isFinite(message.rpm) ? String(message.rpm) : message.rpm;
+                        if (message.gear != null && Object.hasOwnProperty.call(message, "gear"))
+                            object.gear = message.gear;
+                        if (message.nitro != null && Object.hasOwnProperty.call(message, "nitro"))
+                            object.nitro = options.json && !isFinite(message.nitro) ? String(message.nitro) : message.nitro;
+                        if (message.currentLap != null && Object.hasOwnProperty.call(message, "currentLap"))
+                            object.currentLap = message.currentLap;
+                        if (message.racePosition != null && Object.hasOwnProperty.call(message, "racePosition"))
+                            object.racePosition = message.racePosition;
+                        if (message.carId != null && Object.hasOwnProperty.call(message, "carId"))
+                            object.carId = message.carId;
+                        if (message.primaryColor != null && Object.hasOwnProperty.call(message, "primaryColor"))
+                            object.primaryColor = message.primaryColor;
+                        return object;
+                    };
+
+                    /**
+                     * Converts this VehicleComponentProto to JSON.
+                     * @function toJSON
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @instance
+                     * @returns {Object.<string,*>} JSON object
+                     */
+                    VehicleComponentProto.prototype.toJSON = function toJSON() {
+                        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                    };
+
+                    /**
+                     * Gets the default type url for VehicleComponentProto
+                     * @function getTypeUrl
+                     * @memberof com.triforge.protocol.proto.VehicleComponentProto
+                     * @static
+                     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns {string} The default type url
+                     */
+                    VehicleComponentProto.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                        if (typeUrlPrefix === undefined) {
+                            typeUrlPrefix = "type.googleapis.com";
+                        }
+                        return typeUrlPrefix + "/com.triforge.protocol.proto.VehicleComponentProto";
+                    };
+
+                    return VehicleComponentProto;
                 })();
 
                 return proto;

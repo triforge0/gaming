@@ -21,6 +21,7 @@
         <module>games/treasurequest/plugin</module>
         <module>games/oanquan/plugin</module>
         <module>games/bugminer/plugin</module>
+        <module>games/f1racing/plugin</module>
         <module>server/server-runtime</module>
         <module>launcher/triforge-server</module>
     </modules>
@@ -73,6 +74,12 @@
             <dependency>
                 <groupId>com.triforge</groupId>
                 <artifactId>bugminer-game</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.triforge</groupId>
+                <artifactId>f1racing-game</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

@@ -69,6 +69,13 @@ export type ILobbyCommandRejected = com.triforge.protocol.proto.ILobbyCommandRej
 export type IChatCommand = com.triforge.protocol.proto.IChatCommand;
 export type IChatMessage = com.triforge.protocol.proto.IChatMessage;
 export type IOAnQuanMessage = com.triforge.protocol.proto.IOAnQuanMessage;
+export type IF1Message = com.triforge.protocol.proto.IF1Message;
+export type IF1RoomConfig = com.triforge.protocol.proto.IF1RoomConfig;
+export type IF1GarageLoadout = com.triforge.protocol.proto.IF1GarageLoadout;
+export type IF1RaceState = com.triforge.protocol.proto.IF1RaceState;
+export type IF1RaceResult = com.triforge.protocol.proto.IF1RaceResult;
+export type IF1QualifyingResult = com.triforge.protocol.proto.IF1QualifyingResult;
+export type IF1StandingUpdate = com.triforge.protocol.proto.IF1StandingUpdate;
 export type IOAQBoardState = com.triforge.protocol.proto.IOAQBoardState;
 export type IOAQMoveResult = com.triforge.protocol.proto.IOAQMoveResult;
 export type IOAQMoveRejected = com.triforge.protocol.proto.IOAQMoveRejected;
@@ -132,6 +139,7 @@ export interface GameClientHandlers {
   onTreasureQuestMessage?: (message: com.triforge.protocol.proto.ITreasureQuestMessage) => void;
   onOAnQuanMessage?: (message: com.triforge.protocol.proto.IOAnQuanMessage) => void;
   onBugMinerMessage?: (message: com.triforge.protocol.proto.IBugMinerMessage) => void;
+  onF1Message?: (message: com.triforge.protocol.proto.IF1Message) => void;
   onConnected?: () => void;
   onDisconnected?: () => void;
 }
@@ -351,6 +359,10 @@ export class GameClient {
     this.send(GameMessage.create({ bugminer: message }));
   }
 
+  public sendF1Message(message: com.triforge.protocol.proto.IF1Message): void {
+    this.send(GameMessage.create({ f1: message }));
+  }
+
   private sendTreasureQuest(message: com.triforge.protocol.proto.ITreasureQuestMessage): void {
     this.send(GameMessage.create({ tq: message }));
   }
@@ -432,6 +444,8 @@ export class GameClient {
         this.handlers.onOAnQuanMessage(gameMessage.oaq);
       } else if (gameMessage.bugminer && this.handlers.onBugMinerMessage) {
         this.handlers.onBugMinerMessage(gameMessage.bugminer);
+      } else if (gameMessage.f1 && this.handlers.onF1Message) {
+        this.handlers.onF1Message(gameMessage.f1);
       } else if (gameMessage.chatMessage) {
       for (const listener of this.chatListeners) {
         listener(gameMessage.chatMessage);
@@ -450,6 +464,10 @@ export class GameClient {
         return;
       }
       if (entity.player && toNum(entity.player.playerId) === this.selfPlayerId) {
+        this.selfEntityId = toNum(entity.entityId);
+        return;
+      }
+      if (entity.vehicle && entity.player && toNum(entity.player.playerId) === this.selfPlayerId) {
         this.selfEntityId = toNum(entity.entityId);
         return;
       }

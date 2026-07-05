@@ -61,6 +61,9 @@ triforge-gaming/
 │   ├── oanquan/
 │   │   ├── plugin/                   Maven artifact: oanquan-game (rules in core/, pure Java)
 │   │   └── frontend/                 React + Three.js (Vite) — 3D board client
+│   ├── f1racing/
+│   │   ├── plugin/                   Maven artifact: f1racing-game — authoritative F1 racing
+│   │   └── frontend/                 React + Three.js (Vite) — 3D race client
 │   └── demo/
 │       └── plugin/                   Maven artifact: demo-game
 └── frontend/                         Platform web shell + shared client library
@@ -80,7 +83,13 @@ animation. Game-specific inbound traffic routes through the generic
 `Game.handleGameMessage` seam (no `instanceof` in `GameRoom`). The launcher seeds the
 single `oanquan` room (multi-table rooms are future work).
 
-Build order: `protocol → engine-ecs → engine-api → engine-match → engine-sync → engine-core → tankarena-game → treasurequest-game → oanquan-game → demo-game → server-runtime → triforge-server`
+F1 Racing (plan-007) is a LAN-first 3D Formula racing plugin served at `/games/f1racing/`.
+Clients send `F1VehicleInput` only; the host runs qualifying → race sessions, bot AI,
+replay export (`GET /api/f1/replays/last`), and dynamic rooms (`f1racing:<track>:<code>` or
+`f1racing:sp:<mode>:<track>:<code>` for single-player). Tracks: JSON centerlines in
+`games/f1racing/plugin/src/main/resources/tracks/`. Launcher catalog links to the game hub.
+
+Build order: `protocol → engine-ecs → engine-api → engine-match → engine-sync → engine-core → tankarena-game → treasurequest-game → oanquan-game → f1racing-game → demo-game → server-runtime → triforge-server`
 
 ---
 
@@ -105,6 +114,7 @@ Single module test:
 ```bash
 mvn test -pl games/tankarena/plugin
 mvn test -pl games/oanquan/plugin -am     # -am: rules-engine tests need the reactor protocol
+mvn test -pl games/f1racing/plugin -am
 mvn test -pl engine/engine-ecs
 mvn test -pl engine/engine-api
 mvn test -pl engine/engine-match
@@ -133,6 +143,15 @@ npm run build    # React + Three.js; depends on @triforge/shared-ui via file: li
 cd games/oanquan/frontend
 npm install
 npm run build    # depends on @triforge/shared-ui via file: link (dev port 3003)
+```
+
+F1 Racing client — React + Three.js (inside `games/f1racing/frontend/`):
+
+```bash
+cd games/f1racing/frontend
+npm install
+npm run build    # depends on @triforge/shared-ui via file: link (dev port 3005)
+npm test
 ```
 
 Launcher web (inside `frontend/launcher-web/`):
@@ -172,6 +191,7 @@ Game plugins register via Java `ServiceLoader`:
 META-INF/services/com.triforge.engine.game.GamePlugin
 → com.triforge.games.tankarena.TankArenaPlugin
 → com.triforge.games.oanquan.OAnQuanPlugin
+→ com.triforge.games.f1racing.F1RacingPlugin
 → com.triforge.games.demo.DemoPlugin   (scaffold)
 ```
 

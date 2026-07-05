@@ -198,6 +198,9 @@ export namespace com {
 
                     /** GameMessage bugminer */
                     bugminer?: (com.triforge.protocol.proto.IBugMinerMessage|null);
+
+                    /** GameMessage f1 */
+                    f1?: (com.triforge.protocol.proto.IF1Message|null);
                 }
 
                 /** Represents a GameMessage. */
@@ -260,8 +263,11 @@ export namespace com {
                     /** GameMessage bugminer. */
                     public bugminer?: (com.triforge.protocol.proto.IBugMinerMessage|null);
 
+                    /** GameMessage f1. */
+                    public f1?: (com.triforge.protocol.proto.IF1Message|null);
+
                     /** GameMessage content. */
-                    public content?: ("joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|"oaq"|"bugminer");
+                    public content?: ("joinRequest"|"joinResponse"|"fullSnapshot"|"deltaSnapshot"|"inputCommand"|"gameEvent"|"lobbyCommand"|"roomLobbySnapshot"|"matchPhaseUpdate"|"matchResult"|"mapSnapshot"|"tq"|"lobbyCommandRejected"|"chatCommand"|"chatMessage"|"oaq"|"bugminer"|"f1");
 
                     /**
                      * Creates a new GameMessage instance using the specified properties.
@@ -2138,6 +2144,9 @@ export namespace com {
 
                     /** EntityProto orientation */
                     orientation?: (com.triforge.protocol.proto.IOrientationComponentProto|null);
+
+                    /** EntityProto vehicle */
+                    vehicle?: (com.triforge.protocol.proto.IVehicleComponentProto|null);
                 }
 
                 /** Represents an EntityProto. */
@@ -2172,6 +2181,9 @@ export namespace com {
 
                     /** EntityProto orientation. */
                     public orientation?: (com.triforge.protocol.proto.IOrientationComponentProto|null);
+
+                    /** EntityProto vehicle. */
+                    public vehicle?: (com.triforge.protocol.proto.IVehicleComponentProto|null);
 
                     /**
                      * Creates a new EntityProto instance using the specified properties.
@@ -8214,7 +8226,7 @@ export namespace com {
                     public paused: boolean;
 
                     /** BugMinerBoardState winnerId. */
-                    public winnerId: (number|Long);
+                    public winnerId?: (number|Long|null);
 
                     /** BugMinerBoardState matchEndReason. */
                     public matchEndReason: string;
@@ -9626,6 +9638,2334 @@ export namespace com {
 
                     /**
                      * Gets the default type url for BugMinerMessage
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1Message. */
+                interface IF1Message {
+
+                    /** F1Message vehicleInput */
+                    vehicleInput?: (com.triforge.protocol.proto.IF1VehicleInput|null);
+
+                    /** F1Message garageLoadout */
+                    garageLoadout?: (com.triforge.protocol.proto.IF1GarageLoadout|null);
+
+                    /** F1Message joinRequest */
+                    joinRequest?: (com.triforge.protocol.proto.IF1JoinRequest|null);
+
+                    /** F1Message setRoomConfig */
+                    setRoomConfig?: (com.triforge.protocol.proto.IF1SetRoomConfig|null);
+
+                    /** F1Message addBot */
+                    addBot?: (com.triforge.protocol.proto.IF1AddBot|null);
+
+                    /** F1Message kickPlayer */
+                    kickPlayer?: (com.triforge.protocol.proto.IF1KickPlayer|null);
+
+                    /** F1Message startRace */
+                    startRace?: (com.triforge.protocol.proto.IF1StartRace|null);
+
+                    /** F1Message skipQualifying */
+                    skipQualifying?: (com.triforge.protocol.proto.IF1SkipQualifying|null);
+
+                    /** F1Message roomConfig */
+                    roomConfig?: (com.triforge.protocol.proto.IF1RoomConfig|null);
+
+                    /** F1Message raceState */
+                    raceState?: (com.triforge.protocol.proto.IF1RaceState|null);
+
+                    /** F1Message lapEvent */
+                    lapEvent?: (com.triforge.protocol.proto.IF1LapEvent|null);
+
+                    /** F1Message sectorTime */
+                    sectorTime?: (com.triforge.protocol.proto.IF1SectorTime|null);
+
+                    /** F1Message raceResult */
+                    raceResult?: (com.triforge.protocol.proto.IF1RaceResult|null);
+
+                    /** F1Message standings */
+                    standings?: (com.triforge.protocol.proto.IF1StandingUpdate|null);
+
+                    /** F1Message qualifyingResult */
+                    qualifyingResult?: (com.triforge.protocol.proto.IF1QualifyingResult|null);
+                }
+
+                /** Represents a F1Message. */
+                class F1Message implements IF1Message {
+
+                    /**
+                     * Constructs a new F1Message.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1Message);
+
+                    /** F1Message vehicleInput. */
+                    public vehicleInput?: (com.triforge.protocol.proto.IF1VehicleInput|null);
+
+                    /** F1Message garageLoadout. */
+                    public garageLoadout?: (com.triforge.protocol.proto.IF1GarageLoadout|null);
+
+                    /** F1Message joinRequest. */
+                    public joinRequest?: (com.triforge.protocol.proto.IF1JoinRequest|null);
+
+                    /** F1Message setRoomConfig. */
+                    public setRoomConfig?: (com.triforge.protocol.proto.IF1SetRoomConfig|null);
+
+                    /** F1Message addBot. */
+                    public addBot?: (com.triforge.protocol.proto.IF1AddBot|null);
+
+                    /** F1Message kickPlayer. */
+                    public kickPlayer?: (com.triforge.protocol.proto.IF1KickPlayer|null);
+
+                    /** F1Message startRace. */
+                    public startRace?: (com.triforge.protocol.proto.IF1StartRace|null);
+
+                    /** F1Message skipQualifying. */
+                    public skipQualifying?: (com.triforge.protocol.proto.IF1SkipQualifying|null);
+
+                    /** F1Message roomConfig. */
+                    public roomConfig?: (com.triforge.protocol.proto.IF1RoomConfig|null);
+
+                    /** F1Message raceState. */
+                    public raceState?: (com.triforge.protocol.proto.IF1RaceState|null);
+
+                    /** F1Message lapEvent. */
+                    public lapEvent?: (com.triforge.protocol.proto.IF1LapEvent|null);
+
+                    /** F1Message sectorTime. */
+                    public sectorTime?: (com.triforge.protocol.proto.IF1SectorTime|null);
+
+                    /** F1Message raceResult. */
+                    public raceResult?: (com.triforge.protocol.proto.IF1RaceResult|null);
+
+                    /** F1Message standings. */
+                    public standings?: (com.triforge.protocol.proto.IF1StandingUpdate|null);
+
+                    /** F1Message qualifyingResult. */
+                    public qualifyingResult?: (com.triforge.protocol.proto.IF1QualifyingResult|null);
+
+                    /** F1Message content. */
+                    public content?: ("vehicleInput"|"garageLoadout"|"joinRequest"|"setRoomConfig"|"addBot"|"kickPlayer"|"startRace"|"skipQualifying"|"roomConfig"|"raceState"|"lapEvent"|"sectorTime"|"raceResult"|"standings"|"qualifyingResult");
+
+                    /**
+                     * Creates a new F1Message instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1Message instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1Message): com.triforge.protocol.proto.F1Message;
+
+                    /**
+                     * Encodes the specified F1Message message. Does not implicitly {@link com.triforge.protocol.proto.F1Message.verify|verify} messages.
+                     * @param message F1Message message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1Message, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1Message message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1Message.verify|verify} messages.
+                     * @param message F1Message message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1Message, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1Message message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1Message
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1Message;
+
+                    /**
+                     * Decodes a F1Message message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1Message
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1Message;
+
+                    /**
+                     * Verifies a F1Message message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1Message message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1Message
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1Message;
+
+                    /**
+                     * Creates a plain object from a F1Message message. Also converts values to other types if specified.
+                     * @param message F1Message
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1Message, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1Message to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1Message
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1VehicleInput. */
+                interface IF1VehicleInput {
+
+                    /** F1VehicleInput steer */
+                    steer?: (number|null);
+
+                    /** F1VehicleInput throttle */
+                    throttle?: (number|null);
+
+                    /** F1VehicleInput brake */
+                    brake?: (number|null);
+
+                    /** F1VehicleInput handbrake */
+                    handbrake?: (boolean|null);
+
+                    /** F1VehicleInput nitro */
+                    nitro?: (boolean|null);
+
+                    /** F1VehicleInput resetCar */
+                    resetCar?: (boolean|null);
+                }
+
+                /** Represents a F1VehicleInput. */
+                class F1VehicleInput implements IF1VehicleInput {
+
+                    /**
+                     * Constructs a new F1VehicleInput.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1VehicleInput);
+
+                    /** F1VehicleInput steer. */
+                    public steer: number;
+
+                    /** F1VehicleInput throttle. */
+                    public throttle: number;
+
+                    /** F1VehicleInput brake. */
+                    public brake: number;
+
+                    /** F1VehicleInput handbrake. */
+                    public handbrake: boolean;
+
+                    /** F1VehicleInput nitro. */
+                    public nitro: boolean;
+
+                    /** F1VehicleInput resetCar. */
+                    public resetCar: boolean;
+
+                    /**
+                     * Creates a new F1VehicleInput instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1VehicleInput instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1VehicleInput): com.triforge.protocol.proto.F1VehicleInput;
+
+                    /**
+                     * Encodes the specified F1VehicleInput message. Does not implicitly {@link com.triforge.protocol.proto.F1VehicleInput.verify|verify} messages.
+                     * @param message F1VehicleInput message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1VehicleInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1VehicleInput message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1VehicleInput.verify|verify} messages.
+                     * @param message F1VehicleInput message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1VehicleInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1VehicleInput message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1VehicleInput
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1VehicleInput;
+
+                    /**
+                     * Decodes a F1VehicleInput message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1VehicleInput
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1VehicleInput;
+
+                    /**
+                     * Verifies a F1VehicleInput message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1VehicleInput message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1VehicleInput
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1VehicleInput;
+
+                    /**
+                     * Creates a plain object from a F1VehicleInput message. Also converts values to other types if specified.
+                     * @param message F1VehicleInput
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1VehicleInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1VehicleInput to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1VehicleInput
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1GarageLoadout. */
+                interface IF1GarageLoadout {
+
+                    /** F1GarageLoadout carId */
+                    carId?: (string|null);
+
+                    /** F1GarageLoadout liveryId */
+                    liveryId?: (string|null);
+
+                    /** F1GarageLoadout primaryColor */
+                    primaryColor?: (string|null);
+
+                    /** F1GarageLoadout wheelId */
+                    wheelId?: (string|null);
+
+                    /** F1GarageLoadout nitroFxId */
+                    nitroFxId?: (string|null);
+                }
+
+                /** Represents a F1GarageLoadout. */
+                class F1GarageLoadout implements IF1GarageLoadout {
+
+                    /**
+                     * Constructs a new F1GarageLoadout.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1GarageLoadout);
+
+                    /** F1GarageLoadout carId. */
+                    public carId: string;
+
+                    /** F1GarageLoadout liveryId. */
+                    public liveryId: string;
+
+                    /** F1GarageLoadout primaryColor. */
+                    public primaryColor: string;
+
+                    /** F1GarageLoadout wheelId. */
+                    public wheelId: string;
+
+                    /** F1GarageLoadout nitroFxId. */
+                    public nitroFxId: string;
+
+                    /**
+                     * Creates a new F1GarageLoadout instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1GarageLoadout instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1GarageLoadout): com.triforge.protocol.proto.F1GarageLoadout;
+
+                    /**
+                     * Encodes the specified F1GarageLoadout message. Does not implicitly {@link com.triforge.protocol.proto.F1GarageLoadout.verify|verify} messages.
+                     * @param message F1GarageLoadout message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1GarageLoadout, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1GarageLoadout message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1GarageLoadout.verify|verify} messages.
+                     * @param message F1GarageLoadout message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1GarageLoadout, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1GarageLoadout message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1GarageLoadout
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1GarageLoadout;
+
+                    /**
+                     * Decodes a F1GarageLoadout message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1GarageLoadout
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1GarageLoadout;
+
+                    /**
+                     * Verifies a F1GarageLoadout message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1GarageLoadout message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1GarageLoadout
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1GarageLoadout;
+
+                    /**
+                     * Creates a plain object from a F1GarageLoadout message. Also converts values to other types if specified.
+                     * @param message F1GarageLoadout
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1GarageLoadout, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1GarageLoadout to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1GarageLoadout
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1JoinRequest. */
+                interface IF1JoinRequest {
+
+                    /** F1JoinRequest password */
+                    password?: (string|null);
+                }
+
+                /** Represents a F1JoinRequest. */
+                class F1JoinRequest implements IF1JoinRequest {
+
+                    /**
+                     * Constructs a new F1JoinRequest.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1JoinRequest);
+
+                    /** F1JoinRequest password. */
+                    public password: string;
+
+                    /**
+                     * Creates a new F1JoinRequest instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1JoinRequest instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1JoinRequest): com.triforge.protocol.proto.F1JoinRequest;
+
+                    /**
+                     * Encodes the specified F1JoinRequest message. Does not implicitly {@link com.triforge.protocol.proto.F1JoinRequest.verify|verify} messages.
+                     * @param message F1JoinRequest message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1JoinRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1JoinRequest message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1JoinRequest.verify|verify} messages.
+                     * @param message F1JoinRequest message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1JoinRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1JoinRequest message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1JoinRequest
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1JoinRequest;
+
+                    /**
+                     * Decodes a F1JoinRequest message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1JoinRequest
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1JoinRequest;
+
+                    /**
+                     * Verifies a F1JoinRequest message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1JoinRequest message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1JoinRequest
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1JoinRequest;
+
+                    /**
+                     * Creates a plain object from a F1JoinRequest message. Also converts values to other types if specified.
+                     * @param message F1JoinRequest
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1JoinRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1JoinRequest to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1JoinRequest
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1SetRoomConfig. */
+                interface IF1SetRoomConfig {
+
+                    /** F1SetRoomConfig trackId */
+                    trackId?: (string|null);
+
+                    /** F1SetRoomConfig lapCount */
+                    lapCount?: (number|null);
+
+                    /** F1SetRoomConfig maxPlayers */
+                    maxPlayers?: (number|null);
+
+                    /** F1SetRoomConfig botCount */
+                    botCount?: (number|null);
+
+                    /** F1SetRoomConfig password */
+                    password?: (string|null);
+
+                    /** F1SetRoomConfig collision */
+                    collision?: (com.triforge.protocol.proto.F1CollisionMode|null);
+
+                    /** F1SetRoomConfig damage */
+                    damage?: (com.triforge.protocol.proto.F1DamageMode|null);
+
+                    /** F1SetRoomConfig weather */
+                    weather?: (com.triforge.protocol.proto.F1Weather|null);
+
+                    /** F1SetRoomConfig timeOfDay */
+                    timeOfDay?: (com.triforge.protocol.proto.F1TimeOfDay|null);
+
+                    /** F1SetRoomConfig enableQualifying */
+                    enableQualifying?: (boolean|null);
+
+                    /** F1SetRoomConfig qualifyingDurationSec */
+                    qualifyingDurationSec?: (number|null);
+                }
+
+                /** Represents a F1SetRoomConfig. */
+                class F1SetRoomConfig implements IF1SetRoomConfig {
+
+                    /**
+                     * Constructs a new F1SetRoomConfig.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1SetRoomConfig);
+
+                    /** F1SetRoomConfig trackId. */
+                    public trackId: string;
+
+                    /** F1SetRoomConfig lapCount. */
+                    public lapCount: number;
+
+                    /** F1SetRoomConfig maxPlayers. */
+                    public maxPlayers: number;
+
+                    /** F1SetRoomConfig botCount. */
+                    public botCount: number;
+
+                    /** F1SetRoomConfig password. */
+                    public password: string;
+
+                    /** F1SetRoomConfig collision. */
+                    public collision: com.triforge.protocol.proto.F1CollisionMode;
+
+                    /** F1SetRoomConfig damage. */
+                    public damage: com.triforge.protocol.proto.F1DamageMode;
+
+                    /** F1SetRoomConfig weather. */
+                    public weather: com.triforge.protocol.proto.F1Weather;
+
+                    /** F1SetRoomConfig timeOfDay. */
+                    public timeOfDay: com.triforge.protocol.proto.F1TimeOfDay;
+
+                    /** F1SetRoomConfig enableQualifying. */
+                    public enableQualifying: boolean;
+
+                    /** F1SetRoomConfig qualifyingDurationSec. */
+                    public qualifyingDurationSec: number;
+
+                    /**
+                     * Creates a new F1SetRoomConfig instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1SetRoomConfig instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1SetRoomConfig): com.triforge.protocol.proto.F1SetRoomConfig;
+
+                    /**
+                     * Encodes the specified F1SetRoomConfig message. Does not implicitly {@link com.triforge.protocol.proto.F1SetRoomConfig.verify|verify} messages.
+                     * @param message F1SetRoomConfig message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1SetRoomConfig, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1SetRoomConfig message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1SetRoomConfig.verify|verify} messages.
+                     * @param message F1SetRoomConfig message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1SetRoomConfig, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1SetRoomConfig message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1SetRoomConfig
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1SetRoomConfig;
+
+                    /**
+                     * Decodes a F1SetRoomConfig message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1SetRoomConfig
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1SetRoomConfig;
+
+                    /**
+                     * Verifies a F1SetRoomConfig message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1SetRoomConfig message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1SetRoomConfig
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1SetRoomConfig;
+
+                    /**
+                     * Creates a plain object from a F1SetRoomConfig message. Also converts values to other types if specified.
+                     * @param message F1SetRoomConfig
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1SetRoomConfig, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1SetRoomConfig to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1SetRoomConfig
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1AddBot. */
+                interface IF1AddBot {
+                }
+
+                /** Represents a F1AddBot. */
+                class F1AddBot implements IF1AddBot {
+
+                    /**
+                     * Constructs a new F1AddBot.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1AddBot);
+
+                    /**
+                     * Creates a new F1AddBot instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1AddBot instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1AddBot): com.triforge.protocol.proto.F1AddBot;
+
+                    /**
+                     * Encodes the specified F1AddBot message. Does not implicitly {@link com.triforge.protocol.proto.F1AddBot.verify|verify} messages.
+                     * @param message F1AddBot message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1AddBot, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1AddBot message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1AddBot.verify|verify} messages.
+                     * @param message F1AddBot message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1AddBot, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1AddBot message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1AddBot
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1AddBot;
+
+                    /**
+                     * Decodes a F1AddBot message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1AddBot
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1AddBot;
+
+                    /**
+                     * Verifies a F1AddBot message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1AddBot message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1AddBot
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1AddBot;
+
+                    /**
+                     * Creates a plain object from a F1AddBot message. Also converts values to other types if specified.
+                     * @param message F1AddBot
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1AddBot, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1AddBot to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1AddBot
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1KickPlayer. */
+                interface IF1KickPlayer {
+
+                    /** F1KickPlayer playerId */
+                    playerId?: (number|Long|null);
+                }
+
+                /** Represents a F1KickPlayer. */
+                class F1KickPlayer implements IF1KickPlayer {
+
+                    /**
+                     * Constructs a new F1KickPlayer.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1KickPlayer);
+
+                    /** F1KickPlayer playerId. */
+                    public playerId: (number|Long);
+
+                    /**
+                     * Creates a new F1KickPlayer instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1KickPlayer instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1KickPlayer): com.triforge.protocol.proto.F1KickPlayer;
+
+                    /**
+                     * Encodes the specified F1KickPlayer message. Does not implicitly {@link com.triforge.protocol.proto.F1KickPlayer.verify|verify} messages.
+                     * @param message F1KickPlayer message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1KickPlayer, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1KickPlayer message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1KickPlayer.verify|verify} messages.
+                     * @param message F1KickPlayer message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1KickPlayer, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1KickPlayer message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1KickPlayer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1KickPlayer;
+
+                    /**
+                     * Decodes a F1KickPlayer message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1KickPlayer
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1KickPlayer;
+
+                    /**
+                     * Verifies a F1KickPlayer message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1KickPlayer message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1KickPlayer
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1KickPlayer;
+
+                    /**
+                     * Creates a plain object from a F1KickPlayer message. Also converts values to other types if specified.
+                     * @param message F1KickPlayer
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1KickPlayer, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1KickPlayer to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1KickPlayer
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1StartRace. */
+                interface IF1StartRace {
+                }
+
+                /** Represents a F1StartRace. */
+                class F1StartRace implements IF1StartRace {
+
+                    /**
+                     * Constructs a new F1StartRace.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1StartRace);
+
+                    /**
+                     * Creates a new F1StartRace instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1StartRace instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1StartRace): com.triforge.protocol.proto.F1StartRace;
+
+                    /**
+                     * Encodes the specified F1StartRace message. Does not implicitly {@link com.triforge.protocol.proto.F1StartRace.verify|verify} messages.
+                     * @param message F1StartRace message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1StartRace, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1StartRace message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1StartRace.verify|verify} messages.
+                     * @param message F1StartRace message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1StartRace, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1StartRace message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1StartRace
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1StartRace;
+
+                    /**
+                     * Decodes a F1StartRace message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1StartRace
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1StartRace;
+
+                    /**
+                     * Verifies a F1StartRace message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1StartRace message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1StartRace
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1StartRace;
+
+                    /**
+                     * Creates a plain object from a F1StartRace message. Also converts values to other types if specified.
+                     * @param message F1StartRace
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1StartRace, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1StartRace to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1StartRace
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1SkipQualifying. */
+                interface IF1SkipQualifying {
+                }
+
+                /** Represents a F1SkipQualifying. */
+                class F1SkipQualifying implements IF1SkipQualifying {
+
+                    /**
+                     * Constructs a new F1SkipQualifying.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1SkipQualifying);
+
+                    /**
+                     * Creates a new F1SkipQualifying instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1SkipQualifying instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1SkipQualifying): com.triforge.protocol.proto.F1SkipQualifying;
+
+                    /**
+                     * Encodes the specified F1SkipQualifying message. Does not implicitly {@link com.triforge.protocol.proto.F1SkipQualifying.verify|verify} messages.
+                     * @param message F1SkipQualifying message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1SkipQualifying, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1SkipQualifying message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1SkipQualifying.verify|verify} messages.
+                     * @param message F1SkipQualifying message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1SkipQualifying, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1SkipQualifying message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1SkipQualifying
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1SkipQualifying;
+
+                    /**
+                     * Decodes a F1SkipQualifying message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1SkipQualifying
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1SkipQualifying;
+
+                    /**
+                     * Verifies a F1SkipQualifying message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1SkipQualifying message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1SkipQualifying
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1SkipQualifying;
+
+                    /**
+                     * Creates a plain object from a F1SkipQualifying message. Also converts values to other types if specified.
+                     * @param message F1SkipQualifying
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1SkipQualifying, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1SkipQualifying to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1SkipQualifying
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** F1CollisionMode enum. */
+                enum F1CollisionMode {
+                    F1_COLLISION_ON = 0,
+                    F1_COLLISION_OFF = 1
+                }
+
+                /** F1DamageMode enum. */
+                enum F1DamageMode {
+                    F1_DAMAGE_NONE = 0,
+                    F1_DAMAGE_VISUAL = 1,
+                    F1_DAMAGE_FULL = 2
+                }
+
+                /** F1Weather enum. */
+                enum F1Weather {
+                    F1_WEATHER_SUNNY = 0,
+                    F1_WEATHER_RAIN = 1,
+                    F1_WEATHER_SNOW = 2,
+                    F1_WEATHER_FOG = 3,
+                    F1_WEATHER_RANDOM = 4
+                }
+
+                /** F1TimeOfDay enum. */
+                enum F1TimeOfDay {
+                    F1_TIME_MORNING = 0,
+                    F1_TIME_NOON = 1,
+                    F1_TIME_SUNSET = 2,
+                    F1_TIME_NIGHT = 3
+                }
+
+                /** F1SessionPhase enum. */
+                enum F1SessionPhase {
+                    F1_SESSION_LOBBY = 0,
+                    F1_SESSION_QUALIFYING = 1,
+                    F1_SESSION_RACE = 2
+                }
+
+                /** F1AbortReason enum. */
+                enum F1AbortReason {
+                    F1_ABORT_NONE = 0,
+                    F1_ABORT_HOST_DISCONNECTED = 1,
+                    F1_ABORT_TIME_CAP = 2
+                }
+
+                /** Properties of a F1RoomConfig. */
+                interface IF1RoomConfig {
+
+                    /** F1RoomConfig trackId */
+                    trackId?: (string|null);
+
+                    /** F1RoomConfig trackDisplayName */
+                    trackDisplayName?: (string|null);
+
+                    /** F1RoomConfig lapCount */
+                    lapCount?: (number|null);
+
+                    /** F1RoomConfig maxPlayers */
+                    maxPlayers?: (number|null);
+
+                    /** F1RoomConfig botCount */
+                    botCount?: (number|null);
+
+                    /** F1RoomConfig passwordProtected */
+                    passwordProtected?: (boolean|null);
+
+                    /** F1RoomConfig collision */
+                    collision?: (com.triforge.protocol.proto.F1CollisionMode|null);
+
+                    /** F1RoomConfig damage */
+                    damage?: (com.triforge.protocol.proto.F1DamageMode|null);
+
+                    /** F1RoomConfig weather */
+                    weather?: (com.triforge.protocol.proto.F1Weather|null);
+
+                    /** F1RoomConfig timeOfDay */
+                    timeOfDay?: (com.triforge.protocol.proto.F1TimeOfDay|null);
+
+                    /** F1RoomConfig enableQualifying */
+                    enableQualifying?: (boolean|null);
+
+                    /** F1RoomConfig qualifyingDurationSec */
+                    qualifyingDurationSec?: (number|null);
+                }
+
+                /** Represents a F1RoomConfig. */
+                class F1RoomConfig implements IF1RoomConfig {
+
+                    /**
+                     * Constructs a new F1RoomConfig.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1RoomConfig);
+
+                    /** F1RoomConfig trackId. */
+                    public trackId: string;
+
+                    /** F1RoomConfig trackDisplayName. */
+                    public trackDisplayName: string;
+
+                    /** F1RoomConfig lapCount. */
+                    public lapCount: number;
+
+                    /** F1RoomConfig maxPlayers. */
+                    public maxPlayers: number;
+
+                    /** F1RoomConfig botCount. */
+                    public botCount: number;
+
+                    /** F1RoomConfig passwordProtected. */
+                    public passwordProtected: boolean;
+
+                    /** F1RoomConfig collision. */
+                    public collision: com.triforge.protocol.proto.F1CollisionMode;
+
+                    /** F1RoomConfig damage. */
+                    public damage: com.triforge.protocol.proto.F1DamageMode;
+
+                    /** F1RoomConfig weather. */
+                    public weather: com.triforge.protocol.proto.F1Weather;
+
+                    /** F1RoomConfig timeOfDay. */
+                    public timeOfDay: com.triforge.protocol.proto.F1TimeOfDay;
+
+                    /** F1RoomConfig enableQualifying. */
+                    public enableQualifying: boolean;
+
+                    /** F1RoomConfig qualifyingDurationSec. */
+                    public qualifyingDurationSec: number;
+
+                    /**
+                     * Creates a new F1RoomConfig instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1RoomConfig instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1RoomConfig): com.triforge.protocol.proto.F1RoomConfig;
+
+                    /**
+                     * Encodes the specified F1RoomConfig message. Does not implicitly {@link com.triforge.protocol.proto.F1RoomConfig.verify|verify} messages.
+                     * @param message F1RoomConfig message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1RoomConfig, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1RoomConfig message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1RoomConfig.verify|verify} messages.
+                     * @param message F1RoomConfig message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1RoomConfig, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1RoomConfig message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1RoomConfig
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1RoomConfig;
+
+                    /**
+                     * Decodes a F1RoomConfig message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1RoomConfig
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1RoomConfig;
+
+                    /**
+                     * Verifies a F1RoomConfig message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1RoomConfig message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1RoomConfig
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1RoomConfig;
+
+                    /**
+                     * Creates a plain object from a F1RoomConfig message. Also converts values to other types if specified.
+                     * @param message F1RoomConfig
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1RoomConfig, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1RoomConfig to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1RoomConfig
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1RaceState. */
+                interface IF1RaceState {
+
+                    /** F1RaceState lapCount */
+                    lapCount?: (number|null);
+
+                    /** F1RaceState raceElapsedMs */
+                    raceElapsedMs?: (number|Long|null);
+
+                    /** F1RaceState raceStarted */
+                    raceStarted?: (boolean|null);
+
+                    /** F1RaceState sessionPhase */
+                    sessionPhase?: (com.triforge.protocol.proto.F1SessionPhase|null);
+
+                    /** F1RaceState sessionRemainingMs */
+                    sessionRemainingMs?: (number|Long|null);
+                }
+
+                /** Represents a F1RaceState. */
+                class F1RaceState implements IF1RaceState {
+
+                    /**
+                     * Constructs a new F1RaceState.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1RaceState);
+
+                    /** F1RaceState lapCount. */
+                    public lapCount: number;
+
+                    /** F1RaceState raceElapsedMs. */
+                    public raceElapsedMs: (number|Long);
+
+                    /** F1RaceState raceStarted. */
+                    public raceStarted: boolean;
+
+                    /** F1RaceState sessionPhase. */
+                    public sessionPhase: com.triforge.protocol.proto.F1SessionPhase;
+
+                    /** F1RaceState sessionRemainingMs. */
+                    public sessionRemainingMs: (number|Long);
+
+                    /**
+                     * Creates a new F1RaceState instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1RaceState instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1RaceState): com.triforge.protocol.proto.F1RaceState;
+
+                    /**
+                     * Encodes the specified F1RaceState message. Does not implicitly {@link com.triforge.protocol.proto.F1RaceState.verify|verify} messages.
+                     * @param message F1RaceState message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1RaceState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1RaceState message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1RaceState.verify|verify} messages.
+                     * @param message F1RaceState message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1RaceState, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1RaceState message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1RaceState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1RaceState;
+
+                    /**
+                     * Decodes a F1RaceState message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1RaceState
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1RaceState;
+
+                    /**
+                     * Verifies a F1RaceState message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1RaceState message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1RaceState
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1RaceState;
+
+                    /**
+                     * Creates a plain object from a F1RaceState message. Also converts values to other types if specified.
+                     * @param message F1RaceState
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1RaceState, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1RaceState to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1RaceState
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1LapEvent. */
+                interface IF1LapEvent {
+
+                    /** F1LapEvent playerId */
+                    playerId?: (number|Long|null);
+
+                    /** F1LapEvent lapNumber */
+                    lapNumber?: (number|null);
+
+                    /** F1LapEvent lapTimeMs */
+                    lapTimeMs?: (number|Long|null);
+
+                    /** F1LapEvent finished */
+                    finished?: (boolean|null);
+                }
+
+                /** Represents a F1LapEvent. */
+                class F1LapEvent implements IF1LapEvent {
+
+                    /**
+                     * Constructs a new F1LapEvent.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1LapEvent);
+
+                    /** F1LapEvent playerId. */
+                    public playerId: (number|Long);
+
+                    /** F1LapEvent lapNumber. */
+                    public lapNumber: number;
+
+                    /** F1LapEvent lapTimeMs. */
+                    public lapTimeMs: (number|Long);
+
+                    /** F1LapEvent finished. */
+                    public finished: boolean;
+
+                    /**
+                     * Creates a new F1LapEvent instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1LapEvent instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1LapEvent): com.triforge.protocol.proto.F1LapEvent;
+
+                    /**
+                     * Encodes the specified F1LapEvent message. Does not implicitly {@link com.triforge.protocol.proto.F1LapEvent.verify|verify} messages.
+                     * @param message F1LapEvent message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1LapEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1LapEvent message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1LapEvent.verify|verify} messages.
+                     * @param message F1LapEvent message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1LapEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1LapEvent message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1LapEvent
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1LapEvent;
+
+                    /**
+                     * Decodes a F1LapEvent message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1LapEvent
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1LapEvent;
+
+                    /**
+                     * Verifies a F1LapEvent message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1LapEvent message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1LapEvent
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1LapEvent;
+
+                    /**
+                     * Creates a plain object from a F1LapEvent message. Also converts values to other types if specified.
+                     * @param message F1LapEvent
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1LapEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1LapEvent to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1LapEvent
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1SectorTime. */
+                interface IF1SectorTime {
+
+                    /** F1SectorTime playerId */
+                    playerId?: (number|Long|null);
+
+                    /** F1SectorTime sectorIndex */
+                    sectorIndex?: (number|null);
+
+                    /** F1SectorTime sectorTimeMs */
+                    sectorTimeMs?: (number|Long|null);
+                }
+
+                /** Represents a F1SectorTime. */
+                class F1SectorTime implements IF1SectorTime {
+
+                    /**
+                     * Constructs a new F1SectorTime.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1SectorTime);
+
+                    /** F1SectorTime playerId. */
+                    public playerId: (number|Long);
+
+                    /** F1SectorTime sectorIndex. */
+                    public sectorIndex: number;
+
+                    /** F1SectorTime sectorTimeMs. */
+                    public sectorTimeMs: (number|Long);
+
+                    /**
+                     * Creates a new F1SectorTime instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1SectorTime instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1SectorTime): com.triforge.protocol.proto.F1SectorTime;
+
+                    /**
+                     * Encodes the specified F1SectorTime message. Does not implicitly {@link com.triforge.protocol.proto.F1SectorTime.verify|verify} messages.
+                     * @param message F1SectorTime message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1SectorTime, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1SectorTime message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1SectorTime.verify|verify} messages.
+                     * @param message F1SectorTime message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1SectorTime, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1SectorTime message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1SectorTime
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1SectorTime;
+
+                    /**
+                     * Decodes a F1SectorTime message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1SectorTime
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1SectorTime;
+
+                    /**
+                     * Verifies a F1SectorTime message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1SectorTime message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1SectorTime
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1SectorTime;
+
+                    /**
+                     * Creates a plain object from a F1SectorTime message. Also converts values to other types if specified.
+                     * @param message F1SectorTime
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1SectorTime, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1SectorTime to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1SectorTime
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1StandingEntry. */
+                interface IF1StandingEntry {
+
+                    /** F1StandingEntry playerId */
+                    playerId?: (number|Long|null);
+
+                    /** F1StandingEntry displayName */
+                    displayName?: (string|null);
+
+                    /** F1StandingEntry position */
+                    position?: (number|null);
+
+                    /** F1StandingEntry lap */
+                    lap?: (number|null);
+
+                    /** F1StandingEntry lastLapMs */
+                    lastLapMs?: (number|Long|null);
+
+                    /** F1StandingEntry bestLapMs */
+                    bestLapMs?: (number|Long|null);
+
+                    /** F1StandingEntry totalTimeMs */
+                    totalTimeMs?: (number|Long|null);
+
+                    /** F1StandingEntry finished */
+                    finished?: (boolean|null);
+
+                    /** F1StandingEntry isBot */
+                    isBot?: (boolean|null);
+                }
+
+                /** Represents a F1StandingEntry. */
+                class F1StandingEntry implements IF1StandingEntry {
+
+                    /**
+                     * Constructs a new F1StandingEntry.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1StandingEntry);
+
+                    /** F1StandingEntry playerId. */
+                    public playerId: (number|Long);
+
+                    /** F1StandingEntry displayName. */
+                    public displayName: string;
+
+                    /** F1StandingEntry position. */
+                    public position: number;
+
+                    /** F1StandingEntry lap. */
+                    public lap: number;
+
+                    /** F1StandingEntry lastLapMs. */
+                    public lastLapMs: (number|Long);
+
+                    /** F1StandingEntry bestLapMs. */
+                    public bestLapMs: (number|Long);
+
+                    /** F1StandingEntry totalTimeMs. */
+                    public totalTimeMs: (number|Long);
+
+                    /** F1StandingEntry finished. */
+                    public finished: boolean;
+
+                    /** F1StandingEntry isBot. */
+                    public isBot: boolean;
+
+                    /**
+                     * Creates a new F1StandingEntry instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1StandingEntry instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1StandingEntry): com.triforge.protocol.proto.F1StandingEntry;
+
+                    /**
+                     * Encodes the specified F1StandingEntry message. Does not implicitly {@link com.triforge.protocol.proto.F1StandingEntry.verify|verify} messages.
+                     * @param message F1StandingEntry message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1StandingEntry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1StandingEntry message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1StandingEntry.verify|verify} messages.
+                     * @param message F1StandingEntry message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1StandingEntry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1StandingEntry message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1StandingEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1StandingEntry;
+
+                    /**
+                     * Decodes a F1StandingEntry message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1StandingEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1StandingEntry;
+
+                    /**
+                     * Verifies a F1StandingEntry message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1StandingEntry message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1StandingEntry
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1StandingEntry;
+
+                    /**
+                     * Creates a plain object from a F1StandingEntry message. Also converts values to other types if specified.
+                     * @param message F1StandingEntry
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1StandingEntry, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1StandingEntry to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1StandingEntry
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1StandingUpdate. */
+                interface IF1StandingUpdate {
+
+                    /** F1StandingUpdate entries */
+                    entries?: (com.triforge.protocol.proto.IF1StandingEntry[]|null);
+                }
+
+                /** Represents a F1StandingUpdate. */
+                class F1StandingUpdate implements IF1StandingUpdate {
+
+                    /**
+                     * Constructs a new F1StandingUpdate.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1StandingUpdate);
+
+                    /** F1StandingUpdate entries. */
+                    public entries: com.triforge.protocol.proto.IF1StandingEntry[];
+
+                    /**
+                     * Creates a new F1StandingUpdate instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1StandingUpdate instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1StandingUpdate): com.triforge.protocol.proto.F1StandingUpdate;
+
+                    /**
+                     * Encodes the specified F1StandingUpdate message. Does not implicitly {@link com.triforge.protocol.proto.F1StandingUpdate.verify|verify} messages.
+                     * @param message F1StandingUpdate message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1StandingUpdate, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1StandingUpdate message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1StandingUpdate.verify|verify} messages.
+                     * @param message F1StandingUpdate message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1StandingUpdate, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1StandingUpdate message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1StandingUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1StandingUpdate;
+
+                    /**
+                     * Decodes a F1StandingUpdate message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1StandingUpdate
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1StandingUpdate;
+
+                    /**
+                     * Verifies a F1StandingUpdate message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1StandingUpdate message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1StandingUpdate
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1StandingUpdate;
+
+                    /**
+                     * Creates a plain object from a F1StandingUpdate message. Also converts values to other types if specified.
+                     * @param message F1StandingUpdate
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1StandingUpdate, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1StandingUpdate to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1StandingUpdate
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1QualifyingEntry. */
+                interface IF1QualifyingEntry {
+
+                    /** F1QualifyingEntry playerId */
+                    playerId?: (number|Long|null);
+
+                    /** F1QualifyingEntry displayName */
+                    displayName?: (string|null);
+
+                    /** F1QualifyingEntry gridSlot */
+                    gridSlot?: (number|null);
+
+                    /** F1QualifyingEntry bestLapMs */
+                    bestLapMs?: (number|Long|null);
+
+                    /** F1QualifyingEntry isBot */
+                    isBot?: (boolean|null);
+                }
+
+                /** Represents a F1QualifyingEntry. */
+                class F1QualifyingEntry implements IF1QualifyingEntry {
+
+                    /**
+                     * Constructs a new F1QualifyingEntry.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1QualifyingEntry);
+
+                    /** F1QualifyingEntry playerId. */
+                    public playerId: (number|Long);
+
+                    /** F1QualifyingEntry displayName. */
+                    public displayName: string;
+
+                    /** F1QualifyingEntry gridSlot. */
+                    public gridSlot: number;
+
+                    /** F1QualifyingEntry bestLapMs. */
+                    public bestLapMs: (number|Long);
+
+                    /** F1QualifyingEntry isBot. */
+                    public isBot: boolean;
+
+                    /**
+                     * Creates a new F1QualifyingEntry instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1QualifyingEntry instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1QualifyingEntry): com.triforge.protocol.proto.F1QualifyingEntry;
+
+                    /**
+                     * Encodes the specified F1QualifyingEntry message. Does not implicitly {@link com.triforge.protocol.proto.F1QualifyingEntry.verify|verify} messages.
+                     * @param message F1QualifyingEntry message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1QualifyingEntry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1QualifyingEntry message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1QualifyingEntry.verify|verify} messages.
+                     * @param message F1QualifyingEntry message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1QualifyingEntry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1QualifyingEntry message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1QualifyingEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1QualifyingEntry;
+
+                    /**
+                     * Decodes a F1QualifyingEntry message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1QualifyingEntry
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1QualifyingEntry;
+
+                    /**
+                     * Verifies a F1QualifyingEntry message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1QualifyingEntry message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1QualifyingEntry
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1QualifyingEntry;
+
+                    /**
+                     * Creates a plain object from a F1QualifyingEntry message. Also converts values to other types if specified.
+                     * @param message F1QualifyingEntry
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1QualifyingEntry, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1QualifyingEntry to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1QualifyingEntry
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1QualifyingResult. */
+                interface IF1QualifyingResult {
+
+                    /** F1QualifyingResult entries */
+                    entries?: (com.triforge.protocol.proto.IF1QualifyingEntry[]|null);
+                }
+
+                /** Represents a F1QualifyingResult. */
+                class F1QualifyingResult implements IF1QualifyingResult {
+
+                    /**
+                     * Constructs a new F1QualifyingResult.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1QualifyingResult);
+
+                    /** F1QualifyingResult entries. */
+                    public entries: com.triforge.protocol.proto.IF1QualifyingEntry[];
+
+                    /**
+                     * Creates a new F1QualifyingResult instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1QualifyingResult instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1QualifyingResult): com.triforge.protocol.proto.F1QualifyingResult;
+
+                    /**
+                     * Encodes the specified F1QualifyingResult message. Does not implicitly {@link com.triforge.protocol.proto.F1QualifyingResult.verify|verify} messages.
+                     * @param message F1QualifyingResult message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1QualifyingResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1QualifyingResult message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1QualifyingResult.verify|verify} messages.
+                     * @param message F1QualifyingResult message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1QualifyingResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1QualifyingResult message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1QualifyingResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1QualifyingResult;
+
+                    /**
+                     * Decodes a F1QualifyingResult message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1QualifyingResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1QualifyingResult;
+
+                    /**
+                     * Verifies a F1QualifyingResult message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1QualifyingResult message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1QualifyingResult
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1QualifyingResult;
+
+                    /**
+                     * Creates a plain object from a F1QualifyingResult message. Also converts values to other types if specified.
+                     * @param message F1QualifyingResult
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1QualifyingResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1QualifyingResult to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1QualifyingResult
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a F1RaceResult. */
+                interface IF1RaceResult {
+
+                    /** F1RaceResult finalStandings */
+                    finalStandings?: (com.triforge.protocol.proto.IF1StandingEntry[]|null);
+
+                    /** F1RaceResult raceDurationMs */
+                    raceDurationMs?: (number|Long|null);
+
+                    /** F1RaceResult replayFileName */
+                    replayFileName?: (string|null);
+
+                    /** F1RaceResult abortReason */
+                    abortReason?: (com.triforge.protocol.proto.F1AbortReason|null);
+
+                    /** F1RaceResult qualifyingGrid */
+                    qualifyingGrid?: (com.triforge.protocol.proto.IF1QualifyingEntry[]|null);
+                }
+
+                /** Represents a F1RaceResult. */
+                class F1RaceResult implements IF1RaceResult {
+
+                    /**
+                     * Constructs a new F1RaceResult.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IF1RaceResult);
+
+                    /** F1RaceResult finalStandings. */
+                    public finalStandings: com.triforge.protocol.proto.IF1StandingEntry[];
+
+                    /** F1RaceResult raceDurationMs. */
+                    public raceDurationMs: (number|Long);
+
+                    /** F1RaceResult replayFileName. */
+                    public replayFileName: string;
+
+                    /** F1RaceResult abortReason. */
+                    public abortReason: com.triforge.protocol.proto.F1AbortReason;
+
+                    /** F1RaceResult qualifyingGrid. */
+                    public qualifyingGrid: com.triforge.protocol.proto.IF1QualifyingEntry[];
+
+                    /**
+                     * Creates a new F1RaceResult instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns F1RaceResult instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IF1RaceResult): com.triforge.protocol.proto.F1RaceResult;
+
+                    /**
+                     * Encodes the specified F1RaceResult message. Does not implicitly {@link com.triforge.protocol.proto.F1RaceResult.verify|verify} messages.
+                     * @param message F1RaceResult message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IF1RaceResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified F1RaceResult message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.F1RaceResult.verify|verify} messages.
+                     * @param message F1RaceResult message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IF1RaceResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a F1RaceResult message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns F1RaceResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.F1RaceResult;
+
+                    /**
+                     * Decodes a F1RaceResult message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns F1RaceResult
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.F1RaceResult;
+
+                    /**
+                     * Verifies a F1RaceResult message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a F1RaceResult message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns F1RaceResult
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.F1RaceResult;
+
+                    /**
+                     * Creates a plain object from a F1RaceResult message. Also converts values to other types if specified.
+                     * @param message F1RaceResult
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.F1RaceResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this F1RaceResult to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for F1RaceResult
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a VehicleComponentProto. */
+                interface IVehicleComponentProto {
+
+                    /** VehicleComponentProto speed */
+                    speed?: (number|null);
+
+                    /** VehicleComponentProto rpm */
+                    rpm?: (number|null);
+
+                    /** VehicleComponentProto gear */
+                    gear?: (number|null);
+
+                    /** VehicleComponentProto nitro */
+                    nitro?: (number|null);
+
+                    /** VehicleComponentProto currentLap */
+                    currentLap?: (number|null);
+
+                    /** VehicleComponentProto racePosition */
+                    racePosition?: (number|null);
+
+                    /** VehicleComponentProto carId */
+                    carId?: (string|null);
+
+                    /** VehicleComponentProto primaryColor */
+                    primaryColor?: (string|null);
+                }
+
+                /** Represents a VehicleComponentProto. */
+                class VehicleComponentProto implements IVehicleComponentProto {
+
+                    /**
+                     * Constructs a new VehicleComponentProto.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: com.triforge.protocol.proto.IVehicleComponentProto);
+
+                    /** VehicleComponentProto speed. */
+                    public speed: number;
+
+                    /** VehicleComponentProto rpm. */
+                    public rpm: number;
+
+                    /** VehicleComponentProto gear. */
+                    public gear: number;
+
+                    /** VehicleComponentProto nitro. */
+                    public nitro: number;
+
+                    /** VehicleComponentProto currentLap. */
+                    public currentLap: number;
+
+                    /** VehicleComponentProto racePosition. */
+                    public racePosition: number;
+
+                    /** VehicleComponentProto carId. */
+                    public carId: string;
+
+                    /** VehicleComponentProto primaryColor. */
+                    public primaryColor: string;
+
+                    /**
+                     * Creates a new VehicleComponentProto instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns VehicleComponentProto instance
+                     */
+                    public static create(properties?: com.triforge.protocol.proto.IVehicleComponentProto): com.triforge.protocol.proto.VehicleComponentProto;
+
+                    /**
+                     * Encodes the specified VehicleComponentProto message. Does not implicitly {@link com.triforge.protocol.proto.VehicleComponentProto.verify|verify} messages.
+                     * @param message VehicleComponentProto message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: com.triforge.protocol.proto.IVehicleComponentProto, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified VehicleComponentProto message, length delimited. Does not implicitly {@link com.triforge.protocol.proto.VehicleComponentProto.verify|verify} messages.
+                     * @param message VehicleComponentProto message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: com.triforge.protocol.proto.IVehicleComponentProto, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a VehicleComponentProto message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns VehicleComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): com.triforge.protocol.proto.VehicleComponentProto;
+
+                    /**
+                     * Decodes a VehicleComponentProto message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns VehicleComponentProto
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): com.triforge.protocol.proto.VehicleComponentProto;
+
+                    /**
+                     * Verifies a VehicleComponentProto message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a VehicleComponentProto message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns VehicleComponentProto
+                     */
+                    public static fromObject(object: { [k: string]: any }): com.triforge.protocol.proto.VehicleComponentProto;
+
+                    /**
+                     * Creates a plain object from a VehicleComponentProto message. Also converts values to other types if specified.
+                     * @param message VehicleComponentProto
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: com.triforge.protocol.proto.VehicleComponentProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this VehicleComponentProto to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for VehicleComponentProto
                      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                      * @returns The default type url
                      */

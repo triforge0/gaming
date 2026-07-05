@@ -38,6 +38,7 @@ message GameMessage {
     ChatMessage chatMessage = 15;
     OAnQuanMessage oaq = 16;
     BugMinerMessage bugminer = 17;
+    F1Message f1 = 18;
   }
 }
 
@@ -215,6 +216,7 @@ message EntityProto {
   BulletComponentProto bullet = 6;
   QuestAvatarComponentProto questAvatar = 7;
   OrientationComponentProto orientation = 8;  // 3D hull yaw + turret pitch
+  VehicleComponentProto vehicle = 9;
 }
 
 message FullSnapshot {
@@ -760,4 +762,189 @@ message BugMinerMessage {
     BMPauseCommand pause = 9;
     BMRestartCommand restart = 10;
   }
+}
+
+// ── F1 Racing (LAN listen-server) ───────────────────────────────────
+
+message F1Message {
+  oneof content {
+    F1VehicleInput vehicleInput = 1;
+    F1GarageLoadout garageLoadout = 2;
+    F1JoinRequest joinRequest = 3;
+
+    F1SetRoomConfig setRoomConfig = 4;
+    F1AddBot addBot = 5;
+    F1KickPlayer kickPlayer = 6;
+    F1StartRace startRace = 7;
+    F1SkipQualifying skipQualifying = 14;
+
+    F1RoomConfig roomConfig = 8;
+    F1RaceState raceState = 9;
+    F1LapEvent lapEvent = 10;
+    F1SectorTime sectorTime = 11;
+    F1RaceResult raceResult = 12;
+    F1StandingUpdate standings = 13;
+    F1QualifyingResult qualifyingResult = 15;
+  }
+}
+
+message F1VehicleInput {
+  float steer = 1;
+  float throttle = 2;
+  float brake = 3;
+  bool handbrake = 4;
+  bool nitro = 5;
+  bool resetCar = 6;
+}
+
+message F1GarageLoadout {
+  string carId = 1;
+  string liveryId = 2;
+  string primaryColor = 3;
+  string wheelId = 4;
+  string nitroFxId = 5;
+}
+
+message F1JoinRequest {
+  string password = 1;
+}
+
+message F1SetRoomConfig {
+  string trackId = 1;
+  uint32 lapCount = 2;
+  uint32 maxPlayers = 3;
+  uint32 botCount = 4;
+  string password = 5;
+  F1CollisionMode collision = 6;
+  F1DamageMode damage = 7;
+  F1Weather weather = 8;
+  F1TimeOfDay timeOfDay = 9;
+  bool enableQualifying = 10;
+  uint32 qualifyingDurationSec = 11;
+}
+
+message F1AddBot {}
+message F1KickPlayer { uint64 playerId = 1; }
+message F1StartRace {}
+message F1SkipQualifying {}
+
+enum F1CollisionMode {
+  F1_COLLISION_ON = 0;
+  F1_COLLISION_OFF = 1;
+}
+
+enum F1DamageMode {
+  F1_DAMAGE_NONE = 0;
+  F1_DAMAGE_VISUAL = 1;
+  F1_DAMAGE_FULL = 2;
+}
+
+enum F1Weather {
+  F1_WEATHER_SUNNY = 0;
+  F1_WEATHER_RAIN = 1;
+  F1_WEATHER_SNOW = 2;
+  F1_WEATHER_FOG = 3;
+  F1_WEATHER_RANDOM = 4;
+}
+
+enum F1TimeOfDay {
+  F1_TIME_MORNING = 0;
+  F1_TIME_NOON = 1;
+  F1_TIME_SUNSET = 2;
+  F1_TIME_NIGHT = 3;
+}
+
+enum F1SessionPhase {
+  F1_SESSION_LOBBY = 0;
+  F1_SESSION_QUALIFYING = 1;
+  F1_SESSION_RACE = 2;
+}
+
+enum F1AbortReason {
+  F1_ABORT_NONE = 0;
+  F1_ABORT_HOST_DISCONNECTED = 1;
+  F1_ABORT_TIME_CAP = 2;
+}
+
+message F1RoomConfig {
+  string trackId = 1;
+  string trackDisplayName = 2;
+  uint32 lapCount = 3;
+  uint32 maxPlayers = 4;
+  uint32 botCount = 5;
+  bool passwordProtected = 6;
+  F1CollisionMode collision = 7;
+  F1DamageMode damage = 8;
+  F1Weather weather = 9;
+  F1TimeOfDay timeOfDay = 10;
+  bool enableQualifying = 11;
+  uint32 qualifyingDurationSec = 12;
+}
+
+message F1RaceState {
+  uint32 lapCount = 1;
+  uint64 raceElapsedMs = 2;
+  bool raceStarted = 3;
+  F1SessionPhase sessionPhase = 4;
+  uint64 sessionRemainingMs = 5;
+}
+
+message F1LapEvent {
+  uint64 playerId = 1;
+  uint32 lapNumber = 2;
+  uint64 lapTimeMs = 3;
+  bool finished = 4;
+}
+
+message F1SectorTime {
+  uint64 playerId = 1;
+  uint32 sectorIndex = 2;
+  uint64 sectorTimeMs = 3;
+}
+
+message F1StandingEntry {
+  uint64 playerId = 1;
+  string displayName = 2;
+  uint32 position = 3;
+  uint32 lap = 4;
+  uint64 lastLapMs = 5;
+  uint64 bestLapMs = 6;
+  uint64 totalTimeMs = 7;
+  bool finished = 8;
+  bool isBot = 9;
+}
+
+message F1StandingUpdate {
+  repeated F1StandingEntry entries = 1;
+}
+
+message F1QualifyingEntry {
+  uint64 playerId = 1;
+  string displayName = 2;
+  uint32 gridSlot = 3;
+  uint64 bestLapMs = 4;
+  bool isBot = 5;
+}
+
+message F1QualifyingResult {
+  repeated F1QualifyingEntry entries = 1;
+}
+
+message F1RaceResult {
+  repeated F1StandingEntry finalStandings = 1;
+  uint64 raceDurationMs = 2;
+  string replayFileName = 3;
+  F1AbortReason abortReason = 4;
+  repeated F1QualifyingEntry qualifyingGrid = 5;
+}
+
+message VehicleComponentProto {
+  float speed = 1;
+  float rpm = 2;
+  int32 gear = 3;
+  float nitro = 4;
+  uint32 currentLap = 5;
+  uint32 racePosition = 6;
+  string carId = 7;
+  string primaryColor = 8;
 }

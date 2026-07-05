@@ -98,6 +98,15 @@ public final class CommandDispatcher extends SimpleChannelInboundHandler<Message
                 room.enqueueCommand(() -> room.queueGameMessage(bugMinerPlayerId, gameMsg));
                 break;
 
+            case F1:
+                Long f1PlayerId = ctx.channel().attr(GameRoom.PLAYER_ID_KEY).get();
+                if (f1PlayerId == null) {
+                    logger.warn("Received f1racing message from channel without playerId in room '{}'", roomId);
+                    return;
+                }
+                room.enqueueCommand(() -> room.queueGameMessage(f1PlayerId, gameMsg));
+                break;
+
             case CHATCOMMAND:
                 Long chatPlayerId = ctx.channel().attr(GameRoom.PLAYER_ID_KEY).get();
                 if (chatPlayerId == null) {
