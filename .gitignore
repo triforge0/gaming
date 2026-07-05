@@ -38,8 +38,8 @@ yarn-error.log*
 Thumbs.db
 
 # Local tooling
-.claude/
-.cursor/
+#.claude/
+#.cursor/
 .worktrees/
 
 # Logs
