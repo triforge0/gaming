@@ -22,10 +22,12 @@ interface Props {
   phase: string;
 }
 
+const MINE_BACKDROP = '#5c4730';
+
 const THEME_COLORS = {
-  day: { sky: '#87CEEB', ground: '#8B6914', wall: '#6b4c2a', ambient: '#fff8e0' },
-  night: { sky: '#0a0a20', ground: '#4a3728', wall: '#2a1f10', ambient: '#6060cc' },
-  cave: { sky: '#1a1008', ground: '#5c4033', wall: '#3d2b1f', ambient: '#ffaa44' },
+  day: { sky: '#87CEEB', ground: '#a68458', wall: '#8f7048', ambient: '#fff4d0', fog: '#8f7048', light: 1.3 },
+  night: { sky: '#4a5a7a', ground: '#755a38', wall: '#5c4730', ambient: '#b0b8e0', fog: '#4a3728', light: 0.95 },
+  cave: { sky: '#5a4030', ground: '#8f7048', wall: '#6b5238', ambient: '#ffd8a0', fog: '#5c4730', light: 1.1 },
 };
 
 export default function MineWorld({
@@ -91,18 +93,17 @@ export default function MineWorld({
 
   return (
     <>
-      {/* Earth tone behind scene — avoids bright sky gaps in split-screen panels */}
-      <color attach="background" args={[colors.wall]} />
-      <fog attach="fog" args={[colors.wall, 700, 1600]} />
+      <color attach="background" args={[MINE_BACKDROP]} />
+      <fog attach="fog" args={[colors.fog, 500, 1400]} />
 
-      <ambientLight intensity={theme === 'night' ? 0.45 : 0.65} color={colors.ambient} />
+      <ambientLight intensity={theme === 'night' ? 0.58 : 0.72} color={colors.ambient} />
       <directionalLight
         position={[80, 500, 300]}
-        intensity={theme === 'night' ? 0.7 : 1.3}
+        intensity={colors.light}
         castShadow
         shadow-mapSize={[1024, 1024]}
       />
-      <pointLight position={[0, MINER_Y, 120]} intensity={0.6} color="#ffffcc" distance={700} />
+      <pointLight position={[0, MINER_Y, 120]} intensity={0.7} color="#ffffcc" distance={700} />
 
       {/* Sky strip above surface */}
       <mesh position={[0, viewTopY + 40, -80]}>
@@ -141,7 +142,7 @@ export default function MineWorld({
       {/* Surface line + underground mass (fills lower viewport) */}
       <mesh position={[0, floorY, 5]} receiveShadow>
         <boxGeometry args={[900, 28, 90]} />
-        <meshStandardMaterial color="#6b4c2a" roughness={0.95} />
+        <meshStandardMaterial color="#8f7048" roughness={0.95} />
       </mesh>
       <mesh position={[0, floorY - viewHeight * 0.45, 10]}>
         <boxGeometry args={[900, viewHeight * 0.9, 100]} />

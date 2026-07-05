@@ -39,8 +39,8 @@ export default function LobbyScreen({ socket }: Props) {
   };
 
   return (
-    <div className="screen" style={{
-      background: 'radial-gradient(ellipse at center, #2a1f10 0%, #1a1208 70%)',
+    <div className="screen lobby-screen" style={{
+      background: 'radial-gradient(ellipse at center, #5c4730 0%, #3d2e1e 70%)',
     }}>
       <div className="panel lobby-panel">
         <div className="lobby-room-header">

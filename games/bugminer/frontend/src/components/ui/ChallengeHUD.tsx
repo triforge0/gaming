@@ -6,9 +6,10 @@ interface Props {
   challenge: ChallengeState;
   phase: GamePhase;
   compact?: boolean;
+  classic?: boolean;
 }
 
-export default function ChallengeHUD({ label, challenge, phase, compact }: Props) {
+export default function ChallengeHUD({ label, challenge, phase, compact, classic }: Props) {
   const level = getLevelById(challenge.levelId);
   const mins = Math.floor(challenge.timeRemaining / 60);
   const secs = challenge.timeRemaining % 60;
@@ -16,24 +17,32 @@ export default function ChallengeHUD({ label, challenge, phase, compact }: Props
   const isLowTime = challenge.timeRemaining <= 15 && phase === 'playing';
 
   return (
-    <div className={`challenge-hud ${compact ? 'challenge-hud-compact' : ''}`}>
-      <span style={{ fontWeight: 700, color: 'var(--gold)' }}>{label}</span>
-      <span style={{ color: 'var(--text-dim)' }}>{level.name}</span>
+    <div className={`challenge-hud ${compact ? 'challenge-hud-compact' : ''} ${classic ? 'challenge-hud-classic' : ''}`}>
+      <span className={classic ? 'classic-label' : ''} style={classic ? undefined : { fontWeight: 700, color: 'var(--gold)' }}>{label}</span>
+      <span className={classic ? 'classic-level' : ''} style={classic ? undefined : { color: 'var(--text-dim)' }}>{level.name}</span>
       {(phase === 'playing' || phase === 'paused' || phase === 'countdown') && (
         <>
-          <span className={isLowTime ? 'danger' : ''} style={{ color: isLowTime ? 'var(--danger)' : 'var(--text)' }}>
+          <span
+            className={classic ? `classic-time ${isLowTime ? 'danger' : ''}` : (isLowTime ? 'danger' : '')}
+            style={classic ? undefined : { color: isLowTime ? 'var(--danger)' : 'var(--text)' }}
+          >
             ⏱ {timeStr}
           </span>
-          <span style={{ color: challenge.score >= challenge.targetScore ? 'var(--success)' : 'var(--gold)' }}>
+          <span
+            className={classic ? 'classic-score' : ''}
+            style={classic ? undefined : { color: challenge.score >= challenge.targetScore ? 'var(--success)' : 'var(--gold)' }}
+          >
             {challenge.score} / {challenge.targetScore}
           </span>
         </>
       )}
       {phase === 'dual_setup' && (
-        <span style={{ color: 'var(--text-dim)' }}>Target: {challenge.targetScore}</span>
+        <span className={classic ? 'classic-meta' : ''} style={classic ? undefined : { color: 'var(--text-dim)' }}>
+          Target: {challenge.targetScore}
+        </span>
       )}
       {challenge.setupLocked && phase === 'dual_setup' && (
-        <span style={{ color: 'var(--success)' }}>✓ Locked</span>
+        <span style={{ color: classic ? '#1b8a2e' : 'var(--success)' }}>✓ Locked</span>
       )}
     </div>
   );

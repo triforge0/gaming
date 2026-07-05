@@ -145,7 +145,7 @@ export default function SetupScreen({ socket }: Props) {
         </div>
       )}
 
-      <ChallengeHUD label="Map đối thủ" challenge={myDesign} phase={gameState.phase} />
+      <ChallengeHUD label="Map đối thủ" challenge={myDesign} phase={gameState.phase} classic />
 
       <div
         className="canvas-container setup-canvas"

@@ -91,7 +91,7 @@ export default function GameScreen({ socket }: Props) {
           onKeyDown={undefined}
           role="presentation"
         >
-          <ChallengeHUD label="Map của bạn" challenge={myChallenge} phase={gameState.phase} compact />
+          <ChallengeHUD label="Map của bạn" challenge={myChallenge} phase={gameState.phase} compact classic />
           <div className={`canvas-container ${isPlaying ? 'canvas-interactive' : ''}`}>
             <MineScene challenge={myChallenge} phase={gameState.phase} />
             <ScorePopups />
@@ -110,7 +110,7 @@ export default function GameScreen({ socket }: Props) {
         </div>
 
         <div className="dual-panel">
-          <ChallengeHUD label={`Map ${opponentName}`} challenge={oppChallenge} phase={gameState.phase} compact />
+          <ChallengeHUD label={`Map ${opponentName}`} challenge={oppChallenge} phase={gameState.phase} compact classic />
           <div className="canvas-container">
             <MineScene challenge={oppChallenge} phase={gameState.phase} readOnly />
           </div>

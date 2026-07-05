@@ -36,12 +36,12 @@ export default function MineScene({
   return (
     <Canvas
       camera={{ fov: 48, near: 1, far: 2500 }}
-      style={{ width: '100%', height: '100%', display: 'block', background: '#1a1208' }}
+      style={{ width: '100%', height: '100%', display: 'block', background: '#5c4730' }}
       shadows={!readOnly}
       dpr={readOnly ? 1 : undefined}
       gl={{ antialias: true, alpha: false }}
       onCreated={({ gl }) => {
-        gl.setClearColor('#1a1208');
+        gl.setClearColor('#5c4730');
       }}
     >
       <SceneCamera />
