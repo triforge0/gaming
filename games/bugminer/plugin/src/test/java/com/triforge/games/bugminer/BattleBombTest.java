@@ -13,6 +13,8 @@ final class BattleBombTest {
     void throwBombRespectsCooldownAndHookState() {
         List<PlacedItem> layout = BattleLayoutBuilder.build("easy-mine", "BOMB1");
         BattleArena arena = new BattleArena(1L, 2L, "easy-mine", 90, layout);
+        arena.creditScore('A', 200);
+        arena.creditScore('B', 200);
 
         assertTrue(arena.throwBomb(1L));
         assertFalse(arena.throwBomb(1L));
@@ -23,9 +25,25 @@ final class BattleBombTest {
     }
 
     @Test
+    void throwBombCosts100Points() {
+        List<PlacedItem> layout = BattleLayoutBuilder.build("easy-mine", "COST1");
+        BattleArena arena = new BattleArena(1L, 2L, "easy-mine", 90, layout);
+
+        assertFalse(arena.throwBomb(1L));
+
+        arena.creditScore('A', 150);
+        assertTrue(arena.throwBomb(1L));
+        assertEquals(50, arena.toProto().getScoreA());
+
+        arena.creditScore('A', 40);
+        assertFalse(arena.throwBomb(1L));
+    }
+
+    @Test
     void bombHitDropsAttachedItemAndBouncesHook() {
         List<PlacedItem> layout = BattleLayoutBuilder.build("easy-mine", "BOMB2");
         BattleArena arena = new BattleArena(1L, 2L, "easy-mine", 90, layout);
+        arena.creditScore('A', 200);
 
         PlacedItem gold = layout.stream()
                 .filter(i -> i.type == BugMinerItemType.BM_ITEM_GOLD && !i.collected)

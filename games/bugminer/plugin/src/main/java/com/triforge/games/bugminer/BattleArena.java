@@ -62,13 +62,19 @@ public class BattleArena {
         float cooldown = side == 'A' ? bombCooldownA : bombCooldownB;
         if (cooldown > 0f) return false;
 
+        int score = side == 'A' ? scoreA : scoreB;
+        if (score < GameConstants.BOMB_COST) return false;
+
         long targetId = side == 'A' ? playerBId : playerAId;
         BattleHookAnchor ownAnchor = side == 'A' ? ANCHOR_A : ANCHOR_B;
         float dir = side == 'A' ? 1f : -1f;
         float startX = ownAnchor.origin.x + dir * 40f;
         float startY = ownAnchor.origin.y + 80f;
         float vx = dir * GameConstants.BOMB_SPEED;
-        float vy = -60f;
+        float vy = -150f;
+
+        if (side == 'A') scoreA -= GameConstants.BOMB_COST;
+        else scoreB -= GameConstants.BOMB_COST;
 
         bombs.add(new BombProjectile(
                 "bomb-" + (++bombSeq),
@@ -85,6 +91,7 @@ public class BattleArena {
 
         BugMinerClientEvent launched = new BugMinerClientEvent("battle:bombLaunched");
         launched.playerId = playerId;
+        launched.value = -GameConstants.BOMB_COST;
         pendingEvents.add(launched);
         return true;
     }
@@ -134,7 +141,7 @@ public class BattleArena {
             bomb.ttl -= deltaSec;
             bomb.x += bomb.vx * deltaSec;
             bomb.y += bomb.vy * deltaSec;
-            bomb.vy += 180f * deltaSec;
+            bomb.vy += GameConstants.BOMB_GRAVITY * deltaSec;
 
             if (bomb.ttl <= 0f) {
                 expired.add(bomb);
@@ -170,7 +177,7 @@ public class BattleArena {
             if (attached != null && !attached.collected) {
                 dx = bomb.x - attached.x;
                 dy = bomb.y - attached.y;
-                if (Math.hypot(dx, dy) <= GameConstants.BOMB_HIT_RADIUS + 12f) {
+                if (Math.hypot(dx, dy) <= GameConstants.BOMB_HIT_RADIUS + 28f) {
                     return true;
                 }
             }
@@ -386,6 +393,12 @@ public class BattleArena {
 
     public Long winnerId() {
         return winnerId;
+    }
+
+    /** Same-package tests — seed score before bomb throws. */
+    void creditScore(char side, int amount) {
+        if (side == 'A') scoreA += amount;
+        else scoreB += amount;
     }
 
     public com.triforge.protocol.proto.BugMinerBattleState toProto() {

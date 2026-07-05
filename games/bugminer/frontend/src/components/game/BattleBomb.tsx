@@ -9,22 +9,49 @@ interface Props {
 }
 
 function BombMesh({ bomb }: { bomb: BombProjectileState }) {
-  const ref = useRef<THREE.Mesh>(null);
+  const ref = useRef<THREE.Group>(null);
+  const dir = bomb.velocity.x >= 0 ? 1 : -1;
 
   useFrame(({ clock }) => {
     if (!ref.current) return;
-    ref.current.rotation.x = clock.elapsedTime * 8;
-    ref.current.rotation.z = clock.elapsedTime * 6;
+    ref.current.rotation.x = clock.elapsedTime * 16;
+    ref.current.rotation.z = clock.elapsedTime * 12;
   });
 
   const x = bomb.position.x;
   const y = gameYToWorldY(bomb.position.y);
 
   return (
-    <mesh ref={ref} position={[x, y, 15]}>
-      <sphereGeometry args={[14, 10, 10]} />
-      <meshStandardMaterial color="#1a1a1a" emissive="#ff5722" emissiveIntensity={0.6} roughness={0.4} />
-    </mesh>
+    <group ref={ref} position={[x, y, 15]}>
+      <pointLight color="#ff5722" intensity={3.5} distance={160} decay={2} />
+      <mesh>
+        <sphereGeometry args={[24, 14, 14]} />
+        <meshStandardMaterial
+          color="#0a0a0a"
+          emissive="#ff3d00"
+          emissiveIntensity={1.4}
+          roughness={0.25}
+          metalness={0.55}
+        />
+      </mesh>
+      <mesh position={[dir * -10, 0, -6]} rotation={[0, 0, dir * Math.PI * 0.5]}>
+        <coneGeometry args={[10, 26, 10]} />
+        <meshStandardMaterial color="#222" emissive="#ff9800" emissiveIntensity={1} />
+      </mesh>
+      {[0, 1, 2, 3].map((i) => (
+        <mesh
+          key={i}
+          position={[dir * -(i + 1) * 22, (i + 1) * 6, -4 - i * 2]}
+        >
+          <sphereGeometry args={[9 - i * 1.5, 8, 8]} />
+          <meshBasicMaterial
+            color={i < 2 ? '#ff9800' : '#ff5722'}
+            transparent
+            opacity={0.75 - i * 0.15}
+          />
+        </mesh>
+      ))}
+    </group>
   );
 }
 

@@ -16,7 +16,7 @@ export default function ScorePopups() {
             color: ITEM_DEFINITIONS[c.type]?.color ?? '#ffd700',
           }}
         >
-          +{c.value} {ITEM_DEFINITIONS[c.type]?.emoji}
+          {c.value >= 0 ? '+' : ''}{c.value} {c.value < 0 ? '💣' : ITEM_DEFINITIONS[c.type]?.emoji}
         </div>
       ))}
     </>

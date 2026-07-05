@@ -25,6 +25,7 @@ interface GameStore {
   draggingItemId: string | null;
   dragPreview: { x: number; y: number } | null;
   poisonFlash: boolean;
+  bombFlash: boolean;
   availableRooms: RoomSummary[];
 
   setScreen: (screen: Screen) => void;
@@ -38,6 +39,7 @@ interface GameStore {
   setDraggingItem: (id: string | null) => void;
   setDragPreview: (pos: { x: number; y: number } | null) => void;
   setPoisonFlash: (v: boolean) => void;
+  setBombFlash: (v: boolean) => void;
   setAvailableRooms: (rooms: RoomSummary[]) => void;
   reset: () => void;
 }
@@ -73,6 +75,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   draggingItemId: null,
   dragPreview: null,
   poisonFlash: false,
+  bombFlash: false,
   availableRooms: [],
 
   setScreen: (screen) => {
@@ -111,6 +114,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setDraggingItem: (id) => set({ draggingItemId: id }),
   setDragPreview: (pos) => set({ dragPreview: pos }),
   setPoisonFlash: (v) => set({ poisonFlash: v }),
+  setBombFlash: (v) => set({ bombFlash: v }),
   setAvailableRooms: (rooms) => set({ availableRooms: rooms }),
   reset: () =>
     set({
@@ -125,6 +129,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       draggingItemId: null,
       dragPreview: null,
       poisonFlash: false,
+      bombFlash: false,
       availableRooms: [],
     }),
 }));

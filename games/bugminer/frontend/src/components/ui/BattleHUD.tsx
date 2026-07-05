@@ -1,5 +1,5 @@
 import type { BattleArenaState } from '../../shared';
-import { getLevelById } from '../../shared';
+import { BOMB_COST, getLevelById } from '../../shared';
 
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60);
@@ -30,6 +30,7 @@ export default function BattleHUD({
   const oppName = isA ? playerBName : playerAName;
   const myBuff = isA ? battle.strengthBuffA : battle.strengthBuffB;
   const myBombCd = isA ? battle.bombCooldownA : battle.bombCooldownB;
+  const bombAffordable = myScore >= BOMB_COST;
   const danger = battle.timeRemaining <= 15;
 
   return (
@@ -39,8 +40,8 @@ export default function BattleHUD({
         <span className="battle-hud-score">{myScore}</span>
         {myBuff > 0 && <span className="battle-hud-buff">💪 {myBuff}s</span>}
         {phase === 'playing' && (
-          <span className={`battle-hud-bomb ${myBombCd > 0 ? 'cooldown' : 'ready'}`}>
-            💣 {myBombCd > 0 ? `${myBombCd}s` : 'B'}
+          <span className={`battle-hud-bomb ${myBombCd > 0 ? 'cooldown' : bombAffordable ? 'ready' : 'disabled'}`}>
+            💣 -{BOMB_COST} {myBombCd > 0 ? `${myBombCd}s` : bombAffordable ? '(B)' : ' thiếu điểm'}
           </span>
         )}
       </div>
@@ -52,7 +53,7 @@ export default function BattleHUD({
         </span>
         <span className="battle-hud-mode">⚔️ BATTLE · {level.name}</span>
         {phase === 'playing' && (
-          <span className="battle-hud-hint">Space: móc · B: bom · Va chạm móc = mất lượt · Cướp vật đang kéo = steal</span>
+          <span className="battle-hud-hint">Space: móc · B: bom (-{BOMB_COST} điểm) · Va chạm móc = mất lượt · Cướp vật đang kéo = steal</span>
         )}
       </div>
 

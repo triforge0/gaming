@@ -54,12 +54,15 @@ function handleBoardEvents(
       setTimeout(() => store.setError(null), 2000);
     }
     if (type === 'battle:bombLaunched' && playerId === myId) {
-      store.setError('💣 Đã ném bom!');
-      setTimeout(() => store.setError(null), 1200);
+      store.addCollection(event.value ?? -100, 'gold');
+      store.setError(`💣 Ném bom! -${Math.abs(event.value ?? 100)} điểm`);
+      setTimeout(() => store.setError(null), 1500);
     }
     if (type === 'battle:bombHit' && victimId === myId) {
-      store.setError('💥 Trúng bom! Móc bị đứt!');
-      setTimeout(() => store.setError(null), 1800);
+      store.setBombFlash(true);
+      setTimeout(() => store.setBombFlash(false), 600);
+      store.setError('💥 TRÚNG BOM! Móc bị đứt!');
+      setTimeout(() => store.setError(null), 2200);
     }
     if (type === 'battle:ropeCut' && victimId === myId) {
       store.setError('⛓️‍💥 Dây câu đứt — vật phẩm rơi!');

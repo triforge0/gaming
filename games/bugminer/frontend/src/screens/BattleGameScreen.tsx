@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useGameStore } from '../store/gameStore';
+import { BOMB_COST } from '../shared';
 import BattleMineScene from '../components/game/BattleMineScene';
 import BattleHUD from '../components/ui/BattleHUD';
 import CountdownOverlay from '../components/ui/CountdownOverlay';
@@ -15,6 +16,7 @@ export default function BattleGameScreen({ socket }: Props) {
   const playerId = useGameStore((s) => s.playerId);
   const isPaused = useGameStore((s) => s.isPaused);
   const poisonFlash = useGameStore((s) => s.poisonFlash);
+  const bombFlash = useGameStore((s) => s.bombFlash);
 
   const handleFire = useCallback(() => {
     if (gameState?.phase === 'playing') {
@@ -23,10 +25,18 @@ export default function BattleGameScreen({ socket }: Props) {
   }, [gameState?.phase, socket]);
 
   const handleThrowBomb = useCallback(() => {
-    if (gameState?.phase === 'playing') {
-      socket.throwBomb();
+    if (gameState?.phase !== 'playing' || !gameState.battle || !playerId) return;
+    const battle = gameState.battle;
+    const myScore = playerId === battle.playerAId ? battle.scoreA : battle.scoreB;
+    const cd = playerId === battle.playerAId ? battle.bombCooldownA : battle.bombCooldownB;
+    if (myScore < BOMB_COST) {
+      useGameStore.getState().setError(`Cần ít nhất ${BOMB_COST} điểm để ném bom!`);
+      setTimeout(() => useGameStore.getState().setError(null), 1500);
+      return;
     }
-  }, [gameState?.phase, socket]);
+    if (cd > 0) return;
+    socket.throwBomb();
+  }, [gameState?.phase, gameState?.battle, playerId, socket]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -60,9 +70,12 @@ export default function BattleGameScreen({ socket }: Props) {
   const playerA = gameState.players.find((p) => p.id === battle.playerAId);
   const playerB = gameState.players.find((p) => p.id === battle.playerBId);
   const isPlaying = gameState.phase === 'playing';
+  const myScore = playerId === battle.playerAId ? battle.scoreA : battle.scoreB;
+  const canThrowBomb = isPlaying && myScore >= BOMB_COST
+    && (playerId === battle.playerAId ? battle.bombCooldownA : battle.bombCooldownB) === 0;
 
   return (
-    <div className="game-layout game-screen battle-screen">
+    <div className={`game-layout game-screen battle-screen ${bombFlash ? 'bomb-flash' : ''}`}>
       <header className="game-top-bar">
         <span className="game-top-title">Bug Miner — ⚔️ Battle Mode</span>
         {(gameState.phase === 'playing' || gameState.phase === 'paused') && (
@@ -105,15 +118,25 @@ export default function BattleGameScreen({ socket }: Props) {
               <span>🪤 BẪY CHUỘT!</span>
             </div>
           )}
+          {bombFlash && (
+            <div className="bomb-hit-flash">
+              <span>💥 BOOM!</span>
+            </div>
+          )}
         </div>
         {isPlaying && (
-          <p className="dual-panel-hint">Click / Space — móc · B — ném bom sang đối thủ</p>
+          <p className="dual-panel-hint">Click / Space — móc · B — ném bom (-{BOMB_COST} điểm)</p>
         )}
       </div>
 
       {isPlaying && (
-        <button type="button" className="battle-bomb-btn" onClick={handleThrowBomb}>
-          💣 Ném bom (B)
+        <button
+          type="button"
+          className={`battle-bomb-btn ${canThrowBomb ? '' : 'disabled'}`}
+          onClick={handleThrowBomb}
+          disabled={!canThrowBomb}
+        >
+          💣 Ném bom (-{BOMB_COST})
         </button>
       )}
 
