@@ -19,6 +19,7 @@ interface Props {
   selectedItemId?: string | null;
   draggingItemId?: string | null;
   dragPreview?: { x: number; y: number } | null;
+  showItems?: boolean;
   phase: string;
 }
 
@@ -42,6 +43,7 @@ export default function MineWorld({
   draggingItemId,
   dragPreview,
   phase,
+  showItems = true,
 }: Props) {
   const colors = THEME_COLORS[theme];
   const groundRef = useRef<THREE.Mesh>(null);
@@ -121,7 +123,7 @@ export default function MineWorld({
 
       {hook && phase !== 'dual_setup' && phase !== 'setup' && <Hook hook={hook} />}
 
-      {visibleItems.map((item) => (
+      {showItems && visibleItems.map((item) => (
         <MineItem
           key={item.id}
           item={item}

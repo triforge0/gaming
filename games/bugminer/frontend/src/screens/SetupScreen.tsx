@@ -108,6 +108,12 @@ export default function SetupScreen({ socket }: Props) {
         {ui.waitingForOpponent && (
           <div className="setup-wait-banner" role="status">
             ⏳ Đã lock — đang chờ {opponentName} hoàn tất setup...
+            <span className="setup-wait-hint"> Map của bạn vẫn được giữ kín cho đến khi cả hai sẵn sàng.</span>
+          </div>
+        )}
+        {ui.bothReady && (
+          <div className="setup-ready-banner" role="status">
+            ✓ Cả hai đã lock — chuẩn bị vào game...
           </div>
         )}
         {fairActive && fairLevel && (
@@ -145,7 +151,12 @@ export default function SetupScreen({ socket }: Props) {
         </div>
       )}
 
-      <ChallengeHUD label="Map đối thủ" challenge={myDesign} phase={gameState.phase} classic />
+      <ChallengeHUD
+        label={`Map bạn thiết kế cho ${opponentName}`}
+        challenge={myDesign}
+        phase={gameState.phase}
+        classic
+      />
 
       <div
         className="canvas-container setup-canvas"

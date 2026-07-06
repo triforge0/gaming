@@ -6,6 +6,7 @@ export interface SetupUiState {
   myLocked: boolean;
   oppLocked: boolean;
   waitingForOpponent: boolean;
+  bothReady: boolean;
   canLock: boolean;
   unplacedCount: number;
   allPlaced: boolean;
@@ -21,6 +22,7 @@ export function getSetupUiState(
       myLocked: false,
       oppLocked: false,
       waitingForOpponent: false,
+      bothReady: false,
       canLock: false,
       unplacedCount: 0,
       allPlaced: false,
@@ -36,6 +38,7 @@ export function getSetupUiState(
     myLocked,
     oppLocked,
     waitingForOpponent: myLocked && !oppLocked,
+    bothReady: myLocked && oppLocked,
     canLock: unplacedCount === 0 && !myLocked,
     unplacedCount,
     allPlaced: unplacedCount === 0,

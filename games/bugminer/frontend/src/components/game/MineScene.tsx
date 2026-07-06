@@ -16,6 +16,7 @@ interface Props {
   selectedItemId?: string | null;
   draggingItemId?: string | null;
   dragPreview?: { x: number; y: number } | null;
+  showItems?: boolean;
 }
 
 export default function MineScene({
@@ -29,6 +30,7 @@ export default function MineScene({
   selectedItemId,
   draggingItemId,
   dragPreview,
+  showItems = true,
 }: Props) {
   const level = getLevelById(challenge.levelId);
   const hook = challenge.hook;
@@ -58,6 +60,7 @@ export default function MineScene({
           draggingItemId={draggingItemId}
           dragPreview={dragPreview}
           phase={phase}
+          showItems={showItems}
         />
       </Suspense>
     </Canvas>

@@ -64,11 +64,17 @@ export default function GameScreen({ socket }: Props) {
   }
 
   const isPlaying = gameState.phase === 'playing';
+  const isCountdown = gameState.phase === 'countdown';
 
   return (
     <div className="game-layout game-screen">
       <header className="game-top-bar">
         <span className="game-top-title">Bug Miner — Dual PvP</span>
+        {isCountdown && (
+          <span className="game-countdown-hint">
+            Setup xong — map đối thủ sẽ hiện khi bắt đầu ({gameState.countdown}s)
+          </span>
+        )}
         {(gameState.phase === 'playing' || gameState.phase === 'paused') && (
           <button
             type="button"
@@ -93,10 +99,13 @@ export default function GameScreen({ socket }: Props) {
         >
           <ChallengeHUD label="Map của bạn" challenge={myChallenge} phase={gameState.phase} compact classic />
           <div className={`canvas-container ${isPlaying ? 'canvas-interactive' : ''}`}>
-            <MineScene challenge={myChallenge} phase={gameState.phase} />
+            <MineScene challenge={myChallenge} phase={gameState.phase} showItems={!isCountdown} />
             <ScorePopups />
-            {gameState.phase === 'countdown' && (
-              <CountdownOverlay count={gameState.countdown} />
+            {isCountdown && (
+              <CountdownOverlay
+                count={gameState.countdown}
+                subtitle="Map đối thủ đang ẩn — chuẩn bị!"
+              />
             )}
             {poisonFlash && (
               <div className="poison-flash">

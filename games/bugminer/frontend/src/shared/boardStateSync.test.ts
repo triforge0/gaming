@@ -45,8 +45,14 @@ describe('resolveActiveWinner', () => {
     expect(result.endReason).toBe('timeout');
   });
 
-  it('returns null when no battle arena (free/fair use challenge state for phase)', () => {
+  it('uses board winner for free/fair dual challenge mode', () => {
     const result = resolveActiveWinner(null, '1', 'target');
+    expect(result.winnerId).toBe('1');
+    expect(result.endReason).toBe('target');
+  });
+
+  it('returns null board winner when dual challenge still in progress', () => {
+    const result = resolveActiveWinner(null, null, null);
     expect(result.winnerId).toBeNull();
     expect(result.endReason).toBeNull();
   });

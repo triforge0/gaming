@@ -437,6 +437,24 @@ input {
   font-size: 0.85rem;
 }
 
+.setup-wait-hint {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+}
+
+.setup-ready-banner {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(46, 204, 113, 0.15);
+  border: 1px solid var(--success);
+  color: var(--success);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 .setup-toolbar {
   flex-shrink: 0;
   display: flex;
@@ -592,6 +610,15 @@ input {
   color: #2a1800;
 }
 
+.game-screen .game-countdown-hint {
+  color: #4a3200;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.35);
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
 .game-screen .game-pause-btn {
   color: #2a1800;
   background: rgba(255, 255, 255, 0.45);
@@ -669,6 +696,13 @@ input {
   color: var(--gold);
   text-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
   animation: pulse 0.8s ease-in-out;
+}
+
+.countdown-subtitle {
+  margin-top: 8px;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  text-align: center;
 }
 
 @keyframes shine {

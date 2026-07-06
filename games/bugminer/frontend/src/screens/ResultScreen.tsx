@@ -44,7 +44,7 @@ export default function ResultScreen({ socket }: Props) {
       return won ? 'Đối thủ dính bẫy chuột!' : '🪤 Bạn dính bẫy chuột!';
     }
     if (isDraw) return 'Hòa — cùng điểm khi hết giờ';
-    return 'Hết thời gian — so điểm';
+    return won ? 'Bạn có điểm cao hơn khi hết giờ!' : 'Đối thủ có điểm cao hơn khi hết giờ!';
   })();
 
   return (

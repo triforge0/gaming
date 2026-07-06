@@ -11,13 +11,19 @@ export function resolveActiveWinner(
   boardWinnerId: string | null,
   boardEndReason: EndReason,
 ): ActiveWinnerResult {
-  if (battle?.finished) {
+  if (battle != null) {
+    if (!battle.finished) {
+      return { winnerId: null, endReason: null };
+    }
     return {
       winnerId: battle.winnerId ?? boardWinnerId,
       endReason: battle.endReason ?? boardEndReason,
     };
   }
-  return { winnerId: null, endReason: null };
+  return {
+    winnerId: boardWinnerId,
+    endReason: boardEndReason,
+  };
 }
 
 export type WireMatchPhase = 'lobby' | 'countdown' | 'playing' | 'ended';
