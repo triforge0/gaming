@@ -64,13 +64,13 @@ export default function GameScreen({ socket }: Props) {
   }
 
   const isPlaying = gameState.phase === 'playing';
-  const isCountdown = gameState.phase === 'countdown';
+  const isPrePlayCountdown = gameState.phase === 'countdown' && gameState.countdown > 0;
 
   return (
     <div className="game-layout game-screen">
       <header className="game-top-bar">
         <span className="game-top-title">Bug Miner — Dual PvP</span>
-        {isCountdown && (
+        {isPrePlayCountdown && (
           <span className="game-countdown-hint">
             Setup xong — map đối thủ sẽ hiện khi bắt đầu ({gameState.countdown}s)
           </span>
@@ -99,9 +99,9 @@ export default function GameScreen({ socket }: Props) {
         >
           <ChallengeHUD label="Map của bạn" challenge={myChallenge} phase={gameState.phase} compact classic />
           <div className={`canvas-container ${isPlaying ? 'canvas-interactive' : ''}`}>
-            <MineScene challenge={myChallenge} phase={gameState.phase} showItems={!isCountdown} />
+            <MineScene challenge={myChallenge} phase={gameState.phase} showItems={!isPrePlayCountdown} />
             <ScorePopups />
-            {isCountdown && (
+            {isPrePlayCountdown && (
               <CountdownOverlay
                 count={gameState.countdown}
                 subtitle="Map đối thủ đang ẩn — chuẩn bị!"

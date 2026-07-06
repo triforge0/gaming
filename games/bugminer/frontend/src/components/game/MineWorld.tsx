@@ -93,19 +93,30 @@ export default function MineWorld({
   const viewHeight = viewTopY - viewBottomY;
   const viewCenterY = (viewTopY + viewBottomY) / 2;
 
+  const isGameplay = phase === 'playing' || phase === 'paused';
+  const isSetup = phase === 'dual_setup' || phase === 'setup';
+
   return (
     <>
       <color attach="background" args={[MINE_BACKDROP]} />
-      <fog attach="fog" args={[colors.fog, 500, 1400]} />
+      {!isGameplay && <fog attach="fog" args={[colors.fog, 500, 1400]} />}
 
-      <ambientLight intensity={theme === 'night' ? 0.58 : 0.72} color={colors.ambient} />
+      <ambientLight intensity={isGameplay ? 0.82 : (theme === 'night' ? 0.58 : 0.72)} color={colors.ambient} />
+      <hemisphereLight
+        args={[colors.ambient, colors.ground, isGameplay ? 0.55 : 0.35]}
+      />
       <directionalLight
         position={[80, 500, 300]}
-        intensity={colors.light}
-        castShadow
+        intensity={isGameplay ? colors.light + 0.25 : colors.light}
+        castShadow={!isSetup}
         shadow-mapSize={[1024, 1024]}
       />
-      <pointLight position={[0, MINER_Y, 120]} intensity={0.7} color="#ffffcc" distance={700} />
+      <pointLight
+        position={[0, MINER_Y, 120]}
+        intensity={isGameplay ? 1.0 : 0.7}
+        color="#ffffcc"
+        distance={900}
+      />
 
       {/* Sky strip above surface */}
       <mesh position={[0, viewTopY + 40, -80]}>
