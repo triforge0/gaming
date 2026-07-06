@@ -10,7 +10,7 @@ import { startPresenceHeartbeat } from './presence';
 import { WinModal } from './ui/WinModal';
 import { Toasts } from './ui/Toasts';
 import { Drawer } from './ui/Drawer';
-import { LauncherBackButton } from '@triforge/shared-ui/react';
+import { LauncherBackButton } from './ui/LauncherBackButton';
 
 export function App() {
   const boot = useGame((s) => s.boot);

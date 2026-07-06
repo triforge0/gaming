@@ -359,6 +359,17 @@ function suggestTier(age){
 }
 
 // Simple flat-illustration SVG bodies (inner markup only), viewBox 0 0 400 400
+function sunflower(cx, cy, s){
+  return `
+    <ellipse cx="${cx}" cy="${cy-14*s}" rx="${6*s}" ry="${10*s}" fill="#FFC93C"/>
+    <ellipse cx="${cx}" cy="${cy+14*s}" rx="${6*s}" ry="${10*s}" fill="#FFC93C"/>
+    <ellipse cx="${cx-14*s}" cy="${cy}" rx="${10*s}" ry="${6*s}" fill="#FFC93C"/>
+    <ellipse cx="${cx+14*s}" cy="${cy}" rx="${10*s}" ry="${6*s}" fill="#FFC93C"/>
+    <circle cx="${cx}" cy="${cy}" r="${9*s}" fill="#8A5A34"/>
+    <rect x="${cx-2}" y="${cy+9*s}" width="4" height="${50*s}" fill="#4CAF6D"/>
+  `;
+}
+
 const ART = {
   pyramid: `
     <rect width="400" height="400" fill="#FCE7C8"/>
@@ -453,6 +464,128 @@ const ART = {
     <rect x="180" y="330" width="26" height="55" rx="10" fill="#9AA6AD"/>
     <rect x="240" y="330" width="26" height="55" rx="10" fill="#9AA6AD"/>
     <rect x="300" y="320" width="26" height="60" rx="10" fill="#9AA6AD"/>
+  `,
+  greatwall: `
+    <rect width="400" height="400" fill="#BFE6FA"/>
+    <circle cx="330" cy="70" r="34" fill="#FFC93C"/>
+    <path d="M0 260 Q80 190 160 235 T320 210 T400 240 V400 H0 Z" fill="#8FBF6A"/>
+    <path d="M0 300 Q100 265 200 300 T400 285 V400 H0 Z" fill="#7BAE58"/>
+    <path d="M15 248 Q100 185 180 230 T335 205" stroke="#C9A46A" stroke-width="20" fill="none" stroke-linecap="round"/>
+    <path d="M15 248 Q100 185 180 230 T335 205" stroke="#8A5A34" stroke-width="20" fill="none" stroke-dasharray="1 16" stroke-linecap="round"/>
+    <rect x="150" y="175" width="34" height="45" rx="3" fill="#B98A5A"/>
+    <polygon points="148,175 167,150 186,175" fill="#8A5A34"/>
+  `,
+  angkorwat: `
+    <rect width="400" height="400" fill="#FBD9A5"/>
+    <circle cx="200" cy="90" r="46" fill="#FFB74D"/>
+    <rect x="0" y="300" width="400" height="100" fill="#8FBF6A"/>
+    <rect x="60" y="300" width="280" height="40" fill="#7FA8C9"/>
+    <rect x="120" y="220" width="160" height="90" fill="#C9A46A"/>
+    <polygon points="200,135 232,220 168,220" fill="#B98A5A"/>
+    <polygon points="128,175 150,220 106,220" fill="#B98A5A"/>
+    <polygon points="272,175 294,220 250,220" fill="#B98A5A"/>
+    <ellipse cx="60" cy="330" rx="9" ry="38" fill="#4C7A3E"/>
+    <ellipse cx="340" cy="330" rx="9" ry="38" fill="#4C7A3E"/>
+  `,
+  eiffel: `
+    <rect width="400" height="400" fill="#CDEBFF"/>
+    <ellipse cx="90" cy="60" rx="30" ry="12" fill="#fff"/>
+    <ellipse cx="300" cy="90" rx="26" ry="10" fill="#fff"/>
+    <rect x="0" y="340" width="400" height="60" fill="#8FBF6A"/>
+    <polygon points="200,55 232,340 168,340" fill="#8A94A0"/>
+    <polygon points="200,55 214,340 200,340" fill="#6E7A87"/>
+    <polygon points="150,340 250,340 233,296 167,296" fill="#8A94A0"/>
+    <line x1="172" y1="150" x2="228" y2="150" stroke="#6E7A87" stroke-width="5"/>
+    <line x1="158" y1="230" x2="242" y2="230" stroke="#6E7A87" stroke-width="5"/>
+  `,
+  sahara: `
+    <rect width="400" height="400" fill="#FCE7C8"/>
+    <circle cx="320" cy="78" r="46" fill="#FFC93C"/>
+    <path d="M0 260 Q80 200 160 250 T320 230 T400 260 V400 H0 Z" fill="#E8C27A"/>
+    <path d="M0 310 Q100 270 200 305 T400 295 V400 H0 Z" fill="#D9A85C"/>
+    <ellipse cx="255" cy="300" rx="34" ry="16" fill="#C9A46A"/>
+    <circle cx="288" cy="278" r="10" fill="#C9A46A"/>
+    <ellipse cx="270" cy="270" rx="8" ry="10" fill="#C9A46A"/>
+    <rect x="234" y="312" width="6" height="18" fill="#C9A46A"/>
+    <rect x="266" y="312" width="6" height="18" fill="#C9A46A"/>
+  `,
+  river: `
+    <rect width="400" height="400" fill="#8FBF6A"/>
+    <circle cx="330" cy="70" r="30" fill="#FFC93C"/>
+    <path d="M-20 380 C60 300 40 220 140 200 C240 180 260 100 420 40 L420 100 C280 150 260 220 160 250 C60 280 80 340 20 400 Z" fill="#6FA8DC"/>
+    <ellipse cx="90" cy="220" rx="10" ry="14" fill="#4C7A3E"/>
+    <ellipse cx="300" cy="130" rx="10" ry="14" fill="#4C7A3E"/>
+  `,
+  volcano: `
+    <rect width="400" height="400" fill="#BFE6FA"/>
+    <circle cx="90" cy="70" r="30" fill="#FFC93C"/>
+    <ellipse cx="210" cy="110" rx="60" ry="20" fill="#C9D3DA" opacity="0.7"/>
+    <polygon points="120,340 200,120 280,340" fill="#8A6A5A"/>
+    <polygon points="180,155 200,120 220,155" fill="#E24C3B"/>
+    <path d="M195 145 Q212 95 235 82" stroke="#E24C3B" stroke-width="6" fill="none"/>
+    <rect x="0" y="340" width="400" height="60" fill="#7BAE58"/>
+  `,
+  coral: `
+    <rect width="400" height="400" fill="#2E7CB8"/>
+    <rect width="400" height="170" fill="#4FA3D9"/>
+    <ellipse cx="120" cy="330" rx="40" ry="20" fill="#FF7A5C"/>
+    <ellipse cx="210" cy="350" rx="50" ry="24" fill="#FFC93C"/>
+    <ellipse cx="300" cy="330" rx="36" ry="18" fill="#FF9EC4"/>
+    <path d="M100 300 Q112 260 100 228" stroke="#FF7A5C" stroke-width="10" fill="none"/>
+    <path d="M270 300 Q282 260 270 228" stroke="#FFC93C" stroke-width="10" fill="none"/>
+    <ellipse cx="190" cy="140" rx="18" ry="9" fill="#fff" opacity="0.85"/>
+    <polygon points="190,140 208,135 208,145" fill="#fff" opacity="0.85"/>
+  `,
+  aurora: `
+    <rect width="400" height="400" fill="#0B1E3A"/>
+    <circle cx="80" cy="60" r="3" fill="#fff"/>
+    <circle cx="140" cy="100" r="2" fill="#fff"/>
+    <circle cx="300" cy="50" r="2.5" fill="#fff"/>
+    <circle cx="340" cy="120" r="2" fill="#fff"/>
+    <path d="M0 150 Q100 100 200 160 T400 140 V220 Q300 180 200 220 T0 210 Z" fill="#4CD9A0" opacity="0.6"/>
+    <path d="M0 190 Q120 140 220 200 T400 180 V260 Q300 220 200 260 T0 250 Z" fill="#A06CD9" opacity="0.5"/>
+    <polygon points="60,400 90,300 120,400" fill="#0F2A1A"/>
+    <polygon points="140,400 165,320 190,400" fill="#0F2A1A"/>
+    <rect x="0" y="380" width="400" height="20" fill="#E8F0F5"/>
+  `,
+  sunflowers: `
+    <rect width="400" height="400" fill="#BFE6FA"/>
+    <circle cx="330" cy="70" r="40" fill="#FFC93C"/>
+    <rect x="0" y="260" width="400" height="140" fill="#7BAE58"/>
+    ${sunflower(90,300,1.1)}${sunflower(180,320,1)}${sunflower(270,295,1.15)}${sunflower(340,325,0.9)}${sunflower(40,325,0.85)}
+  `,
+  panda: `
+    <rect width="400" height="400" fill="#DFF3E3"/>
+    <ellipse cx="200" cy="230" rx="110" ry="100" fill="#fff"/>
+    <ellipse cx="120" cy="140" rx="26" ry="26" fill="#2B2B2B"/>
+    <ellipse cx="280" cy="140" rx="26" ry="26" fill="#2B2B2B"/>
+    <ellipse cx="160" cy="210" rx="22" ry="28" fill="#2B2B2B"/>
+    <ellipse cx="240" cy="210" rx="22" ry="28" fill="#2B2B2B"/>
+    <circle cx="160" cy="212" r="7" fill="#fff"/>
+    <circle cx="240" cy="212" r="7" fill="#fff"/>
+    <ellipse cx="200" cy="250" rx="12" ry="9" fill="#2B2B2B"/>
+    <rect x="150" y="320" width="16" height="40" rx="6" fill="#4CAF6D"/>
+  `,
+  dolphin: `
+    <rect width="400" height="400" fill="#BFE6FA"/>
+    <circle cx="330" cy="70" r="34" fill="#FFC93C"/>
+    <rect x="0" y="280" width="400" height="120" fill="#4FA3D9"/>
+    <path d="M90 280 Q140 130 230 150 Q290 165 270 210 Q320 210 300 250 Q250 290 190 260 Q120 320 90 280 Z" fill="#8A9AA6"/>
+    <circle cx="215" cy="175" r="5" fill="#2B3A4A"/>
+    <path d="M60 300 Q100 280 130 300 T190 300" stroke="#fff" stroke-width="4" fill="none" opacity="0.6"/>
+  `,
+  penguin: `
+    <rect width="400" height="400" fill="#DCEFFA"/>
+    <rect x="0" y="330" width="400" height="70" fill="#EAF4F8"/>
+    <ellipse cx="200" cy="230" rx="80" ry="110" fill="#2B3A4A"/>
+    <ellipse cx="200" cy="250" rx="50" ry="80" fill="#fff"/>
+    <circle cx="200" cy="140" r="46" fill="#2B3A4A"/>
+    <ellipse cx="200" cy="150" rx="26" ry="22" fill="#fff"/>
+    <polygon points="200,150 220,165 200,175" fill="#E8A23C"/>
+    <circle cx="184" cy="135" r="4" fill="#000"/>
+    <circle cx="216" cy="135" r="4" fill="#000"/>
+    <polygon points="160,340 180,340 170,365" fill="#E8A23C"/>
+    <polygon points="220,340 240,340 230,365" fill="#E8A23C"/>
   `
 };
 
@@ -509,6 +642,15 @@ const THEMES = [
       { id:'colosseum', title:'Đấu trường La Mã', art:ART.colosseum,
         fact:'Đấu trường La Mã ở Ý có thể chứa tới khoảng 50.000 khán giả đến xem các trận đấu thời xưa.',
         quiz:{ q:'Đấu trường La Mã nằm ở thành phố nào?', options:['Roma','Paris','Cairo'], correct:0 } },
+      { id:'greatwall', title:'Vạn Lý Trường Thành', art:ART.greatwall,
+        fact:'Vạn Lý Trường Thành ở Trung Quốc dài hơn 21.000 km và được xây dựng để bảo vệ biên giới đất nước.',
+        quiz:{ q:'Vạn Lý Trường Thành nằm ở quốc gia nào?', options:['Trung Quốc','Nhật Bản','Hàn Quốc'], correct:0 } },
+      { id:'angkorwat', title:'Đền Angkor Wat', art:ART.angkorwat,
+        fact:'Đền Angkor Wat ở Campuchia là công trình tôn giáo lớn nhất thế giới, được xây dựng vào đầu thế kỷ 12.',
+        quiz:{ q:'Đền Angkor Wat nằm ở quốc gia nào?', options:['Campuchia','Thái Lan','Việt Nam'], correct:0 } },
+      { id:'eiffel', title:'Tháp Eiffel', art:ART.eiffel,
+        fact:'Tháp Eiffel ở Pháp được xây dựng năm 1889 và từng là công trình cao nhất thế giới suốt 41 năm.',
+        quiz:{ q:'Tháp Eiffel là biểu tượng của thành phố nào?', options:['Paris','London','Roma'], correct:0 } },
     ]
   },
   {
@@ -521,6 +663,15 @@ const THEMES = [
       { id:'worldmap', title:'Bản đồ thế giới', art:ART.worldmap,
         fact:'Trái Đất có 6 châu lục lớn: châu Á, châu Âu, châu Phi, châu Mỹ, châu Đại Dương và châu Nam Cực.',
         quiz:{ q:'Châu lục nào lớn nhất thế giới?', options:['Châu Á','Châu Âu','Châu Đại Dương'], correct:0 } },
+      { id:'sahara', title:'Sa mạc Sahara', art:ART.sahara,
+        fact:'Sa mạc Sahara là sa mạc nóng lớn nhất thế giới, có diện tích gần bằng cả nước Mỹ.',
+        quiz:{ q:'Sa mạc Sahara nằm ở châu lục nào?', options:['Châu Phi','Châu Á','Châu Âu'], correct:0 } },
+      { id:'river', title:'Dòng sông lớn', art:ART.river,
+        fact:'Sông Nin ở châu Phi là một trong những dòng sông dài nhất thế giới, dài hơn 6.600 km.',
+        quiz:{ q:'Sông Nin chảy qua châu lục nào?', options:['Châu Phi','Châu Âu','Châu Mỹ'], correct:0 } },
+      { id:'volcano', title:'Núi lửa', art:ART.volcano,
+        fact:'Núi lửa hình thành khi dung nham nóng chảy từ sâu trong lòng Trái Đất phun trào lên bề mặt.',
+        quiz:{ q:'Chất nóng chảy phun ra từ núi lửa gọi là gì?', options:['Dung nham','Nước biển','Băng tuyết'], correct:0 } },
     ]
   },
   {
@@ -533,6 +684,15 @@ const THEMES = [
       { id:'waterfall', title:'Thác nước', art:ART.waterfall,
         fact:'Thác Angel ở Venezuela là thác nước cao nhất thế giới, với độ cao hơn 900 mét.',
         quiz:{ q:'Nước đổ từ trên cao xuống tạo thành hiện tượng gì?', options:['Thác nước','Sông','Hồ'], correct:0 } },
+      { id:'coral', title:'San hô biển', art:ART.coral,
+        fact:'Rạn san hô là ngôi nhà của hàng ngàn loài sinh vật biển và được ví như "rừng nhiệt đới của đại dương".',
+        quiz:{ q:'Rạn san hô thường được ví như điều gì?', options:['Rừng nhiệt đới của đại dương','Sa mạc dưới biển','Núi băng'], correct:0 } },
+      { id:'aurora', title:'Cực quang', art:ART.aurora,
+        fact:'Cực quang là hiện tượng ánh sáng huyền ảo xuất hiện trên bầu trời gần hai cực của Trái Đất.',
+        quiz:{ q:'Cực quang thường xuất hiện ở đâu?', options:['Gần hai cực Trái Đất','Vùng xích đạo','Dưới đáy biển'], correct:0 } },
+      { id:'sunflowers', title:'Cánh đồng hoa hướng dương', art:ART.sunflowers,
+        fact:'Hoa hướng dương có đặc điểm thú vị là hướng mặt hoa theo ánh sáng mặt trời.',
+        quiz:{ q:'Hoa hướng dương có xu hướng quay về phía nào?', options:['Ánh sáng mặt trời','Bóng tối','Mặt trăng'], correct:0 } },
     ]
   },
   {
@@ -545,6 +705,15 @@ const THEMES = [
       { id:'elephant', title:'Voi', art:ART.elephant,
         fact:'Voi là loài động vật trên cạn lớn nhất thế giới và có thể sống tới 60-70 năm.',
         quiz:{ q:'Voi dùng bộ phận nào để lấy nước và thức ăn?', options:['Vòi','Đuôi','Tai'], correct:0 } },
+      { id:'panda', title:'Gấu trúc', art:ART.panda,
+        fact:'Gấu trúc sống chủ yếu ở Trung Quốc và có thể ăn tre trúc tới 12 giờ mỗi ngày.',
+        quiz:{ q:'Thức ăn chính của gấu trúc là gì?', options:['Tre trúc','Cá','Thịt'], correct:0 } },
+      { id:'dolphin', title:'Cá heo', art:ART.dolphin,
+        fact:'Cá heo là loài động vật rất thông minh, giao tiếp với nhau bằng những âm thanh đặc biệt.',
+        quiz:{ q:'Cá heo giao tiếp với nhau chủ yếu bằng cách nào?', options:['Âm thanh','Ánh sáng','Mùi hương'], correct:0 } },
+      { id:'penguin', title:'Chim cánh cụt', art:ART.penguin,
+        fact:'Chim cánh cụt không biết bay nhưng bơi rất giỏi và có thể lặn sâu để bắt cá.',
+        quiz:{ q:'Chim cánh cụt di chuyển dưới nước bằng cách nào?', options:['Bơi lội giỏi','Bay lượn','Chạy thật nhanh'], correct:0 } },
     ]
   },
 ];
