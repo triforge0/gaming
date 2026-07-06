@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bé Xếp Hình Khám Phá Thế Giới</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-sky-1:#EAF6FF;
+    --bg-sky-2:#CDEBFF;
+    --ink:#2B3A4A;
+    --ink-soft:#5C7085;
+    --sun:#FFC93C;
+    --sun-dark:#E8A825;
+    --white:#FFFFFF;
+
+    --history:#C97B4A;
+    --history-light:#F3DCC8;
+    --geo:#2EA8A0;
+    --geo-light:#D7F3F0;
+    --nature:#4CAF6D;
+    --nature-light:#DFF3E3;
+    --animals:#FF7A5C;
+    --animals-light:#FFE1D6;
+
+    --shadow:0 8px 20px rgba(43,58,74,0.12);
+    --shadow-sm:0 4px 10px rgba(43,58,74,0.10);
+    --radius-lg:28px;
+    --radius-md:18px;
+    --radius-sm:12px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% 10%, #ffffff 0%, transparent 40%),
+      radial-gradient(circle at 85% 5%, #ffffff 0%, transparent 35%),
+      linear-gradient(180deg, var(--bg-sky-1) 0%, var(--bg-sky-2) 100%);
+    overflow-x:hidden;
+    position:relative;
+  }
+  .cloud{
+    position:absolute; background:#fff; border-radius:100px; opacity:.8; filter:blur(0.5px);
+    box-shadow: 40px 0 0 -6px #fff, -40px 0 0 -6px #fff, 20px -14px 0 -2px #fff, -20px -14px 0 -2px #fff;
+  }
+  h1,h2,h3,.display{ font-family:'Baloo 2', cursive; }
+
+  .app{ max-width:520px; margin:0 auto; padding:20px 18px 60px; position:relative; z-index:1; }
+
+  .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand h1{ font-size:22px; margin:0; color:var(--ink); }
+  .switch-link{
+    background:none; border:none; color:var(--ink-soft); font-family:'Nunito'; font-weight:700;
+    font-size:13px; cursor:pointer; text-decoration:underline; padding:6px;
+  }
+
+  .screen{ display:none; animation: fadeIn .35s ease; }
+  .screen.active{ display:block; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  /* ---------- Card base ---------- */
+  .card{
+    background:var(--white); border-radius:var(--radius-lg); box-shadow:var(--shadow);
+    padding:24px 22px;
+  }
+
+  /* ---------- Profile screen ---------- */
+  .owl-wrap{ display:flex; justify-content:center; margin-bottom:6px; }
+  .speech{
+    background:var(--white); border-radius:20px; padding:12px 18px; box-shadow:var(--shadow-sm);
+    font-weight:700; text-align:center; margin:10px auto 22px; max-width:340px; position:relative;
+    font-size:15px; color:var(--ink);
+  }
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-weight:800; margin-bottom:8px; font-size:15px; }
+  .field input{
+    width:100%; padding:14px 16px; border-radius:var(--radius-md); border:2px solid #E4EEF5;
+    font-family:'Nunito'; font-size:16px; font-weight:700; color:var(--ink); background:#F8FBFD;
+  }
+  .field input:focus{ outline:none; border-color:var(--sun); background:#fff; }
+
+  .tier-options{ display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+  .tier-btn{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:14px 16px; border-radius:var(--radius-md); border:2px solid #E4EEF5; background:#F8FBFD;
+    cursor:pointer; font-family:'Nunito'; font-weight:800; font-size:14.5px; color:var(--ink); text-align:left;
+  }
+  .tier-btn .tag{ font-size:11px; font-weight:800; padding:4px 9px; border-radius:100px; background:var(--sun); color:#5A3F00; }
+  .tier-btn.selected{ border-color:var(--sun-dark); background:#FFF7E6; }
+
+  .btn-primary{
+    width:100%; padding:16px; border:none; border-radius:100px; background:var(--sun);
+    color:#5A3F00; font-family:'Baloo 2'; font-weight:700; font-size:18px; cursor:pointer;
+    box-shadow:0 6px 0 var(--sun-dark); transition:transform .08s;
+  }
+  .btn-primary:active{ transform:translateY(4px); box-shadow:0 2px 0 var(--sun-dark); }
+  .btn-secondary{
+    width:100%; padding:14px; border:2px solid #E4EEF5; border-radius:100px; background:#fff;
+    color:var(--ink); font-family:'Baloo 2'; font-weight:700; font-size:16px; cursor:pointer; margin-top:10px;
+  }
+
+  /* ---------- Home screen ---------- */
+  .hero-banner{
+    position:relative; border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow);
+    margin-bottom:16px; height:110px;
+  }
+  .hero-banner svg{ width:100%; height:100%; display:block; }
+  .hero-owl{ position:absolute; bottom:-6px; right:16px; width:64px; height:64px; }
+
+  .welcome{ margin-bottom:18px; }
+  .welcome h2{ margin:0 0 4px; font-size:24px; }
+  .welcome p{ margin:0; color:var(--ink-soft); font-weight:700; font-size:14px; }
+  .stars-total{
+    display:inline-flex; align-items:center; gap:6px; margin-top:10px; background:#FFF7E6;
+    padding:8px 14px; border-radius:100px; font-weight:800; color:#8A6200; font-size:14px;
+  }
+
+  .theme-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .theme-card{
+    border-radius:var(--radius-md); padding:18px 14px; cursor:pointer; border:none;
+    display:flex; flex-direction:column; align-items:flex-start; gap:8px; box-shadow:var(--shadow-sm);
+    font-family:'Nunito'; text-align:left; transition:transform .12s;
+  }
+  .theme-card:active{ transform:scale(0.97); }
+  .theme-card .icon-badge{
+    width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,0.65); box-shadow:inset 0 0 0 3px rgba(255,255,255,0.9);
+  }
+  .theme-card .icon-badge svg{ width:36px; height:36px; }
+  .star-row{ display:inline-flex; gap:2px; vertical-align:middle; }
+  .star-row svg{ width:16px; height:16px; }
+  .theme-card h3{ margin:0; font-size:17px; color:var(--ink); }
+  .theme-card .progress-txt{ font-size:12.5px; font-weight:800; opacity:.75; }
+
+  .theme-history{ background:var(--history-light); }
+  .theme-geo{ background:var(--geo-light); }
+  .theme-nature{ background:var(--nature-light); }
+  .theme-animals{ background:var(--animals-light); }
+
+  /* ---------- Theme / puzzle list screen ---------- */
+  .back-row{ display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .back-btn{
+    width:38px; height:38px; border-radius:50%; border:none; background:#fff; box-shadow:var(--shadow-sm);
+    cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center;
+  }
+  .theme-title{ font-size:22px; margin:0; }
+
+  .puzzle-list{ display:flex; flex-direction:column; gap:14px; }
+  .puzzle-item{
+    display:flex; align-items:center; gap:14px; background:#fff; border-radius:var(--radius-md);
+    padding:12px; box-shadow:var(--shadow-sm); cursor:pointer; border:none; text-align:left; width:100%;
+    font-family:'Nunito';
+  }
+  .puzzle-thumb{
+    width:64px; height:64px; border-radius:14px; overflow:hidden; flex-shrink:0; background:#eee;
+  }
+  .puzzle-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .puzzle-info{ flex:1; }
+  .puzzle-info h4{ margin:0 0 4px; font-size:16px; }
+  .puzzle-info .stars{ font-size:14px; letter-spacing:2px; }
+  .puzzle-info .diff{ font-size:11.5px; color:var(--ink-soft); font-weight:800; }
+
+  /* ---------- Puzzle screen ---------- */
+  .puzzle-header{ text-align:center; margin-bottom:14px; }
+  .puzzle-header h3{ margin:0 0 4px; font-size:20px; }
+  .puzzle-header p{ margin:0; color:var(--ink-soft); font-weight:700; font-size:13px; }
+
+  .board-wrap{
+    background:#fff; border-radius:var(--radius-lg); padding:10px; box-shadow:var(--shadow); margin:0 auto 18px;
+    max-width:380px;
+  }
+  .board{
+    display:grid; gap:4px; aspect-ratio:1/1; border-radius:16px; overflow:hidden;
+  }
+  .piece{
+    background-repeat:no-repeat; cursor:pointer; border-radius:6px;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,0.55);
+    transition:transform .12s, box-shadow .12s;
+  }
+  .piece:hover{ transform:scale(0.98); }
+  .piece.selected{ box-shadow:inset 0 0 0 4px var(--sun-dark); transform:scale(0.93); z-index:2; }
+
+  .hint-row{ text-align:center; color:var(--ink-soft); font-weight:700; font-size:13px; margin-top:-6px; margin-bottom:8px;}
+
+  /* ---------- Overlay (complete) ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(43,58,74,0.55); display:none;
+    align-items:flex-end; justify-content:center; z-index:50;
+  }
+  .overlay.active{ display:flex; }
+  .sheet{
+    background:#fff; width:100%; max-width:520px; border-radius:26px 26px 0 0; padding:26px 22px 30px;
+    animation: slideUp .3s ease;
+  }
+  @keyframes slideUp{ from{transform:translateY(30px); opacity:0;} to{transform:translateY(0); opacity:1;} }
+  .sheet h3{ text-align:center; margin:6px 0 10px; font-size:22px; }
+  .fact-box{
+    background:#FFF7E6; border-radius:var(--radius-md); padding:14px 16px; font-weight:700; font-size:14.5px;
+    text-align:center; margin-bottom:18px; color:#6B4E00;
+  }
+  .quiz-q{ font-weight:800; text-align:center; margin-bottom:14px; font-size:15.5px; }
+  .quiz-options{ display:flex; flex-direction:column; gap:10px; margin-bottom:6px; }
+  .quiz-opt{
+    padding:14px; border-radius:var(--radius-md); border:2px solid #E4EEF5; background:#F8FBFD;
+    font-family:'Nunito'; font-weight:800; font-size:14.5px; cursor:pointer; text-align:left;
+  }
+  .quiz-opt.correct{ border-color:#4CAF6D; background:#E4F7E9; color:#276B3E; }
+  .quiz-opt.wrong{ border-color:#FF7A5C; background:#FFE9E3; color:#9C3A20; }
+  .quiz-feedback{ text-align:center; font-weight:800; margin:10px 0; font-size:14.5px; min-height:20px; }
+
+  .confetti-emoji{ font-size:34px; text-align:center; margin-bottom:6px; }
+
+  .diff-picker{ display:flex; gap:8px; justify-content:center; margin-bottom:16px; flex-wrap:wrap; }
+  .diff-chip{
+    padding:8px 12px; border-radius:16px; border:2px solid #E4EEF5; background:#F8FBFD;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .diff-chip.active{ border-color:var(--sun-dark); background:#FFF7E6; }
+
+  .hidden{ display:none !important; }
+</style>
+</head>
+<body>
+
+<div class="cloud" style="width:60px;height:24px;top:40px;left:20px;"></div>
+<div class="cloud" style="width:80px;height:30px;top:90px;right:10px;"></div>
+
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand">
+      <svg width="36" height="36" viewBox="0 0 60 60">
+        <path d="M8 8h16v6a5 5 0 0 0 10 0V8h18v16h-6a5 5 0 0 0 0 10h6v18H24v-6a5 5 0 0 0-10 0v6H8V34h6a5 5 0 0 0 0-10H8Z"
+          fill="#FFC93C" stroke="#E8A825" stroke-width="2.5" stroke-linejoin="round"/>
+      </svg>
+      <h1>Bé Xếp Hình</h1>
+    </div>
+    <button class="switch-link hidden" id="switchProfileBtn">Đổi hồ sơ</button>
+  </div>
+
+  <!-- ============ SCREEN: PROFILE ============ -->
+  <section class="screen" id="screen-profile">
+    <div class="owl-wrap" id="owlProfile"></div>
+    <div class="speech">Xin chào bạn nhỏ! Cho mình biết tên và tuổi để chọn độ khó phù hợp nhé 🦉</div>
+    <div class="card">
+      <div class="field">
+        <label for="inputName">Tên của bé</label>
+        <input type="text" id="inputName" placeholder="Ví dụ: Bi" maxlength="20">
+      </div>
+      <div class="field">
+        <label for="inputAge">Tuổi</label>
+        <input type="number" id="inputAge" placeholder="Ví dụ: 6" min="2" max="14">
+      </div>
+      <div class="field">
+        <label>Độ khó (hệ thống gợi ý sẵn, bé có thể đổi)</label>
+        <div class="tier-options" id="tierOptions"></div>
+      </div>
+      <button class="btn-primary" id="startBtn">Bắt đầu chơi 🚀</button>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN: HOME ============ -->
+  <section class="screen" id="screen-home">
+    <div class="hero-banner">
+      <svg viewBox="0 0 500 160" preserveAspectRatio="none">
+        <rect width="500" height="160" fill="#BFE6FA"/>
+        <circle cx="430" cy="40" r="30" fill="#FFC93C"/>
+        <ellipse cx="60" cy="35" rx="30" ry="13" fill="#fff"/>
+        <ellipse cx="110" cy="25" rx="20" ry="9" fill="#fff"/>
+        <path d="M0 130 Q60 95 130 120 T260 110 T500 125 V160 H0 Z" fill="#8FBF6A"/>
+        <path d="M0 145 Q80 120 170 140 T500 140 V160 H0 Z" fill="#7BAE58"/>
+        <circle cx="360" cy="118" r="26" fill="#4CAF6D"/>
+        <circle cx="330" cy="128" r="20" fill="#3E9A5C"/>
+        <rect x="356" y="128" width="8" height="24" fill="#8A5A34"/>
+      </svg>
+      <div class="hero-owl" id="homeOwl"></div>
+    </div>
+    <div class="welcome">
+      <h2 id="welcomeText">Xin chào!</h2>
+      <p>Chọn một chủ đề để bắt đầu ghép hình nhé</p>
+      <div class="stars-total" id="starsTotal"></div>
+    </div>
+    <div class="theme-grid" id="themeGrid"></div>
+  </section>
+
+  <!-- ============ SCREEN: PUZZLE LIST ============ -->
+  <section class="screen" id="screen-list">
+    <div class="back-row">
+      <button class="back-btn" id="backToHome">←</button>
+      <h2 class="theme-title" id="listTitle">Chủ đề</h2>
+    </div>
+    <div class="puzzle-list" id="puzzleList"></div>
+  </section>
+
+  <!-- ============ SCREEN: PUZZLE PLAY ============ -->
+  <section class="screen" id="screen-puzzle">
+    <div class="back-row">
+      <button class="back-btn" id="backToList">←</button>
+      <h2 class="theme-title" id="puzzleTitle">Ghép hình</h2>
+    </div>
+    <div class="diff-picker" id="diffPicker"></div>
+    <div class="puzzle-header">
+      <p>Chạm vào 2 ô để đổi chỗ cho nhau, ghép đúng vị trí nhé!</p>
+    </div>
+    <div class="board-wrap">
+      <div class="board" id="board"></div>
+    </div>
+    <div class="hint-row" id="movesHint">0 lần đổi chỗ</div>
+  </section>
+
+</div>
+
+<!-- ============ OVERLAY: COMPLETE + FACT + QUIZ ============ -->
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <div class="confetti-emoji" id="stepIcon">
+      <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+        <span style="font-size:34px;">🎉</span>
+        <span id="overlayOwl"></span>
+        <span style="font-size:34px;">🎉</span>
+      </div>
+    </div>
+    <h3 id="stepTitle">Bé ghép đúng rồi!</h3>
+
+    <div id="factStep">
+      <div class="fact-box" id="factText"></div>
+      <button class="btn-primary" id="toQuizBtn">Xem câu hỏi vui →</button>
+    </div>
+
+    <div id="quizStep" class="hidden">
+      <div class="quiz-q" id="quizQ"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <button class="btn-primary hidden" id="finishBtn">Tiếp tục</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+const TIERS = {
+  easy:   { label:'Dễ',        cols:2, rows:2, pieces:4,  ageHint:'3–5 tuổi' },
+  medium: { label:'Trung bình',cols:3, rows:3, pieces:9,  ageHint:'6–8 tuổi' },
+  hard:   { label:'Khó',       cols:4, rows:4, pieces:16, ageHint:'9–12 tuổi' },
+};
+
+function suggestTier(age){
+  if(age <= 5) return 'easy';
+  if(age <= 8) return 'medium';
+  return 'hard';
+}
+
+// Simple flat-illustration SVG bodies (inner markup only), viewBox 0 0 400 400
+const ART = {
+  pyramid: `
+    <rect width="400" height="400" fill="#FCE7C8"/>
+    <circle cx="310" cy="85" r="42" fill="#FFC93C"/>
+    <rect x="0" y="270" width="400" height="130" fill="#E8C27A"/>
+    <path d="M0 270 Q100 250 220 270 T400 268 V400 H0 Z" fill="#DDB268"/>
+    <polygon points="70,270 190,110 310,270" fill="#D9A85C"/>
+    <polygon points="190,110 250,270 310,270" fill="#B98842"/>
+    <polygon points="230,270 300,170 370,270" fill="#E8C27A"/>
+    <polygon points="300,170 335,270 370,270" fill="#C79A5C"/>
+    <ellipse cx="110" cy="300" rx="14" ry="20" fill="#4C7A3E"/>
+    <ellipse cx="335" cy="300" rx="10" ry="15" fill="#4C7A3E"/>
+  `,
+  colosseum: `
+    <rect width="400" height="400" fill="#BFE6FA"/>
+    <ellipse cx="90" cy="70" rx="34" ry="14" fill="#fff"/>
+    <ellipse cx="150" cy="55" rx="24" ry="10" fill="#fff"/>
+    <rect x="0" y="330" width="400" height="70" fill="#8FBF6A"/>
+    <rect x="40" y="180" width="320" height="150" rx="10" fill="#E3C6A6"/>
+    <rect x="40" y="150" width="320" height="40" rx="8" fill="#D1AD87"/>
+    <rect x="40" y="120" width="320" height="35" rx="8" fill="#C29A72"/>
+    ${Array.from({length:7}).map((_,i)=>`<rect x="${58+i*44}" y="195" width="26" height="55" rx="13" fill="#BFE6FA"/>`).join('')}
+    ${Array.from({length:7}).map((_,i)=>`<rect x="${58+i*44}" y="255" width="26" height="55" rx="13" fill="#A9866A"/>`).join('')}
+  `,
+  mountains: `
+    <rect width="400" height="400" fill="#CFEFFF"/>
+    <circle cx="330" cy="70" r="36" fill="#FFC93C"/>
+    <path d="M0 300 L60 90 L130 220 L190 60 L260 260 L330 140 L400 300 Z" fill="#7C93A8"/>
+    <polygon points="190,60 220,120 160,120" fill="#fff"/>
+    <polygon points="60,90 85,140 35,140" fill="#fff"/>
+    <polygon points="330,140 355,180 305,180" fill="#fff"/>
+    <rect x="0" y="300" width="400" height="100" fill="#8FBF6A"/>
+    <path d="M40 250 q10 -14 20 0" stroke="#4C6B8A" stroke-width="4" fill="none"/>
+    <path d="M340 230 q10 -14 20 0" stroke="#4C6B8A" stroke-width="4" fill="none"/>
+  `,
+  worldmap: `
+    <rect width="400" height="400" fill="#8FD3E8"/>
+    <path d="M40 120 Q80 90 130 110 T220 100 Q250 130 220 160 T150 190 Q100 200 70 170 T40 120Z" fill="#7BC47F"/>
+    <path d="M150 220 Q190 210 210 250 T190 320 Q160 340 140 310 T150 220Z" fill="#E8C27A"/>
+    <path d="M250 150 Q300 140 330 170 T310 230 Q270 240 250 200 T250 150Z" fill="#7BC47F"/>
+    <path d="M270 260 Q320 260 330 300 T290 330 Q260 320 260 290 T270 260Z" fill="#E8C27A"/>
+    <circle cx="100" cy="330" r="26" fill="#fff" opacity="0.5"/>
+    <circle cx="340" cy="90" r="18" fill="#fff" opacity="0.5"/>
+  `,
+  rainforest: `
+    <rect width="400" height="400" fill="#CDEBC9"/>
+    <circle cx="330" cy="70" r="38" fill="#FFC93C"/>
+    <rect x="60" y="220" width="20" height="140" fill="#8A5A34"/>
+    <rect x="180" y="200" width="22" height="160" fill="#8A5A34"/>
+    <rect x="300" y="230" width="18" height="130" fill="#8A5A34"/>
+    <circle cx="70" cy="190" r="60" fill="#4CAF6D"/>
+    <circle cx="30" cy="220" r="42" fill="#3E9A5C"/>
+    <circle cx="190" cy="160" r="72" fill="#5CC17E"/>
+    <circle cx="130" cy="200" r="46" fill="#3E9A5C"/>
+    <circle cx="310" cy="190" r="58" fill="#4CAF6D"/>
+    <circle cx="360" cy="220" r="38" fill="#3E9A5C"/>
+    <ellipse cx="230" cy="300" rx="18" ry="10" fill="#E24C3B"/>
+    <polygon points="248,300 268,294 268,306" fill="#FFC93C"/>
+  `,
+  waterfall: `
+    <rect width="400" height="400" fill="#BFE6FA"/>
+    <polygon points="0,140 400,100 400,400 0,400" fill="#9AA9A0"/>
+    <polygon points="0,140 400,100 400,140 0,180" fill="#7C8B82"/>
+    <rect x="150" y="90" width="80" height="230" fill="#EAF7FB"/>
+    <path d="M150 90 Q170 150 150 220 T170 320" stroke="#CDEFFA" stroke-width="10" fill="none" opacity="0.7"/>
+    <ellipse cx="190" cy="335" rx="90" ry="30" fill="#BFE0EC"/>
+    <circle cx="90" cy="170" r="26" fill="#4CAF6D"/>
+    <circle cx="300" cy="130" r="30" fill="#4CAF6D"/>
+    <rect x="0" y="340" width="400" height="60" fill="#8FBF6A"/>
+  `,
+  lion: `
+    <rect width="400" height="400" fill="#FCE9C8"/>
+    <circle cx="200" cy="210" r="130" fill="#E8A23C"/>
+    <circle cx="200" cy="210" r="88" fill="#F4C86A"/>
+    <ellipse cx="165" cy="195" rx="12" ry="15" fill="#3A2A1A"/>
+    <ellipse cx="235" cy="195" rx="12" ry="15" fill="#3A2A1A"/>
+    <polygon points="200,225 188,245 212,245" fill="#8A5A34"/>
+    <path d="M180 260 Q200 275 220 260" stroke="#8A5A34" stroke-width="5" fill="none"/>
+    <path d="M150 250 Q120 255 100 265" stroke="#8A5A34" stroke-width="3" fill="none"/>
+    <path d="M150 260 Q120 268 98 282" stroke="#8A5A34" stroke-width="3" fill="none"/>
+    <path d="M250 250 Q280 255 300 265" stroke="#8A5A34" stroke-width="3" fill="none"/>
+    <path d="M250 260 Q280 268 302 282" stroke="#8A5A34" stroke-width="3" fill="none"/>
+  `,
+  elephant: `
+    <rect width="400" height="400" fill="#DCEFFA"/>
+    <rect x="0" y="330" width="400" height="70" fill="#B7D9A0"/>
+    <ellipse cx="220" cy="260" rx="120" ry="90" fill="#A9B4BC"/>
+    <circle cx="140" cy="180" r="70" fill="#B7C2C9"/>
+    <ellipse cx="90" cy="170" rx="38" ry="50" fill="#9AA6AD"/>
+    <path d="M110 210 Q95 270 120 320 Q135 330 130 300 Q118 260 130 215Z" fill="#9AA6AD"/>
+    <circle cx="120" cy="165" r="7" fill="#2B3A4A"/>
+    <rect x="180" y="330" width="26" height="55" rx="10" fill="#9AA6AD"/>
+    <rect x="240" y="330" width="26" height="55" rx="10" fill="#9AA6AD"/>
+    <rect x="300" y="320" width="26" height="60" rx="10" fill="#9AA6AD"/>
+  `
+};
+
+const ICONS = {
+  history: `<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="none"/>
+    <polygon points="30,12 48,42 12,42" fill="#C97B4A"/>
+    <polygon points="30,12 39,42 30,42" fill="#A9613A"/>
+    <rect x="10" y="42" width="40" height="6" rx="2" fill="#8A5A34"/></svg>`,
+  geo: `<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="20" fill="#2EA8A0"/>
+    <path d="M10 30h40M30 10v40M14 18c8 6 24 6 32 0M14 42c8-6 24-6 32 0" stroke="#D7F3F0" stroke-width="2.5" fill="none"/>
+    <ellipse cx="24" cy="24" rx="7" ry="10" fill="#7BC47F"/>
+    <ellipse cx="38" cy="36" rx="6" ry="8" fill="#7BC47F"/></svg>`,
+  nature: `<svg viewBox="0 0 60 60">
+    <rect x="27" y="36" width="6" height="16" fill="#8A5A34"/>
+    <circle cx="30" cy="24" r="16" fill="#4CAF6D"/>
+    <circle cx="18" cy="30" r="10" fill="#3E9A5C"/>
+    <circle cx="42" cy="30" r="10" fill="#3E9A5C"/></svg>`,
+  animals: `<svg viewBox="0 0 60 60"><circle cx="30" cy="32" r="16" fill="#FF7A5C"/>
+    <circle cx="30" cy="32" r="10" fill="#FFB39C"/>
+    <circle cx="18" cy="16" r="6" fill="#FF7A5C"/>
+    <circle cx="42" cy="16" r="6" fill="#FF7A5C"/>
+    <circle cx="24" cy="30" r="2" fill="#7A2E1B"/>
+    <circle cx="36" cy="30" r="2" fill="#7A2E1B"/></svg>`,
+};
+
+function starRow(filled, total){
+  const svgStar = (isFilled) => `<svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9.5 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9.5 9,9"
+      fill="${isFilled ? '#FFC93C' : 'none'}" stroke="${isFilled ? '#E8A825' : '#C9D3DA'}" stroke-width="1.5"/></svg>`;
+  let out = '<span class="star-row">';
+  for(let i=0;i<total;i++) out += svgStar(i<filled);
+  out += '</span>';
+  return out;
+}
+
+function gridIcon(cols, rows, color){
+  const cell = 40/Math.max(cols,rows);
+  let rects = '';
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      rects += `<rect x="${c*cell+2}" y="${r*cell+2}" width="${cell-3}" height="${cell-3}" rx="2" fill="${color}"/>`;
+    }
+  }
+  return `<svg viewBox="0 0 44 44" width="28" height="28">${rects}</svg>`;
+}
+
+const THEMES = [
+  {
+    id:'history', name:'Lịch sử', cls:'theme-history', color:'var(--history)',
+    icon:'🏛️',
+    puzzles:[
+      { id:'pyramid', title:'Kim tự tháp Ai Cập', art:ART.pyramid,
+        fact:'Kim tự tháp Giza ở Ai Cập được xây dựng cách đây hơn 4.500 năm và từng là công trình cao nhất thế giới trong hơn 3.000 năm!',
+        quiz:{ q:'Kim tự tháp Giza nằm ở quốc gia nào?', options:['Ai Cập','Hy Lạp','Ấn Độ'], correct:0 } },
+      { id:'colosseum', title:'Đấu trường La Mã', art:ART.colosseum,
+        fact:'Đấu trường La Mã ở Ý có thể chứa tới khoảng 50.000 khán giả đến xem các trận đấu thời xưa.',
+        quiz:{ q:'Đấu trường La Mã nằm ở thành phố nào?', options:['Roma','Paris','Cairo'], correct:0 } },
+    ]
+  },
+  {
+    id:'geo', name:'Địa lý', cls:'theme-geo', color:'var(--geo)',
+    icon:'🌍',
+    puzzles:[
+      { id:'mountains', title:'Dãy núi tuyết', art:ART.mountains,
+        fact:'Đỉnh Everest là ngọn núi cao nhất thế giới, cao khoảng 8.849 mét so với mực nước biển.',
+        quiz:{ q:'Ngọn núi nào cao nhất thế giới?', options:['Everest','Fansipan','Kilimanjaro'], correct:0 } },
+      { id:'worldmap', title:'Bản đồ thế giới', art:ART.worldmap,
+        fact:'Trái Đất có 6 châu lục lớn: châu Á, châu Âu, châu Phi, châu Mỹ, châu Đại Dương và châu Nam Cực.',
+        quiz:{ q:'Châu lục nào lớn nhất thế giới?', options:['Châu Á','Châu Âu','Châu Đại Dương'], correct:0 } },
+    ]
+  },
+  {
+    id:'nature', name:'Thiên nhiên', cls:'theme-nature', color:'var(--nature)',
+    icon:'🌳',
+    puzzles:[
+      { id:'rainforest', title:'Rừng nhiệt đới', art:ART.rainforest,
+        fact:'Rừng mưa Amazon là khu rừng nhiệt đới lớn nhất thế giới, là nơi sinh sống của hàng triệu loài động thực vật.',
+        quiz:{ q:'Rừng nhiệt đới lớn nhất thế giới thuộc châu lục nào?', options:['Nam Mỹ','Châu Âu','Nam Cực'], correct:0 } },
+      { id:'waterfall', title:'Thác nước', art:ART.waterfall,
+        fact:'Thác Angel ở Venezuela là thác nước cao nhất thế giới, với độ cao hơn 900 mét.',
+        quiz:{ q:'Nước đổ từ trên cao xuống tạo thành hiện tượng gì?', options:['Thác nước','Sông','Hồ'], correct:0 } },
+    ]
+  },
+  {
+    id:'animals', name:'Động vật', cls:'theme-animals', color:'var(--animals)',
+    icon:'🦁',
+    puzzles:[
+      { id:'lion', title:'Sư tử', art:ART.lion,
+        fact:'Sư tử được gọi là "chúa tể sơn lâm" và là loài mèo lớn duy nhất sống theo bầy đàn.',
+        quiz:{ q:'Đặc điểm nổi bật của sư tử đực là gì?', options:['Bờm quanh cổ','Vòi dài','Có cánh'], correct:0 } },
+      { id:'elephant', title:'Voi', art:ART.elephant,
+        fact:'Voi là loài động vật trên cạn lớn nhất thế giới và có thể sống tới 60-70 năm.',
+        quiz:{ q:'Voi dùng bộ phận nào để lấy nước và thức ăn?', options:['Vòi','Đuôi','Tai'], correct:0 } },
+    ]
+  },
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let profile = null;          // {name, age, tier}
+let progress = {};           // {puzzleId: {stars: 1|2}}
+let currentThemeId = null;
+let currentPuzzle = null;
+let currentTier = 'medium';
+let selectedPiece = null;
+let quizAnsweredCorrectly = false;
+let quizAttempts = 0;
+
+/* ============================================================
+   STORAGE HELPERS
+   ============================================================ */
+async function loadProfile(){
+  try{
+    const res = await window.storage.get('profile', false);
+    return res ? JSON.parse(res.value) : null;
+  }catch(e){ return null; }
+}
+async function saveProfile(p){
+  try{ await window.storage.set('profile', JSON.stringify(p), false); }catch(e){ console.error(e); }
+}
+async function loadProgress(){
+  try{
+    const res = await window.storage.get('progress', false);
+    return res ? JSON.parse(res.value) : {};
+  }catch(e){ return {}; }
+}
+async function saveProgress(){
+  try{ await window.storage.set('progress', JSON.stringify(progress), false); }catch(e){ console.error(e); }
+}
+async function clearAll(){
+  try{ await window.storage.delete('profile', false); }catch(e){}
+  try{ await window.storage.delete('progress', false); }catch(e){}
+}
+
+/* ============================================================
+   OWL MASCOT (small svg)
+   ============================================================ */
+function owlSvg(size){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 120 120">
+    <ellipse cx="60" cy="70" rx="42" ry="40" fill="#B98A5A"/>
+    <ellipse cx="60" cy="65" rx="34" ry="32" fill="#E8C79A"/>
+    <polygon points="30,35 42,55 20,55" fill="#B98A5A"/>
+    <polygon points="90,35 100,55 78,55" fill="#B98A5A"/>
+    <circle cx="44" cy="62" r="14" fill="#fff"/>
+    <circle cx="76" cy="62" r="14" fill="#fff"/>
+    <circle cx="44" cy="62" r="7" fill="#2B3A4A"/>
+    <circle cx="76" cy="62" r="7" fill="#2B3A4A"/>
+    <polygon points="60,72 52,84 68,84" fill="#E8A23C"/>
+    <ellipse cx="60" cy="108" rx="16" ry="7" fill="#D9A85C"/>
+  </svg>`;
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', async () => {
+  document.getElementById('owlProfile').innerHTML = owlSvg(100);
+  renderTierOptions(null);
+
+  profile = await loadProfile();
+  progress = await loadProgress();
+
+  if(profile){
+    document.getElementById('switchProfileBtn').classList.remove('hidden');
+    goHome();
+  } else {
+    showScreen('screen-profile');
+  }
+
+  bindEvents();
+});
+
+function renderTierOptions(suggested){
+  const wrap = document.getElementById('tierOptions');
+  wrap.innerHTML = '';
+  Object.entries(TIERS).forEach(([key, t]) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'tier-btn' + (key === (currentTier) ? ' selected' : '');
+    btn.dataset.tier = key;
+    btn.innerHTML = `<span>${t.label} · ${t.pieces} mảnh</span>` + (key===suggested ? `<span class="tag">Đề xuất</span>` : '');
+    btn.addEventListener('click', () => {
+      currentTier = key;
+      document.querySelectorAll('.tier-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function bindEvents(){
+  document.getElementById('inputAge').addEventListener('input', (e) => {
+    const age = parseInt(e.target.value, 10);
+    if(!isNaN(age) && age > 0){
+      currentTier = suggestTier(age);
+      renderTierOptions(currentTier);
+    }
+  });
+
+  document.getElementById('startBtn').addEventListener('click', async () => {
+    const name = document.getElementById('inputName').value.trim() || 'Bạn nhỏ';
+    const age = parseInt(document.getElementById('inputAge').value, 10) || 6;
+    profile = { name, age, tier: currentTier };
+    await saveProfile(profile);
+    document.getElementById('switchProfileBtn').classList.remove('hidden');
+    goHome();
+  });
+
+  document.getElementById('switchProfileBtn').addEventListener('click', async () => {
+    if(confirm('Đổi hồ sơ sẽ giữ lại tiến trình đã lưu, nhưng bé sẽ nhập lại tên/tuổi. Tiếp tục?')){
+      profile = null;
+      showScreen('screen-profile');
+      document.getElementById('inputName').value = '';
+      document.getElementById('inputAge').value = '';
+      renderTierOptions(null);
+    }
+  });
+
+  document.getElementById('backToHome').addEventListener('click', goHome);
+  document.getElementById('backToList').addEventListener('click', () => openThemeList(currentThemeId));
+
+  document.getElementById('toQuizBtn').addEventListener('click', showQuizStep);
+  document.getElementById('finishBtn').addEventListener('click', closeOverlayAndRefresh);
+}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+function goHome(){
+  document.getElementById('welcomeText').textContent = `Xin chào, ${profile.name}! 👋`;
+  const totalStars = Object.values(progress).reduce((s,p)=>s+(p.stars||0),0);
+  const starIconFilled = `<svg viewBox="0 0 24 24" width="18" height="18" style="vertical-align:-3px;"><polygon points="12,2 15,9 22,9.5 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9.5 9,9" fill="#FFC93C" stroke="#E8A825" stroke-width="1.5"/></svg>`;
+  document.getElementById('starsTotal').innerHTML = `${starIconFilled} ${totalStars} sao`;
+  document.getElementById('homeOwl').innerHTML = owlSvg(64);
+
+  const grid = document.getElementById('themeGrid');
+  grid.innerHTML = '';
+  THEMES.forEach(theme => {
+    const done = theme.puzzles.filter(p => progress[p.id]).length;
+    const card = document.createElement('button');
+    card.className = `theme-card ${theme.cls}`;
+    card.innerHTML = `
+      <div class="icon-badge">${ICONS[theme.id]}</div>
+      <h3>${theme.name}</h3>
+      <div class="progress-txt">${starRow(done, theme.puzzles.length)}</div>
+    `;
+    card.addEventListener('click', () => openThemeList(theme.id));
+    grid.appendChild(card);
+  });
+
+  showScreen('screen-home');
+}
+
+/* ============================================================
+   THEME PUZZLE LIST
+   ============================================================ */
+function openThemeList(themeId){
+  currentThemeId = themeId;
+  const theme = THEMES.find(t => t.id === themeId);
+  document.getElementById('listTitle').textContent = theme.name;
+
+  const list = document.getElementById('puzzleList');
+  list.innerHTML = '';
+  theme.puzzles.forEach(p => {
+    const stars = progress[p.id]?.stars || 0;
+    const dataUri = svgToDataUri(p.art);
+    const item = document.createElement('button');
+    item.className = 'puzzle-item';
+    const t = TIERS[profile.tier];
+    item.innerHTML = `
+      <div class="puzzle-thumb" style="border:3px solid ${theme.color};"><img src="${dataUri}" alt=""></div>
+      <div class="puzzle-info">
+        <h4>${p.title}</h4>
+        <div class="stars">${starRow(stars, 2)}</div>
+        <div class="diff">${gridIcon(t.cols, t.rows, theme.color)}</div>
+      </div>
+    `;
+    item.addEventListener('click', () => openPuzzle(theme, p));
+    list.appendChild(item);
+  });
+
+  showScreen('screen-list');
+}
+
+function svgToDataUri(inner){
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">${inner}</svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+/* ============================================================
+   PUZZLE PLAY
+   ============================================================ */
+let moveCount = 0;
+
+function openPuzzle(theme, puzzle){
+  currentPuzzle = { theme, puzzle };
+  document.getElementById('puzzleTitle').textContent = puzzle.title;
+  renderDiffPicker();
+  buildBoard(profile.tier);
+  showScreen('screen-puzzle');
+}
+
+function renderDiffPicker(){
+  const wrap = document.getElementById('diffPicker');
+  wrap.innerHTML = '';
+  Object.entries(TIERS).forEach(([key,t]) => {
+    const chip = document.createElement('button');
+    chip.className = 'diff-chip' + (key===profile.tier ? ' active' : '');
+    chip.innerHTML = `${gridIcon(t.cols, t.rows, key===profile.tier ? '#E8A825' : '#B9C6CE')}`;
+    chip.addEventListener('click', () => {
+      profile.tier = key;
+      saveProfile(profile);
+      renderDiffPicker();
+      buildBoard(key);
+    });
+    wrap.appendChild(chip);
+  });
+}
+
+function buildBoard(tierKey){
+  const tier = TIERS[tierKey];
+  const board = document.getElementById('board');
+  board.style.gridTemplateColumns = `repeat(${tier.cols}, 1fr)`;
+  board.style.gridTemplateRows = `repeat(${tier.rows}, 1fr)`;
+  board.innerHTML = '';
+  selectedPiece = null;
+  moveCount = 0;
+  document.getElementById('movesHint').textContent = '0 lần đổi chỗ';
+
+  const dataUri = svgToDataUri(currentPuzzle.puzzle.art);
+  const total = tier.cols * tier.rows;
+  let order = [...Array(total).keys()];
+  shuffleUntilMixed(order);
+
+  order.forEach(correctIndex => {
+    const piece = document.createElement('div');
+    piece.className = 'piece';
+    piece.dataset.correct = correctIndex;
+    const col = correctIndex % tier.cols;
+    const row = Math.floor(correctIndex / tier.cols);
+    piece.style.backgroundImage = `url("${dataUri}")`;
+    piece.style.backgroundSize = `${tier.cols * 100}% ${tier.rows * 100}%`;
+    piece.style.backgroundPosition =
+      `${tier.cols === 1 ? 0 : (col/(tier.cols-1))*100}% ${tier.rows === 1 ? 0 : (row/(tier.rows-1))*100}%`;
+    piece.addEventListener('click', () => onPieceClick(piece));
+    board.appendChild(piece);
+  });
+}
+
+function shuffleUntilMixed(arr){
+  const isSolved = a => a.every((v,i) => v === i);
+  do {
+    for(let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i+1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  } while(isSolved(arr) && arr.length > 1);
+}
+
+function onPieceClick(piece){
+  if(selectedPiece === piece){
+    piece.classList.remove('selected');
+    selectedPiece = null;
+    return;
+  }
+  if(!selectedPiece){
+    selectedPiece = piece;
+    piece.classList.add('selected');
+    return;
+  }
+  swapDom(selectedPiece, piece);
+  selectedPiece.classList.remove('selected');
+  selectedPiece = null;
+  moveCount++;
+  document.getElementById('movesHint').textContent = `${moveCount} lần đổi chỗ`;
+  checkSolved();
+}
+
+function swapDom(a, b){
+  const parent = a.parentNode;
+  const aNext = a.nextSibling === b ? a : a.nextSibling;
+  parent.insertBefore(a, b);
+  parent.insertBefore(b, aNext);
+}
+
+function checkSolved(){
+  const pieces = [...document.getElementById('board').children];
+  const solved = pieces.every((p, i) => Number(p.dataset.correct) === i);
+  if(solved){
+    setTimeout(() => openCompleteOverlay(), 250);
+  }
+}
+
+/* ============================================================
+   COMPLETE OVERLAY: FACT -> QUIZ -> STARS
+   ============================================================ */
+function openCompleteOverlay(){
+  quizAnsweredCorrectly = false;
+  quizAttempts = 0;
+
+  document.getElementById('factStep').classList.remove('hidden');
+  document.getElementById('quizStep').classList.add('hidden');
+  document.getElementById('finishBtn').classList.add('hidden');
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('stepTitle').textContent = 'Bé ghép đúng rồi! 🎉';
+  document.getElementById('factText').textContent = currentPuzzle.puzzle.fact;
+  document.getElementById('overlayOwl').innerHTML = owlSvg(50);
+
+  document.getElementById('overlay').classList.add('active');
+}
+
+function showQuizStep(){
+  document.getElementById('factStep').classList.add('hidden');
+  document.getElementById('quizStep').classList.remove('hidden');
+
+  const quiz = currentPuzzle.puzzle.quiz;
+  document.getElementById('quizQ').textContent = quiz.q;
+  const optWrap = document.getElementById('quizOptions');
+  optWrap.innerHTML = '';
+
+  // shuffle displayed order, keep track of correct text
+  const correctText = quiz.options[quiz.correct];
+  const shuffled = [...quiz.options];
+  for(let i = shuffled.length -1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  shuffled.forEach(optText => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = optText;
+    btn.addEventListener('click', () => handleQuizAnswer(btn, optText === correctText));
+    optWrap.appendChild(btn);
+  });
+}
+
+function handleQuizAnswer(btn, isCorrect){
+  if(quizAnsweredCorrectly) return;
+  quizAttempts++;
+  const allBtns = document.querySelectorAll('.quiz-opt');
+
+  if(isCorrect){
+    quizAnsweredCorrectly = true;
+    btn.classList.add('correct');
+    allBtns.forEach(b => b.disabled = true);
+    document.getElementById('quizFeedback').textContent =
+      quizAttempts === 1 ? 'Chính xác! Bé giỏi quá! ⭐⭐' : 'Đúng rồi! Cố lên nào ⭐';
+    awardStars(quizAttempts === 1 ? 2 : 1);
+    document.getElementById('finishBtn').classList.remove('hidden');
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    document.getElementById('quizFeedback').textContent = 'Chưa đúng, bé thử lại nhé!';
+  }
+}
+
+async function awardStars(stars){
+  const pid = currentPuzzle.puzzle.id;
+  const existing = progress[pid]?.stars || 0;
+  progress[pid] = { stars: Math.max(existing, stars) };
+  await saveProgress();
+}
+
+function closeOverlayAndRefresh(){
+  document.getElementById('overlay').classList.remove('active');
+  openThemeList(currentThemeId);
+}
+</script>
+</body>
+</html>

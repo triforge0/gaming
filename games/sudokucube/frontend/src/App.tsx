@@ -10,6 +10,7 @@ import { startPresenceHeartbeat } from './presence';
 import { WinModal } from './ui/WinModal';
 import { Toasts } from './ui/Toasts';
 import { Drawer } from './ui/Drawer';
+import { LauncherBackButton } from '@triforge/shared-ui/react';
 
 export function App() {
   const boot = useGame((s) => s.boot);
@@ -39,6 +40,7 @@ export function App() {
 
   return (
     <div className="app-root">
+      <LauncherBackButton />
       <GameCanvas onReady={(fn) => { resetCameraRef.current = fn; }} />
       <Hud onOpenDrawer={() => setDrawerOpen(true)} />
       <MenuScreen />

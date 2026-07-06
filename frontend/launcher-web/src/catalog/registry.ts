@@ -7,6 +7,7 @@ import { SudokuCubeArt } from './art/SudokuCubeArt';
 import { BugMinerArt } from './art/BugMinerArt';
 import { F1RacingArt } from './art/F1RacingArt';
 import { TopdownAdventureArt } from './art/TopdownAdventureArt';
+import { PuzzleGameKidsArt } from './art/PuzzleGameKidsArt';
 
 export const REGISTRY: CatalogEntry[] = [
   {
@@ -103,6 +104,19 @@ export const REGISTRY: CatalogEntry[] = [
     accent: '#9f6cff',
     comingSoon: true,
     Art: EducationArt,
+  },
+  {
+    id: 'puzzlegamekids',
+    title: 'Ghép hình vui nhộn',
+    description: 'Trò chơi ghép hình kết hợp học kiến thức cho bé.',
+    category: 'education',
+    path: '/?play=puzzlegamekids',
+    accent: '#E8A23C',
+    authorTag: 'Made with love by Mai',
+    isHtmlEmbed: true,
+    externalUrl: '/html-games/puzzle-game-kids/index.html',
+    badge: 'NEW',
+    Art: PuzzleGameKidsArt,
   },
   {
     id: 'caro',
