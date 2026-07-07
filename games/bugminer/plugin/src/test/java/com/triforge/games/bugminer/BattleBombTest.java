@@ -79,4 +79,29 @@ final class BattleBombTest {
         assertFalse(arena.toProto().getHookB().hasAttachedItemId());
         assertTrue(ropeCut);
     }
+
+    @Test
+    void bombExplosionAtLandingDestroysOpponentAreaItemsAndKeepsScoreAccurate() {
+        PlacedItem target = new PlacedItem("target-gold", BugMinerItemType.BM_ITEM_GOLD);
+        target.x = 560f;
+        target.y = 275f;
+        List<PlacedItem> layout = List.of(target);
+
+        BattleArena arena = new BattleArena(1L, 2L, "easy-mine", 90, layout);
+        arena.creditScore('A', 200);
+
+        assertTrue(arena.throwBomb(1L));
+        for (int i = 0; i < 60; i++) {
+            arena.tick(0.05f, true);
+            if (arena.toProto().getBombsCount() == 0) break;
+        }
+
+        var proto = arena.toProto();
+        assertEquals(0, proto.getBombsCount());
+        assertEquals(100, proto.getScoreA(), "Bomb throw should only deduct bomb cost.");
+        assertTrue(
+                proto.getItemsList().stream()
+                        .anyMatch(item -> "target-gold".equals(item.getId()) && item.getCollected()),
+                "Item in bomb landing area should be destroyed.");
+    }
 }

@@ -13,8 +13,10 @@ describe('REGISTRY', () => {
     }
   });
 
-  it('mọi game không phải comingSoon đều có pluginId', () => {
-    const games = REGISTRY.filter((e) => e.category === 'game' && !e.comingSoon);
+  it('mọi game server-side không phải comingSoon đều có pluginId', () => {
+    const games = REGISTRY.filter(
+      (e) => e.category === 'game' && !e.comingSoon && !e.isHtmlEmbed,
+    );
     expect(games.length).toBeGreaterThan(0);
     for (const g of games) {
       expect(g.pluginId).toBeTruthy();

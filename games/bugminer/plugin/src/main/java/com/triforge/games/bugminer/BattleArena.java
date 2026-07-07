@@ -131,8 +131,15 @@ public class BattleArena {
         resolveHookClash();
 
         int target = LevelCatalog.targetScore(levelId);
-        if (scoreA >= target) finish(playerAId, "target");
-        else if (scoreB >= target) finish(playerBId, "target");
+        if (scoreA >= target && scoreB >= target) {
+            if (scoreA > scoreB) finish(playerAId, "target");
+            else if (scoreB > scoreA) finish(playerBId, "target");
+            else finish(null, "target");
+        } else if (scoreA >= target) {
+            finish(playerAId, "target");
+        } else if (scoreB >= target) {
+            finish(playerBId, "target");
+        }
     }
 
     private void tickBombs(float deltaSec) {
@@ -143,14 +150,16 @@ public class BattleArena {
             bomb.y += bomb.vy * deltaSec;
             bomb.vy += GameConstants.BOMB_GRAVITY * deltaSec;
 
+            char victimSide = bomb.targetPlayerId == playerAId ? 'A' : 'B';
             if (bomb.ttl <= 0f) {
+                explodeItems(bomb.x, bomb.y, victimSide, bomb.ownerId);
                 expired.add(bomb);
                 continue;
             }
 
-            char victimSide = bomb.targetPlayerId == playerAId ? 'A' : 'B';
             if (checkBombHit(bomb, victimSide)) {
                 applyBombHit(bomb, victimSide);
+                explodeItems(bomb.x, bomb.y, victimSide, bomb.ownerId);
                 expired.add(bomb);
             }
         }
@@ -186,7 +195,6 @@ public class BattleArena {
     }
 
     private void applyBombHit(BombProjectile bomb, char victimSide) {
-        BattleHookAnchor anchor = victimSide == 'A' ? ANCHOR_A : ANCHOR_B;
         HookPhysics.HookData hook = victimSide == 'A' ? hookA : hookB;
         long victimId = victimSide == 'A' ? playerAId : playerBId;
 
@@ -209,6 +217,45 @@ public class BattleArena {
 
         if (victimSide == 'A') hookA = HookPhysics.bounceHook(hook);
         else hookB = HookPhysics.bounceHook(hook);
+    }
+
+    private void explodeItems(float x, float y, char victimSide, long ownerId) {
+        float radius = GameConstants.BOMB_HIT_RADIUS + 12f;
+        List<String> destroyedItemIds = new ArrayList<>();
+        for (PlacedItem item : items) {
+            if (item.collected || item.type == BugMinerItemType.BM_ITEM_BEDROCK) continue;
+            if (!isInVictimHalf(item.x, victimSide)) continue;
+            float dx = item.x - x;
+            float dy = item.y - y;
+            float hitRadius = radius + ItemValueHelper.getRadius(item.type, item.scale);
+            if (Math.hypot(dx, dy) > hitRadius) continue;
+            item.collected = true;
+            destroyedItemIds.add(item.id);
+        }
+
+        if (destroyedItemIds.isEmpty()) return;
+        clearDestroyedAttachments(destroyedItemIds, victimSide);
+
+        BugMinerClientEvent exploded = new BugMinerClientEvent("battle:bombExplode");
+        exploded.playerId = ownerId;
+        exploded.victimId = victimSide == 'A' ? playerAId : playerBId;
+        exploded.value = destroyedItemIds.size();
+        pendingEvents.add(exploded);
+    }
+
+    private void clearDestroyedAttachments(List<String> destroyedItemIds, char victimSide) {
+        HookPhysics.HookData victimHook = victimSide == 'A' ? hookA : hookB;
+        HookPhysics.HookData attackerHook = victimSide == 'A' ? hookB : hookA;
+        if (victimHook.attachedItemId != null && destroyedItemIds.contains(victimHook.attachedItemId)) {
+            victimHook.attachedItemId = null;
+        }
+        if (attackerHook.attachedItemId != null && destroyedItemIds.contains(attackerHook.attachedItemId)) {
+            attackerHook.attachedItemId = null;
+        }
+    }
+
+    private static boolean isInVictimHalf(float itemX, char victimSide) {
+        return victimSide == 'A' ? itemX <= 0f : itemX >= 0f;
     }
 
     private void updateMovingItems(float deltaSec) {

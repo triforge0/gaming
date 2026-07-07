@@ -64,6 +64,13 @@ function handleBoardEvents(
       store.setError('💥 TRÚNG BOM! Móc bị đứt!');
       setTimeout(() => store.setError(null), 2200);
     }
+    if (type === 'battle:bombExplode' && playerId === myId) {
+      const destroyed = Math.max(0, event.value ?? 0);
+      if (destroyed > 0) {
+        store.setError(`💣 Bom nổ phá ${destroyed} vật phẩm!`);
+        setTimeout(() => store.setError(null), 1700);
+      }
+    }
     if (type === 'battle:ropeCut' && victimId === myId) {
       store.setError('⛓️‍💥 Dây câu đứt — vật phẩm rơi!');
       setTimeout(() => store.setError(null), 2000);
