@@ -41,7 +41,7 @@ export default function BattleHUD({
         {myBuff > 0 && <span className="battle-hud-buff">💪 {myBuff}s</span>}
         {phase === 'playing' && (
           <span className={`battle-hud-bomb ${myBombCd > 0 ? 'cooldown' : bombAffordable ? 'ready' : 'disabled'}`}>
-            💣 -{BOMB_COST} {myBombCd > 0 ? `${myBombCd}s` : bombAffordable ? '(B)' : ' thiếu điểm'}
+            🩴 -{BOMB_COST} {myBombCd > 0 ? `${myBombCd}s` : bombAffordable ? '(B)' : ' thiếu điểm'}
           </span>
         )}
       </div>
@@ -53,7 +53,7 @@ export default function BattleHUD({
         </span>
         <span className="battle-hud-mode">⚔️ BATTLE · {level.name}</span>
         {phase === 'playing' && (
-          <span className="battle-hud-hint">Space: móc · B: bom (-{BOMB_COST} điểm) · Va chạm móc = mất lượt · Cướp vật đang kéo = steal</span>
+          <span className="battle-hud-hint">Space: móc · B: ném dép tổ ong (-{BOMB_COST} điểm) · Trúng đối thủ: -100 điểm · Va chạm móc = mất lượt</span>
         )}
       </div>
 

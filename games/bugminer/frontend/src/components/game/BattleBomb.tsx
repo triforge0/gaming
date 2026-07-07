@@ -23,31 +23,31 @@ function BombMesh({ bomb }: { bomb: BombProjectileState }) {
 
   return (
     <group ref={ref} position={[x, y, 15]}>
-      <pointLight color="#ff5722" intensity={3.5} distance={160} decay={2} />
-      <mesh>
-        <sphereGeometry args={[24, 14, 14]} />
+      <pointLight color="#f4d06f" intensity={2.2} distance={140} decay={2} />
+      <mesh rotation={[0, 0, dir * 0.22]}>
+        <boxGeometry args={[64, 26, 12]} />
         <meshStandardMaterial
-          color="#0a0a0a"
-          emissive="#ff3d00"
-          emissiveIntensity={1.4}
-          roughness={0.25}
-          metalness={0.55}
+          color="#f4d06f"
+          emissive="#8d6e63"
+          emissiveIntensity={0.35}
+          roughness={0.45}
+          metalness={0.1}
         />
       </mesh>
-      <mesh position={[dir * -10, 0, -6]} rotation={[0, 0, dir * Math.PI * 0.5]}>
-        <coneGeometry args={[10, 26, 10]} />
-        <meshStandardMaterial color="#222" emissive="#ff9800" emissiveIntensity={1} />
+      <mesh position={[10, 10, 7]} rotation={[0, 0, 0.1]}>
+        <boxGeometry args={[22, 8, 4]} />
+        <meshStandardMaterial color="#a1887f" roughness={0.7} metalness={0.03} />
       </mesh>
       {[0, 1, 2, 3].map((i) => (
         <mesh
           key={i}
-          position={[dir * -(i + 1) * 22, (i + 1) * 6, -4 - i * 2]}
+          position={[dir * -(i + 1) * 24, (i + 1) * 5, -6 - i * 2]}
         >
-          <sphereGeometry args={[9 - i * 1.5, 8, 8]} />
+          <sphereGeometry args={[8 - i * 1.3, 8, 8]} />
           <meshBasicMaterial
-            color={i < 2 ? '#ff9800' : '#ff5722'}
+            color={i < 2 ? '#ffe082' : '#bcaaa4'}
             transparent
-            opacity={0.75 - i * 0.15}
+            opacity={0.72 - i * 0.15}
           />
         </mesh>
       ))}

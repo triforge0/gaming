@@ -81,6 +81,33 @@ final class BattleBombTest {
     }
 
     @Test
+    void bombHitAlsoDeductsVictimScoreBy100() {
+        List<PlacedItem> layout = BattleLayoutBuilder.build("easy-mine", "PENALTY1");
+        BattleArena arena = new BattleArena(1L, 2L, "easy-mine", 90, layout);
+        arena.creditScore('A', 200);
+        arena.creditScore('B', 180);
+
+        arena.fireHook(2L);
+        for (int i = 0; i < 40; i++) {
+            arena.tick(0.05f, true);
+            if (arena.toProto().getHookB().getState() == BugMinerHookState.BM_HOOK_EXTENDING
+                    || arena.toProto().getHookB().getState() == BugMinerHookState.BM_HOOK_RETRACTING) {
+                break;
+            }
+        }
+
+        assertTrue(arena.throwBomb(1L));
+        for (int i = 0; i < 100; i++) {
+            arena.tick(0.05f, true);
+            if (arena.toProto().getBombsCount() == 0) break;
+        }
+
+        var proto = arena.toProto();
+        assertEquals(100, proto.getScoreA(), "Thrower only loses throw cost.");
+        assertEquals(80, proto.getScoreB(), "Victim loses 100 points on hit.");
+    }
+
+    @Test
     void bombExplosionAtLandingDestroysOpponentAreaItemsAndKeepsScoreAccurate() {
         PlacedItem target = new PlacedItem("target-gold", BugMinerItemType.BM_ITEM_GOLD);
         target.x = 560f;

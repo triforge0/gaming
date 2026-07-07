@@ -30,7 +30,7 @@ export default function BattleGameScreen({ socket }: Props) {
     const myScore = playerId === battle.playerAId ? battle.scoreA : battle.scoreB;
     const cd = playerId === battle.playerAId ? battle.bombCooldownA : battle.bombCooldownB;
     if (myScore < BOMB_COST) {
-      useGameStore.getState().setError(`Cần ít nhất ${BOMB_COST} điểm để ném bom!`);
+      useGameStore.getState().setError(`Cần ít nhất ${BOMB_COST} điểm để ném dép tổ ong!`);
       setTimeout(() => useGameStore.getState().setError(null), 1500);
       return;
     }
@@ -120,12 +120,12 @@ export default function BattleGameScreen({ socket }: Props) {
           )}
           {bombFlash && (
             <div className="bomb-hit-flash">
-              <span>💥 BOOM!</span>
+              <span>🩴 TRÚNG DÉP!</span>
             </div>
           )}
         </div>
         {isPlaying && (
-          <p className="dual-panel-hint">Click / Space — móc · B — ném bom (-{BOMB_COST} điểm)</p>
+          <p className="dual-panel-hint">Click / Space — móc · B — ném dép tổ ong (-{BOMB_COST} điểm)</p>
         )}
       </div>
 
@@ -136,7 +136,7 @@ export default function BattleGameScreen({ socket }: Props) {
           onClick={handleThrowBomb}
           disabled={!canThrowBomb}
         >
-          💣 Ném bom (-{BOMB_COST})
+          🩴 Ném dép tổ ong (-{BOMB_COST})
         </button>
       )}
 

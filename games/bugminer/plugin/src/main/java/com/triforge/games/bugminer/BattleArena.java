@@ -197,10 +197,18 @@ public class BattleArena {
     private void applyBombHit(BombProjectile bomb, char victimSide) {
         HookPhysics.HookData hook = victimSide == 'A' ? hookA : hookB;
         long victimId = victimSide == 'A' ? playerAId : playerBId;
+        int victimScoreBefore = victimSide == 'A' ? scoreA : scoreB;
+        int penalty = Math.min(GameConstants.BOMB_COST, Math.max(0, victimScoreBefore));
+        if (victimSide == 'A') {
+            scoreA = Math.max(0, scoreA - GameConstants.BOMB_COST);
+        } else {
+            scoreB = Math.max(0, scoreB - GameConstants.BOMB_COST);
+        }
 
         BugMinerClientEvent hit = new BugMinerClientEvent("battle:bombHit");
         hit.playerId = victimId;
         hit.victimId = victimId;
+        hit.value = -penalty;
         pendingEvents.add(hit);
 
         if (hook.state == BugMinerHookState.BM_HOOK_RETRACTING && hook.attachedItemId != null) {

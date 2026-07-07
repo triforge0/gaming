@@ -55,19 +55,21 @@ function handleBoardEvents(
     }
     if (type === 'battle:bombLaunched' && playerId === myId) {
       store.addCollection(event.value ?? -100, 'gold');
-      store.setError(`💣 Ném bom! -${Math.abs(event.value ?? 100)} điểm`);
+      store.setError(`🩴 Ném dép tổ ong! -${Math.abs(event.value ?? 100)} điểm`);
       setTimeout(() => store.setError(null), 1500);
     }
     if (type === 'battle:bombHit' && victimId === myId) {
       store.setBombFlash(true);
       setTimeout(() => store.setBombFlash(false), 600);
-      store.setError('💥 TRÚNG BOM! Móc bị đứt!');
+      const penalty = Math.max(0, Math.abs(event.value ?? 100));
+      store.addCollection(-penalty, 'gold');
+      store.setError(`🩴 TRÚNG DÉP! -${penalty} điểm, móc bị đứt!`);
       setTimeout(() => store.setError(null), 2200);
     }
     if (type === 'battle:bombExplode' && playerId === myId) {
       const destroyed = Math.max(0, event.value ?? 0);
       if (destroyed > 0) {
-        store.setError(`💣 Bom nổ phá ${destroyed} vật phẩm!`);
+        store.setError(`🩴 Dép rơi phá ${destroyed} vật phẩm!`);
         setTimeout(() => store.setError(null), 1700);
       }
     }
