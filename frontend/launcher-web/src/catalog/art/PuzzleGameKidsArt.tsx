@@ -29,19 +29,21 @@ export function PuzzleGameKidsArt() {
       <text x="60" y="150" fill="#FFE270" fontSize="18" opacity="0.5" className="art-float" style={{ animationDelay: '0.5s' }}>★</text>
 
       {/* Owl Mascot (Centered and scaled) */}
-      <g transform="translate(140, 40) scale(1)" className="art-float">
-        <svg width="120" height="120" viewBox="0 0 120 120">
-          <ellipse cx="60" cy="70" rx="42" ry="40" fill="#B98A5A"/>
-          <ellipse cx="60" cy="65" rx="34" ry="32" fill="#E8C79A"/>
-          <polygon points="30,35 42,55 20,55" fill="#B98A5A"/>
-          <polygon points="90,35 100,55 78,55" fill="#B98A5A"/>
-          <circle cx="44" cy="62" r="14" fill="#fff"/>
-          <circle cx="76" cy="62" r="14" fill="#fff"/>
-          <circle cx="44" cy="62" r="7" fill="#2B3A4A"/>
-          <circle cx="76" cy="62" r="7" fill="#2B3A4A"/>
-          <polygon points="60,72 52,84 68,84" fill="#E8A23C"/>
-          <ellipse cx="60" cy="108" rx="16" ry="7" fill="#D9A85C"/>
-        </svg>
+      <g className="art-float">
+        <g transform="translate(140, 40) scale(1)">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <ellipse cx="60" cy="70" rx="42" ry="40" fill="#B98A5A"/>
+            <ellipse cx="60" cy="65" rx="34" ry="32" fill="#E8C79A"/>
+            <polygon points="30,35 42,55 20,55" fill="#B98A5A"/>
+            <polygon points="90,35 100,55 78,55" fill="#B98A5A"/>
+            <circle cx="44" cy="62" r="14" fill="#fff"/>
+            <circle cx="76" cy="62" r="14" fill="#fff"/>
+            <circle cx="44" cy="62" r="7" fill="#2B3A4A"/>
+            <circle cx="76" cy="62" r="7" fill="#2B3A4A"/>
+            <polygon points="60,72 52,84 68,84" fill="#E8A23C"/>
+            <ellipse cx="60" cy="108" rx="16" ry="7" fill="#D9A85C"/>
+          </svg>
+        </g>
       </g>
       
       {/* Title */}

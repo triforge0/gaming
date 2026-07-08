@@ -37,70 +37,78 @@ export function BeHocVuiArt() {
       <circle cx="260" cy="40" r="12" fill="#ffffff" opacity="0.1" className="art-float" style={{ animationDelay: '1s' }} />
 
       {/* Mascot A (Emerald Color) */}
-      <g transform="translate(110, 45) scale(0.95)" className="art-float">
-        {/* Draw Letter A */}
-        <path d="M 30,10 L 10,70 L 22,70 L 26,54 L 46,54 L 50,70 L 62,70 Z M 36,22 L 43,44 L 29,44 Z" fill="#2dd4bf" stroke="#115e59" strokeWidth="3" />
-        {/* Left Eye */}
-        <circle cx="30" cy="38" r="4.5" fill="#ffffff" />
-        <circle cx="30" cy="38" r="2" fill="#000000" />
-        <circle cx="31" cy="37" r="0.7" fill="#ffffff" />
-        {/* Right Eye */}
-        <circle cx="42" cy="38" r="4.5" fill="#ffffff" />
-        <circle cx="42" cy="38" r="2" fill="#000000" />
-        <circle cx="43" cy="37" r="0.7" fill="#ffffff" />
-        {/* Smile */}
-        <path d="M 33,45 Q 36,49 39,45" fill="none" stroke="#115e59" strokeWidth="2.5" strokeLinecap="round" />
-        {/* Rosy Cheeks */}
-        <ellipse cx="27" cy="41" rx="2" ry="1.2" fill="#f43f5e" opacity="0.7" />
-        <ellipse cx="45" cy="41" rx="2" ry="1.2" fill="#f43f5e" opacity="0.7" />
+      <g className="art-float">
+        <g transform="translate(110, 45) scale(0.95)">
+          {/* Draw Letter A */}
+          <path d="M 30,10 L 10,70 L 22,70 L 26,54 L 46,54 L 50,70 L 62,70 Z M 36,22 L 43,44 L 29,44 Z" fill="#2dd4bf" stroke="#115e59" strokeWidth="3" />
+          {/* Left Eye */}
+          <circle cx="30" cy="38" r="4.5" fill="#ffffff" />
+          <circle cx="30" cy="38" r="2" fill="#000000" />
+          <circle cx="31" cy="37" r="0.7" fill="#ffffff" />
+          {/* Right Eye */}
+          <circle cx="42" cy="38" r="4.5" fill="#ffffff" />
+          <circle cx="42" cy="38" r="2" fill="#000000" />
+          <circle cx="43" cy="37" r="0.7" fill="#ffffff" />
+          {/* Smile */}
+          <path d="M 33,45 Q 36,49 39,45" fill="none" stroke="#115e59" strokeWidth="2.5" strokeLinecap="round" />
+          {/* Rosy Cheeks */}
+          <ellipse cx="27" cy="41" rx="2" ry="1.2" fill="#f43f5e" opacity="0.7" />
+          <ellipse cx="45" cy="41" rx="2" ry="1.2" fill="#f43f5e" opacity="0.7" />
+        </g>
       </g>
 
       {/* Mascot 1 (Warm Orange) */}
-      <g transform="translate(190, 40) scale(0.95)" className="art-float" style={{ animationDelay: '1.2s' }}>
-        {/* Draw Number 1 */}
-        <path d="M 22,22 Q 32,15 36,10 L 46,10 L 46,70 L 32,70 L 32,22 Z" fill="#f97316" stroke="#7c2d12" strokeWidth="3" />
-        {/* Left Eye */}
-        <circle cx="32" cy="24" r="4.5" fill="#ffffff" />
-        <circle cx="32" cy="24" r="2" fill="#000000" />
-        {/* Right Eye */}
-        <circle cx="41" cy="24" r="4.5" fill="#ffffff" />
-        <circle cx="41" cy="24" r="2" fill="#000000" />
-        {/* Smile */}
-        <path d="M 34,31 Q 36.5,35 39,31" fill="none" stroke="#7c2d12" strokeWidth="2" strokeLinecap="round" />
-        {/* Blush */}
-        <ellipse cx="29" cy="26" rx="2" ry="1.2" fill="#ef4444" opacity="0.7" />
-        <ellipse cx="44" cy="26" rx="2" ry="1.2" fill="#ef4444" opacity="0.7" />
+      <g className="art-float" style={{ animationDelay: '1.2s' }}>
+        <g transform="translate(190, 40) scale(0.95)">
+          {/* Draw Number 1 */}
+          <path d="M 22,22 Q 32,15 36,10 L 46,10 L 46,70 L 32,70 L 32,22 Z" fill="#f97316" stroke="#7c2d12" strokeWidth="3" />
+          {/* Left Eye */}
+          <circle cx="32" cy="24" r="4.5" fill="#ffffff" />
+          <circle cx="32" cy="24" r="2" fill="#000000" />
+          {/* Right Eye */}
+          <circle cx="41" cy="24" r="4.5" fill="#ffffff" />
+          <circle cx="41" cy="24" r="2" fill="#000000" />
+          {/* Smile */}
+          <path d="M 34,31 Q 36.5,35 39,31" fill="none" stroke="#7c2d12" strokeWidth="2" strokeLinecap="round" />
+          {/* Blush */}
+          <ellipse cx="29" cy="26" rx="2" ry="1.2" fill="#ef4444" opacity="0.7" />
+          <ellipse cx="44" cy="26" rx="2" ry="1.2" fill="#ef4444" opacity="0.7" />
+        </g>
       </g>
 
       {/* Mascot B (Golden Yellow) */}
-      <g transform="translate(145, 80) scale(0.95)" className="art-float" style={{ animationDelay: '0.6s' }}>
-        {/* Draw Letter B */}
-        <path d="M 12,10 L 36,10 C 48,10 48,27 36,27 C 50,27 50,44 36,44 L 12,44 Z M 22,17 L 22,23 L 30,23 C 33,23 33,17 30,17 Z M 22,30 L 22,37 L 30,37 C 34,37 34,30 30,30 Z" fill="#fbbf24" stroke="#78350f" strokeWidth="3" />
-        {/* Left Eye */}
-        <circle cx="22" cy="18" r="3.5" fill="#ffffff" />
-        <circle cx="22" cy="18" r="1.5" fill="#000000" />
-        {/* Right Eye */}
-        <circle cx="28" cy="18" r="3.5" fill="#ffffff" />
-        <circle cx="28" cy="18" r="1.5" fill="#000000" />
-        {/* Smile */}
-        <path d="M 23,21 Q 25,23 27,21" fill="none" stroke="#78350f" strokeWidth="1.5" />
+      <g className="art-float" style={{ animationDelay: '0.6s' }}>
+        <g transform="translate(145, 80) scale(0.95)">
+          {/* Draw Letter B */}
+          <path d="M 12,10 L 36,10 C 48,10 48,27 36,27 C 50,27 50,44 36,44 L 12,44 Z M 22,17 L 22,23 L 30,23 C 33,23 33,17 30,17 Z M 22,30 L 22,37 L 30,37 C 34,37 34,30 30,30 Z" fill="#fbbf24" stroke="#78350f" strokeWidth="3" />
+          {/* Left Eye */}
+          <circle cx="22" cy="18" r="3.5" fill="#ffffff" />
+          <circle cx="22" cy="18" r="1.5" fill="#000000" />
+          {/* Right Eye */}
+          <circle cx="28" cy="18" r="3.5" fill="#ffffff" />
+          <circle cx="28" cy="18" r="1.5" fill="#000000" />
+          {/* Smile */}
+          <path d="M 23,21 Q 25,23 27,21" fill="none" stroke="#78350f" strokeWidth="1.5" />
+        </g>
       </g>
 
       {/* Mascot 2 (Lavender Indigo) */}
-      <g transform="translate(230, 75) scale(0.95)" className="art-float" style={{ animationDelay: '1.8s' }}>
-        {/* Draw Number 2 */}
-        <path d="M 10,18 C 10,6 36,6 36,22 C 36,34 16,42 16,48 L 40,48 L 40,56 L 10,56 L 10,48 C 10,34 30,26 30,20 C 30,14 16,14 16,18 Z" fill="#818cf8" stroke="#312e81" strokeWidth="3" />
-        {/* Left Eye */}
-        <circle cx="21" cy="18" r="4.5" fill="#ffffff" />
-        <circle cx="21" cy="18" r="2" fill="#000000" />
-        {/* Right Eye */}
-        <circle cx="30" cy="18" r="4.5" fill="#ffffff" />
-        <circle cx="30" cy="18" r="2" fill="#000000" />
-        {/* Smile */}
-        <path d="M 23,24 Q 25.5,27 28,24" fill="none" stroke="#312e81" strokeWidth="2.2" strokeLinecap="round" />
-        {/* Rosy Cheeks */}
-        <ellipse cx="18" cy="20" rx="1.8" ry="1.1" fill="#ec4899" opacity="0.7" />
-        <ellipse cx="33" cy="20" rx="1.8" ry="1.1" fill="#ec4899" opacity="0.7" />
+      <g className="art-float" style={{ animationDelay: '1.8s' }}>
+        <g transform="translate(230, 75) scale(0.95)">
+          {/* Draw Number 2 */}
+          <path d="M 10,18 C 10,6 36,6 36,22 C 36,34 16,42 16,48 L 40,48 L 40,56 L 10,56 L 10,48 C 10,34 30,26 30,20 C 30,14 16,14 16,18 Z" fill="#818cf8" stroke="#312e81" strokeWidth="3" />
+          {/* Left Eye */}
+          <circle cx="21" cy="18" r="4.5" fill="#ffffff" />
+          <circle cx="21" cy="18" r="2" fill="#000000" />
+          {/* Right Eye */}
+          <circle cx="30" cy="18" r="4.5" fill="#ffffff" />
+          <circle cx="30" cy="18" r="2" fill="#000000" />
+          {/* Smile */}
+          <path d="M 23,24 Q 25.5,27 28,24" fill="none" stroke="#312e81" strokeWidth="2.2" strokeLinecap="round" />
+          {/* Rosy Cheeks */}
+          <ellipse cx="18" cy="20" rx="1.8" ry="1.1" fill="#ec4899" opacity="0.7" />
+          <ellipse cx="33" cy="20" rx="1.8" ry="1.1" fill="#ec4899" opacity="0.7" />
+        </g>
       </g>
 
       {/* Text Label */}
