@@ -23,11 +23,11 @@ export function BeHocVuiArt() {
       <rect width="400" height="200" fill={`url(#${glowId})`} className="art-pulse" />
 
       {/* Twinkling Stars */}
-      <g className="art-float">
-        <text x="50" y="40" fill="#FFE270" fontSize="16" opacity="0.8">★</text>
-        <text x="350" y="60" fill="#FFE270" fontSize="14" opacity="0.6" style={{ animationDelay: '1s' }}>★</text>
-        <text x="80" y="140" fill="#FFE270" fontSize="18" opacity="0.7" style={{ animationDelay: '2s' }}>★</text>
-        <text x="320" y="150" fill="#FFE270" fontSize="15" opacity="0.9" style={{ animationDelay: '1.5s' }}>★</text>
+      <g>
+        <text x="50" y="40" fill="#FFE270" fontSize="16" opacity="0.8" className="art-float">★</text>
+        <text x="350" y="60" fill="#FFE270" fontSize="14" opacity="0.6" className="art-float" style={{ animationDelay: '1s' }}>★</text>
+        <text x="80" y="140" fill="#FFE270" fontSize="18" opacity="0.7" className="art-float" style={{ animationDelay: '2s' }}>★</text>
+        <text x="320" y="150" fill="#FFE270" fontSize="15" opacity="0.9" className="art-float" style={{ animationDelay: '1.5s' }}>★</text>
       </g>
 
       {/* Floating Bubbles */}
