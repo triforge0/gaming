@@ -8,6 +8,7 @@ import { BugMinerArt } from './art/BugMinerArt';
 import { F1RacingArt } from './art/F1RacingArt';
 import { TopdownAdventureArt } from './art/TopdownAdventureArt';
 import { PuzzleGameKidsArt } from './art/PuzzleGameKidsArt';
+import { BeHocVuiArt } from './art/BeHocVuiArt';
 
 export const REGISTRY: CatalogEntry[] = [
   {
@@ -117,6 +118,19 @@ export const REGISTRY: CatalogEntry[] = [
     externalUrl: '/html-games/puzzle-game-kids/index.html',
     badge: 'NEW',
     Art: PuzzleGameKidsArt,
+  },
+  {
+    id: 'behocvui',
+    title: 'Bé Học Vui',
+    description: 'Vừa chơi vừa học chữ cái và số đếm cùng những người bạn đáng yêu!',
+    category: 'education',
+    path: '/?play=behocvui',
+    accent: '#ec4899',
+    authorTag: 'Made by Phú',
+    isHtmlEmbed: true,
+    externalUrl: 'https://education-game-sigma.vercel.app',
+    badge: 'NEW',
+    Art: BeHocVuiArt,
   },
   {
     id: 'caro',
