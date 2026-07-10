@@ -9,6 +9,7 @@ import { F1RacingArt } from './art/F1RacingArt';
 import { TopdownAdventureArt } from './art/TopdownAdventureArt';
 import { PuzzleGameKidsArt } from './art/PuzzleGameKidsArt';
 import { BeHocVuiArt } from './art/BeHocVuiArt';
+import { TinyPirateQuestArt } from './art/TinyPirateQuestArt';
 
 export const REGISTRY: CatalogEntry[] = [
   {
@@ -131,6 +132,19 @@ export const REGISTRY: CatalogEntry[] = [
     externalUrl: 'https://education-game-sigma.vercel.app',
     badge: 'NEW',
     Art: BeHocVuiArt,
+  },
+  {
+    id: 'tinypiratequest',
+    title: 'Tiny Pirate Quest',
+    description: 'Hành trình truy tìm kho báu của hải tặc tí hon - Thu thập tiền vàng, tìm mảnh bản đồ và chiêu mộ thủy thủ.',
+    category: 'game',
+    path: '/?play=tinypiratequest',
+    accent: '#f59e0b',
+    isHtmlEmbed: true,
+    externalUrl: 'https://sherryonline.github.io/tiny-pirate-quest/',
+    authorTag: 'Made with love by Ngoc Sherry',
+    badge: 'NEW',
+    Art: TinyPirateQuestArt,
   },
   {
     id: 'caro',

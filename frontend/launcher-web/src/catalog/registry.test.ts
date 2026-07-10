@@ -42,4 +42,18 @@ describe('REGISTRY', () => {
     expect(behocvui?.badge).toBe('NEW');
     expect(behocvui?.Art).toBeDefined();
   });
+
+  it('đăng ký game tinypiratequest với cấu hình chính xác', () => {
+    const game = REGISTRY.find((e) => e.id === 'tinypiratequest');
+    expect(game).toBeDefined();
+    expect(game?.title).toBe('Tiny Pirate Quest');
+    expect(game?.category).toBe('game');
+    expect(game?.isHtmlEmbed).toBe(true);
+    expect(game?.externalUrl).toBe('https://sherryonline.github.io/tiny-pirate-quest/');
+    expect(game?.path).toBe('/?play=tinypiratequest');
+    expect(game?.accent).toBe('#f59e0b');
+    expect(game?.authorTag).toBe('Made with love by Ngoc Sherry');
+    expect(game?.badge).toBe('NEW');
+    expect(game?.Art).toBeDefined();
+  });
 });
