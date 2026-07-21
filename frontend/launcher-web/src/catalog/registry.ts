@@ -10,6 +10,8 @@ import { TopdownAdventureArt } from './art/TopdownAdventureArt';
 import { PuzzleGameKidsArt } from './art/PuzzleGameKidsArt';
 import { BeHocVuiArt } from './art/BeHocVuiArt';
 import { TinyPirateQuestArt } from './art/TinyPirateQuestArt';
+import { ArrowfallArt } from './art/ArrowfallArt';
+import { SmashStressArt } from './art/SmashStressArt';
 
 export const REGISTRY: CatalogEntry[] = [
   {
@@ -145,6 +147,32 @@ export const REGISTRY: CatalogEntry[] = [
     authorTag: 'Made with love by Ngoc Sherry',
     badge: 'NEW',
     Art: TinyPirateQuestArt,
+  },
+  {
+    id: 'arrowfall',
+    title: 'ARROWFALL (Endless Siege)',
+    description: 'The horde never stops. From the shattered sky they descend — slimes, beasts, cursed knights, and towering elemental Overlords — and only one archer stands between them and the world below. You cannot retreat. You cannot rest. You can only aim. Draw from four mastered disciplines — Physical precision, searing Fire, freezing Frost, and chaining Lightning — and forge your own legend as Ranger, Sniper, Elementalist, or Juggernaut. Dash through danger, unleash devastating ultimates, and climb an endless gauntlet of ever-deadlier waves.',
+    category: 'game',
+    path: '/?play=arrowfall',
+    accent: '#6366f1',
+    isHtmlEmbed: true,
+    externalUrl: 'https://nhanptn1.github.io/enlessactionrpg',
+    authorTag: 'Made By Nhân',
+    badge: 'NEW',
+    Art: ArrowfallArt,
+  },
+  {
+    id: 'smashstress',
+    title: 'SmashStress (Relief Your Stress)',
+    description: 'Giải tỏa căng thẳng với tựa game đập phá cực đã. Đập tan mọi lo âu mệt mỏi của bạn!',
+    category: 'arcade',
+    path: '/?play=smashstress',
+    accent: '#ef4444',
+    isHtmlEmbed: true,
+    externalUrl: 'https://smashstress.vercel.app/',
+    authorTag: 'Made By Tuấn Anh',
+    badge: 'NEW',
+    Art: SmashStressArt,
   },
   {
     id: 'caro',
