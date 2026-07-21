@@ -151,7 +151,7 @@ export const REGISTRY: CatalogEntry[] = [
   {
     id: 'arrowfall',
     title: 'ARROWFALL (Endless Siege)',
-    description: 'The horde never stops. From the shattered sky they descend — slimes, beasts, cursed knights, and towering elemental Overlords — and only one archer stands between them and the world below. You cannot retreat. You cannot rest. You can only aim. Draw from four mastered disciplines — Physical precision, searing Fire, freezing Frost, and chaining Lightning — and forge your own legend as Ranger, Sniper, Elementalist, or Juggernaut. Dash through danger, unleash devastating ultimates, and climb an endless gauntlet of ever-deadlier waves.',
+    description: 'Ngăn chặn binh đoàn quái vật vô tận từ bầu trời rạn nứt. Sử dụng cung tên và 4 nguyên tố (Lửa, Băng, Sét, Vật Lý) để bảo vệ thế giới trong tựa game hành động sinh tồn không hồi kết.',
     category: 'game',
     path: '/?play=arrowfall',
     accent: '#6366f1',
@@ -165,7 +165,7 @@ export const REGISTRY: CatalogEntry[] = [
     id: 'smashstress',
     title: 'SmashStress (Relief Your Stress)',
     description: 'Giải tỏa căng thẳng với tựa game đập phá cực đã. Đập tan mọi lo âu mệt mỏi của bạn!',
-    category: 'arcade',
+    category: 'game',
     path: '/?play=smashstress',
     accent: '#ef4444',
     isHtmlEmbed: true,
